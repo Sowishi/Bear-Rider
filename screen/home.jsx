@@ -39,6 +39,7 @@ const Home = ({ route, navigation }) => {
   const [distance, setDistance] = useState();
   const [danger, setDanger] = useState(false);
   const [sound, setSound] = useState();
+  const [pauseSMS, setPauseSMS] = useState(false);
 
   const { uid, updateUid, auth, MASTER_NAME, SLAVE_NAME, RADIUS } =
     useSmokeContext();
@@ -120,7 +121,6 @@ const Home = ({ route, navigation }) => {
 
     onValue(dataRef, (snapshot) => {
       const data = snapshot.val();
-      console.log(data);
       setDeviceValue(data);
     });
   }
@@ -147,11 +147,36 @@ const Home = ({ route, navigation }) => {
     }, 2000);
   }
 
+  async function handleSMS() {
+    console.log("SMS called");
+    const phone = deviceValue.phone.trim();
+    const message = `Warning! Patient is out of reach. Patient Name: ${deviceValue.slaveName}Location: ${deviceValue.slave.lat},${deviceValue.slave.long} Note: Copy the location and paste to this link 
+https://www.google.com/maps/`;
+    const response = await fetch(
+      `https://api.semaphore.co/api/v4/messages?apikey=214fc12c7e55e526e6b6f7941239ed04&number=${phone}&message=${message}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const output = await response.json();
+    console.log(output);
+  }
+
   function calculateDistance() {
     if (deviceValue && uid !== null) {
       const output = haversineDistance(deviceValue.master, deviceValue.slave);
       setDistance(parseInt(output));
       if (output > RADIUS) {
+        if (pauseSMS == false) {
+          handleSMS();
+          setPauseSMS(true);
+          setTimeout(() => {
+            setPauseSMS(false);
+          }, 60000);
+        }
         showToast("error", "Slave is out of reach!");
         setDanger(true);
         playSound();

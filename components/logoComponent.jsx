@@ -15,7 +15,7 @@ const LogoComponent = () => {
     >
       <Image
         style={{ width: 150, height: 150 }}
-        source={require("../assets/a-logo.png")}
+        source={require("../assets/newLogoNoBG.png")}
       />
     </LinearGradient>
   );

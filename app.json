@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Alzhietech",
+    "name": "AlzheiTECH",
     "slug": "super-laco",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/bigger-logo.png",
+    "icon": "./assets/newIcon.png",
     "userInterfaceStyle": "light",
     "plugins": [
       [
@@ -15,7 +15,7 @@
       ]
     ],
     "splash": {
-      "image": "./assets/a-logo.png",
+      "image": "./assets/newLogoNoBG.png",
       "resizeMode": "contain",
       "backgroundColor": "#F9F7F8"
     },
@@ -29,7 +29,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/bigger-logo.png",
+        "foregroundImage": "./assets/newIcon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": ["android.permission.CAMERA"],

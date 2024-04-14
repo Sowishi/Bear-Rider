@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ScrollView,
 } from "react-native";
 import TitleComponent from "./titleComponent";
 import { Ionicons } from "@expo/vector-icons";
@@ -149,7 +150,7 @@ const ConnectionModal = ({
             titleColor={"black"}
             noBG={true}
           />
-          <View style={{ flex: 1, width: "100%" }}>
+          <ScrollView style={{ flex: 1, width: "100%" }}>
             <View
               style={{
                 flexDirection: "row",
@@ -250,7 +251,8 @@ const ConnectionModal = ({
                 </View>
                 <View style={{ paddingHorizontal: 10, marginTop: 15 }}>
                   <Text style={{ color: "gray", marginBottom: 3 }}>
-                    Contact Number
+                    Contact Number {"\n"}If More than 2 numbers seperate it with
+                    comma (,)
                   </Text>
                   <View
                     style={{
@@ -423,7 +425,7 @@ const ConnectionModal = ({
                 </View>
               </>
             )}
-          </View>
+          </ScrollView>
         </View>
       </View>
     </Modal>
