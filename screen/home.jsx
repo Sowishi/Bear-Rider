@@ -11,11 +11,13 @@ import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Button from "../components/button";
+import BottomModal from "../components/bottomModal";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [address, setAddress] = useState(null);
+  const [serviceModal, setServiceModal] = useState(false);
 
   const mapRef = useRef();
 
@@ -62,6 +64,18 @@ const Home = ({ route, navigation }) => {
       }}
     >
       <StatusBar backgroundColor={"white"} style="dark" />
+
+      <BottomModal
+        heightPx={270}
+        modalVisible={serviceModal}
+        closeModal={() => setServiceModal(false)}
+      >
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Text style={{ fontSize: 25, marginBottom: 10 }}>Pick a service</Text>
+          <Button width={300} text="Pahatod Services" bgColor={"#B80B00"} />
+          <Button width={300} text="Padara Services" bgColor={"#B80B00"} />
+        </View>
+      </BottomModal>
 
       <View style={{ flex: 1, position: "relative" }}>
         <MapView
@@ -170,7 +184,7 @@ const Home = ({ route, navigation }) => {
           ></View>
           <View
             style={{
-              marginTop: 10,
+              marginVertical: 10,
               justifyContent: "center",
               alignItems: "center",
             }}
@@ -179,7 +193,11 @@ const Home = ({ route, navigation }) => {
               Choose a Service{" "}
               <AntDesign name="right" size={24} color="black" />
             </Text>
-            <Button text="Book" bgColor={"#B80B00"} />
+            <Button
+              event={() => setServiceModal(true)}
+              text="Book"
+              bgColor={"#B80B00"}
+            />
           </View>
         </View>
       </View>

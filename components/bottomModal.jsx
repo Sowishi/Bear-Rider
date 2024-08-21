@@ -25,7 +25,10 @@ const BottomModal = ({ modalVisible, closeModal, heightPx, children }) => {
       marginTop: 22,
     },
     modalView: {
-      backgroundColor: "#FAF5FC",
+      backgroundColor: "white",
+      borderTopLeftRadius: 50,
+      borderTopRightRadius: 50,
+
       width: "100%",
       height: heightPx ? heightPx : 500,
       padding: 35,

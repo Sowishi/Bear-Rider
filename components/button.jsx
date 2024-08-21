@@ -2,7 +2,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 
-const Button = ({ text, icon, bgColor, event, isDisable, style }) => {
+const Button = ({ text, icon, bgColor, event, isDisable, style, width }) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -12,7 +12,7 @@ const Button = ({ text, icon, bgColor, event, isDisable, style }) => {
       style={{
         ...style,
         backgroundColor: isDisable ? bgColor + "99" : bgColor,
-        width: 180,
+        width: width ? width : 200,
         paddingVertical: 10,
         borderRadius: 10,
         justifyContent: "center",
@@ -24,11 +24,11 @@ const Button = ({ text, icon, bgColor, event, isDisable, style }) => {
       disabled={isDisable}
     >
       {isDisable ? (
-        <Text style={{ fontSize: 20, color: "white", marginRight: 5 }}>
+        <Text style={{ fontSize: 18, color: "white", marginRight: 5 }}>
           Disabled
         </Text>
       ) : (
-        <Text style={{ fontSize: 20, color: "white", marginRight: 5 }}>
+        <Text style={{ fontSize: 18, color: "white", marginRight: 5 }}>
           {text}
         </Text>
       )}
