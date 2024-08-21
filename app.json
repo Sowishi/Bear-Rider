@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "AlzheiTECH",
+    "name": "Bear Rider Express",
     "slug": "super-laco",
     "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/newIcon.png",
+    "icon": "./assets/bear.png",
     "userInterfaceStyle": "light",
     "plugins": [
       [
@@ -15,9 +15,9 @@
       ]
     ],
     "splash": {
-      "image": "./assets/newLogoNoBG.png",
+      "image": "./assets/bear.png",
       "resizeMode": "contain",
-      "backgroundColor": "#F9F7F8"
+      "backgroundColor": "#B80B00"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -29,7 +29,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/newIcon.png",
+        "foregroundImage": "./assets/bear.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": ["android.permission.CAMERA"],

@@ -2,7 +2,7 @@ import { Text, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 
-const Button = ({ text, icon, bgColor, event, isDisable }) => {
+const Button = ({ text, icon, bgColor, event, isDisable, style }) => {
   return (
     <TouchableOpacity
       onPress={() => {
@@ -10,6 +10,7 @@ const Button = ({ text, icon, bgColor, event, isDisable }) => {
         Haptics.selectionAsync();
       }}
       style={{
+        ...style,
         backgroundColor: isDisable ? bgColor + "99" : bgColor,
         width: 180,
         paddingVertical: 10,

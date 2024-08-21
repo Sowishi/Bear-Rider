@@ -10,25 +10,15 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 import { Entypo } from "@expo/vector-icons";
 import About from "./screen/about";
 import { MyProvider } from "./utils/appContext";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 export default function App() {
   const Stack = createStackNavigator();
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createDrawerNavigator();
 
   function MainScreen() {
     return (
-      <Tab.Navigator
-        tabBarPosition="bottom"
-        screenOptions={{
-          tabBarStyle: {
-            backgroundColor: "white",
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: "#f16b00",
-            height: 3,
-          },
-        }}
-      >
+      <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen
           name="Home"
           component={Home}
@@ -55,9 +45,8 @@ export default function App() {
       <MyProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="landing" component={Landing} />
-            <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="main" component={MainScreen} />
           </Stack.Navigator>
         </NavigationContainer>

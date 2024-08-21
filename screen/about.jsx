@@ -26,7 +26,7 @@ const About = ({ navigation }) => {
 
   return (
     <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar backgroundColor={"#4C3488"} style="light" />
+      <StatusBar backgroundColor={"transparent"} style="light" />
       <LinearGradient
         colors={["#4C3488", "#344854", "#222222"]}
         style={{
@@ -41,37 +41,6 @@ const About = ({ navigation }) => {
           modalVisible={show}
         >
           <View style={{ flex: 1, width: "100%" }}>
-            {auth.email && (
-              <View style={{ paddingHorizontal: 10, marginTop: 30 }}>
-                <Text style={{ color: "gray", marginBottom: 3 }}>
-                  Email Use
-                </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    shadowColor: "#000",
-                    shadowOffset: { width: 0, height: 1 },
-                    shadowOpacity: 0.8,
-                    shadowRadius: 2,
-                    elevation: 3,
-                    paddingHorizontal: 10,
-                    backgroundColor: "white",
-                    borderRadius: 10,
-                  }}
-                >
-                  <TextInput
-                    value={auth.email}
-                    editable={false}
-                    style={{
-                      flex: 1,
-                      paddingVertical: 9,
-                      paddingHorizontal: 10,
-                    }}
-                  />
-                </View>
-              </View>
-            )}
             <View style={{ paddingHorizontal: 10, marginTop: 30 }}>
               <Text style={{ color: "gray", marginBottom: 3 }}>Device UID</Text>
               <View
