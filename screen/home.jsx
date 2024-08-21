@@ -1,14 +1,58 @@
 import { StatusBar } from "expo-status-bar";
-import { TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 import Constants from "expo-constants";
 
-import MapView, { Callout } from "react-native-maps";
+import MapView, { Callout, Marker } from "react-native-maps";
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import * as Location from "expo-location";
+import { useEffect, useRef, useState } from "react";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Button from "../components/button";
 
 const Home = ({ route, navigation }) => {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [address, setAddress] = useState(null);
+
+  const mapRef = useRef();
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+
+      let output = await Location.reverseGeocodeAsync({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      setAddress(output[0]);
+    })();
+  }, []);
+
+  const jumpToMarker = () => {
+    if (location && mapRef.current) {
+      mapRef.current.animateToRegion(
+        {
+          latitude: location?.coords.latitude,
+          longitude: location?.coords.longitude,
+          latitudeDelta: 0.001, // Adjust zoom level as needed
+          longitudeDelta: 0.001,
+        },
+        1000
+      ); // Duration in milliseconds
+    }
+  };
+
   return (
     <View
       style={{
@@ -21,6 +65,7 @@ const Home = ({ route, navigation }) => {
 
       <View style={{ flex: 1, position: "relative" }}>
         <MapView
+          ref={mapRef}
           showsTraffic={true}
           provider={PROVIDER_GOOGLE}
           showsMyLocationButton={true}
@@ -28,10 +73,28 @@ const Home = ({ route, navigation }) => {
           initialRegion={{
             latitude: 14.0996,
             longitude: 122.955,
-            latitudeDelta: 0.1,
+            latitudeDelta: 0.5,
             longitudeDelta: 0.1,
           }}
-        ></MapView>
+          region={{
+            latitude: location?.coords.latitude,
+            longitude: location?.coords.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          }}
+        >
+          {location && (
+            <Marker
+              onPress={jumpToMarker}
+              coordinate={{
+                latitude: location?.coords.latitude,
+                longitude: location?.coords.longitude,
+              }}
+              title="Your Location"
+              description="This is where you are"
+            />
+          )}
+        </MapView>
         <View
           style={{
             position: "absolute",
@@ -70,16 +133,54 @@ const Home = ({ route, navigation }) => {
             }}
           >
             <TextInput
-              secureTextEntry
+              value={address?.formattedAddress}
+              onChangeText={(text) => setAddress(text)}
               placeholder="Your Location"
               style={{
                 flex: 1,
-                paddingVertical: 9,
-                paddingHorizontal: 10,
+                paddingVertical: 7,
+                paddingHorizontal: 13,
               }}
             />
           </View>
           <FontAwesome name="bell" size={24} color="#B80B00" />
+        </View>
+        <View
+          style={{
+            backgroundColor: "#fefefe",
+            height: 170,
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            borderTopLeftRadius: 50,
+            borderTopRightRadius: 50,
+          }}
+        >
+          <View
+            style={{
+              height: 6,
+              width: 150,
+              backgroundColor: "#626B7B",
+              marginTop: 20,
+              marginBottom: 30,
+              borderRadius: 20,
+            }}
+          ></View>
+          <View
+            style={{
+              marginTop: 10,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 20, marginBottom: 10 }}>
+              Choose a Service{" "}
+              <AntDesign name="right" size={24} color="black" />
+            </Text>
+            <Button text="Book" bgColor={"#B80B00"} />
+          </View>
         </View>
       </View>
     </View>

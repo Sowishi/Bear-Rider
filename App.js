@@ -19,23 +19,9 @@ export default function App() {
   function MainScreen() {
     return (
       <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            tabBarIcon: () => <Entypo name="home" size={24} color="#001F47" />,
-            tabBarShowLabel: false,
-          }}
-        />
+        <Tab.Screen name="Home" component={Home} />
 
-        <Tab.Screen
-          name="About"
-          component={About}
-          options={{
-            tabBarIcon: () => <Entypo name="info" size={24} color="#001F47" />,
-            tabBarShowLabel: false,
-          }}
-        />
+        <Tab.Screen name="Logout" component={Login} />
       </Tab.Navigator>
     );
   }
