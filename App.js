@@ -1,4 +1,3 @@
-import "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";

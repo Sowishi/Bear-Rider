@@ -2,7 +2,7 @@
   "expo": {
     "name": "Bear Rider Express",
     "slug": "super-laco",
-    "version": "2.0.0",
+    "version": "2.0.2",
     "orientation": "portrait",
     "icon": "./assets/bear.png",
     "userInterfaceStyle": "light",
@@ -19,7 +19,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#B80B00"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -32,11 +34,13 @@
         "foregroundImage": "./assets/bear.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permission.CAMERA"],
-      "package": "com.sowishi.alzhietech",
+      "permissions": [
+        "android.permission.CAMERA"
+      ],
+      "package": "com.bearrider",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyA2UaurF_4uMPJ_L5tkblmqRfaYjfidSbc"
+          "apiKey": "AIzaSyBJyzX4uELBsWT0OGdDOLz3hVyCz36Vqj4"
         }
       }
     },
@@ -47,6 +51,7 @@
       "eas": {
         "projectId": "7ce5edba-c433-42ea-85e8-4689f8a421ea"
       }
-    }
+    },
+    "owner": "sowishi"
   }
 }
