@@ -1,4 +1,3 @@
-import Register from "./screen/register";
 import "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -64,7 +63,6 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="login" component={Login} />
-            <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="main" component={MainScreen} />
           </Stack.Navigator>
         </NavigationContainer>
