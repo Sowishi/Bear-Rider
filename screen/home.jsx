@@ -29,12 +29,12 @@ const Home = ({ route, navigation }) => {
         return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      let res = await Location.getCurrentPositionAsync({});
+      setLocation(res);
 
       let output = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: location?.coords.latitude,
+        longitude: location?.coords.longitude,
       });
 
       setAddress(output[0]);

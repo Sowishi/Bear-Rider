@@ -19,9 +19,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#B80B00"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
@@ -34,13 +32,11 @@
         "foregroundImage": "./assets/bear.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.CAMERA"
-      ],
+      "permissions": ["android.permission.CAMERA"],
       "package": "com.bearrider",
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyBJyzX4uELBsWT0OGdDOLz3hVyCz36Vqj4"
+          "apiKey": "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"
         }
       }
     },
