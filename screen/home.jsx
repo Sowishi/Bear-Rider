@@ -121,12 +121,10 @@ const Home = ({ route, navigation }) => {
             marginTop: 25,
           }}
         >
-          <Entypo
-            onPress={() => {
-              navigation.openDrawer();
-            }}
-            name="menu"
-            size={35}
+          <FontAwesome
+            onPress={() => navigation.navigate("User")}
+            name="user-circle-o"
+            size={27}
             color="#B80B00"
           />
           <View
@@ -157,7 +155,12 @@ const Home = ({ route, navigation }) => {
               }}
             />
           </View>
-          <FontAwesome name="bell" size={24} color="#B80B00" />
+          <FontAwesome
+            onPress={() => navigation.navigate("Notification")}
+            name="bell"
+            size={24}
+            color="#B80B00"
+          />
         </View>
         <View
           style={{

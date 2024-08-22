@@ -1,4 +1,3 @@
-import Landing from "./screen/landing";
 import Register from "./screen/register";
 import "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
@@ -8,20 +7,53 @@ import Login from "./screen/login";
 import Home from "./screen/home";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Entypo } from "@expo/vector-icons";
-import About from "./screen/about";
 import { MyProvider } from "./utils/appContext";
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import User from "./screen/user";
+import Notification from "./screen/notification";
 
 export default function App() {
   const Stack = createStackNavigator();
-  const Tab = createDrawerNavigator();
+  const Tab = createMaterialTopTabNavigator();
 
   function MainScreen() {
     return (
-      <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="Home" component={Home} />
+      <Tab.Navigator
+        tabBarPosition="bottom"
+        screenOptions={{
+          tabBarStyle: {
+            backgroundColor: "white",
+          },
+          tabBarIndicatorStyle: {
+            backgroundColor: "#B80B00",
+            height: 3,
+          },
+        }}
+      >
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => <Entypo name="home" size={18} color="#001F47" />,
+            tabBarShowLabel: false,
+          }}
+          name="Home"
+          component={Home}
+        />
 
-        <Tab.Screen name="Logout" component={Login} />
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => <Entypo name="user" size={18} color="#001F47" />,
+            tabBarShowLabel: false,
+          }}
+          name="User"
+          component={User}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
+            tabBarShowLabel: false,
+          }}
+          name="Notification"
+          component={Notification}
+        />
       </Tab.Navigator>
     );
   }
