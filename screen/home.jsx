@@ -21,6 +21,8 @@ const Home = ({ route, navigation }) => {
 
   const mapRef = useRef();
 
+  Location.setGoogleApiKey("AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI");
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
