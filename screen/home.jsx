@@ -45,7 +45,7 @@ const Home = ({ route, navigation }) => {
   }, []);
 
   const jumpToMarker = (coords) => {
-    mapRef.current.animateToRegion(
+    mapRef.current?.animateToRegion(
       { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
       1000
     );
@@ -81,58 +81,60 @@ const Home = ({ route, navigation }) => {
       </BottomModal>
 
       <View style={{ flex: 1, position: "relative" }}>
-        <MapView
-          ref={mapRef}
-          showsTraffic={true}
-          provider={PROVIDER_GOOGLE}
-          showsMyLocationButton={true}
-          style={{ flex: 1, minHeight: 500, minWidth: 500 }}
-          initialRegion={{
-            latitude: 14.0996,
-            longitude: 122.955,
-            latitudeDelta: 0.8,
-            longitudeDelta: 0.5,
-          }}
-          region={{
-            latitude: location?.coords.latitude,
-            longitude: location?.coords.longitude,
-            latitudeDelta: 0.8,
-            longitudeDelta: 0.5,
-          }}
-        >
-          {location && (
-            <Marker
-              onPress={() =>
-                jumpToMarker({
+        {location && (
+          <MapView
+            ref={mapRef}
+            showsTraffic={true}
+            provider={PROVIDER_GOOGLE}
+            showsMyLocationButton={true}
+            style={{ flex: 1, minHeight: 500, minWidth: 500 }}
+            initialRegion={{
+              latitude: 14.0996,
+              longitude: 122.955,
+              latitudeDelta: 0.8,
+              longitudeDelta: 0.5,
+            }}
+            region={{
+              latitude: location?.coords.latitude,
+              longitude: location?.coords.longitude,
+              latitudeDelta: 0.8,
+              longitudeDelta: 0.5,
+            }}
+          >
+            {location && (
+              <Marker
+                onPress={() =>
+                  jumpToMarker({
+                    latitude: location?.coords.latitude,
+                    longitude: location?.coords.longitude,
+                  })
+                }
+                coordinate={{
                   latitude: location?.coords.latitude,
                   longitude: location?.coords.longitude,
-                })
-              }
-              coordinate={{
-                latitude: location?.coords.latitude,
-                longitude: location?.coords.longitude,
-              }}
-              title="Current Location"
-              description="This is where you are"
-            />
-          )}
-          {searchLocation && (
-            <Marker
-              onPress={() =>
-                jumpToMarker({
-                  latitude: searchLocation.latitude,
-                  longitude: searchLocation.longitude,
-                })
-              }
-              coordinate={{
-                latitude: searchLocation.latitude,
-                longitude: searchLocation.longitude,
-              }}
-              pinColor="yellow"
-              title="Selected Location"
-            />
-          )}
-        </MapView>
+                }}
+                title="Current Location"
+                description="This is where you are"
+              />
+            )}
+            {searchLocation && (
+              <Marker
+                onPress={() =>
+                  jumpToMarker({
+                    latitude: searchLocation?.latitude,
+                    longitude: searchLocation?.longitude,
+                  })
+                }
+                coordinate={{
+                  latitude: searchLocation?.latitude,
+                  longitude: searchLocation?.longitude,
+                }}
+                pinColor="yellow"
+                title="Selected Location"
+              />
+            )}
+          </MapView>
+        )}
         <View
           style={{
             position: "absolute",
