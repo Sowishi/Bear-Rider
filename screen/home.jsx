@@ -22,19 +22,25 @@ const Home = ({ route, navigation }) => {
 
   const mapRef = useRef();
 
-  // const jumpToMarker = () => {
-  //   if (location && mapRef.current) {
-  //     mapRef.current.animateToRegion(
-  //       {
-  //         latitude: location?.coords.latitude,
-  //         longitude: location?.coords.longitude,
-  //         latitudeDelta: 0.001, // Adjust zoom level as needed
-  //         longitudeDelta: 0.001,
-  //       },
-  //       1000
-  //     ); // Duration in milliseconds
-  //   }
-  // };
+  const center = {
+    lat: 14.0996, // Approximate center latitude of Camarines Norte
+    lng: 122.955, // Approximate center longitude of Camarines Norte
+  };
+
+  const radius = 50000;
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
   return (
     <View
@@ -53,7 +59,14 @@ const Home = ({ route, navigation }) => {
       >
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Text style={{ fontSize: 25, marginBottom: 10 }}>Pick a service</Text>
-          <Button width={300} text="Pahatod Services" bgColor={"#B80B00"} />
+          <Button
+            width={300}
+            text="Pahatod Services"
+            bgColor={"#B80B00"}
+            event={() => {
+              alert(JSON.stringify(location));
+            }}
+          />
           <Button width={300} text="Padara Services" bgColor={"#B80B00"} />
         </View>
       </BottomModal>
@@ -71,19 +84,7 @@ const Home = ({ route, navigation }) => {
             latitudeDelta: 0.5,
             longitudeDelta: 0.1,
           }}
-        >
-          {location && (
-            <Marker
-              onPress={jumpToMarker}
-              coordinate={{
-                latitude: location?.coords.latitude,
-                longitude: location?.coords.longitude,
-              }}
-              title="Your Location"
-              description="This is where you are"
-            />
-          )}
-        </MapView>
+        ></MapView>
         <View
           style={{
             position: "absolute",
@@ -128,6 +129,9 @@ const Home = ({ route, navigation }) => {
             query={{
               key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
               language: "en",
+              components: "country:ph",
+              location: `${center.lat},${center.lng}`,
+              radius: radius,
             }}
           />
         </View>
