@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Button from "../components/button";
 import BottomModal from "../components/bottomModal";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
@@ -21,34 +22,19 @@ const Home = ({ route, navigation }) => {
 
   const mapRef = useRef();
 
-  Location.setGoogleApiKey("AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI");
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let res = await Location.getCurrentPositionAsync({});
-      setLocation(res);
-    })();
-  }, []);
-
-  const jumpToMarker = () => {
-    if (location && mapRef.current) {
-      mapRef.current.animateToRegion(
-        {
-          latitude: location?.coords.latitude,
-          longitude: location?.coords.longitude,
-          latitudeDelta: 0.001, // Adjust zoom level as needed
-          longitudeDelta: 0.001,
-        },
-        1000
-      ); // Duration in milliseconds
-    }
-  };
+  // const jumpToMarker = () => {
+  //   if (location && mapRef.current) {
+  //     mapRef.current.animateToRegion(
+  //       {
+  //         latitude: location?.coords.latitude,
+  //         longitude: location?.coords.longitude,
+  //         latitudeDelta: 0.001, // Adjust zoom level as needed
+  //         longitudeDelta: 0.001,
+  //       },
+  //       1000
+  //     ); // Duration in milliseconds
+  //   }
+  // };
 
   return (
     <View
@@ -85,12 +71,6 @@ const Home = ({ route, navigation }) => {
             latitudeDelta: 0.5,
             longitudeDelta: 0.1,
           }}
-          region={{
-            latitude: location?.coords.latitude,
-            longitude: location?.coords.longitude,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
         >
           {location && (
             <Marker
@@ -116,45 +96,39 @@ const Home = ({ route, navigation }) => {
             marginTop: 25,
           }}
         >
-          <FontAwesome
-            onPress={() => navigation.navigate("User")}
-            name="user-circle-o"
-            size={27}
-            color="#B80B00"
-          />
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 1 },
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 3,
-              paddingHorizontal: 10,
-              backgroundColor: "white",
-              borderRadius: 10,
-              flex: 1,
-              marginHorizontal: 25,
+          <GooglePlacesAutocomplete
+            renderLeftButton={() => (
+              <FontAwesome
+                onPress={() => navigation.navigate("User")}
+                name="user-circle-o"
+                size={27}
+                color="#B80B00"
+              />
+            )}
+            renderRightButton={() => (
+              <FontAwesome
+                onPress={() => navigation.navigate("Notification")}
+                name="bell"
+                size={24}
+                color="#B80B00"
+              />
+            )}
+            styles={{
+              textInputContainer: {
+                justifyContent: "center",
+                alignItems: "center",
+              },
+              textInput: { marginHorizontal: 10 },
             }}
-          >
-            <TextInput
-              value={address?.formattedAddress}
-              onChangeText={(text) => setAddress(text)}
-              placeholder="Your Location"
-              style={{
-                flex: 1,
-                paddingVertical: 7,
-                paddingHorizontal: 13,
-              }}
-            />
-          </View>
-          <FontAwesome
-            onPress={() => navigation.navigate("Notification")}
-            name="bell"
-            size={24}
-            color="#B80B00"
+            placeholder="Search"
+            onPress={(data, details = null) => {
+              // 'details' is provided when fetchDetails = true
+              console.log(data, details);
+            }}
+            query={{
+              key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
+              language: "en",
+            }}
           />
         </View>
         <View
