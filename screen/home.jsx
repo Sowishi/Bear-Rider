@@ -16,11 +16,11 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [address, setAddress] = useState(null);
+  const [searchLocation, setSearchLocation] = useState(null);
   const [serviceModal, setServiceModal] = useState(false);
 
   const mapRef = useRef();
+  const googlePlacesRef = useRef();
 
   const center = {
     lat: 14.0996, // Approximate center latitude of Camarines Norte
@@ -30,6 +30,8 @@ const Home = ({ route, navigation }) => {
   const radius = 50000;
 
   useEffect(() => {
+    googlePlacesRef.current?.setAddressText("Daet Camarines Norte");
+
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -91,6 +93,12 @@ const Home = ({ route, navigation }) => {
             latitudeDelta: 0.8,
             longitudeDelta: 0.5,
           }}
+          region={{
+            latitude: location?.coords.latitude,
+            longitude: location?.coords.longitude,
+            latitudeDelta: 0.8,
+            longitudeDelta: 0.5,
+          }}
         >
           {location && (
             <Marker
@@ -104,8 +112,24 @@ const Home = ({ route, navigation }) => {
                 latitude: location?.coords.latitude,
                 longitude: location?.coords.longitude,
               }}
-              title="My Marker"
-              description="This is a description"
+              title="Current Location"
+              description="This is where you are"
+            />
+          )}
+          {searchLocation && (
+            <Marker
+              onPress={() =>
+                jumpToMarker({
+                  latitude: searchLocation.latitude,
+                  longitude: searchLocation.longitude,
+                })
+              }
+              coordinate={{
+                latitude: searchLocation.latitude,
+                longitude: searchLocation.longitude,
+              }}
+              pinColor="yellow"
+              title="Selected Location"
             />
           )}
         </MapView>
@@ -122,12 +146,18 @@ const Home = ({ route, navigation }) => {
           }}
         >
           <GooglePlacesAutocomplete
+            ref={googlePlacesRef}
             renderLeftButton={() => (
-              <FontAwesome
-                onPress={() => navigation.navigate("User")}
-                name="user-circle-o"
-                size={27}
+              <Entypo
+                name="location-pin"
+                size={30}
                 color="#B80B00"
+                onPress={() => {
+                  jumpToMarker({
+                    latitude: location?.coords.latitude,
+                    longitude: location?.coords.longitude,
+                  });
+                }}
               />
             )}
             renderRightButton={() => (
@@ -147,9 +177,19 @@ const Home = ({ route, navigation }) => {
             }}
             placeholder="Search"
             onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              console.log(data, details);
+              const lat = details?.geometry?.location.lat;
+              const lng = details?.geometry?.location.lng;
+              jumpToMarker({
+                longitude: lng,
+                latitude: lat,
+              });
+              setSearchLocation({
+                latitude: lat,
+                longitude: lng,
+              });
             }}
+            fetchDetails={true}
+            GooglePlacesDetailsQuery={{ fields: "geometry" }}
             query={{
               key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
               language: "en",
