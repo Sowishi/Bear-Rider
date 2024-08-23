@@ -15,17 +15,31 @@ import BottomModal from "../components/bottomModal";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const [address, setAddress] = useState(null);
   const [serviceModal, setServiceModal] = useState(false);
 
   const mapRef = useRef();
 
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+
+      let res = await Location.getCurrentPositionAsync({});
+      setLocation(res);
+    })();
+  }, []);
+
   const jumpToMarker = () => {
     if (location && mapRef.current) {
       mapRef.current.animateToRegion(
         {
-          latitude: 14.0996,
-          longitude: 122.955,
+          latitude: location?.coords.latitude,
+          longitude: location?.coords.longitude,
           latitudeDelta: 0.001, // Adjust zoom level as needed
           longitudeDelta: 0.001,
         },
@@ -69,16 +83,24 @@ const Home = ({ route, navigation }) => {
             latitudeDelta: 0.5,
             longitudeDelta: 0.1,
           }}
+          region={{
+            latitude: location?.coords.latitude,
+            longitude: location?.coords.longitude,
+            latitudeDelta: 0.01,
+            longitudeDelta: 0.01,
+          }}
         >
-          <Marker
-            onPress={jumpToMarker}
-            coordinate={{
-              latitude: 14.0996,
-              longitude: 122.955,
-            }}
-            title="Your Location"
-            description="This is where you are"
-          />
+          {location && (
+            <Marker
+              onPress={jumpToMarker}
+              coordinate={{
+                latitude: location?.coords.latitude,
+                longitude: location?.coords.longitude,
+              }}
+              title="Your Location"
+              description="This is where you are"
+            />
+          )}
         </MapView>
         <View
           style={{
