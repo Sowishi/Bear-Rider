@@ -42,6 +42,13 @@ const Home = ({ route, navigation }) => {
     })();
   }, []);
 
+  const jumpToMarker = (coords) => {
+    mapRef.current.animateToRegion(
+      { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
+      1000
+    );
+  };
+
   return (
     <View
       style={{
@@ -81,10 +88,27 @@ const Home = ({ route, navigation }) => {
           initialRegion={{
             latitude: 14.0996,
             longitude: 122.955,
-            latitudeDelta: 0.5,
-            longitudeDelta: 0.1,
+            latitudeDelta: 0.8,
+            longitudeDelta: 0.5,
           }}
-        ></MapView>
+        >
+          {location && (
+            <Marker
+              onPress={() =>
+                jumpToMarker({
+                  latitude: location?.coords.latitude,
+                  longitude: location?.coords.longitude,
+                })
+              }
+              coordinate={{
+                latitude: location?.coords.latitude,
+                longitude: location?.coords.longitude,
+              }}
+              title="My Marker"
+              description="This is a description"
+            />
+          )}
+        </MapView>
         <View
           style={{
             position: "absolute",
