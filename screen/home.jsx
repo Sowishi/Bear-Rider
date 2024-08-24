@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Text, TextInput, View } from "react-native";
+import { Image, Text, TextInput, View } from "react-native";
 import Constants from "expo-constants";
 
 import MapView, { Callout, Marker, Polyline } from "react-native-maps";
@@ -14,11 +14,14 @@ import Button from "../components/button";
 import BottomModal from "../components/bottomModal";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useSmokeContext } from "../utils/appContext";
+import redMarker from "../assets/red-marker.png";
+import blueMarker from "../assets/blue-marker.png";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
   const [searchLocation, setSearchLocation] = useState(null);
   const [serviceModal, setServiceModal] = useState(false);
+  const [service, setService] = useState(null);
 
   const mapRef = useRef();
   const googlePlacesRef = useRef();
@@ -75,10 +78,131 @@ const Home = ({ route, navigation }) => {
             text="Pahatod Services"
             bgColor={"#B80B00"}
             event={() => {
-              alert(JSON.stringify(location));
+              setService("pahatod");
+              setServiceModal(false);
             }}
           />
-          <Button width={300} text="Padara Services" bgColor={"#B80B00"} />
+          <Button
+            width={300}
+            text="Padara Services"
+            bgColor={"#B80B00"}
+            event={() => {
+              setService("padara");
+              setServiceModal(false);
+            }}
+          />
+        </View>
+      </BottomModal>
+
+      <BottomModal
+        background={"#2099B699"}
+        heightPx={400}
+        modalVisible={service == "pahatod"}
+        closeModal={() => setService(null)}
+      >
+        <View
+          style={{
+            marginVertical: 10,
+            justifyContent: "flex-start",
+            alignItems: "center",
+            padding: 20,
+            flex: 1,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 20,
+              marginBottom: 10,
+              color: "white",
+              fontWeight: "bold",
+              marginBottom: 15,
+            }}
+          >
+            Pahatod Service
+          </Text>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 3,
+              paddingHorizontal: 10,
+              backgroundColor: "white",
+              borderRadius: 10,
+              marginBottom: 20,
+            }}
+          >
+            <Image source={redMarker} />
+            <TextInput
+              editable={false}
+              onChangeText={(text) => setEmail(text)}
+              placeholder="Current Location / Pick Off"
+              style={{
+                flex: 1,
+                paddingVertical: 15,
+                paddingHorizontal: 10,
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 3,
+              paddingHorizontal: 10,
+              backgroundColor: "white",
+              borderRadius: 10,
+            }}
+          >
+            <GooglePlacesAutocomplete
+              enablePoweredByContainer={false}
+              renderLeftButton={() => {
+                return <Image source={blueMarker} />;
+              }}
+              styles={{
+                textInputContainer: {
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                },
+                textInput: { marginHorizontal: 10 },
+              }}
+              placeholder="Drop Off"
+              onPress={(data, details = null) => {
+                const lat = details?.geometry?.location.lat;
+                const lng = details?.geometry?.location.lng;
+                jumpToMarker({
+                  longitude: lng,
+                  latitude: lat,
+                });
+                setSearchLocation({
+                  latitude: lat,
+                  longitude: lng,
+                });
+              }}
+              fetchDetails={true}
+              GooglePlacesDetailsQuery={{ fields: "geometry" }}
+              query={{
+                key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
+                language: "en",
+                components: "country:ph",
+              }}
+            />
+          </View>
+          <Button
+            style={{ marginTop: 20 }}
+            text="Find a rider"
+            bgColor={"#B80B00"}
+          />
         </View>
       </BottomModal>
 
@@ -229,47 +353,48 @@ const Home = ({ route, navigation }) => {
             }}
           />
         </View>
-        <View
-          style={{
-            backgroundColor: "#fefefe",
-            height: 170,
-            position: "absolute",
-            bottom: 0,
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            borderTopLeftRadius: 50,
-            borderTopRightRadius: 50,
-          }}
-        >
+        {service == null && (
           <View
             style={{
-              height: 6,
-              width: 150,
-              backgroundColor: "#626B7B",
-              marginTop: 20,
-              marginBottom: 30,
-              borderRadius: 20,
-            }}
-          ></View>
-          <View
-            style={{
-              marginVertical: 10,
+              backgroundColor: "#fefefe99",
+              height: 170,
+              position: "absolute",
+              bottom: 0,
+              width: "100%",
               justifyContent: "center",
               alignItems: "center",
+              borderTopLeftRadius: 50,
+              borderTopRightRadius: 50,
             }}
           >
-            <Text style={{ fontSize: 20, marginBottom: 10 }}>
-              Choose a Service{" "}
-              <AntDesign name="right" size={24} color="black" />
-            </Text>
-            <Button
-              event={() => setServiceModal(true)}
-              text="Book"
-              bgColor={"#B80B00"}
-            />
+            <View
+              style={{
+                height: 6,
+                width: 150,
+                backgroundColor: "black",
+                marginTop: 20,
+                marginBottom: 30,
+                borderRadius: 20,
+              }}
+            ></View>
+            <View
+              style={{
+                marginVertical: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ fontSize: 20, marginBottom: 10 }}>
+                Choose a Service
+              </Text>
+              <Button
+                event={() => setServiceModal(true)}
+                text="Book"
+                bgColor={"#B80B00"}
+              />
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </View>
   );

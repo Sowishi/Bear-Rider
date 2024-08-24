@@ -1,22 +1,12 @@
-import {
-  Modal,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import TitleComponent from "./titleComponent";
-import { Ionicons } from "@expo/vector-icons";
-import SmallButton from "./smallButton";
-import { useEffect, useRef, useState } from "react";
-import { database } from "../firebase";
-import { get, onValue, ref, update } from "firebase/database";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 
-const BottomModal = ({ modalVisible, closeModal, heightPx, children }) => {
+const BottomModal = ({
+  modalVisible,
+  closeModal,
+  heightPx,
+  children,
+  background,
+}) => {
   const styles = StyleSheet.create({
     centeredView: {
       flex: 1,
@@ -25,7 +15,7 @@ const BottomModal = ({ modalVisible, closeModal, heightPx, children }) => {
       marginTop: 22,
     },
     modalView: {
-      backgroundColor: "white",
+      backgroundColor: background ? background : "white",
       borderTopLeftRadius: 50,
       borderTopRightRadius: 50,
 
