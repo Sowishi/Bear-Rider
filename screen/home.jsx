@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { Image, Text, TextInput, View } from "react-native";
+import { Image, Text, TextInput, View, BackHandler } from "react-native";
 import Constants from "expo-constants";
 
 import MapView, { Callout, Marker, Polyline } from "react-native-maps";
@@ -54,6 +54,22 @@ const Home = ({ route, navigation }) => {
     })();
   }, []);
 
+  useEffect(() => {
+    const backAction = () => {
+      // Returning true prevents the default back button behavior
+      return true;
+    };
+
+    // Add the back button event listener
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    // Clean up the listener on component unmount
+    return () => backHandler.remove();
+  }, []);
+
   const jumpToMarker = (coords) => {
     mapRef.current?.animateToRegion(
       { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
@@ -100,7 +116,7 @@ const Home = ({ route, navigation }) => {
             text="Pahatod Services"
             bgColor={"#B80B00"}
             event={() => {
-              setService("pahatod");
+              setPahatodModal(true);
               setServiceModal(false);
             }}
           />
@@ -109,123 +125,8 @@ const Home = ({ route, navigation }) => {
             text="Padara Services"
             bgColor={"#B80B00"}
             event={() => {
-              setService("padara");
               setServiceModal(false);
             }}
-          />
-        </View>
-      </BottomModal>
-
-      <BottomModal
-        background={"#2099B699"}
-        heightPx={400}
-        modalVisible={pahatodModal}
-        closeModal={() => setPahatodModal(false)}
-      >
-        <View
-          style={{
-            marginVertical: 10,
-            justifyContent: "flex-start",
-            alignItems: "center",
-            padding: 20,
-            flex: 1,
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 20,
-              marginBottom: 10,
-              color: "white",
-              fontWeight: "bold",
-              marginBottom: 15,
-            }}
-          >
-            Pahatod Service
-          </Text>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 1 },
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 3,
-              paddingHorizontal: 10,
-              backgroundColor: "#D3D3D3",
-              borderRadius: 10,
-              marginBottom: 20,
-            }}
-          >
-            <Image source={redMarker} />
-            <TextInput
-              editable={false}
-              onChangeText={(text) => setEmail(text)}
-              placeholder={location?.address}
-              style={{
-                flex: 1,
-                paddingVertical: 15,
-                paddingHorizontal: 10,
-              }}
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 1 },
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 3,
-              paddingHorizontal: 10,
-              backgroundColor: "white",
-              borderRadius: 10,
-            }}
-          >
-            <GooglePlacesAutocomplete
-              ref={pahatodInputRef}
-              enablePoweredByContainer={false}
-              renderLeftButton={() => {
-                return <Image source={blueMarker} />;
-              }}
-              styles={{
-                textInputContainer: {
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  paddingVertical: 3,
-                },
-                textInput: { marginHorizontal: 10 },
-              }}
-              placeholder="Drop Off"
-              onPress={(data, details = null) => {
-                const lat = details?.geometry?.location.lat;
-                const lng = details?.geometry?.location.lng;
-                jumpToMarker({
-                  longitude: lng,
-                  latitude: lat,
-                });
-                setSearchLocation({
-                  latitude: lat,
-                  longitude: lng,
-                });
-              }}
-              fetchDetails={true}
-              GooglePlacesDetailsQuery={{ fields: "geometry" }}
-              query={{
-                key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
-                language: "en",
-                components: "country:ph",
-              }}
-            />
-          </View>
-          <Button
-            style={{ marginTop: 20 }}
-            text="Find a rider"
-            bgColor={"#B80B00"}
           />
         </View>
       </BottomModal>
@@ -276,6 +177,8 @@ const Home = ({ route, navigation }) => {
                 onDragEnd={async (event) => {
                   const { latitude, longitude } = event.nativeEvent.coordinate;
                   const address = await reverseGeocode(latitude, longitude);
+                  console.log(address);
+                  pahatodInputRef.current?.setAddressText(address);
 
                   setSearchLocation({ latitude, longitude, address });
                 }}
@@ -289,7 +192,7 @@ const Home = ({ route, navigation }) => {
                   latitude: searchLocation?.latitude,
                   longitude: searchLocation?.longitude,
                 }}
-                pinColor="yellow"
+                pinColor="#003082"
                 title="Selected Location"
               />
             )}
@@ -313,6 +216,7 @@ const Home = ({ route, navigation }) => {
             )}
           </MapView>
         )}
+
         <View
           style={{
             position: "absolute",
@@ -379,7 +283,8 @@ const Home = ({ route, navigation }) => {
             }}
           />
         </View>
-        {pahatodModal == false && (
+
+        {!pahatodModal && (
           <View
             style={{
               backgroundColor: "#fefefe99",
@@ -414,12 +319,145 @@ const Home = ({ route, navigation }) => {
                 Choose a Service
               </Text>
               <Button
-                event={() => setPahatodModal(true)}
+                event={() => setServiceModal(true)}
                 text="Book"
                 bgColor={"#B80B00"}
               />
             </View>
           </View>
+        )}
+
+        {pahatodModal && (
+          <>
+            <View
+              style={{
+                justifyContent: "flex-start",
+                alignItems: "center",
+                padding: 20,
+                flex: 1,
+                position: "absolute",
+                bottom: 0,
+                width: "100%",
+                backgroundColor: "#2099B699",
+                borderTopLeftRadius: 50,
+                borderTopRightRadius: 50,
+                paddingVertical: 30,
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 25,
+                  marginBottom: 10,
+                  color: "white",
+                  fontWeight: "bold",
+                  marginBottom: 15,
+                }}
+              >
+                Pahatod Service
+              </Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
+                  paddingHorizontal: 10,
+                  backgroundColor: "#D3D3D3",
+                  borderRadius: 10,
+                  marginBottom: 20,
+                }}
+              >
+                <Image source={redMarker} />
+                <TextInput
+                  editable={false}
+                  onChangeText={(text) => setEmail(text)}
+                  placeholder={location?.address}
+                  style={{
+                    flex: 1,
+                    paddingVertical: 15,
+                    paddingHorizontal: 10,
+                  }}
+                />
+              </View>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
+                  paddingHorizontal: 10,
+                  backgroundColor: "white",
+                  borderRadius: 10,
+                }}
+              >
+                <GooglePlacesAutocomplete
+                  ref={pahatodInputRef}
+                  enablePoweredByContainer={false}
+                  renderLeftButton={() => {
+                    return <Image source={blueMarker} />;
+                  }}
+                  styles={{
+                    textInputContainer: {
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                      paddingVertical: 3,
+                    },
+                    textInput: { marginHorizontal: 10 },
+                  }}
+                  placeholder="Drop Off"
+                  onPress={(data, details = null) => {
+                    const lat = details?.geometry?.location.lat;
+                    const lng = details?.geometry?.location.lng;
+                    jumpToMarker({
+                      longitude: lng,
+                      latitude: lat,
+                    });
+                    setSearchLocation({
+                      latitude: lat,
+                      longitude: lng,
+                    });
+                  }}
+                  fetchDetails={true}
+                  GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                  query={{
+                    key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
+                    language: "en",
+                    components: "country:ph",
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <Button
+                  event={() => setPahatodModal(false)}
+                  width={150}
+                  style={{ marginTop: 20 }}
+                  text="Cancel"
+                  bgColor={"#00308299"}
+                />
+                <Button
+                  width={150}
+                  style={{ marginTop: 20 }}
+                  text="Find a rider"
+                  bgColor={"#B80B00"}
+                />
+              </View>
+            </View>
+          </>
         )}
       </View>
     </View>
