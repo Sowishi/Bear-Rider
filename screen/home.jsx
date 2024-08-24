@@ -2,7 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import { Text, TextInput, View } from "react-native";
 import Constants from "expo-constants";
 
-import MapView, { Callout, Marker } from "react-native-maps";
+import MapView, { Callout, Marker, Polyline } from "react-native-maps";
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Ionicons } from "@expo/vector-icons";
@@ -50,8 +50,6 @@ const Home = ({ route, navigation }) => {
       1000
     );
   };
-
-  console.log(searchLocation);
 
   return (
     <View
@@ -138,6 +136,24 @@ const Home = ({ route, navigation }) => {
                 }}
                 pinColor="yellow"
                 title="Selected Location"
+              />
+            )}
+            {location && searchLocation && (
+              <Polyline
+                coordinates={[
+                  {
+                    latitude: searchLocation?.latitude,
+                    longitude: searchLocation?.longitude,
+                  },
+                  {
+                    latitude: location?.coords.latitude,
+                    longitude: location?.coords.longitude,
+                  },
+                ]}
+                lineDashPattern={[5]}
+                strokeColor="#B80B00" // fallback for when `strokeColors` is not supported by the map-provider
+                strokeWidth={3}
+                geodesic={true}
               />
             )}
           </MapView>
