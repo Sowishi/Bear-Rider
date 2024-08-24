@@ -32,10 +32,11 @@ const Login = ({ navigation }) => {
   const handleLogin = () => {
     let userFound = false;
 
-    data.map((user) => {
+    data.map(async (user) => {
       if (user.email == email && user.password == password) {
         userFound = true;
         setCurrentUser(user);
+        await AsyncStorage.setItem("user", JSON.stringify(user));
         navigation.navigate("main");
         return;
       }
@@ -53,6 +54,7 @@ const Login = ({ navigation }) => {
     if (data) {
       navigation.navigate("main");
     }
+    console.log(data);
   };
 
   useEffect(() => {
