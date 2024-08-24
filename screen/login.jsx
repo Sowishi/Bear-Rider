@@ -7,7 +7,7 @@ import {
   TextInput,
 } from "react-native";
 import Button from "../components/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { auth, database, db } from "../firebase";
 import { showToast } from "../components/toast";
 import Loader from "../components/loader";
@@ -17,19 +17,31 @@ import LineComponent from "../components/line";
 import TitleComponent from "../components/titleComponent";
 import { useSmokeContext } from "../utils/appContext";
 import bear1 from "../assets/bear1.png";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { currentUser } = useSmokeContext();
+  const { currentUser, setCurrentUser } = useSmokeContext();
 
   const handleLogin = () => {
     navigation.navigate("main");
   };
 
-  console.log(currentUser);
+  const getUser = async () => {
+    const output = await AsyncStorage.getItem("user");
+    const data = await JSON.parse(output);
+    setCurrentUser(data);
+    if (data) {
+      navigation.navigate("main");
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>

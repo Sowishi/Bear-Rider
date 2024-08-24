@@ -9,6 +9,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
 import useAddUser from "../hooks/useAddUser";
 import { useSmokeContext } from "../utils/appContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Register = ({ navigation }) => {
   const [steps, setSteps] = useState(1);
@@ -62,6 +63,7 @@ const Register = ({ navigation }) => {
     });
     setSteps(2);
     setCurrentUser(forms);
+    AsyncStorage.setItem("user", JSON.stringify(forms));
   };
 
   const handleChange = (inputName, text) => {

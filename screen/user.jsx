@@ -1,9 +1,11 @@
 import { Text, View } from "react-native";
+import { useSmokeContext } from "../utils/appContext";
 
 const User = () => {
+  const { currentUser } = useSmokeContext();
+
   return (
     <View
-      s
       style={{
         backgroundColor: "red",
         flex: 1,
