@@ -62,8 +62,14 @@ const Register = ({ navigation }) => {
       text1: "Registration complete you can now login",
     });
     setSteps(2);
-    setCurrentUser(forms);
-    AsyncStorage.setItem("user", JSON.stringify(forms));
+
+    const userData = {
+      ...forms,
+      profilePic: `https://avatar.iran.liara.run/public?username=${forms.firstName}`,
+    };
+
+    setCurrentUser(userData);
+    AsyncStorage.setItem("user", JSON.stringify(userData));
   };
 
   const handleChange = (inputName, text) => {

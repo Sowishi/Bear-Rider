@@ -7,7 +7,6 @@ const useAddUser = () => {
     addDoc(colRef, {
       ...forms,
       createdAt: serverTimestamp(),
-      profilePic: `https://avatar.iran.liara.run/public?username=${forms.firstName}`,
     });
   };
 
