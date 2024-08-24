@@ -8,6 +8,7 @@ import { Entypo } from "@expo/vector-icons";
 import { MyProvider } from "./utils/appContext";
 import User from "./screen/user";
 import Notification from "./screen/notification";
+import Register from "./screen/register";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -62,6 +63,8 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="register" component={Register} />
+
             <Stack.Screen name="main" component={MainScreen} />
           </Stack.Navigator>
         </NavigationContainer>

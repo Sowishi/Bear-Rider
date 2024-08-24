@@ -83,6 +83,8 @@ const Home = ({ route, navigation }) => {
       <View style={{ flex: 1, position: "relative" }}>
         {location && (
           <MapView
+            showsBuildings
+            showsUserLocation
             ref={mapRef}
             showsTraffic={true}
             provider={PROVIDER_GOOGLE}

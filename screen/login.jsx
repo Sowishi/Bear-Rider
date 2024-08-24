@@ -126,7 +126,12 @@ const Login = ({ navigation }) => {
         >
           <Text style={{ fontSize: 13 }}>
             Don't have an account?{" "}
-            <Text style={{ color: "#626B7B", fontWeight: "bold" }}>Signup</Text>{" "}
+            <Text
+              onPress={() => navigation.navigate("register")}
+              style={{ color: "#626B7B", fontWeight: "bold" }}
+            >
+              Signup
+            </Text>{" "}
           </Text>
           <Text style={{ fontSize: 13, color: "#626B7B", fontWeight: "bold" }}>
             Forgot Password?
