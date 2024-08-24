@@ -23,11 +23,13 @@ const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { updateAuth } = useSmokeContext();
+  const { currentUser } = useSmokeContext();
 
   const handleLogin = () => {
     navigation.navigate("main");
   };
+
+  console.log(currentUser);
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>

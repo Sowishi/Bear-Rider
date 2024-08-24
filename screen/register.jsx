@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
+import useAddUser from "../hooks/useAddUser";
+import { useSmokeContext } from "../utils/appContext";
 
 const Register = ({ navigation }) => {
   const [steps, setSteps] = useState(1);
@@ -20,6 +22,9 @@ const Register = ({ navigation }) => {
     password: "",
     confirmPassword: "",
   });
+
+  const { addUser } = useAddUser();
+  const { setCurrentUser } = useSmokeContext();
 
   const handleValidateForms = () => {
     let isFormsFilled = true;
@@ -50,7 +55,13 @@ const Register = ({ navigation }) => {
       });
       return;
     }
+    addUser(forms);
+    Toast.show({
+      type: "success",
+      text1: "Registration complete you can now login",
+    });
     setSteps(2);
+    setCurrentUser(forms);
   };
 
   const handleChange = (inputName, text) => {
@@ -70,8 +81,6 @@ const Register = ({ navigation }) => {
       setLocation(location);
     })();
   }, []);
-
-  console.log(forms);
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
