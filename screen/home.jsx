@@ -21,10 +21,10 @@ const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
   const [searchLocation, setSearchLocation] = useState(null);
   const [serviceModal, setServiceModal] = useState(false);
-  const [service, setService] = useState(null);
-
+  const [pahatodModal, setPahatodModal] = useState(false);
   const mapRef = useRef();
   const googlePlacesRef = useRef();
+  const pahatodInputRef = useRef();
 
   const center = {
     lat: 14.0996, // Approximate center latitude of Camarines Norte
@@ -45,7 +45,12 @@ const Home = ({ route, navigation }) => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      const address = await reverseGeocode(
+        location?.coords.latitude,
+        location?.coords.longitude
+      );
+
+      setLocation({ ...location, address });
     })();
   }, []);
 
@@ -54,6 +59,23 @@ const Home = ({ route, navigation }) => {
       { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
       1000
     );
+  };
+
+  const reverseGeocode = async (latitude, longitude) => {
+    try {
+      const geocode = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+      if (geocode.length > 0) {
+        const address = `${geocode[0].street}, ${geocode[0].city}, ${geocode[0].region}, ${geocode[0].postalCode}, ${geocode[0].country}`;
+        console.log(address); // Prints the address
+        return address;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
   };
 
   return (
@@ -97,8 +119,8 @@ const Home = ({ route, navigation }) => {
       <BottomModal
         background={"#2099B699"}
         heightPx={400}
-        modalVisible={service == "pahatod"}
-        closeModal={() => setService(null)}
+        modalVisible={pahatodModal}
+        closeModal={() => setPahatodModal(false)}
       >
         <View
           style={{
@@ -131,7 +153,7 @@ const Home = ({ route, navigation }) => {
               shadowRadius: 2,
               elevation: 3,
               paddingHorizontal: 10,
-              backgroundColor: "white",
+              backgroundColor: "#D3D3D3",
               borderRadius: 10,
               marginBottom: 20,
             }}
@@ -140,7 +162,7 @@ const Home = ({ route, navigation }) => {
             <TextInput
               editable={false}
               onChangeText={(text) => setEmail(text)}
-              placeholder="Current Location / Pick Off"
+              placeholder={location?.address}
               style={{
                 flex: 1,
                 paddingVertical: 15,
@@ -164,6 +186,7 @@ const Home = ({ route, navigation }) => {
             }}
           >
             <GooglePlacesAutocomplete
+              ref={pahatodInputRef}
               enablePoweredByContainer={false}
               renderLeftButton={() => {
                 return <Image source={blueMarker} />;
@@ -173,6 +196,7 @@ const Home = ({ route, navigation }) => {
                   justifyContent: "center",
                   alignItems: "center",
                   width: "100%",
+                  paddingVertical: 3,
                 },
                 textInput: { marginHorizontal: 10 },
               }}
@@ -249,9 +273,11 @@ const Home = ({ route, navigation }) => {
             {searchLocation && (
               <Marker
                 draggable
-                onDragEnd={(event) => {
+                onDragEnd={async (event) => {
                   const { latitude, longitude } = event.nativeEvent.coordinate;
-                  setSearchLocation({ latitude, longitude });
+                  const address = await reverseGeocode(latitude, longitude);
+
+                  setSearchLocation({ latitude, longitude, address });
                 }}
                 onPress={() =>
                   jumpToMarker({
@@ -353,7 +379,7 @@ const Home = ({ route, navigation }) => {
             }}
           />
         </View>
-        {service == null && (
+        {pahatodModal == false && (
           <View
             style={{
               backgroundColor: "#fefefe99",
@@ -388,7 +414,7 @@ const Home = ({ route, navigation }) => {
                 Choose a Service
               </Text>
               <Button
-                event={() => setServiceModal(true)}
+                event={() => setPahatodModal(true)}
                 text="Book"
                 bgColor={"#B80B00"}
               />
