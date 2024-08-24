@@ -13,6 +13,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Button from "../components/button";
 import BottomModal from "../components/bottomModal";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { useSmokeContext } from "../utils/appContext";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
@@ -28,6 +29,7 @@ const Home = ({ route, navigation }) => {
   };
 
   const radius = 50000;
+  const { mapView } = useSmokeContext();
 
   useEffect(() => {
     googlePlacesRef.current?.setAddressText("Daet Camarines Norte");
@@ -83,6 +85,7 @@ const Home = ({ route, navigation }) => {
       <View style={{ flex: 1, position: "relative" }}>
         {location && (
           <MapView
+            mapType={mapView}
             showsBuildings
             showsUserLocation
             ref={mapRef}

@@ -56,7 +56,6 @@ const Register = ({ navigation }) => {
       });
       return;
     }
-    addUser(forms);
     Toast.show({
       type: "success",
       text1: "Registration complete you can now login",
@@ -67,7 +66,7 @@ const Register = ({ navigation }) => {
       ...forms,
       profilePic: `https://avatar.iran.liara.run/public?username=${forms.firstName}`,
     };
-
+    addUser(userData);
     setCurrentUser(userData);
     AsyncStorage.setItem("user", JSON.stringify(userData));
   };

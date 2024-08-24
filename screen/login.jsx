@@ -18,6 +18,8 @@ import TitleComponent from "../components/titleComponent";
 import { useSmokeContext } from "../utils/appContext";
 import bear1 from "../assets/bear1.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useGetUsers from "../hooks/useGetUsers";
+import Toast from "react-native-toast-message";
 
 const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -25,9 +27,23 @@ const Login = ({ navigation }) => {
   const [password, setPassword] = useState("");
 
   const { currentUser, setCurrentUser } = useSmokeContext();
+  const { data } = useGetUsers();
 
   const handleLogin = () => {
-    navigation.navigate("main");
+    let userFound = false;
+
+    data.map((user) => {
+      if (user.email == email && user.password == password) {
+        userFound = true;
+        setCurrentUser(user);
+        navigation.navigate("main");
+        return;
+      }
+    });
+
+    if (!userFound) {
+      Toast.show({ type: "error", text1: "Invalid email or password" });
+    }
   };
 
   const getUser = async () => {

@@ -4,9 +4,10 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Button from "../components/button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const User = () => {
-  const { currentUser } = useSmokeContext();
+const User = ({ navigation }) => {
+  const { currentUser, setMapView } = useSmokeContext();
 
   console.log(currentUser);
   return (
@@ -36,7 +37,7 @@ const User = () => {
               source={{ uri: currentUser.profilePic }}
             />
             <Text style={{ fontSize: 25, marginTop: 5, fontWeight: "bold" }}>
-              {currentUser.firstName + currentUser.lastName}
+              {currentUser.firstName + " " + currentUser.lastName}
             </Text>
           </View>
           <View
@@ -58,8 +59,24 @@ const User = () => {
                   alignItems: "center",
                 }}
               >
-                <Button width={100} text="Sattelite" bgColor={"#B80B00"} />
-                <Button width={100} text="Standard" bgColor={"#003082"} />
+                <Button
+                  event={() => {
+                    setMapView("satellite");
+                    navigation.navigate("Home");
+                  }}
+                  width={100}
+                  text="Satellite"
+                  bgColor={"#B80B00"}
+                />
+                <Button
+                  event={() => {
+                    navigation.navigate("Home");
+                    setMapView("standard");
+                  }}
+                  width={100}
+                  text="Standard"
+                  bgColor={"#003082"}
+                />
               </View>
             </View>
 
@@ -181,6 +198,10 @@ const User = () => {
               }}
             >
               <Text
+                onPress={async () => {
+                  await AsyncStorage.removeItem("user");
+                  navigation.navigate("login");
+                }}
                 style={{ fontSize: 20, marginRight: 10, fontWeight: "bold" }}
               >
                 Logout
