@@ -51,6 +51,8 @@ const Home = ({ route, navigation }) => {
     );
   };
 
+  console.log(searchLocation);
+
   return (
     <View
       style={{
@@ -119,6 +121,11 @@ const Home = ({ route, navigation }) => {
             )}
             {searchLocation && (
               <Marker
+                draggable
+                onDragEnd={(event) => {
+                  const { latitude, longitude } = event.nativeEvent.coordinate;
+                  setSearchLocation({ latitude, longitude });
+                }}
                 onPress={() =>
                   jumpToMarker({
                     latitude: searchLocation?.latitude,
