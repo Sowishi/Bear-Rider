@@ -16,6 +16,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { useSmokeContext } from "../utils/appContext";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
+import MapViewDirections from "react-native-maps-directions";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
@@ -196,22 +197,20 @@ const Home = ({ route, navigation }) => {
                 title="Selected Location"
               />
             )}
+
             {location && searchLocation && (
-              <Polyline
-                coordinates={[
-                  {
-                    latitude: searchLocation?.latitude,
-                    longitude: searchLocation?.longitude,
-                  },
-                  {
-                    latitude: location?.coords.latitude,
-                    longitude: location?.coords.longitude,
-                  },
-                ]}
-                lineDashPattern={[5]}
-                strokeColor="#B80B00" // fallback for when `strokeColors` is not supported by the map-provider
-                strokeWidth={3}
-                geodesic={true}
+              <MapViewDirections
+                strokeWidth={4}
+                strokeColor="#B80B00"
+                origin={{
+                  latitude: location?.coords.latitude,
+                  longitude: location?.coords.longitude,
+                }}
+                destination={{
+                  latitude: searchLocation?.latitude,
+                  longitude: searchLocation?.longitude,
+                }}
+                apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
               />
             )}
           </MapView>
@@ -443,7 +442,10 @@ const Home = ({ route, navigation }) => {
                 }}
               >
                 <Button
-                  event={() => setPahatodModal(false)}
+                  event={() => {
+                    setPahatodModal(false);
+                    setSearchLocation(null);
+                  }}
                   width={150}
                   style={{ marginTop: 20 }}
                   text="Cancel"
