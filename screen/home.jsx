@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { Image, Text, TextInput, View, BackHandler } from "react-native";
+import {
+  Image,
+  Text,
+  TextInput,
+  View,
+  BackHandler,
+  AppState,
+} from "react-native";
 import Constants from "expo-constants";
 
 import MapView, { Marker } from "react-native-maps";
@@ -19,7 +26,8 @@ import haversineDistance from "../utils/calculateDistance";
 import Toast from "react-native-toast-message";
 import LottieView from "lottie-react-native";
 import useCrudTransaction from "../hooks/useCrudTransaction";
-
+import useAddOnline from "../hooks/useAddOnline";
+import people from "../assets/user.png";
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
   const [searchLocation, setSearchLocation] = useState(null);
@@ -27,6 +35,7 @@ const Home = ({ route, navigation }) => {
   const [pahatodModal, setPahatodModal] = useState(false);
   const [findingRider, setFindingRider] = useState(false);
   const [distance, setDistance] = useState(0);
+  const [appState, setAppState] = useState(AppState.currentState);
 
   const mapRef = useRef();
   const googlePlacesRef = useRef();
@@ -39,9 +48,11 @@ const Home = ({ route, navigation }) => {
   };
   const radius = 50000;
   const chargePerKilometer = 10;
+  const IS_RIDER = true;
 
   const { mapView, currentUser } = useSmokeContext();
   const { addTransaction, deleteTransaction } = useCrudTransaction();
+  const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
 
   // Request Permission and Get location
   useEffect(() => {
@@ -66,6 +77,7 @@ const Home = ({ route, navigation }) => {
     return () => backHandler.remove();
   }, []);
 
+  // Calulate distance between two coords
   useEffect(() => {
     let output = 0;
     if (searchLocation) {
@@ -73,6 +85,56 @@ const Home = ({ route, navigation }) => {
     }
     setDistance(output);
   }, [searchLocation]);
+
+  // When app is back in home screen cancel the transaction
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      "change",
+      handleAppStateChange
+    );
+
+    return () => {
+      subscription.remove(); // Cleanup listener on unmount
+    };
+  }, [appState]);
+
+  //Watch user location and clean up
+  useEffect(() => {
+    let subscription = null;
+
+    const startWatchingLocation = async () => {
+      subscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.High,
+          timeInterval: 10000, // Update every 10 seconds
+          distanceInterval: 1, // Update when the device has moved 1 meter
+        },
+        (location) => {
+          const { longitude, latitude } = location.coords;
+          addOnlineUser({ longitude, latitude, currentUser });
+        }
+      );
+    };
+
+    startWatchingLocation();
+
+    return () => {
+      if (subscription) {
+        subscription.remove();
+        deleteOnlineUser(currentUser.id);
+      }
+    };
+  }, []);
+
+  const handleAppStateChange = (nextAppState) => {
+    if (appState === "active" && nextAppState.match(/inactive|background/)) {
+      deleteTransaction(currentUser);
+      setFindingRider(false);
+      deleteOnlineUser(currentUser.id);
+    }
+
+    setAppState(nextAppState); // Update the current state
+  };
 
   const handleLocationRequestAndPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
@@ -106,13 +168,16 @@ const Home = ({ route, navigation }) => {
       });
       if (geocode.length > 0) {
         const address = `${geocode[0].street}, ${geocode[0].city}, ${geocode[0].region}, ${geocode[0].postalCode}, ${geocode[0].country}`;
-        console.log(address); // Prints the address
         return address;
       }
     } catch (error) {
       console.error(error);
       return null;
     }
+  };
+
+  const MarkerUserImage = () => {
+    return <Image source={people} style={{ width: 50, height: 50 }} />;
   };
 
   return (
@@ -174,8 +239,8 @@ const Home = ({ route, navigation }) => {
             region={{
               latitude: location?.latitude,
               longitude: location?.longitude,
-              latitudeDelta: 0.8,
-              longitudeDelta: 0.5,
+              latitudeDelta: 0.009,
+              longitudeDelta: 0.009,
             }}
           >
             {location && (
@@ -200,7 +265,6 @@ const Home = ({ route, navigation }) => {
                 onDragEnd={async (event) => {
                   const { latitude, longitude } = event.nativeEvent.coordinate;
                   const address = await reverseGeocode(latitude, longitude);
-                  console.log(address);
                   pahatodInputRef.current?.setAddressText(address);
 
                   setSearchLocation({ latitude, longitude, address });
@@ -234,6 +298,34 @@ const Home = ({ route, navigation }) => {
                 }}
                 apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
               />
+            )}
+
+            {onlineUsers && (
+              <>
+                {onlineUsers?.map((user) => {
+                  if (user.currentUser.id !== currentUser.id) {
+                    return (
+                      <Marker
+                        children={<MarkerUserImage />}
+                        pinColor="yellow"
+                        key={user.id}
+                        onPress={() =>
+                          jumpToMarker({
+                            latitude: user.latitude,
+                            longitude: user.longitude,
+                          })
+                        }
+                        coordinate={{
+                          latitude: user.latitude,
+                          longitude: user.longitude,
+                        }}
+                        title={currentUser.firstName}
+                        description="Customer"
+                      />
+                    );
+                  }
+                })}
+              </>
             )}
           </MapView>
         )}
@@ -518,9 +610,14 @@ const Home = ({ route, navigation }) => {
                   />
 
                   <Text
-                    style={{ color: "white", fontSize: 20, marginBottom: 5 }}
+                    style={{
+                      color: "white",
+                      fontSize: 16,
+                      marginBottom: 5,
+                      textAlign: "center",
+                    }}
                   >
-                    Waiting for a rider
+                    Waiting for a rider, don't leave the app
                   </Text>
                   <View
                     style={{

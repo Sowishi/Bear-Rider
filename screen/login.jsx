@@ -54,7 +54,6 @@ const Login = ({ navigation }) => {
     if (data) {
       navigation.navigate("main");
     }
-    console.log(data);
   };
 
   useEffect(() => {

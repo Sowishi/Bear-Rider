@@ -9,7 +9,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const User = ({ navigation }) => {
   const { currentUser, setMapView } = useSmokeContext();
 
-  console.log(currentUser);
   return (
     <ScrollView
       contentContainerStyle={{

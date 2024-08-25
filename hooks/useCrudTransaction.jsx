@@ -21,11 +21,7 @@ const useCrudTransaction = () => {
 
     transactions.docs.forEach((transaction) => {
       const transactionData = transaction.data();
-      console.log(
-        transactionData.currentUser.id,
-        currentUser.id,
-        transactionData.id
-      );
+
       if (transactionData.currentUser.id == currentUser.id) {
         const docRef = doc(db, "transaction", transaction.id);
         deleteDoc(docRef);
