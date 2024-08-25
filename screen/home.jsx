@@ -28,6 +28,8 @@ import LottieView from "lottie-react-native";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import useAddOnline from "../hooks/useAddOnline";
 import people from "../assets/user.png";
+import rider from "../assets/motorcycle.png";
+
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
   const [searchLocation, setSearchLocation] = useState(null);
@@ -179,8 +181,14 @@ const Home = ({ route, navigation }) => {
     }
   };
 
+  console.log("fldkfj`");
+
   const MarkerUserImage = () => {
     return <Image source={people} style={{ width: 50, height: 50 }} />;
+  };
+
+  const MarkerRiderImage = () => {
+    return <Image source={rider} style={{ width: 40, height: 40 }} />;
   };
 
   return (
@@ -309,7 +317,13 @@ const Home = ({ route, navigation }) => {
                   if (user.currentUser.id !== currentUser.id) {
                     return (
                       <Marker
-                        children={<MarkerUserImage />}
+                        children={
+                          user.currentUser.role == "rider" ? (
+                            <MarkerRiderImage />
+                          ) : (
+                            <MarkerUserImage />
+                          )
+                        }
                         pinColor="yellow"
                         key={user.id}
                         onPress={() =>
@@ -322,7 +336,7 @@ const Home = ({ route, navigation }) => {
                           latitude: user.latitude,
                           longitude: user.longitude,
                         }}
-                        title={currentUser.firstName}
+                        title={user.currentUser.firstName}
                         description="Customer"
                       />
                     );
