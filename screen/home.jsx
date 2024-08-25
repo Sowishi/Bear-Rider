@@ -102,21 +102,24 @@ const Home = ({ route, navigation }) => {
   useEffect(() => {
     let subscription = null;
 
-    const startWatchingLocation = async () => {
-      subscription = await Location.watchPositionAsync(
-        {
-          accuracy: Location.Accuracy.High,
-          timeInterval: 10000, // Update every 10 seconds
-          distanceInterval: 1, // Update when the device has moved 1 meter
-        },
-        (location) => {
-          const { longitude, latitude } = location.coords;
-          addOnlineUser({ longitude, latitude, currentUser });
-        }
-      );
-    };
-
-    startWatchingLocation();
+    try {
+      const startWatchingLocation = async () => {
+        subscription = await Location.watchPositionAsync(
+          {
+            accuracy: Location.Accuracy.High,
+            timeInterval: 10000, // Update every 10 seconds
+            distanceInterval: 1, // Update when the device has moved 1 meter
+          },
+          (location) => {
+            const { longitude, latitude } = location.coords;
+            addOnlineUser({ longitude, latitude, currentUser });
+          }
+        );
+      };
+      startWatchingLocation();
+    } catch (error) {
+      console.log(error.message);
+    }
 
     return () => {
       if (subscription) {
@@ -300,7 +303,7 @@ const Home = ({ route, navigation }) => {
               />
             )}
 
-            {onlineUsers && (
+            {onlineUsers.length >= 1 && (
               <>
                 {onlineUsers?.map((user) => {
                   if (user.currentUser.id !== currentUser.id) {

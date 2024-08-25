@@ -67,8 +67,9 @@ const Register = ({ navigation }) => {
       profilePic: `https://avatar.iran.liara.run/public?username=${forms.firstName}`,
     };
     addUser(userData);
-    setCurrentUser(userData);
-    AsyncStorage.setItem("user", JSON.stringify(userData));
+    // setCurrentUser(userData);
+    // AsyncStorage.setItem("user", JSON.stringify(userData));
+    navigation.navigate("login");
   };
 
   const handleChange = (inputName, text) => {
