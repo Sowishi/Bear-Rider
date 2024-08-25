@@ -2,14 +2,12 @@ import { StatusBar } from "expo-status-bar";
 import { Image, Text, TextInput, View, BackHandler } from "react-native";
 import Constants from "expo-constants";
 
-import MapView, { Callout, Marker, Polyline } from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import Entypo from "@expo/vector-icons/Entypo";
-import { Ionicons } from "@expo/vector-icons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import Button from "../components/button";
 import BottomModal from "../components/bottomModal";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -17,12 +15,17 @@ import { useSmokeContext } from "../utils/appContext";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
 import MapViewDirections from "react-native-maps-directions";
+import haversineDistance from "../utils/calculateDistance";
+import Toast from "react-native-toast-message";
+import LottieView from "lottie-react-native";
+import useCrudTransaction from "../hooks/useCrudTransaction";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
   const [searchLocation, setSearchLocation] = useState(null);
   const [serviceModal, setServiceModal] = useState(false);
   const [pahatodModal, setPahatodModal] = useState(false);
+  const [findingRider, setFindingRider] = useState(false);
   const mapRef = useRef();
   const googlePlacesRef = useRef();
   const pahatodInputRef = useRef();
@@ -33,8 +36,10 @@ const Home = ({ route, navigation }) => {
   };
 
   const radius = 50000;
-  const { mapView } = useSmokeContext();
+  const { mapView, currentUser } = useSmokeContext();
+  const { addTransaction } = useCrudTransaction();
 
+  // Request Permission and Get location
   useEffect(() => {
     googlePlacesRef.current?.setAddressText("Daet Camarines Norte");
 
@@ -46,12 +51,13 @@ const Home = ({ route, navigation }) => {
       }
 
       let location = await Location.getCurrentPositionAsync({});
-      const address = await reverseGeocode(
-        location?.coords.latitude,
-        location?.coords.longitude
-      );
 
-      setLocation({ ...location, address });
+      const lat = location?.coords.latitude;
+      const long = location?.coords.longitude;
+
+      const address = await reverseGeocode(lat, long);
+
+      setLocation({ latitude: lat, longitude: long, address });
     })();
   }, []);
 
@@ -150,8 +156,8 @@ const Home = ({ route, navigation }) => {
               longitudeDelta: 0.5,
             }}
             region={{
-              latitude: location?.coords.latitude,
-              longitude: location?.coords.longitude,
+              latitude: location?.latitude,
+              longitude: location?.longitude,
               latitudeDelta: 0.8,
               longitudeDelta: 0.5,
             }}
@@ -160,13 +166,13 @@ const Home = ({ route, navigation }) => {
               <Marker
                 onPress={() =>
                   jumpToMarker({
-                    latitude: location?.coords.latitude,
-                    longitude: location?.coords.longitude,
+                    latitude: location?.latitude,
+                    longitude: location?.longitude,
                   })
                 }
                 coordinate={{
-                  latitude: location?.coords.latitude,
-                  longitude: location?.coords.longitude,
+                  latitude: location?.latitude,
+                  longitude: location?.longitude,
                 }}
                 title="Current Location"
                 description="This is where you are"
@@ -203,8 +209,8 @@ const Home = ({ route, navigation }) => {
                 strokeWidth={4}
                 strokeColor="#B80B00"
                 origin={{
-                  latitude: location?.coords.latitude,
-                  longitude: location?.coords.longitude,
+                  latitude: location?.latitude,
+                  longitude: location?.longitude,
                 }}
                 destination={{
                   latitude: searchLocation?.latitude,
@@ -215,7 +221,6 @@ const Home = ({ route, navigation }) => {
             )}
           </MapView>
         )}
-
         <View
           style={{
             position: "absolute",
@@ -237,8 +242,8 @@ const Home = ({ route, navigation }) => {
                 color="#B80B00"
                 onPress={() => {
                   jumpToMarker({
-                    latitude: location?.coords.latitude,
-                    longitude: location?.coords.longitude,
+                    latitude: location?.latitude,
+                    longitude: location?.longitude,
                   });
                 }}
               />
@@ -282,7 +287,7 @@ const Home = ({ route, navigation }) => {
             }}
           />
         </View>
-
+        {/* Pick a service Button */}
         {!pahatodModal && (
           <View
             style={{
@@ -354,110 +359,207 @@ const Home = ({ route, navigation }) => {
               >
                 Pahatod Service
               </Text>
+              {!findingRider && (
+                <>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 2,
+                      elevation: 3,
+                      paddingHorizontal: 10,
+                      backgroundColor: "#D3D3D3",
+                      borderRadius: 10,
+                      marginBottom: 20,
+                    }}
+                  >
+                    <Image source={redMarker} />
+                    <TextInput
+                      editable={false}
+                      onChangeText={(text) => setEmail(text)}
+                      placeholder={location?.address}
+                      style={{
+                        flex: 1,
+                        paddingVertical: 15,
+                        paddingHorizontal: 10,
+                      }}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.8,
+                      shadowRadius: 2,
+                      elevation: 3,
+                      paddingHorizontal: 10,
+                      backgroundColor: "white",
+                      borderRadius: 10,
+                    }}
+                  >
+                    <GooglePlacesAutocomplete
+                      ref={pahatodInputRef}
+                      enablePoweredByContainer={false}
+                      renderLeftButton={() => {
+                        return <Image source={blueMarker} />;
+                      }}
+                      styles={{
+                        textInputContainer: {
+                          justifyContent: "center",
+                          alignItems: "center",
+                          width: "100%",
+                          paddingVertical: 3,
+                        },
+                        textInput: { marginHorizontal: 10 },
+                      }}
+                      placeholder="Drop Off"
+                      onPress={(data, details = null) => {
+                        const lat = details?.geometry?.location.lat;
+                        const lng = details?.geometry?.location.lng;
+                        jumpToMarker({
+                          longitude: lng,
+                          latitude: lat,
+                        });
+                        setSearchLocation({
+                          latitude: lat,
+                          longitude: lng,
+                        });
+                      }}
+                      fetchDetails={true}
+                      GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                      query={{
+                        key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
+                        language: "en",
+                        components: "country:ph",
+                      }}
+                    />
+                  </View>
 
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.8,
-                  shadowRadius: 2,
-                  elevation: 3,
-                  paddingHorizontal: 10,
-                  backgroundColor: "#D3D3D3",
-                  borderRadius: 10,
-                  marginBottom: 20,
-                }}
-              >
-                <Image source={redMarker} />
-                <TextInput
-                  editable={false}
-                  onChangeText={(text) => setEmail(text)}
-                  placeholder={location?.address}
-                  style={{
-                    flex: 1,
-                    paddingVertical: 15,
-                    paddingHorizontal: 10,
-                  }}
-                />
-              </View>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.8,
-                  shadowRadius: 2,
-                  elevation: 3,
-                  paddingHorizontal: 10,
-                  backgroundColor: "white",
-                  borderRadius: 10,
-                }}
-              >
-                <GooglePlacesAutocomplete
-                  ref={pahatodInputRef}
-                  enablePoweredByContainer={false}
-                  renderLeftButton={() => {
-                    return <Image source={blueMarker} />;
-                  }}
-                  styles={{
-                    textInputContainer: {
+                  <View
+                    style={{
                       justifyContent: "center",
                       alignItems: "center",
+                      flexDirection: "row",
+                      marginLeft: 20,
+                    }}
+                  >
+                    <Button
+                      event={() => {
+                        setPahatodModal(false);
+                        setSearchLocation(null);
+                      }}
+                      width={150}
+                      style={{ marginTop: 20 }}
+                      text="Cancel"
+                      bgColor={"#00308299"}
+                    />
+                    <Button
+                      event={() => {
+                        if (searchLocation) {
+                          setFindingRider(true);
+                          addTransaction({
+                            origin: {
+                              latitude: location?.latitude,
+                              longitude: location?.longitude,
+                            },
+                            destination: {
+                              latitude: searchLocation?.latitude,
+                              longitude: searchLocation?.longitude,
+                            },
+                            currentUser: currentUser,
+                          });
+                        } else {
+                          Toast.show({
+                            type: "info",
+                            text1: "Please select drop off location",
+                          });
+                        }
+                      }}
+                      width={150}
+                      style={{ marginTop: 20 }}
+                      text="Find a rider"
+                      bgColor={"#B80B00"}
+                    />
+                  </View>
+                </>
+              )}
+              {findingRider && (
+                <>
+                  <LottieView
+                    autoPlay
+                    style={{ width: 100, height: 100 }}
+                    source={require("../assets/maps.json")}
+                  />
+
+                  <Text
+                    style={{ color: "white", fontSize: 20, marginBottom: 5 }}
+                  >
+                    Waiting for a rider
+                  </Text>
+                  <View
+                    style={{
                       width: "100%",
-                      paddingVertical: 3,
-                    },
-                    textInput: { marginHorizontal: 10 },
-                  }}
-                  placeholder="Drop Off"
-                  onPress={(data, details = null) => {
-                    const lat = details?.geometry?.location.lat;
-                    const lng = details?.geometry?.location.lng;
-                    jumpToMarker({
-                      longitude: lng,
-                      latitude: lat,
-                    });
-                    setSearchLocation({
-                      latitude: lat,
-                      longitude: lng,
-                    });
-                  }}
-                  fetchDetails={true}
-                  GooglePlacesDetailsQuery={{ fields: "geometry" }}
-                  query={{
-                    key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
-                    language: "en",
-                    components: "country:ph",
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <Button
-                  event={() => {
-                    setPahatodModal(false);
-                    setSearchLocation(null);
-                  }}
-                  width={150}
-                  style={{ marginTop: 20 }}
-                  text="Cancel"
-                  bgColor={"#00308299"}
-                />
-                <Button
-                  width={150}
-                  style={{ marginTop: 20 }}
-                  text="Find a rider"
-                  bgColor={"#B80B00"}
-                />
-              </View>
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      paddingVertical: 10,
+                    }}
+                  >
+                    {location && searchLocation && (
+                      <Text
+                        style={{
+                          color: "white",
+                          fontSize: 20,
+                        }}
+                      >
+                        Distance:{" "}
+                        {haversineDistance(
+                          {
+                            latitude: location?.latitude,
+                            longitude: location?.longitude,
+                          },
+                          {
+                            latitude: searchLocation?.latitude,
+                            longitude: searchLocation?.longitude,
+                          }
+                        )}{" "}
+                        km
+                      </Text>
+                    )}
+                    <Text
+                      style={{
+                        color: "white",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                      }}
+                    >
+                      Total: ₱
+                      {parseFloat(
+                        haversineDistance(
+                          {
+                            latitude: location?.latitude,
+                            longitude: location?.longitude,
+                          },
+                          {
+                            latitude: searchLocation?.latitude,
+                            longitude: searchLocation?.longitude,
+                          }
+                        )
+                      ) * 10}
+                    </Text>
+                  </View>
+                  <Button
+                    event={() => setFindingRider(false)}
+                    text="Cancel Ride"
+                    bgColor={"#B80B00"}
+                  />
+                </>
+              )}
             </View>
           </>
         )}
