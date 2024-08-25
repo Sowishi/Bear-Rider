@@ -26,41 +26,30 @@ const Home = ({ route, navigation }) => {
   const [serviceModal, setServiceModal] = useState(false);
   const [pahatodModal, setPahatodModal] = useState(false);
   const [findingRider, setFindingRider] = useState(false);
+  const [distance, setDistance] = useState(0);
+
   const mapRef = useRef();
   const googlePlacesRef = useRef();
   const pahatodInputRef = useRef();
 
+  // Constant Value
   const center = {
     lat: 14.0996, // Approximate center latitude of Camarines Norte
     lng: 122.955, // Approximate center longitude of Camarines Norte
   };
-
   const radius = 50000;
+  const chargePerKilometer = 10;
+
   const { mapView, currentUser } = useSmokeContext();
-  const { addTransaction } = useCrudTransaction();
+  const { addTransaction, deleteTransaction } = useCrudTransaction();
 
   // Request Permission and Get location
   useEffect(() => {
     googlePlacesRef.current?.setAddressText("Daet Camarines Norte");
-
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-
-      const lat = location?.coords.latitude;
-      const long = location?.coords.longitude;
-
-      const address = await reverseGeocode(lat, long);
-
-      setLocation({ latitude: lat, longitude: long, address });
-    })();
+    handleLocationRequestAndPermission();
   }, []);
 
+  // Handle Disable Back Button
   useEffect(() => {
     const backAction = () => {
       // Returning true prevents the default back button behavior
@@ -76,6 +65,31 @@ const Home = ({ route, navigation }) => {
     // Clean up the listener on component unmount
     return () => backHandler.remove();
   }, []);
+
+  useEffect(() => {
+    let output = 0;
+    if (searchLocation) {
+      output = haversineDistance(location, searchLocation);
+    }
+    setDistance(output);
+  }, [searchLocation]);
+
+  const handleLocationRequestAndPermission = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+
+    const lat = location?.coords.latitude;
+    const long = location?.coords.longitude;
+
+    const address = await reverseGeocode(lat, long);
+
+    setLocation({ latitude: lat, longitude: long, address });
+  };
 
   const jumpToMarker = (coords) => {
     mapRef.current?.animateToRegion(
@@ -110,6 +124,8 @@ const Home = ({ route, navigation }) => {
       }}
     >
       <StatusBar backgroundColor={"white"} style="dark" />
+
+      {/* Pick a service Modal */}
 
       <BottomModal
         heightPx={270}
@@ -221,6 +237,9 @@ const Home = ({ route, navigation }) => {
             )}
           </MapView>
         )}
+
+        {/* App Header */}
+
         <View
           style={{
             position: "absolute",
@@ -287,6 +306,7 @@ const Home = ({ route, navigation }) => {
             }}
           />
         </View>
+
         {/* Pick a service Button */}
         {!pahatodModal && (
           <View
@@ -472,6 +492,7 @@ const Home = ({ route, navigation }) => {
                               longitude: searchLocation?.longitude,
                             },
                             currentUser: currentUser,
+                            distance,
                           });
                         } else {
                           Toast.show({
@@ -517,18 +538,7 @@ const Home = ({ route, navigation }) => {
                           fontSize: 20,
                         }}
                       >
-                        Distance:{" "}
-                        {haversineDistance(
-                          {
-                            latitude: location?.latitude,
-                            longitude: location?.longitude,
-                          },
-                          {
-                            latitude: searchLocation?.latitude,
-                            longitude: searchLocation?.longitude,
-                          }
-                        )}{" "}
-                        km
+                        Distance: {distance} km
                       </Text>
                     )}
                     <Text
@@ -538,23 +548,14 @@ const Home = ({ route, navigation }) => {
                         fontSize: 20,
                       }}
                     >
-                      Total: ₱
-                      {parseFloat(
-                        haversineDistance(
-                          {
-                            latitude: location?.latitude,
-                            longitude: location?.longitude,
-                          },
-                          {
-                            latitude: searchLocation?.latitude,
-                            longitude: searchLocation?.longitude,
-                          }
-                        )
-                      ) * 10}
+                      Total: ₱{(distance * chargePerKilometer).toFixed(2)}
                     </Text>
                   </View>
                   <Button
-                    event={() => setFindingRider(false)}
+                    event={() => {
+                      setFindingRider(false);
+                      deleteTransaction(currentUser);
+                    }}
                     text="Cancel Ride"
                     bgColor={"#B80B00"}
                   />
