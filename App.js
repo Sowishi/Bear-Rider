@@ -9,24 +9,17 @@ import { MyProvider } from "./utils/appContext";
 import User from "./screen/user";
 import Notification from "./screen/notification";
 import Register from "./screen/register";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 
 export default function App() {
   const Stack = createStackNavigator();
-  const Tab = createMaterialTopTabNavigator();
+  const Tab = createDrawerNavigator();
 
   function MainScreen() {
     return (
       <Tab.Navigator
-        tabBarPosition="bottom"
-        screenOptions={{
-          tabBarStyle: {
-            backgroundColor: "white",
-          },
-          tabBarIndicatorStyle: {
-            backgroundColor: "#B80B00",
-            height: 3,
-          },
-        }}
+        drawerContent={(props) => <User {...props} />}
+        screenOptions={{ headerShown: false }}
       >
         <Tab.Screen
           options={{

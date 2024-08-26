@@ -181,8 +181,6 @@ const Home = ({ route, navigation }) => {
     }
   };
 
-  console.log("fldkfj`");
-
   const MarkerUserImage = () => {
     return <Image source={people} style={{ width: 50, height: 50 }} />;
   };
@@ -231,6 +229,7 @@ const Home = ({ route, navigation }) => {
       </BottomModal>
 
       <View style={{ flex: 1, position: "relative" }}>
+        {/* Maps View */}
         {location && (
           <MapView
             mapType={mapView}
@@ -364,25 +363,38 @@ const Home = ({ route, navigation }) => {
           <GooglePlacesAutocomplete
             ref={googlePlacesRef}
             renderLeftButton={() => (
-              <Entypo
-                name="location-pin"
-                size={30}
-                color="#B80B00"
-                onPress={() => {
-                  jumpToMarker({
-                    latitude: location?.latitude,
-                    longitude: location?.longitude,
-                  });
+              <View
+                style={{
+                  backgroundColor: "white",
+                  padding: 2,
+                  borderRadius: 10,
                 }}
-              />
+              >
+                <Entypo
+                  name="menu"
+                  size={30}
+                  color="#B80B00"
+                  onPress={() => {
+                    navigation.openDrawer();
+                  }}
+                />
+              </View>
             )}
             renderRightButton={() => (
-              <FontAwesome
-                onPress={() => navigation.navigate("Notification")}
-                name="bell"
-                size={24}
-                color="#B80B00"
-              />
+              <View
+                style={{
+                  backgroundColor: "white",
+                  padding: 4,
+                  borderRadius: 10,
+                }}
+              >
+                <FontAwesome
+                  onPress={() => navigation.navigate("Notification")}
+                  name="bell"
+                  size={27}
+                  color="#B80B00"
+                />
+              </View>
             )}
             styles={{
               textInputContainer: {
