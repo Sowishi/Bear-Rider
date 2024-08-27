@@ -549,11 +549,47 @@ const Home = ({ route, navigation }) => {
               minHeight: 50,
               width: "90%",
               borderRadius: 10,
+              justifyContent: "space-between",
+              alignItems: "center",
+              flexDirection: "row",
+              paddingHorizontal: 20,
+              paddingVertical: 20,
             }}
           >
-            <Text>jfdl</Text>
+            <View
+              style={{
+                width: "33%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <FontAwesome name="motorcycle" size={30} color="#003082" />
+              <Text style={{ fontSize: 10 }}>Transaction</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "33%",
+              }}
+            >
+              <FontAwesome name="bolt" size={30} color="#003082" />
+              <Text style={{ fontSize: 10 }}>Auto Accept</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "33%",
+              }}
+            >
+              <FontAwesome name="user" size={30} color="#003082" />
+              <Text style={{ fontSize: 10 }}>My Account</Text>
+            </View>
           </View>
         )}
+
+        {/* Pahatod UI */}
 
         {pahatodModal && (
           <>
