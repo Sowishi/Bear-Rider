@@ -38,6 +38,9 @@ const User = ({ navigation }) => {
             <Text style={{ fontSize: 25, marginTop: 5, fontWeight: "bold" }}>
               {currentUser.firstName + " " + currentUser.lastName}
             </Text>
+            <Text style={{ fontSize: 16, marginTop: 5 }}>
+              Role: {currentUser.role ? currentUser.role : "Customer"}
+            </Text>
           </View>
           <View
             style={{

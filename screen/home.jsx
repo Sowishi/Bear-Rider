@@ -348,85 +348,74 @@ const Home = ({ route, navigation }) => {
 
         {/* App Header */}
 
-        <View
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            marginHorizontal: 20,
-            marginTop: 25,
-          }}
-        >
-          <GooglePlacesAutocomplete
-            ref={googlePlacesRef}
-            renderLeftButton={() => (
-              <View
-                style={{
-                  backgroundColor: "white",
-                  padding: 2,
-                  borderRadius: 10,
+        {location && (
+          <View
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginHorizontal: 20,
+              marginTop: 25,
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 2,
+                borderRadius: 10,
+              }}
+            >
+              <Entypo
+                name="menu"
+                size={30}
+                color="#B80B00"
+                onPress={() => {
+                  navigation.openDrawer();
                 }}
-              >
-                <Entypo
-                  name="menu"
-                  size={30}
-                  color="#B80B00"
-                  onPress={() => {
-                    navigation.openDrawer();
-                  }}
-                />
-              </View>
-            )}
-            renderRightButton={() => (
-              <View
-                style={{
-                  backgroundColor: "white",
-                  padding: 4,
-                  borderRadius: 10,
-                }}
-              >
-                <FontAwesome
-                  onPress={() => navigation.navigate("Notification")}
-                  name="bell"
-                  size={27}
-                  color="#B80B00"
-                />
-              </View>
-            )}
-            styles={{
-              textInputContainer: {
+              />
+            </View>
+            <View
+              style={{
+                flex: 1,
                 justifyContent: "center",
-                alignItems: "center",
-              },
-              textInput: { marginHorizontal: 10 },
-            }}
-            placeholder="Search"
-            onPress={(data, details = null) => {
-              const lat = details?.geometry?.location.lat;
-              const lng = details?.geometry?.location.lng;
-              jumpToMarker({
-                longitude: lng,
-                latitude: lat,
-              });
-              setSearchLocation({
-                latitude: lat,
-                longitude: lng,
-              });
-            }}
-            fetchDetails={true}
-            GooglePlacesDetailsQuery={{ fields: "geometry" }}
-            query={{
-              key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
-              language: "en",
-              components: "country:ph",
-              location: `${center.lat},${center.lng}`,
-              radius: radius,
-            }}
-          />
-        </View>
+                alignItems: "flex-start",
+                marginHorizontal: 10,
+              }}
+            >
+              <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+                Current Location
+              </Text>
+              <TextInput
+                editable={false}
+                value={location?.address}
+                style={{
+                  backgroundColor: "white",
+                  paddingVertical: 5,
+                  borderRadius: 10,
+                  paddingHorizontal: 5,
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                backgroundColor: "white",
+                padding: 4,
+                borderRadius: 10,
+              }}
+            >
+              <FontAwesome
+                onPress={() => navigation.navigate("Notification")}
+                name="bell"
+                size={25}
+                color="#B80B00"
+              />
+            </View>
+          </View>
+        )}
 
         {/* Pick a service Button */}
         {!pahatodModal && (
