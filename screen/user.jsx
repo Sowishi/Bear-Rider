@@ -5,9 +5,10 @@ import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Button from "../components/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const User = ({ navigation }) => {
-  const { currentUser, setMapView } = useSmokeContext();
+  const { currentUser, setMapView, setHistoryModal } = useSmokeContext();
 
   return (
     <ScrollView
@@ -82,7 +83,11 @@ const User = ({ navigation }) => {
               </View>
             </View>
 
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                navigation.closeDrawer();
+                setHistoryModal(true);
+              }}
               style={{
                 shadowColor: "#000",
                 shadowOffset: {
@@ -105,7 +110,7 @@ const User = ({ navigation }) => {
             >
               <Text style={{ fontSize: 20, marginRight: 5 }}>History</Text>
               <MaterialIcons name="history" size={24} color="black" />
-            </View>
+            </TouchableOpacity>
             <View
               style={{
                 marginVertical: 15,

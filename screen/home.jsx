@@ -61,12 +61,16 @@ const Home = ({ route, navigation }) => {
   const pahatodInputRef = useRef();
 
   // Hooks
-  const { mapView, currentUser } = useSmokeContext();
+  const { mapView, currentUser, historyModal, setHistoryModal } =
+    useSmokeContext();
   const {
     addTransaction,
     deleteTransaction,
     data: transactions,
     acceptTransaction,
+    getTransaction,
+    singleData,
+    setSingleData,
   } = useCrudTransaction();
   const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
 
@@ -162,6 +166,12 @@ const Home = ({ route, navigation }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (selectedTransaction) {
+      getTransaction(selectedTransaction.id);
+    }
+  }, [selectedTransaction]);
 
   //Handle when user is not on in the app
 
@@ -311,61 +321,152 @@ const Home = ({ route, navigation }) => {
           }}
         >
           {transactions?.map((transaction) => {
-            return (
-              <View key={transaction.id} style={{ marginVertical: 10 }}>
-                <Text
-                  style={{ fontSize: 15, marginBottom: 5, fontWeight: "bold" }}
-                >
-                  {transaction.currentUser.firstName}{" "}
-                  {transaction.currentUser.lastName}
-                </Text>
-                <View style={{ flexDirection: "row" }}>
-                  <Image
-                    style={{ width: 20, height: 20, marginRight: 5 }}
-                    source={redMarker}
-                  />
-                  <Text>{transaction.origin.address}</Text>
-                </View>
-                <View style={{ flexDirection: "row", marginTop: 5 }}>
-                  <Image
-                    style={{ width: 20, height: 20, marginRight: 5 }}
-                    source={blueMarker}
-                  />
-                  <Text>{transaction.destination.address}</Text>
-                </View>
-                <Text style={{ marginVertical: 3 }}>
-                  Service Type: {transaction.serviceType}{" "}
-                </Text>
-                <View
-                  style={{ justifyContent: "center", alignItems: "center" }}
-                >
-                  <Button
-                    event={() => {
-                      setSelectedTransaction(transaction);
-                      setTransactionModal(false);
+            if (transaction.status !== "Accepted") {
+              return (
+                <View key={transaction.id} style={{ marginVertical: 10 }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      marginBottom: 5,
+                      fontWeight: "bold",
                     }}
-                    icon="chevron-right"
-                    text="View Transaction"
-                    bgColor={"#B80B00"}
-                  />
-                </View>
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    paddingVertical: 10,
-                  }}
-                >
+                  >
+                    {transaction.currentUser.firstName}{" "}
+                    {transaction.currentUser.lastName}
+                  </Text>
+                  <View style={{ flexDirection: "row" }}>
+                    <Image
+                      style={{ width: 20, height: 20, marginRight: 5 }}
+                      source={redMarker}
+                    />
+                    <Text>{transaction.origin.address}</Text>
+                  </View>
+                  <View style={{ flexDirection: "row", marginTop: 5 }}>
+                    <Image
+                      style={{ width: 20, height: 20, marginRight: 5 }}
+                      source={blueMarker}
+                    />
+                    <Text>{transaction.destination.address}</Text>
+                  </View>
+                  <Text style={{ marginVertical: 3 }}>
+                    Service Type: {transaction.serviceType}{" "}
+                  </Text>
+                  <View
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                  >
+                    <Button
+                      event={() => {
+                        setSelectedTransaction(transaction);
+                        setTransactionModal(false);
+                      }}
+                      icon="chevron-right"
+                      text="View Transaction"
+                      bgColor={"#B80B00"}
+                    />
+                  </View>
                   <View
                     style={{
-                      width: 200,
-                      height: 2,
-                      backgroundColor: "gray",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      paddingVertical: 10,
                     }}
-                  ></View>
+                  >
+                    <View
+                      style={{
+                        width: 200,
+                        height: 2,
+                        backgroundColor: "gray",
+                      }}
+                    ></View>
+                  </View>
                 </View>
-              </View>
-            );
+              );
+            }
+          })}
+        </ScrollView>
+      </ScreenModal>
+
+      {/* History Modal */}
+      <ScreenModal
+        modalVisible={historyModal}
+        closeModal={() => setHistoryModal(false)}
+      >
+        <View>
+          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+            Transaction History
+          </Text>
+        </View>
+        <ScrollView
+          style={{
+            flex: 1,
+            width: "100%",
+            minHeight: 200,
+            marginTop: 30,
+          }}
+        >
+          {transactions?.map((transaction) => {
+            if (transaction.status == "Accepted") {
+              return (
+                <View key={transaction.id} style={{ marginVertical: 10 }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      marginBottom: 5,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {transaction.currentUser.firstName}{" "}
+                    {transaction.currentUser.lastName}
+                  </Text>
+                  <View style={{ flexDirection: "row" }}>
+                    <Image
+                      style={{ width: 20, height: 20, marginRight: 5 }}
+                      source={redMarker}
+                    />
+                    <Text>{transaction.origin.address}</Text>
+                  </View>
+                  <View style={{ flexDirection: "row", marginTop: 5 }}>
+                    <Image
+                      style={{ width: 20, height: 20, marginRight: 5 }}
+                      source={blueMarker}
+                    />
+                    <Text>{transaction.destination.address}</Text>
+                  </View>
+                  <Text style={{ marginVertical: 3 }}>
+                    Service Type: {transaction.serviceType}{" "}
+                  </Text>
+                  <View
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                  >
+                    <Button
+                      event={() => {
+                        setSelectedTransaction(transaction);
+                        setTransactionModal(false);
+                        setHistoryModal(false);
+                      }}
+                      icon="chevron-right"
+                      text="View Transaction"
+                      bgColor={"#B80B00"}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      paddingVertical: 10,
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: 200,
+                        height: 2,
+                        backgroundColor: "gray",
+                      }}
+                    ></View>
+                  </View>
+                </View>
+              );
+            }
           })}
         </ScrollView>
       </ScreenModal>
@@ -730,7 +831,7 @@ const Home = ({ route, navigation }) => {
 
         {/* Rider bottom navigation */}
 
-        {selectedTransaction && (
+        {singleData && (
           <View
             style={{
               position: "absolute",
@@ -748,11 +849,13 @@ const Home = ({ route, navigation }) => {
             <View>
               <Image
                 style={{ width: 50, height: 50 }}
-                source={{ uri: selectedTransaction.currentUser.profilePic }}
+                source={{
+                  uri: singleData?.currentUser.profilePic,
+                }}
               />
               <Text style={{ fontSize: 15 }}>
-                {selectedTransaction.currentUser.firstName}{" "}
-                {selectedTransaction.currentUser.lastName}
+                {singleData?.currentUser.firstName}{" "}
+                {singleData?.currentUser.lastName}
               </Text>
               <View
                 style={{
@@ -772,12 +875,11 @@ const Home = ({ route, navigation }) => {
               }}
             >
               <View>
-                <Text>Service Type: {selectedTransaction.serviceType}</Text>
-                <Text>Distance: {selectedTransaction.distance} km</Text>
+                <Text>Service Type: {singleData?.serviceType}</Text>
+                <Text>Distance: {singleData?.distance} km</Text>
               </View>
               <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                Price: ₱
-                {(selectedTransaction.distance * chargePerKilometer).toFixed(2)}
+                Price: ₱{(singleData?.distance * chargePerKilometer).toFixed(2)}
               </Text>
             </View>
           </View>
@@ -803,9 +905,9 @@ const Home = ({ route, navigation }) => {
           >
             {isOnline ? (
               <>
-                {selectedTransaction ? (
+                {singleData ? (
                   <>
-                    {selectedTransaction?.status == "Accepted" ? (
+                    {singleData?.status == "Accepted" ? (
                       <>
                         <View
                           style={{
@@ -821,7 +923,10 @@ const Home = ({ route, navigation }) => {
                             }}
                           >
                             <Button
-                              event={() => setSelectedTransaction(null)}
+                              event={() => {
+                                setSelectedTransaction(null);
+                                setSingleData(null);
+                              }}
                               width={130}
                               text="Close Modal"
                               bgColor={"#B80B00"}
@@ -860,7 +965,10 @@ const Home = ({ route, navigation }) => {
                           }}
                         >
                           <TouchableOpacity
-                            onPress={() => setSelectedTransaction(null)}
+                            onPress={() => {
+                              setSelectedTransaction(null);
+                              setSingleData(null);
+                            }}
                             style={{
                               justifyContent: "center",
                               alignItems: "center",
@@ -962,7 +1070,7 @@ const Home = ({ route, navigation }) => {
           </View>
         )}
 
-        {/* Pahatod UI */}
+        {/* Pahatod UI Customer POV */}
 
         {pahatodModal && (
           <>

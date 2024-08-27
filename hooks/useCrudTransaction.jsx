@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 
 const useCrudTransaction = () => {
   const [data, setData] = useState([]);
+  const [singleData, setSingleData] = useState();
   useEffect(() => {
     const colRef = collection(db, "transaction");
     onSnapshot(colRef, (snapshot) => {
@@ -52,7 +53,27 @@ const useCrudTransaction = () => {
       status: "Accepted",
     });
   };
-  return { addTransaction, deleteTransaction, data, acceptTransaction };
+
+  const getTransaction = (id) => {
+    const docRef = doc(db, "transaction", id);
+    onSnapshot(docRef, (doc) => {
+      if (doc.exists()) {
+        setSingleData(doc.data());
+      } else {
+        console.log("No such document!");
+      }
+    });
+  };
+
+  return {
+    addTransaction,
+    deleteTransaction,
+    data,
+    acceptTransaction,
+    getTransaction,
+    singleData,
+    setSingleData,
+  };
 };
 
 export default useCrudTransaction;

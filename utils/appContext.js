@@ -5,6 +5,7 @@ const MyContext = createContext();
 export const MyProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [mapView, setMapView] = useState("standard");
+  const [historyModal, setHistoryModal] = useState(false);
 
   return (
     <MyContext.Provider
@@ -13,6 +14,8 @@ export const MyProvider = ({ children }) => {
         setCurrentUser,
         mapView,
         setMapView,
+        historyModal,
+        setHistoryModal,
       }}
     >
       {children}
