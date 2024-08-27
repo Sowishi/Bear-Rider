@@ -7,6 +7,7 @@ import {
   BackHandler,
   AppState,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import Constants from "expo-constants";
 
@@ -31,18 +32,28 @@ import useAddOnline from "../hooks/useAddOnline";
 import people from "../assets/user.png";
 import rider from "../assets/motorcycle.png";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import ScreenModal from "../components/screenModal";
 
 const Home = ({ route, navigation }) => {
-  const [location, setLocation] = useState(null);
-  const [searchLocation, setSearchLocation] = useState(null);
-  const [serviceModal, setServiceModal] = useState(false);
-  const [pahatodModal, setPahatodModal] = useState(false);
-  const [findingRider, setFindingRider] = useState(false);
+  //Other State
   const [distance, setDistance] = useState(0);
   const [appState, setAppState] = useState(AppState.currentState);
   const [watchInstance, setWatchInstance] = useState(null);
-  const [isOnline, setIsOnline] = useState(false);
 
+  //Boolean State
+  const [isOnline, setIsOnline] = useState(false);
+  const [findingRider, setFindingRider] = useState(false);
+
+  // Modal State
+  const [serviceModal, setServiceModal] = useState(false);
+  const [pahatodModal, setPahatodModal] = useState(false);
+  const [transactionModal, setTransactionModal] = useState(false);
+
+  //Location State
+  const [location, setLocation] = useState(null);
+  const [searchLocation, setSearchLocation] = useState(null);
+
+  //Refs
   const mapRef = useRef();
   const googlePlacesRef = useRef();
   const pahatodInputRef = useRef();
@@ -247,6 +258,67 @@ const Home = ({ route, navigation }) => {
         </View>
       </BottomModal>
 
+      {/* Transaction Modal */}
+      <ScreenModal
+        modalVisible={transactionModal}
+        closeModal={() => setTransactionModal(false)}
+      >
+        <View>
+          <Text style={{ fontWeight: "bold", fontSize: 20 }}>Transaction</Text>
+        </View>
+        <ScrollView
+          style={{
+            flex: 1,
+            width: "100%",
+            minHeight: 200,
+            marginTop: 30,
+          }}
+        >
+          <View style={{ marginVertical: 10 }}>
+            <Text style={{ fontSize: 15, marginBottom: 5, fontWeight: "bold" }}>
+              Jhon Michael Molina
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                style={{ width: 20, height: 20, marginRight: 5 }}
+                source={redMarker}
+              />
+              <Text>Amiga Cafe</Text>
+            </View>
+            <View style={{ flexDirection: "row", marginTop: 5 }}>
+              <Image
+                style={{ width: 20, height: 20, marginRight: 5 }}
+                source={blueMarker}
+              />
+              <Text>Purok-3 Pamorangon Daet Camariens Norte</Text>
+            </View>
+            <Text style={{ marginVertical: 3 }}>Service Type: Padara</Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Button
+                icon="chevron-right"
+                text="View Transaction"
+                bgColor={"#B80B00"}
+              />
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                paddingVertical: 10,
+              }}
+            >
+              <View
+                style={{
+                  width: 200,
+                  height: 2,
+                  backgroundColor: "gray",
+                }}
+              ></View>
+            </View>
+          </View>
+        </ScrollView>
+      </ScreenModal>
+
       <View style={{ flex: 1, position: "relative" }}>
         {/* Maps View */}
         {location && (
@@ -337,7 +409,7 @@ const Home = ({ route, navigation }) => {
                     return (
                       <Marker
                         children={
-                          user.currentUser.role == "rider" ? (
+                          user.currentUser.role == "Rider" ? (
                             <MarkerRiderImage />
                           ) : (
                             <MarkerUserImage />
@@ -356,7 +428,11 @@ const Home = ({ route, navigation }) => {
                           longitude: user.longitude,
                         }}
                         title={user.currentUser.firstName}
-                        description="Customer"
+                        description={
+                          user.currentUser.role == "Rider"
+                            ? "Rider"
+                            : "Customer"
+                        }
                       />
                     );
                   }
@@ -563,8 +639,16 @@ const Home = ({ route, navigation }) => {
                 alignItems: "center",
               }}
             >
-              <FontAwesome name="motorcycle" size={30} color="#003082" />
-              <Text style={{ fontSize: 10 }}>Transaction</Text>
+              <TouchableOpacity
+                onPress={() => setTransactionModal(true)}
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <FontAwesome name="motorcycle" size={30} color="#003082" />
+                <Text style={{ fontSize: 10 }}>Transaction</Text>
+              </TouchableOpacity>
             </View>
             <View
               style={{
