@@ -405,7 +405,10 @@ const Home = ({ route, navigation }) => {
           }}
         >
           {transactions?.map((transaction) => {
-            if (transaction.status == "Accepted") {
+            if (
+              transaction.status == "Accepted" &&
+              transaction.rider.id == currentUser.id
+            ) {
               return (
                 <View key={transaction.id} style={{ marginVertical: 10 }}>
                   <Text
