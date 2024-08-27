@@ -453,43 +453,45 @@ const Home = ({ route, navigation }) => {
               />
             )}
             {/* Online Users */}
-            {onlineUsers.length >= 1 && !selectedTransaction && (
-              <>
-                {onlineUsers?.map((user) => {
-                  if (user.currentUser.id !== currentUser.id) {
-                    return (
-                      <Marker
-                        children={
-                          user.currentUser.role == "Rider" ? (
-                            <MarkerRiderImage />
-                          ) : (
-                            <MarkerUserImage />
-                          )
-                        }
-                        pinColor="yellow"
-                        key={user.id}
-                        onPress={() =>
-                          jumpToMarker({
+            {onlineUsers.length >= 1 &&
+              !selectedTransaction &&
+              (isOnline || !IS_RIDER) && (
+                <>
+                  {onlineUsers?.map((user) => {
+                    if (user.currentUser.id !== currentUser.id) {
+                      return (
+                        <Marker
+                          children={
+                            user.currentUser.role == "Rider" ? (
+                              <MarkerRiderImage />
+                            ) : (
+                              <MarkerUserImage />
+                            )
+                          }
+                          pinColor="yellow"
+                          key={user.id}
+                          onPress={() =>
+                            jumpToMarker({
+                              latitude: user.latitude,
+                              longitude: user.longitude,
+                            })
+                          }
+                          coordinate={{
                             latitude: user.latitude,
                             longitude: user.longitude,
-                          })
-                        }
-                        coordinate={{
-                          latitude: user.latitude,
-                          longitude: user.longitude,
-                        }}
-                        title={user.currentUser.firstName}
-                        description={
-                          user.currentUser.role == "Rider"
-                            ? "Rider"
-                            : "Customer"
-                        }
-                      />
-                    );
-                  }
-                })}
-              </>
-            )}
+                          }}
+                          title={user.currentUser.firstName}
+                          description={
+                            user.currentUser.role == "Rider"
+                              ? "Rider"
+                              : "Customer"
+                          }
+                        />
+                      );
+                    }
+                  })}
+                </>
+              )}
             {selectedTransaction && (
               <>
                 <Marker
@@ -595,6 +597,7 @@ const Home = ({ route, navigation }) => {
                 <View
                   style={{
                     flex: 1,
+                    width: "100%",
                     justifyContent: "center",
                     alignItems: "flex-start",
                     marginHorizontal: 10,
@@ -796,78 +799,92 @@ const Home = ({ route, navigation }) => {
               paddingVertical: 20,
             }}
           >
-            {selectedTransaction ? (
+            {isOnline ? (
               <>
-                <View
-                  style={{
-                    width: "50%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => setSelectedTransaction(null)}
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <AntDesign name="closecircle" size={24} color="red" />
-                    <Text style={{ fontSize: 10 }}>Reject Ride</Text>
-                  </TouchableOpacity>
-                </View>
+                {selectedTransaction ? (
+                  <>
+                    <View
+                      style={{
+                        width: "50%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => setSelectedTransaction(null)}
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <AntDesign name="closecircle" size={24} color="red" />
+                        <Text style={{ fontSize: 10 }}>Reject Ride</Text>
+                      </TouchableOpacity>
+                    </View>
 
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "50%",
-                  }}
-                >
-                  <AntDesign name="checkcircle" size={24} color="green" />
-                  <Text style={{ fontSize: 10 }}>Accept Ride</Text>
-                </View>
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "50%",
+                      }}
+                    >
+                      <AntDesign name="checkcircle" size={24} color="green" />
+                      <Text style={{ fontSize: 10 }}>Accept Ride</Text>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <View
+                      style={{
+                        width: "33%",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <TouchableOpacity
+                        onPress={() => setTransactionModal(true)}
+                        style={{
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <FontAwesome
+                          name="motorcycle"
+                          size={30}
+                          color="#003082"
+                        />
+                        <Text style={{ fontSize: 10 }}>Transaction</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "33%",
+                      }}
+                    >
+                      <FontAwesome name="bolt" size={30} color="#003082" />
+                      <Text style={{ fontSize: 10 }}>Auto Accept</Text>
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        width: "33%",
+                      }}
+                    >
+                      <FontAwesome name="user" size={30} color="#003082" />
+                      <Text style={{ fontSize: 10 }}>My Account</Text>
+                    </View>
+                  </>
+                )}
               </>
             ) : (
               <>
-                <View
-                  style={{
-                    width: "33%",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => setTransactionModal(true)}
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <FontAwesome name="motorcycle" size={30} color="#003082" />
-                    <Text style={{ fontSize: 10 }}>Transaction</Text>
-                  </TouchableOpacity>
-                </View>
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "33%",
-                  }}
-                >
-                  <FontAwesome name="bolt" size={30} color="#003082" />
-                  <Text style={{ fontSize: 10 }}>Auto Accept</Text>
-                </View>
-                <View
-                  style={{
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "33%",
-                  }}
-                >
-                  <FontAwesome name="user" size={30} color="#003082" />
-                  <Text style={{ fontSize: 10 }}>My Account</Text>
-                </View>
+                <Text style={{ fontSize: 13, textAlign: "center" }}>
+                  You're offline, please turn the power button 🔴
+                </Text>
               </>
             )}
           </View>
