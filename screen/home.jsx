@@ -6,6 +6,7 @@ import {
   View,
   BackHandler,
   AppState,
+  TouchableOpacity,
 } from "react-native";
 import Constants from "expo-constants";
 
@@ -29,6 +30,7 @@ import useCrudTransaction from "../hooks/useCrudTransaction";
 import useAddOnline from "../hooks/useAddOnline";
 import people from "../assets/user.png";
 import rider from "../assets/motorcycle.png";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 const Home = ({ route, navigation }) => {
   const [location, setLocation] = useState(null);
@@ -38,10 +40,17 @@ const Home = ({ route, navigation }) => {
   const [findingRider, setFindingRider] = useState(false);
   const [distance, setDistance] = useState(0);
   const [appState, setAppState] = useState(AppState.currentState);
+  const [watchInstance, setWatchInstance] = useState(null);
+  const [isOnline, setIsOnline] = useState(false);
 
   const mapRef = useRef();
   const googlePlacesRef = useRef();
   const pahatodInputRef = useRef();
+
+  // Hooks
+  const { mapView, currentUser } = useSmokeContext();
+  const { addTransaction, deleteTransaction } = useCrudTransaction();
+  const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
 
   // Constant Value
   const center = {
@@ -50,11 +59,7 @@ const Home = ({ route, navigation }) => {
   };
   const radius = 50000;
   const chargePerKilometer = 10;
-  const IS_RIDER = true;
-
-  const { mapView, currentUser } = useSmokeContext();
-  const { addTransaction, deleteTransaction } = useCrudTransaction();
-  const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
+  const IS_RIDER = currentUser?.role;
 
   // Request Permission and Get location
   useEffect(() => {
@@ -114,9 +119,18 @@ const Home = ({ route, navigation }) => {
           },
           (location) => {
             const { longitude, latitude } = location.coords;
+            // // For customer
+            // if (IS_RIDER !== "Rider") {
+            //   addOnlineUser({ longitude, latitude, currentUser });
+            // }
+            // //For rider
+            // if (IS_RIDER && isOnline) {
+            //   addOnlineUser({ longitude, latitude, currentUser });
+            // }
             addOnlineUser({ longitude, latitude, currentUser });
           }
         );
+        setWatchInstance(subscription);
       };
       startWatchingLocation();
     } catch (error) {
@@ -131,11 +145,16 @@ const Home = ({ route, navigation }) => {
     };
   }, []);
 
+  //Handle when user is not on in the app
+
   const handleAppStateChange = (nextAppState) => {
     if (appState === "active" && nextAppState.match(/inactive|background/)) {
       deleteTransaction(currentUser);
       setFindingRider(false);
       deleteOnlineUser(currentUser.id);
+      if (watchInstance) {
+        watchInstance.remove();
+      }
     }
 
     setAppState(nextAppState); // Update the current state
@@ -267,6 +286,7 @@ const Home = ({ route, navigation }) => {
                 }}
                 title="Current Location"
                 description="This is where you are"
+                pinColor={IS_RIDER ? "#003082" : "#B80B00"}
               />
             )}
             {searchLocation && (
@@ -349,76 +369,131 @@ const Home = ({ route, navigation }) => {
         {/* App Header */}
 
         {location && (
-          <View
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-              marginHorizontal: 20,
-              marginTop: 25,
-            }}
-          >
+          <>
             <View
               style={{
-                backgroundColor: "white",
-                padding: 2,
-                borderRadius: 10,
-              }}
-            >
-              <Entypo
-                name="menu"
-                size={30}
-                color="#B80B00"
-                onPress={() => {
-                  navigation.openDrawer();
-                }}
-              />
-            </View>
-            <View
-              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
                 flex: 1,
-                justifyContent: "center",
-                alignItems: "flex-start",
-                marginHorizontal: 10,
+                width: "90%",
+                marginHorizontal: 20,
+                marginTop: 25,
               }}
             >
-              <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-                Current Location
-              </Text>
-              <TextInput
-                editable={false}
-                value={location?.address}
+              <View
                 style={{
-                  backgroundColor: "white",
-                  paddingVertical: 5,
-                  borderRadius: 10,
-                  paddingHorizontal: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "100%",
                 }}
-              />
-            </View>
+              >
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    padding: 2,
+                    borderRadius: 10,
+                  }}
+                >
+                  <Entypo
+                    name="menu"
+                    size={30}
+                    color={IS_RIDER ? "#003082" : "#B80B00"}
+                    onPress={() => {
+                      navigation.openDrawer();
+                    }}
+                  />
+                </View>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "flex-start",
+                    marginHorizontal: 10,
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      jumpToMarker({
+                        latitude: location?.latitude,
+                        longitude: location?.longitude,
+                      });
+                    }}
+                  >
+                    <Text style={{ fontSize: 12, fontWeight: "bold" }}>
+                      Current Location
+                    </Text>
+                    <TextInput
+                      editable={false}
+                      value={location?.address}
+                      style={{
+                        backgroundColor: "white",
+                        paddingVertical: 5,
+                        borderRadius: 10,
+                        paddingHorizontal: 5,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </View>
 
-            <View
-              style={{
-                backgroundColor: "white",
-                padding: 4,
-                borderRadius: 10,
-              }}
-            >
-              <FontAwesome
-                onPress={() => navigation.navigate("Notification")}
-                name="bell"
-                size={25}
-                color="#B80B00"
-              />
+                <View
+                  style={{
+                    backgroundColor: "white",
+                    padding: 4,
+                    borderRadius: 10,
+                  }}
+                >
+                  {!IS_RIDER ? (
+                    <FontAwesome
+                      onPress={() => navigation.navigate("Notification")}
+                      name="bell"
+                      size={25}
+                      color={"#B80B00"}
+                    />
+                  ) : (
+                    <FontAwesome5
+                      onPress={() => setIsOnline(!isOnline)}
+                      name="power-off"
+                      size={24}
+                      color="#003082"
+                    />
+                  )}
+                </View>
+              </View>
+
+              {IS_RIDER && (
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    backgroundColor: "white",
+                    marginTop: 10,
+                    paddingVertical: 6,
+                    borderRadius: 10,
+                    marginHorizontal: 70,
+                  }}
+                >
+                  <Text style={{ fontSize: 15, marginRight: 5 }}>
+                    {isOnline ? "You're online" : "You're Offline"}
+                  </Text>
+                  <View
+                    style={{
+                      height: 15,
+                      borderRadius: 300,
+                      width: 15,
+                      backgroundColor: isOnline ? "#08B783" : "#B80B00",
+                    }}
+                  ></View>
+                </View>
+              )}
             </View>
-          </View>
+          </>
         )}
 
-        {/* Pick a service Button */}
-        {!pahatodModal && (
+        {/* Pick a service Button Customer*/}
+        {!pahatodModal && !IS_RIDER && (
           <View
             style={{
               backgroundColor: "#fefefe99",
@@ -458,6 +533,25 @@ const Home = ({ route, navigation }) => {
                 bgColor={"#B80B00"}
               />
             </View>
+          </View>
+        )}
+
+        {/* Rider bottom navigation */}
+
+        {IS_RIDER && (
+          <View
+            style={{
+              position: "absolute",
+              backgroundColor: "white",
+              bottom: 20,
+              flex: 1,
+              marginHorizontal: 20,
+              minHeight: 50,
+              width: "90%",
+              borderRadius: 10,
+            }}
+          >
+            <Text>jfdl</Text>
           </View>
         )}
 

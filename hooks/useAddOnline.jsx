@@ -27,7 +27,7 @@ const useAddOnline = () => {
 
   const addOnlineUser = (forms) => {
     const docRef = doc(db, "online", forms.currentUser.id);
-    console.log(forms);
+    console.log("Added online");
     setDoc(docRef, { ...forms, createdAt: serverTimestamp() });
   };
 
