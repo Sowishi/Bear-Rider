@@ -5,12 +5,26 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { serverTimestamp } from "firebase/database";
+import { useEffect, useState } from "react";
 
 const useCrudTransaction = () => {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const colRef = collection(db, "transaction");
+    onSnapshot(colRef, (snapshot) => {
+      const output = [];
+      snapshot.docs.forEach((doc) => {
+        output.push({ ...doc.data(), id: doc.id });
+      });
+      setData(output);
+    });
+  }, []);
+
   const addTransaction = (forms) => {
     const colRef = collection(db, "transaction");
     addDoc(colRef, { ...forms, createdAt: serverTimestamp() });
@@ -28,7 +42,7 @@ const useCrudTransaction = () => {
       }
     });
   };
-  return { addTransaction, deleteTransaction };
+  return { addTransaction, deleteTransaction, data };
 };
 
 export default useCrudTransaction;

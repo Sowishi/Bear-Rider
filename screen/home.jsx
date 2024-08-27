@@ -33,6 +33,7 @@ import people from "../assets/user.png";
 import rider from "../assets/motorcycle.png";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import ScreenModal from "../components/screenModal";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -51,7 +52,8 @@ const Home = ({ route, navigation }) => {
 
   //Location State
   const [location, setLocation] = useState(null);
-  const [searchLocation, setSearchLocation] = useState(null);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   //Refs
   const mapRef = useRef();
@@ -60,7 +62,11 @@ const Home = ({ route, navigation }) => {
 
   // Hooks
   const { mapView, currentUser } = useSmokeContext();
-  const { addTransaction, deleteTransaction } = useCrudTransaction();
+  const {
+    addTransaction,
+    deleteTransaction,
+    data: transactions,
+  } = useCrudTransaction();
   const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
 
   // Constant Value
@@ -98,11 +104,11 @@ const Home = ({ route, navigation }) => {
   // Calulate distance between two coords
   useEffect(() => {
     let output = 0;
-    if (searchLocation) {
-      output = haversineDistance(location, searchLocation);
+    if (selectedLocation) {
+      output = haversineDistance(location, selectedLocation);
     }
     setDistance(output);
-  }, [searchLocation]);
+  }, [selectedLocation]);
 
   // When app is back in home screen cancel the transaction
   useEffect(() => {
@@ -151,7 +157,7 @@ const Home = ({ route, navigation }) => {
     return () => {
       if (subscription) {
         subscription.remove();
-        deleteOnlineUser(currentUser.id);
+        // deleteOnlineUser(currentUser.id);
       }
     };
   }, []);
@@ -160,9 +166,9 @@ const Home = ({ route, navigation }) => {
 
   const handleAppStateChange = (nextAppState) => {
     if (appState === "active" && nextAppState.match(/inactive|background/)) {
-      deleteTransaction(currentUser);
+      // deleteTransaction(currentUser);
       setFindingRider(false);
-      deleteOnlineUser(currentUser.id);
+      // deleteOnlineUser(currentUser.id);
       if (watchInstance) {
         watchInstance.remove();
       }
@@ -195,6 +201,33 @@ const Home = ({ route, navigation }) => {
     );
   };
 
+  const handleAddTransaction = () => {
+    if (selectedLocation) {
+      setFindingRider(true);
+      addTransaction({
+        origin: {
+          latitude: location?.latitude,
+          longitude: location?.longitude,
+          address: location?.address,
+        },
+        destination: {
+          latitude: selectedLocation?.latitude,
+          longitude: selectedLocation?.longitude,
+          address: selectedLocation?.address,
+        },
+        currentUser: currentUser,
+        distance,
+        serviceType: "Pahatod",
+      });
+    } else {
+      Toast.show({
+        type: "info",
+        text1: "Please select drop off location",
+      });
+    }
+  };
+
+  //Components
   const reverseGeocode = async (latitude, longitude) => {
     try {
       const geocode = await Location.reverseGeocodeAsync({
@@ -219,6 +252,7 @@ const Home = ({ route, navigation }) => {
     return <Image source={rider} style={{ width: 40, height: 40 }} />;
   };
 
+  console.log(selectedTransaction, "Fklsdfjdlk");
   return (
     <View
       style={{
@@ -274,48 +308,63 @@ const Home = ({ route, navigation }) => {
             marginTop: 30,
           }}
         >
-          <View style={{ marginVertical: 10 }}>
-            <Text style={{ fontSize: 15, marginBottom: 5, fontWeight: "bold" }}>
-              Jhon Michael Molina
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Image
-                style={{ width: 20, height: 20, marginRight: 5 }}
-                source={redMarker}
-              />
-              <Text>Amiga Cafe</Text>
-            </View>
-            <View style={{ flexDirection: "row", marginTop: 5 }}>
-              <Image
-                style={{ width: 20, height: 20, marginRight: 5 }}
-                source={blueMarker}
-              />
-              <Text>Purok-3 Pamorangon Daet Camariens Norte</Text>
-            </View>
-            <Text style={{ marginVertical: 3 }}>Service Type: Padara</Text>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Button
-                icon="chevron-right"
-                text="View Transaction"
-                bgColor={"#B80B00"}
-              />
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                paddingVertical: 10,
-              }}
-            >
-              <View
-                style={{
-                  width: 200,
-                  height: 2,
-                  backgroundColor: "gray",
-                }}
-              ></View>
-            </View>
-          </View>
+          {transactions?.map((transaction) => {
+            return (
+              <View key={transaction.id} style={{ marginVertical: 10 }}>
+                <Text
+                  style={{ fontSize: 15, marginBottom: 5, fontWeight: "bold" }}
+                >
+                  {transaction.currentUser.firstName}{" "}
+                  {transaction.currentUser.lastName}
+                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Image
+                    style={{ width: 20, height: 20, marginRight: 5 }}
+                    source={redMarker}
+                  />
+                  <Text>{transaction.origin.address}</Text>
+                </View>
+                <View style={{ flexDirection: "row", marginTop: 5 }}>
+                  <Image
+                    style={{ width: 20, height: 20, marginRight: 5 }}
+                    source={blueMarker}
+                  />
+                  <Text>{transaction.destination.address}</Text>
+                </View>
+                <Text style={{ marginVertical: 3 }}>
+                  Service Type: {transaction.serviceType}{" "}
+                </Text>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Button
+                    event={() => {
+                      setSelectedTransaction(transaction);
+                      setTransactionModal(false);
+                    }}
+                    icon="chevron-right"
+                    text="View Transaction"
+                    bgColor={"#B80B00"}
+                  />
+                </View>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    paddingVertical: 10,
+                  }}
+                >
+                  <View
+                    style={{
+                      width: 200,
+                      height: 2,
+                      backgroundColor: "gray",
+                    }}
+                  ></View>
+                </View>
+              </View>
+            );
+          })}
         </ScrollView>
       </ScreenModal>
 
@@ -344,6 +393,7 @@ const Home = ({ route, navigation }) => {
               longitudeDelta: 0.009,
             }}
           >
+            {/* Current Location */}
             {location && (
               <Marker
                 onPress={() =>
@@ -358,10 +408,11 @@ const Home = ({ route, navigation }) => {
                 }}
                 title="Current Location"
                 description="This is where you are"
-                pinColor={IS_RIDER ? "#003082" : "#B80B00"}
+                pinColor={"#B80B00"}
               />
             )}
-            {searchLocation && (
+
+            {selectedLocation && (
               <Marker
                 draggable
                 onDragEnd={async (event) => {
@@ -369,24 +420,24 @@ const Home = ({ route, navigation }) => {
                   const address = await reverseGeocode(latitude, longitude);
                   pahatodInputRef.current?.setAddressText(address);
 
-                  setSearchLocation({ latitude, longitude, address });
+                  setSelectedLocation({ latitude, longitude, address });
                 }}
                 onPress={() =>
                   jumpToMarker({
-                    latitude: searchLocation?.latitude,
-                    longitude: searchLocation?.longitude,
+                    latitude: selectedLocation?.latitude,
+                    longitude: selectedLocation?.longitude,
                   })
                 }
                 coordinate={{
-                  latitude: searchLocation?.latitude,
-                  longitude: searchLocation?.longitude,
+                  latitude: selectedLocation?.latitude,
+                  longitude: selectedLocation?.longitude,
                 }}
                 pinColor="#003082"
                 title="Selected Location"
               />
             )}
 
-            {location && searchLocation && (
+            {location && selectedLocation && (
               <MapViewDirections
                 strokeWidth={4}
                 strokeColor="#B80B00"
@@ -395,14 +446,14 @@ const Home = ({ route, navigation }) => {
                   longitude: location?.longitude,
                 }}
                 destination={{
-                  latitude: searchLocation?.latitude,
-                  longitude: searchLocation?.longitude,
+                  latitude: selectedLocation?.latitude,
+                  longitude: selectedLocation?.longitude,
                 }}
                 apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
               />
             )}
-
-            {onlineUsers.length >= 1 && (
+            {/* Online Users */}
+            {onlineUsers.length >= 1 && !selectedTransaction && (
               <>
                 {onlineUsers?.map((user) => {
                   if (user.currentUser.id !== currentUser.id) {
@@ -437,6 +488,66 @@ const Home = ({ route, navigation }) => {
                     );
                   }
                 })}
+              </>
+            )}
+            {selectedTransaction && (
+              <>
+                <Marker
+                  onPress={() =>
+                    jumpToMarker({
+                      latitude: selectedTransaction.destination?.latitude,
+                      longitude: selectedTransaction.destination?.longitude,
+                    })
+                  }
+                  coordinate={{
+                    latitude: selectedTransaction.destination?.latitude,
+                    longitude: selectedTransaction.destination?.longitude,
+                  }}
+                  title="Destination / Drop Off"
+                  description="Customer Destination"
+                  pinColor={"#003082"}
+                />
+                <Marker
+                  children={<MarkerUserImage />}
+                  onPress={() =>
+                    jumpToMarker({
+                      latitude: selectedTransaction.origin?.latitude,
+                      longitude: selectedTransaction.origin?.longitude,
+                    })
+                  }
+                  coordinate={{
+                    latitude: selectedTransaction.origin?.latitude,
+                    longitude: selectedTransaction.origin?.longitude,
+                  }}
+                  title={selectedTransaction.currentUser.firstName}
+                  description="Customer Location"
+                />
+                <MapViewDirections
+                  strokeWidth={4}
+                  strokeColor="#B80B00"
+                  origin={{
+                    latitude: selectedTransaction.origin?.latitude,
+                    longitude: selectedTransaction.origin?.longitude,
+                  }}
+                  destination={{
+                    latitude: selectedTransaction.destination?.latitude,
+                    longitude: selectedTransaction.destination?.longitude,
+                  }}
+                  apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+                />
+                <MapViewDirections
+                  strokeWidth={4}
+                  strokeColor="#003082"
+                  origin={{
+                    latitude: location?.latitude,
+                    longitude: location?.longitude,
+                  }}
+                  destination={{
+                    latitude: selectedTransaction.origin?.latitude,
+                    longitude: selectedTransaction.origin?.longitude,
+                  }}
+                  apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+                />
               </>
             )}
           </MapView>
@@ -614,6 +725,59 @@ const Home = ({ route, navigation }) => {
 
         {/* Rider bottom navigation */}
 
+        {selectedTransaction && (
+          <View
+            style={{
+              position: "absolute",
+              backgroundColor: "white",
+              bottom: 100,
+              flex: 1,
+              marginHorizontal: 20,
+              minHeight: 50,
+              width: "90%",
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+              borderRadius: 10,
+            }}
+          >
+            <View>
+              <Image
+                style={{ width: 50, height: 50 }}
+                source={{ uri: selectedTransaction.currentUser.profilePic }}
+              />
+              <Text style={{ fontSize: 15 }}>
+                {selectedTransaction.currentUser.firstName}{" "}
+                {selectedTransaction.currentUser.lastName}
+              </Text>
+              <View
+                style={{
+                  width: 100,
+                  height: 2,
+                  backgroundColor: "gray",
+                  marginVertical: 4,
+                }}
+              ></View>
+            </View>
+            <View
+              style={{
+                borderRadius: 10,
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexDirection: "row",
+              }}
+            >
+              <View>
+                <Text>Service Type: {selectedTransaction.serviceType}</Text>
+                <Text>Distance: {selectedTransaction.distance} km</Text>
+              </View>
+              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                Price: ₱
+                {(selectedTransaction.distance * chargePerKilometer).toFixed(2)}
+              </Text>
+            </View>
+          </View>
+        )}
+
         {IS_RIDER && (
           <View
             style={{
@@ -632,44 +796,80 @@ const Home = ({ route, navigation }) => {
               paddingVertical: 20,
             }}
           >
-            <View
-              style={{
-                width: "33%",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <TouchableOpacity
-                onPress={() => setTransactionModal(true)}
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <FontAwesome name="motorcycle" size={30} color="#003082" />
-                <Text style={{ fontSize: 10 }}>Transaction</Text>
-              </TouchableOpacity>
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                width: "33%",
-              }}
-            >
-              <FontAwesome name="bolt" size={30} color="#003082" />
-              <Text style={{ fontSize: 10 }}>Auto Accept</Text>
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                width: "33%",
-              }}
-            >
-              <FontAwesome name="user" size={30} color="#003082" />
-              <Text style={{ fontSize: 10 }}>My Account</Text>
-            </View>
+            {selectedTransaction ? (
+              <>
+                <View
+                  style={{
+                    width: "50%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setSelectedTransaction(null)}
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <AntDesign name="closecircle" size={24} color="red" />
+                    <Text style={{ fontSize: 10 }}>Reject Ride</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "50%",
+                  }}
+                >
+                  <AntDesign name="checkcircle" size={24} color="green" />
+                  <Text style={{ fontSize: 10 }}>Accept Ride</Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <View
+                  style={{
+                    width: "33%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => setTransactionModal(true)}
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FontAwesome name="motorcycle" size={30} color="#003082" />
+                    <Text style={{ fontSize: 10 }}>Transaction</Text>
+                  </TouchableOpacity>
+                </View>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "33%",
+                  }}
+                >
+                  <FontAwesome name="bolt" size={30} color="#003082" />
+                  <Text style={{ fontSize: 10 }}>Auto Accept</Text>
+                </View>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "33%",
+                  }}
+                >
+                  <FontAwesome name="user" size={30} color="#003082" />
+                  <Text style={{ fontSize: 10 }}>My Account</Text>
+                </View>
+              </>
+            )}
           </View>
         )}
 
@@ -762,16 +962,19 @@ const Home = ({ route, navigation }) => {
                         textInput: { marginHorizontal: 10 },
                       }}
                       placeholder="Drop Off"
-                      onPress={(data, details = null) => {
+                      onPress={async (data, details = null) => {
                         const lat = details?.geometry?.location.lat;
                         const lng = details?.geometry?.location.lng;
+                        const address = await reverseGeocode(lat, lng);
+
                         jumpToMarker({
                           longitude: lng,
                           latitude: lat,
                         });
-                        setSearchLocation({
+                        setSelectedLocation({
                           latitude: lat,
                           longitude: lng,
+                          address,
                         });
                       }}
                       fetchDetails={true}
@@ -795,7 +998,7 @@ const Home = ({ route, navigation }) => {
                     <Button
                       event={() => {
                         setPahatodModal(false);
-                        setSearchLocation(null);
+                        setSelectedLocation(null);
                       }}
                       width={150}
                       style={{ marginTop: 20 }}
@@ -803,28 +1006,7 @@ const Home = ({ route, navigation }) => {
                       bgColor={"#00308299"}
                     />
                     <Button
-                      event={() => {
-                        if (searchLocation) {
-                          setFindingRider(true);
-                          addTransaction({
-                            origin: {
-                              latitude: location?.latitude,
-                              longitude: location?.longitude,
-                            },
-                            destination: {
-                              latitude: searchLocation?.latitude,
-                              longitude: searchLocation?.longitude,
-                            },
-                            currentUser: currentUser,
-                            distance,
-                          });
-                        } else {
-                          Toast.show({
-                            type: "info",
-                            text1: "Please select drop off location",
-                          });
-                        }
-                      }}
+                      event={handleAddTransaction}
                       width={150}
                       style={{ marginTop: 20 }}
                       text="Find a rider"
@@ -860,7 +1042,7 @@ const Home = ({ route, navigation }) => {
                       paddingVertical: 10,
                     }}
                   >
-                    {location && searchLocation && (
+                    {location && selectedLocation && (
                       <Text
                         style={{
                           color: "white",
@@ -883,7 +1065,7 @@ const Home = ({ route, navigation }) => {
                   <Button
                     event={() => {
                       setFindingRider(false);
-                      deleteTransaction(currentUser);
+                      // deleteTransaction(currentUser);
                     }}
                     text="Cancel Ride"
                     bgColor={"#B80B00"}
