@@ -71,6 +71,7 @@ const Home = ({ route, navigation }) => {
     getTransaction,
     singleData,
     setSingleData,
+    completeTransaction,
   } = useCrudTransaction();
   const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
 
@@ -172,6 +173,8 @@ const Home = ({ route, navigation }) => {
       getTransaction(selectedTransaction.id);
     }
   }, [selectedTransaction]);
+
+  console.log(singleData, "Lfdkl");
 
   //Handle when user is not on in the app
 
@@ -312,6 +315,7 @@ const Home = ({ route, navigation }) => {
             Available Transaction
           </Text>
         </View>
+
         <ScrollView
           style={{
             flex: 1,
@@ -396,82 +400,175 @@ const Home = ({ route, navigation }) => {
             Transaction History
           </Text>
         </View>
-        <ScrollView
-          style={{
-            flex: 1,
-            width: "100%",
-            minHeight: 200,
-            marginTop: 30,
-          }}
-        >
-          {transactions?.map((transaction) => {
-            if (
-              transaction.status == "Accepted" &&
-              transaction.rider.id == currentUser.id
-            ) {
-              return (
-                <View key={transaction.id} style={{ marginVertical: 10 }}>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      marginBottom: 5,
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {transaction.currentUser.firstName}{" "}
-                    {transaction.currentUser.lastName}
-                  </Text>
-                  <View style={{ flexDirection: "row" }}>
-                    <Image
-                      style={{ width: 20, height: 20, marginRight: 5 }}
-                      source={redMarker}
-                    />
-                    <Text>{transaction.origin.address}</Text>
-                  </View>
-                  <View style={{ flexDirection: "row", marginTop: 5 }}>
-                    <Image
-                      style={{ width: 20, height: 20, marginRight: 5 }}
-                      source={blueMarker}
-                    />
-                    <Text>{transaction.destination.address}</Text>
-                  </View>
-                  <Text style={{ marginVertical: 3 }}>
-                    Service Type: {transaction.serviceType}{" "}
-                  </Text>
-                  <View
-                    style={{ justifyContent: "center", alignItems: "center" }}
-                  >
-                    <Button
-                      event={() => {
-                        setSelectedTransaction(transaction);
-                        setTransactionModal(false);
-                        setHistoryModal(false);
+        {IS_RIDER && (
+          <ScrollView
+            style={{
+              flex: 1,
+              width: "100%",
+              minHeight: 200,
+              marginTop: 30,
+            }}
+          >
+            {transactions?.map((transaction) => {
+              if (
+                transaction.status == "Accepted" &&
+                transaction.rider.id == currentUser.id
+              ) {
+                return (
+                  <View key={transaction.id} style={{ marginVertical: 10 }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        marginBottom: 5,
+                        fontWeight: "bold",
                       }}
-                      icon="chevron-right"
-                      text="View Transaction"
-                      bgColor={"#B80B00"}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      paddingVertical: 10,
-                    }}
-                  >
+                    >
+                      {transaction.currentUser.firstName}{" "}
+                      {transaction.currentUser.lastName}
+                    </Text>
+                    <View style={{ flexDirection: "row" }}>
+                      <Image
+                        style={{ width: 20, height: 20, marginRight: 5 }}
+                        source={redMarker}
+                      />
+                      <Text>{transaction.origin.address}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", marginTop: 5 }}>
+                      <Image
+                        style={{ width: 20, height: 20, marginRight: 5 }}
+                        source={blueMarker}
+                      />
+                      <Text>{transaction.destination.address}</Text>
+                    </View>
+                    <Text style={{ marginVertical: 3 }}>
+                      Service Type: {transaction.serviceType}{" "}
+                    </Text>
+                    <View
+                      style={{ justifyContent: "center", alignItems: "center" }}
+                    >
+                      <Button
+                        event={() => {
+                          setSelectedTransaction(transaction);
+                          setTransactionModal(false);
+                          setHistoryModal(false);
+                        }}
+                        icon="chevron-right"
+                        text="View Transaction"
+                        bgColor={"#B80B00"}
+                      />
+                    </View>
                     <View
                       style={{
-                        width: 200,
-                        height: 2,
-                        backgroundColor: "gray",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingVertical: 10,
                       }}
-                    ></View>
+                    >
+                      <View
+                        style={{
+                          width: 200,
+                          height: 2,
+                          backgroundColor: "gray",
+                        }}
+                      ></View>
+                    </View>
                   </View>
-                </View>
-              );
-            }
-          })}
-        </ScrollView>
+                );
+              }
+            })}
+          </ScrollView>
+        )}
+
+        {!IS_RIDER && (
+          <ScrollView
+            style={{
+              flex: 1,
+              width: "100%",
+              minHeight: 200,
+              marginTop: 30,
+            }}
+          >
+            {transactions?.map((transaction) => {
+              if (transaction.currentUser.id == currentUser.id) {
+                return (
+                  <View key={transaction.id} style={{ marginVertical: 10 }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        marginBottom: 5,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {transaction.currentUser.firstName}{" "}
+                      {transaction.currentUser.lastName}
+                    </Text>
+                    <View style={{ flexDirection: "row" }}>
+                      <Image
+                        style={{ width: 20, height: 20, marginRight: 5 }}
+                        source={redMarker}
+                      />
+                      <Text>{transaction.origin.address}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", marginTop: 5 }}>
+                      <Image
+                        style={{ width: 20, height: 20, marginRight: 5 }}
+                        source={blueMarker}
+                      />
+                      <Text>{transaction.destination.address}</Text>
+                    </View>
+                    <Text style={{ marginVertical: 3 }}>
+                      Service Type: {transaction.serviceType}
+                    </Text>
+                    <Text
+                      style={{
+                        marginVertical: 3,
+                        color:
+                          transaction.status == "Completed" ? "green" : "black",
+                      }}
+                    >
+                      Status:{" "}
+                      {transaction.status ? transaction.status : "Pending"}
+                    </Text>
+                    <View
+                      style={{ justifyContent: "center", alignItems: "center" }}
+                    >
+                      {transaction.status !== "Completed" && (
+                        <Button
+                          event={() => {
+                            setSelectedTransaction(transaction);
+                            setPahatodModal(true);
+                            setFindingRider(true);
+                            setSelectedLocation(transaction.destination);
+                            setTransactionModal(false);
+                            setHistoryModal(false);
+                          }}
+                          icon="chevron-right"
+                          text="View Transaction"
+                          bgColor={"#B80B00"}
+                        />
+                      )}
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        paddingVertical: 10,
+                      }}
+                    >
+                      <View
+                        style={{
+                          width: 200,
+                          height: 2,
+                          backgroundColor: "gray",
+                        }}
+                      ></View>
+                    </View>
+                  </View>
+                );
+              }
+            })}
+          </ScrollView>
+        )}
       </ScreenModal>
 
       <View style={{ flex: 1, position: "relative" }}>
@@ -598,7 +695,7 @@ const Home = ({ route, navigation }) => {
                   })}
                 </>
               )}
-            {selectedTransaction && (
+            {selectedTransaction && IS_RIDER && (
               <>
                 <Marker
                   onPress={() =>
@@ -792,7 +889,7 @@ const Home = ({ route, navigation }) => {
         {!pahatodModal && !IS_RIDER && (
           <View
             style={{
-              backgroundColor: "#fefefe99",
+              backgroundColor: "#fefefe",
               height: 170,
               position: "absolute",
               bottom: 0,
@@ -834,7 +931,7 @@ const Home = ({ route, navigation }) => {
 
         {/* Rider bottom navigation */}
 
-        {singleData && (
+        {singleData && IS_RIDER && (
           <View
             style={{
               position: "absolute",
@@ -914,7 +1011,7 @@ const Home = ({ route, navigation }) => {
                       <>
                         <View
                           style={{
-                            width: "50%",
+                            width: "100%",
                             justifyContent: "center",
                             alignItems: "center",
                           }}
@@ -930,30 +1027,8 @@ const Home = ({ route, navigation }) => {
                                 setSelectedTransaction(null);
                                 setSingleData(null);
                               }}
-                              width={130}
                               text="Close Modal"
                               bgColor={"#B80B00"}
-                            />
-                          </TouchableOpacity>
-                        </View>
-                        <View
-                          style={{
-                            width: "50%",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <TouchableOpacity
-                            onPress={() => setSelectedTransaction(null)}
-                            style={{
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Button
-                              width={130}
-                              text="Completed"
-                              bgColor={"#08B783"}
                             />
                           </TouchableOpacity>
                         </View>
@@ -1086,7 +1161,7 @@ const Home = ({ route, navigation }) => {
                 position: "absolute",
                 bottom: 0,
                 width: "100%",
-                backgroundColor: "#2099B699",
+                backgroundColor: "white",
                 borderTopLeftRadius: 50,
                 borderTopRightRadius: 50,
                 paddingVertical: 30,
@@ -1096,7 +1171,7 @@ const Home = ({ route, navigation }) => {
                 style={{
                   fontSize: 25,
                   marginBottom: 10,
-                  color: "white",
+                  color: "black",
                   fontWeight: "bold",
                   marginBottom: 15,
                 }}
@@ -1217,22 +1292,42 @@ const Home = ({ route, navigation }) => {
               )}
               {findingRider && (
                 <>
-                  <LottieView
-                    autoPlay
-                    style={{ width: 100, height: 100 }}
-                    source={require("../assets/maps.json")}
-                  />
+                  {singleData?.status !== "Accepted" && (
+                    <>
+                      <LottieView
+                        autoPlay
+                        style={{ width: 100, height: 100 }}
+                        source={require("../assets/maps.json")}
+                      />
 
-                  <Text
-                    style={{
-                      color: "white",
-                      fontSize: 16,
-                      marginBottom: 5,
-                      textAlign: "center",
-                    }}
-                  >
-                    Waiting for a rider, don't leave the app
-                  </Text>
+                      <Text
+                        style={{
+                          color: "black",
+                          fontSize: 16,
+                          marginBottom: 5,
+                          textAlign: "center",
+                        }}
+                      >
+                        Waiting for a rider
+                      </Text>
+                    </>
+                  )}
+
+                  {singleData && singleData?.status == "Accepted" && (
+                    <>
+                      <View style={{ width: "100%" }}>
+                        <Image
+                          style={{ width: 50, height: 50 }}
+                          source={{ uri: singleData?.rider.profilePic }}
+                        />
+                        <Text style={{ fontSize: 15 }}>
+                          {singleData?.rider.firstName}{" "}
+                          {singleData.rider.lastName}
+                        </Text>
+                      </View>
+                    </>
+                  )}
+
                   <View
                     style={{
                       width: "100%",
@@ -1245,16 +1340,16 @@ const Home = ({ route, navigation }) => {
                     {location && selectedLocation && (
                       <Text
                         style={{
-                          color: "white",
-                          fontSize: 20,
+                          color: "black",
+                          fontSize: 12,
                         }}
                       >
-                        Distance: {distance} km
+                        Destination Distance: {distance} km
                       </Text>
                     )}
                     <Text
                       style={{
-                        color: "white",
+                        color: "black",
                         fontWeight: "bold",
                         fontSize: 20,
                       }}
@@ -1262,14 +1357,48 @@ const Home = ({ route, navigation }) => {
                       Total: ₱{(distance * chargePerKilometer).toFixed(2)}
                     </Text>
                   </View>
-                  <Button
-                    event={() => {
-                      setFindingRider(false);
-                      // deleteTransaction(currentUser);
-                    }}
-                    text="Cancel Ride"
-                    bgColor={"#B80B00"}
-                  />
+                  <View style={{ flexDirection: "row" }}>
+                    <Button
+                      width={150}
+                      event={() => {
+                        setFindingRider(false);
+                        setPahatodModal(false);
+                        setSelectedLocation(null);
+                        setSelectedTransaction(null);
+                        setSingleData(null);
+                        // deleteTransaction(currentUser);
+                      }}
+                      text="Close Modal"
+                      bgColor={"#00308299"}
+                    />
+                    {singleData?.status == "Accepted" ? (
+                      <Button
+                        width={150}
+                        event={() => {
+                          setFindingRider(false);
+                          setPahatodModal(false);
+                          setSelectedLocation(null);
+                          setSelectedTransaction(null);
+                          setSingleData(null);
+                          completeTransaction(singleData);
+                        }}
+                        text="Complete Ride"
+                        bgColor={"green"}
+                      />
+                    ) : (
+                      <Button
+                        width={150}
+                        event={() => {
+                          setFindingRider(false);
+                          setPahatodModal(false);
+                          setSelectedLocation(null);
+                          deleteTransaction(singleData);
+                        }}
+                        text="Cancel Ride"
+                        bgColor={"#B80B00"}
+                      />
+                    )}
+                  </View>
                 </>
               )}
             </View>

@@ -31,18 +31,21 @@ const useCrudTransaction = () => {
     const colRef = collection(db, "transaction");
     addDoc(colRef, { ...forms, createdAt: serverTimestamp() });
   };
-  const deleteTransaction = async (currentUser) => {
-    const colRef = collection(db, "transaction");
-    const transactions = await getDocs(colRef);
+  const deleteTransaction = async (transaction) => {
+    const docRef = doc(db, "transaction", transaction.id);
+    console.log(transaction, "delete");
+    deleteDoc(docRef);
+    // const colRef = collection(db, "transaction");
+    // const transactions = await getDocs(colRef);
 
-    transactions.docs.forEach((transaction) => {
-      const transactionData = transaction.data();
+    // transactions.docs.forEach((transaction) => {
+    //   const transactionData = transaction.data();
 
-      if (transactionData.currentUser.id == currentUser.id) {
-        const docRef = doc(db, "transaction", transaction.id);
-        deleteDoc(docRef);
-      }
-    });
+    //   if (transactionData.currentUser.id == currentUser.id) {
+    //     const docRef = doc(db, "transaction", transaction.id);
+    //     deleteDoc(docRef);
+    //   }
+    // });
   };
 
   const acceptTransaction = (transaction, currentUser) => {
@@ -54,11 +57,16 @@ const useCrudTransaction = () => {
     });
   };
 
+  const completeTransaction = (transaction) => {
+    const docRef = doc(db, "transaction", transaction.id);
+    updateDoc(docRef, { ...transaction, status: "Completed" });
+  };
+
   const getTransaction = (id) => {
     const docRef = doc(db, "transaction", id);
     onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
-        setSingleData(doc.data());
+        setSingleData({ ...doc.data(), id: doc.id });
       } else {
         console.log("No such document!");
       }
@@ -73,6 +81,7 @@ const useCrudTransaction = () => {
     getTransaction,
     singleData,
     setSingleData,
+    completeTransaction,
   };
 };
 
