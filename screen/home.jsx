@@ -66,6 +66,7 @@ const Home = ({ route, navigation }) => {
     addTransaction,
     deleteTransaction,
     data: transactions,
+    acceptTransaction,
   } = useCrudTransaction();
   const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
 
@@ -252,7 +253,6 @@ const Home = ({ route, navigation }) => {
     return <Image source={rider} style={{ width: 40, height: 40 }} />;
   };
 
-  console.log(selectedTransaction, "Fklsdfjdlk");
   return (
     <View
       style={{
@@ -298,7 +298,9 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setTransactionModal(false)}
       >
         <View>
-          <Text style={{ fontWeight: "bold", fontSize: 20 }}>Transaction</Text>
+          <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+            Available Transaction
+          </Text>
         </View>
         <ScrollView
           style={{
@@ -733,7 +735,7 @@ const Home = ({ route, navigation }) => {
             style={{
               position: "absolute",
               backgroundColor: "white",
-              bottom: 100,
+              bottom: 130,
               flex: 1,
               marginHorizontal: 20,
               minHeight: 50,
@@ -803,35 +805,105 @@ const Home = ({ route, navigation }) => {
               <>
                 {selectedTransaction ? (
                   <>
-                    <View
-                      style={{
-                        width: "50%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => setSelectedTransaction(null)}
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <AntDesign name="closecircle" size={24} color="red" />
-                        <Text style={{ fontSize: 10 }}>Reject Ride</Text>
-                      </TouchableOpacity>
-                    </View>
+                    {selectedTransaction?.status == "Accepted" ? (
+                      <>
+                        <View
+                          style={{
+                            width: "50%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <TouchableOpacity
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Button
+                              event={() => setSelectedTransaction(null)}
+                              width={130}
+                              text="Close Modal"
+                              bgColor={"#B80B00"}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                        <View
+                          style={{
+                            width: "50%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <TouchableOpacity
+                            onPress={() => setSelectedTransaction(null)}
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <Button
+                              width={130}
+                              text="Completed"
+                              bgColor={"#08B783"}
+                            />
+                          </TouchableOpacity>
+                        </View>
+                      </>
+                    ) : (
+                      <>
+                        <View
+                          style={{
+                            width: "50%",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <TouchableOpacity
+                            onPress={() => setSelectedTransaction(null)}
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
+                            <AntDesign
+                              name="closecircle"
+                              size={24}
+                              color="red"
+                            />
+                            <Text style={{ fontSize: 10 }}>Reject Ride</Text>
+                          </TouchableOpacity>
+                        </View>
 
-                    <View
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "50%",
-                      }}
-                    >
-                      <AntDesign name="checkcircle" size={24} color="green" />
-                      <Text style={{ fontSize: 10 }}>Accept Ride</Text>
-                    </View>
+                        <View
+                          style={{
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "50%",
+                          }}
+                        >
+                          <TouchableOpacity
+                            style={{
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                            onPress={() => {
+                              acceptTransaction(
+                                selectedTransaction,
+                                currentUser
+                              );
+                            }}
+                          >
+                            <AntDesign
+                              name="checkcircle"
+                              size={24}
+                              color="green"
+                            />
+                            <Text style={{ fontSize: 10 }}>Accept Ride</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </>
+                    )}
                   </>
                 ) : (
                   <>

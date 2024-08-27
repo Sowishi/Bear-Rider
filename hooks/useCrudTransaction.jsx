@@ -7,6 +7,7 @@ import {
   getDocs,
   onSnapshot,
   query,
+  updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { serverTimestamp } from "firebase/database";
@@ -42,7 +43,16 @@ const useCrudTransaction = () => {
       }
     });
   };
-  return { addTransaction, deleteTransaction, data };
+
+  const acceptTransaction = (transaction, currentUser) => {
+    const docRef = doc(db, "transaction", transaction.id);
+    updateDoc(docRef, {
+      ...transaction,
+      rider: currentUser,
+      status: "Accepted",
+    });
+  };
+  return { addTransaction, deleteTransaction, data, acceptTransaction };
 };
 
 export default useCrudTransaction;
