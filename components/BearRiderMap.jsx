@@ -290,7 +290,7 @@ const BearRiderMap = ({
                   latitude: selectedTransaction.riderLocation?.latitude,
                   longitude: selectedTransaction.riderLocation?.longitude,
                 }}
-                title={selectedTransaction?.currentUser.firstName}
+                title={selectedTransaction?.rider.firstName}
                 description="Customer Location"
               />
             </>

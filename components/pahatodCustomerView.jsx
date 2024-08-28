@@ -7,6 +7,8 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
 import Toast from "react-native-toast-message";
+import haversineDistance from "../utils/calculateDistance";
+import { useSmokeContext } from "../utils/appContext";
 
 const PahatodCustomerView = ({
   findingRider,
@@ -234,14 +236,35 @@ const PahatodCustomerView = ({
               }}
             >
               {location && selectedLocation && (
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 12,
-                  }}
-                >
-                  Destination Distance: {distance} km
-                </Text>
+                <View>
+                  {singleData?.riderLocation && (
+                    <Text
+                      style={{
+                        color: "black",
+                        fontSize: 12,
+                      }}
+                    >
+                      Rider Distance:{" "}
+                      {haversineDistance(
+                        {
+                          latitude: singleData.riderLocation.latitude,
+                          longitude: singleData.riderLocation.longitude,
+                        },
+                        location
+                      )}{" "}
+                      km
+                    </Text>
+                  )}
+
+                  <Text
+                    style={{
+                      color: "black",
+                      fontSize: 12,
+                    }}
+                  >
+                    Destination Distance: {distance} km
+                  </Text>
+                </View>
               )}
               <Text
                 style={{
