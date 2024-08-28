@@ -167,11 +167,12 @@ const Home = ({ route, navigation }) => {
     return () => {
       if (subscription) {
         subscription.remove();
-        // deleteOnlineUser(currentUser.id);
+        deleteOnlineUser(currentUser.id);
       }
     };
   }, []);
 
+  //Watch to the transaction change data
   useEffect(() => {
     if (selectedTransaction) {
       getTransaction(selectedTransaction.id);
@@ -186,7 +187,7 @@ const Home = ({ route, navigation }) => {
     if (appState === "active" && nextAppState.match(/inactive|background/)) {
       // deleteTransaction(currentUser);
       setFindingRider(false);
-      // deleteOnlineUser(currentUser.id);
+      deleteOnlineUser(currentUser.id);
       if (watchInstance) {
         watchInstance.remove();
       }
@@ -214,8 +215,7 @@ const Home = ({ route, navigation }) => {
 
   const handleAddTransaction = () => {
     if (selectedLocation) {
-      setFindingRider(true);
-      addTransaction({
+      const transaction = {
         origin: {
           latitude: location?.latitude,
           longitude: location?.longitude,
@@ -229,7 +229,9 @@ const Home = ({ route, navigation }) => {
         currentUser: currentUser,
         distance,
         serviceType: "Pahatod",
-      });
+      };
+      setFindingRider(true);
+      addTransaction(transaction);
     } else {
       Toast.show({
         type: "info",
@@ -381,6 +383,7 @@ const Home = ({ route, navigation }) => {
             setSingleData={setSingleData}
             deleteTransaction={deleteTransaction}
             completeTransaction={completeTransaction}
+            currentUser={currentUser}
           />
         )}
       </View>

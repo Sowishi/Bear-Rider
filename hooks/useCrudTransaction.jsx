@@ -6,11 +6,12 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  orderBy,
   query,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { serverTimestamp } from "firebase/database";
+import { serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
 const useCrudTransaction = () => {
@@ -18,12 +19,13 @@ const useCrudTransaction = () => {
   const [singleData, setSingleData] = useState();
   useEffect(() => {
     const colRef = collection(db, "transaction");
-    onSnapshot(colRef, (snapshot) => {
+    const q = query(colRef, orderBy("createdAt"));
+    onSnapshot(q, (snapshot) => {
       const output = [];
       snapshot.docs.forEach((doc) => {
         output.push({ ...doc.data(), id: doc.id });
       });
-      setData(output);
+      setData(output.reverse());
     });
   }, []);
 

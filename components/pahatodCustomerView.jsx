@@ -6,6 +6,7 @@ import blueMarker from "../assets/blue-marker.png";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
+import Toast from "react-native-toast-message";
 
 const PahatodCustomerView = ({
   findingRider,
@@ -24,6 +25,7 @@ const PahatodCustomerView = ({
   setSingleData,
   deleteTransaction,
   completeTransaction,
+  currentUser,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -263,10 +265,30 @@ const PahatodCustomerView = ({
                   setSingleData(null);
                   // deleteTransaction(currentUser);
                 }}
-                text="Close Modal"
+                text="Hide Modal"
                 bgColor={"#00308299"}
               />
-              {singleData?.status == "Accepted" ? (
+              {singleData && singleData?.status !== "Accepted" && (
+                <Button
+                  width={150}
+                  event={() => {
+                    setFindingRider(false);
+                    setPahatodModal(false);
+                    setSelectedLocation(null);
+                    setSelectedTransaction(null);
+                    setSingleData(null);
+                    deleteTransaction(singleData);
+                    Toast.show({
+                      type: "success",
+                      text1: "Your ride is cancelled successfully.",
+                    });
+                  }}
+                  text="Cancel Ride"
+                  bgColor={"#B80B00"}
+                />
+              )}
+
+              {singleData?.status == "Accepted" && (
                 <Button
                   width={150}
                   event={() => {
@@ -276,22 +298,13 @@ const PahatodCustomerView = ({
                     setSelectedTransaction(null);
                     setSingleData(null);
                     completeTransaction(singleData);
+                    Toast.show({
+                      type: "success",
+                      text1: "Thank you for choosing, Bear Rider Express! 😊",
+                    });
                   }}
                   text="Complete Ride"
                   bgColor={"green"}
-                />
-              ) : (
-                <Button
-                  width={150}
-                  event={() => {
-                    deleteTransaction(singleData);
-                    setFindingRider(false);
-                    setPahatodModal(false);
-                    setSelectedLocation(null);
-                    setSelectedTransaction(null);
-                  }}
-                  text="Cancel Ride"
-                  bgColor={"#B80B00"}
                 />
               )}
             </View>

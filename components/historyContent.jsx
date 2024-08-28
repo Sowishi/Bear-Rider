@@ -3,6 +3,7 @@ import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
 import Button from "./button";
 import { useSmokeContext } from "../utils/appContext";
+import moment from "moment";
 const HistoryContent = ({
   transactions,
   setSelectedTransaction,
@@ -110,19 +111,39 @@ const HistoryContent = ({
           }}
         >
           {transactions?.map((transaction) => {
+            const timeStamp = transaction.createdAt.toDate();
+            const date = moment(timeStamp).format("LLL");
             if (transaction.currentUser.id == currentUser.id) {
               return (
                 <View key={transaction.id} style={{ marginVertical: 10 }}>
-                  <Text
+                  <View
                     style={{
-                      fontSize: 15,
-                      marginBottom: 5,
-                      fontWeight: "bold",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginBottom: 10,
                     }}
                   >
-                    {transaction.currentUser.firstName}{" "}
-                    {transaction.currentUser.lastName}
-                  </Text>
+                    <Text
+                      style={{
+                        fontSize: 17,
+                        marginBottom: 5,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {transaction.currentUser.firstName}{" "}
+                      {transaction.currentUser.lastName}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        marginBottom: 5,
+                      }}
+                    >
+                      {date}
+                    </Text>
+                  </View>
+
                   <View style={{ flexDirection: "row" }}>
                     <Image
                       style={{ width: 20, height: 20, marginRight: 5 }}
