@@ -17,10 +17,10 @@ const BearRiderMap = ({
   isOnline,
   IS_RIDER,
   pahatodInputRef,
+  mapRef,
 }) => {
   const { mapView, currentUser } = useSmokeContext();
   const { onlineUsers } = useAddOnline();
-  const mapRef = useRef();
 
   const MarkerUserImage = () => {
     return <Image source={people} style={{ width: 50, height: 50 }} />;
