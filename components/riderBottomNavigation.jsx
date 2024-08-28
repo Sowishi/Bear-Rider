@@ -11,6 +11,7 @@ const RiderBottomNavigation = ({
   setSelectedTransaction,
   acceptTransaction,
   selectedTransaction,
+  location,
 }) => {
   const { currentUser } = useSmokeContext();
   return (
@@ -98,7 +99,11 @@ const RiderBottomNavigation = ({
                         alignItems: "center",
                       }}
                       onPress={() => {
-                        acceptTransaction(selectedTransaction, currentUser);
+                        acceptTransaction(
+                          selectedTransaction,
+                          currentUser,
+                          location
+                        );
                       }}
                     >
                       <AntDesign name="checkcircle" size={24} color="green" />

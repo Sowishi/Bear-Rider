@@ -50,11 +50,12 @@ const useCrudTransaction = () => {
     // });
   };
 
-  const acceptTransaction = (transaction, currentUser) => {
+  const acceptTransaction = (transaction, currentUser, location) => {
     const docRef = doc(db, "transaction", transaction.id);
     updateDoc(docRef, {
       ...transaction,
       rider: currentUser,
+      riderLocation: location,
       status: "Accepted",
     });
   };

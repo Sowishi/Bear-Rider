@@ -231,6 +231,72 @@ const BearRiderMap = ({
           />
         </>
       )}
+      {selectedTransaction && !IS_RIDER && (
+        <>
+          <Marker
+            onPress={() =>
+              jumpToMarker({
+                latitude: selectedTransaction.destination?.latitude,
+                longitude: selectedTransaction.destination?.longitude,
+              })
+            }
+            coordinate={{
+              latitude: selectedTransaction.destination?.latitude,
+              longitude: selectedTransaction.destination?.longitude,
+            }}
+            title="Destination / Drop Off"
+            description="Customer Destination"
+            pinColor={"#003082"}
+          />
+
+          <MapViewDirections
+            strokeWidth={4}
+            strokeColor="#B80B00"
+            origin={{
+              latitude: selectedTransaction.origin?.latitude,
+              longitude: selectedTransaction.origin?.longitude,
+            }}
+            destination={{
+              latitude: selectedTransaction.destination?.latitude,
+              longitude: selectedTransaction.destination?.longitude,
+            }}
+            apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+          />
+
+          {selectedTransaction.riderLocation && (
+            <>
+              <MapViewDirections
+                strokeWidth={4}
+                strokeColor="#003082"
+                origin={{
+                  latitude: location?.latitude,
+                  longitude: location?.longitude,
+                }}
+                destination={{
+                  latitude: selectedTransaction.riderLocation?.latitude,
+                  longitude: selectedTransaction.riderLocation?.longitude,
+                }}
+                apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+              />
+              <Marker
+                children={<MarkerRiderImage />}
+                onPress={() =>
+                  jumpToMarker({
+                    latitude: selectedTransaction.riderLocation?.latitude,
+                    longitude: selectedTransaction.riderLocation?.longitude,
+                  })
+                }
+                coordinate={{
+                  latitude: selectedTransaction.riderLocation?.latitude,
+                  longitude: selectedTransaction.riderLocation?.longitude,
+                }}
+                title={selectedTransaction?.currentUser.firstName}
+                description="Customer Location"
+              />
+            </>
+          )}
+        </>
+      )}
     </MapView>
   );
 };

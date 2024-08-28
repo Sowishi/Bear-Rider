@@ -354,6 +354,7 @@ const Home = ({ route, navigation }) => {
 
         {IS_RIDER && (
           <RiderBottomNavigation
+            location={location}
             isOnline={isOnline}
             singleData={singleData}
             setTransactionModal={setTransactionModal}
