@@ -49,10 +49,11 @@ const HistoryContent = ({
           {transactions?.map((transaction) => {
             if (
               transaction?.rider?.id == currentUser.id &&
-              transaction.status == "Accepted"
+              transaction.status
             ) {
               return (
                 <TransactionCard
+                  key={transaction.id}
                   handleViewRider={handleViewRider}
                   transaction={transaction}
                 />
@@ -75,6 +76,7 @@ const HistoryContent = ({
             if (transaction.currentUser.id == currentUser.id) {
               return (
                 <TransactionCard
+                  key={transaction.id}
                   handleViewCustomer={handleViewCustomer}
                   transaction={transaction}
                 />
