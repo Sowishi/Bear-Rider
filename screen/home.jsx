@@ -229,6 +229,7 @@ const Home = ({ route, navigation }) => {
         currentUser: currentUser,
         distance,
         serviceType: "Pahatod",
+        totalPrice: (distance * chargePerKilometer).toFixed(2),
       };
       setFindingRider(true);
       addTransaction(transaction);

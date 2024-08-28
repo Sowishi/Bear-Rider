@@ -25,7 +25,6 @@ const PahatodCustomerView = ({
   setSingleData,
   deleteTransaction,
   completeTransaction,
-  currentUser,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {

@@ -24,7 +24,7 @@ const TransactionContent = ({
         }}
       >
         {transactions?.map((transaction) => {
-          if (transaction.status !== "Accepted") {
+          if (!transaction.status) {
             return (
               <View key={transaction.id} style={{ marginVertical: 10 }}>
                 <Text
