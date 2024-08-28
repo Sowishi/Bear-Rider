@@ -20,8 +20,6 @@ import Button from "../components/button";
 import BottomModal from "../components/bottomModal";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useSmokeContext } from "../utils/appContext";
-import redMarker from "../assets/red-marker.png";
-import blueMarker from "../assets/blue-marker.png";
 import MapViewDirections from "react-native-maps-directions";
 import haversineDistance from "../utils/calculateDistance";
 import Toast from "react-native-toast-message";
@@ -39,6 +37,8 @@ import HistoryContent from "../components/historyContent";
 import MapHeader from "../components/mapHeader";
 import PickServiceButton from "../components/pickServiceButton";
 import RiderAcceptedView from "../components/riderAcceptedView";
+import RiderBottomNavigation from "../components/riderBottomNavigation";
+import PahatodCustomerView from "../components/pahatodCustomerView";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -212,13 +212,6 @@ const Home = ({ route, navigation }) => {
     setLocation({ latitude: lat, longitude: long, address });
   };
 
-  const jumpToMarker = (coords) => {
-    mapRef.current?.animateToRegion(
-      { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
-      1000
-    );
-  };
-
   const handleAddTransaction = () => {
     if (selectedLocation) {
       setFindingRider(true);
@@ -346,8 +339,7 @@ const Home = ({ route, navigation }) => {
         {!pahatodModal && !IS_RIDER && (
           <PickServiceButton setServiceModal={setServiceModal} />
         )}
-
-        {/* Rider bottom navigation */}
+        {/* Rider Accepeted View */}
 
         {singleData && IS_RIDER && (
           <RiderAcceptedView
@@ -355,426 +347,41 @@ const Home = ({ route, navigation }) => {
             chargePerKilometer={chargePerKilometer}
           />
         )}
+        {/* Rider bottom navigation */}
 
         {IS_RIDER && (
-          <View
-            style={{
-              position: "absolute",
-              backgroundColor: "white",
-              bottom: 20,
-              flex: 1,
-              marginHorizontal: 20,
-              minHeight: 50,
-              width: "90%",
-              borderRadius: 10,
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexDirection: "row",
-              paddingHorizontal: 20,
-              paddingVertical: 20,
-            }}
-          >
-            {isOnline ? (
-              <>
-                {singleData ? (
-                  <>
-                    {singleData?.status == "Accepted" ? (
-                      <>
-                        <View
-                          style={{
-                            width: "100%",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <TouchableOpacity
-                            style={{
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <Button
-                              event={() => {
-                                setSelectedTransaction(null);
-                                setSingleData(null);
-                              }}
-                              text="Close Modal"
-                              bgColor={"#B80B00"}
-                            />
-                          </TouchableOpacity>
-                        </View>
-                      </>
-                    ) : (
-                      <>
-                        <View
-                          style={{
-                            width: "50%",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <TouchableOpacity
-                            onPress={() => {
-                              setSelectedTransaction(null);
-                              setSingleData(null);
-                            }}
-                            style={{
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                          >
-                            <AntDesign
-                              name="closecircle"
-                              size={24}
-                              color="red"
-                            />
-                            <Text style={{ fontSize: 10 }}>Reject Ride</Text>
-                          </TouchableOpacity>
-                        </View>
-
-                        <View
-                          style={{
-                            justifyContent: "center",
-                            alignItems: "center",
-                            width: "50%",
-                          }}
-                        >
-                          <TouchableOpacity
-                            style={{
-                              justifyContent: "center",
-                              alignItems: "center",
-                            }}
-                            onPress={() => {
-                              acceptTransaction(
-                                selectedTransaction,
-                                currentUser
-                              );
-                            }}
-                          >
-                            <AntDesign
-                              name="checkcircle"
-                              size={24}
-                              color="green"
-                            />
-                            <Text style={{ fontSize: 10 }}>Accept Ride</Text>
-                          </TouchableOpacity>
-                        </View>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <View
-                      style={{
-                        width: "33%",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => setTransactionModal(true)}
-                        style={{
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        <FontAwesome
-                          name="motorcycle"
-                          size={30}
-                          color="#003082"
-                        />
-                        <Text style={{ fontSize: 10 }}>Transaction</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "33%",
-                      }}
-                    >
-                      <FontAwesome name="bolt" size={30} color="#003082" />
-                      <Text style={{ fontSize: 10 }}>Auto Accept</Text>
-                    </View>
-                    <View
-                      style={{
-                        justifyContent: "center",
-                        alignItems: "center",
-                        width: "33%",
-                      }}
-                    >
-                      <FontAwesome name="user" size={30} color="#003082" />
-                      <Text style={{ fontSize: 10 }}>My Account</Text>
-                    </View>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                <Text style={{ fontSize: 13, textAlign: "center" }}>
-                  You're offline, please turn the power button 🔴
-                </Text>
-              </>
-            )}
-          </View>
+          <RiderBottomNavigation
+            isOnline={isOnline}
+            singleData={singleData}
+            setTransactionModal={setTransactionModal}
+            setSingleData={setSingleData}
+            setSelectedTransaction={setSelectedTransaction}
+            acceptTransaction={acceptTransaction}
+            selectedTransaction={selectedTransaction}
+          />
         )}
 
         {/* Pahatod UI Customer POV */}
 
         {pahatodModal && (
-          <>
-            <View
-              style={{
-                justifyContent: "flex-start",
-                alignItems: "center",
-                padding: 20,
-                flex: 1,
-                position: "absolute",
-                bottom: 0,
-                width: "100%",
-                backgroundColor: "white",
-                borderTopLeftRadius: 50,
-                borderTopRightRadius: 50,
-                paddingVertical: 30,
-              }}
-            >
-              <Text
-                style={{
-                  fontSize: 25,
-                  marginBottom: 10,
-                  color: "black",
-                  fontWeight: "bold",
-                  marginBottom: 15,
-                }}
-              >
-                Pahatod Service
-              </Text>
-              {!findingRider && (
-                <>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 2,
-                      elevation: 3,
-                      paddingHorizontal: 10,
-                      backgroundColor: "#D3D3D3",
-                      borderRadius: 10,
-                      marginBottom: 20,
-                    }}
-                  >
-                    <Image source={redMarker} />
-                    <TextInput
-                      editable={false}
-                      onChangeText={(text) => setEmail(text)}
-                      placeholder={location?.address}
-                      style={{
-                        flex: 1,
-                        paddingVertical: 15,
-                        paddingHorizontal: 10,
-                      }}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 1 },
-                      shadowOpacity: 0.8,
-                      shadowRadius: 2,
-                      elevation: 3,
-                      paddingHorizontal: 10,
-                      backgroundColor: "white",
-                      borderRadius: 10,
-                    }}
-                  >
-                    <GooglePlacesAutocomplete
-                      ref={pahatodInputRef}
-                      enablePoweredByContainer={false}
-                      renderLeftButton={() => {
-                        return <Image source={blueMarker} />;
-                      }}
-                      styles={{
-                        textInputContainer: {
-                          justifyContent: "center",
-                          alignItems: "center",
-                          width: "100%",
-                          paddingVertical: 3,
-                        },
-                        textInput: { marginHorizontal: 10 },
-                      }}
-                      placeholder="Drop Off"
-                      onPress={async (data, details = null) => {
-                        const lat = details?.geometry?.location.lat;
-                        const lng = details?.geometry?.location.lng;
-                        const address = await reverseGeocode(lat, lng);
-
-                        jumpToMarker({
-                          longitude: lng,
-                          latitude: lat,
-                        });
-                        setSelectedLocation({
-                          latitude: lat,
-                          longitude: lng,
-                          address,
-                        });
-                      }}
-                      fetchDetails={true}
-                      GooglePlacesDetailsQuery={{ fields: "geometry" }}
-                      query={{
-                        key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
-                        language: "en",
-                        components: "country:ph",
-                      }}
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "row",
-                      marginLeft: 20,
-                    }}
-                  >
-                    <Button
-                      event={() => {
-                        setPahatodModal(false);
-                        setSelectedLocation(null);
-                      }}
-                      width={150}
-                      style={{ marginTop: 20 }}
-                      text="Cancel"
-                      bgColor={"#00308299"}
-                    />
-                    <Button
-                      event={handleAddTransaction}
-                      width={150}
-                      style={{ marginTop: 20 }}
-                      text="Find a rider"
-                      bgColor={"#B80B00"}
-                    />
-                  </View>
-                </>
-              )}
-              {findingRider && (
-                <>
-                  {singleData?.status !== "Accepted" && (
-                    <>
-                      <LottieView
-                        autoPlay
-                        style={{ width: 100, height: 100 }}
-                        source={require("../assets/maps.json")}
-                      />
-
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 16,
-                          marginBottom: 5,
-                          textAlign: "center",
-                        }}
-                      >
-                        Waiting for a rider
-                      </Text>
-                    </>
-                  )}
-
-                  {singleData && singleData?.status == "Accepted" && (
-                    <>
-                      <View style={{ width: "100%" }}>
-                        <Image
-                          style={{ width: 50, height: 50 }}
-                          source={{ uri: singleData?.rider.profilePic }}
-                        />
-                        <Text style={{ fontSize: 15 }}>
-                          {singleData?.rider.firstName}{" "}
-                          {singleData.rider.lastName}
-                        </Text>
-                      </View>
-                    </>
-                  )}
-
-                  <View
-                    style={{
-                      width: "100%",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      paddingVertical: 10,
-                    }}
-                  >
-                    {location && selectedLocation && (
-                      <Text
-                        style={{
-                          color: "black",
-                          fontSize: 12,
-                        }}
-                      >
-                        Destination Distance: {distance} km
-                      </Text>
-                    )}
-                    <Text
-                      style={{
-                        color: "black",
-                        fontWeight: "bold",
-                        fontSize: 20,
-                      }}
-                    >
-                      Total: ₱{(distance * chargePerKilometer).toFixed(2)}
-                    </Text>
-                  </View>
-                  <View style={{ flexDirection: "row" }}>
-                    <Button
-                      width={150}
-                      event={() => {
-                        setFindingRider(false);
-                        setPahatodModal(false);
-                        setSelectedLocation(null);
-                        setSelectedTransaction(null);
-                        setSingleData(null);
-                        // deleteTransaction(currentUser);
-                      }}
-                      text="Close Modal"
-                      bgColor={"#00308299"}
-                    />
-                    {singleData?.status == "Accepted" ? (
-                      <Button
-                        width={150}
-                        event={() => {
-                          setFindingRider(false);
-                          setPahatodModal(false);
-                          setSelectedLocation(null);
-                          setSelectedTransaction(null);
-                          setSingleData(null);
-                          completeTransaction(singleData);
-                        }}
-                        text="Complete Ride"
-                        bgColor={"green"}
-                      />
-                    ) : (
-                      <Button
-                        width={150}
-                        event={() => {
-                          deleteTransaction(singleData);
-                          setFindingRider(false);
-                          setPahatodModal(false);
-                          setSelectedLocation(null);
-                          setSelectedTransaction(null);
-                        }}
-                        text="Cancel Ride"
-                        bgColor={"#B80B00"}
-                      />
-                    )}
-                  </View>
-                </>
-              )}
-            </View>
-          </>
+          <PahatodCustomerView
+            location={location}
+            setSelectedLocation={setSelectedLocation}
+            setSelectedTransaction={setSelectedTransaction}
+            selectedLocation={selectedLocation}
+            findingRider={findingRider}
+            setFindingRider={setFindingRider}
+            pahatodInputRef={pahatodInputRef}
+            handleAddTransaction={handleAddTransaction}
+            setPahatodModal={setPahatodModal}
+            mapRef={mapRef}
+            singleData={singleData}
+            distance={distance}
+            chargePerKilometer={chargePerKilometer}
+            setSingleData={setSingleData}
+            deleteTransaction={deleteTransaction}
+            completeTransaction={completeTransaction}
+          />
         )}
       </View>
     </View>

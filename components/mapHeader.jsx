@@ -60,7 +60,6 @@ const MapHeader = ({
               justifyContent: "center",
               alignItems: "flex-start",
               marginHorizontal: 10,
-              borderWidth: 1,
             }}
           >
             <TouchableOpacity
