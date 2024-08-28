@@ -37,6 +37,8 @@ import PickServiceContent from "../components/pickServiceContent";
 import TransactionContent from "../components/transactionContent";
 import HistoryContent from "../components/historyContent";
 import MapHeader from "../components/mapHeader";
+import PickServiceButton from "../components/pickServiceButton";
+import RiderAcceptedView from "../components/riderAcceptedView";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -335,107 +337,23 @@ const Home = ({ route, navigation }) => {
             location={location}
             mapRef={mapRef}
             navigation={navigation}
+            isOnline={isOnline}
+            setIsOnline={setIsOnline}
           />
         )}
 
         {/* Pick a service Button Customer*/}
         {!pahatodModal && !IS_RIDER && (
-          <View
-            style={{
-              backgroundColor: "#fefefe",
-              height: 170,
-              position: "absolute",
-              bottom: 0,
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              borderTopLeftRadius: 50,
-              borderTopRightRadius: 50,
-            }}
-          >
-            <View
-              style={{
-                height: 6,
-                width: 150,
-                backgroundColor: "black",
-                marginTop: 20,
-                marginBottom: 30,
-                borderRadius: 20,
-              }}
-            ></View>
-            <View
-              style={{
-                marginVertical: 10,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 20, marginBottom: 10 }}>
-                Choose a Service
-              </Text>
-              <Button
-                event={() => setServiceModal(true)}
-                text="Book"
-                bgColor={"#B80B00"}
-              />
-            </View>
-          </View>
+          <PickServiceButton setServiceModal={setServiceModal} />
         )}
 
         {/* Rider bottom navigation */}
 
         {singleData && IS_RIDER && (
-          <View
-            style={{
-              position: "absolute",
-              backgroundColor: "white",
-              bottom: 130,
-              flex: 1,
-              marginHorizontal: 20,
-              minHeight: 50,
-              width: "90%",
-              paddingHorizontal: 20,
-              paddingVertical: 20,
-              borderRadius: 10,
-            }}
-          >
-            <View>
-              <Image
-                style={{ width: 50, height: 50 }}
-                source={{
-                  uri: singleData?.currentUser.profilePic,
-                }}
-              />
-              <Text style={{ fontSize: 15 }}>
-                {singleData?.currentUser.firstName}{" "}
-                {singleData?.currentUser.lastName}
-              </Text>
-              <View
-                style={{
-                  width: 100,
-                  height: 2,
-                  backgroundColor: "gray",
-                  marginVertical: 4,
-                }}
-              ></View>
-            </View>
-            <View
-              style={{
-                borderRadius: 10,
-                justifyContent: "space-between",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <View>
-                <Text>Service Type: {singleData?.serviceType}</Text>
-                <Text>Distance: {singleData?.distance} km</Text>
-              </View>
-              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                Price: ₱{(singleData?.distance * chargePerKilometer).toFixed(2)}
-              </Text>
-            </View>
-          </View>
+          <RiderAcceptedView
+            singleData={singleData}
+            chargePerKilometer={chargePerKilometer}
+          />
         )}
 
         {IS_RIDER && (

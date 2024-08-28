@@ -2,7 +2,14 @@ import { Entypo, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { TextInput, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const MapHeader = ({ IS_RIDER, location, mapRef, navigation }) => {
+const MapHeader = ({
+  IS_RIDER,
+  location,
+  mapRef,
+  navigation,
+  isOnline,
+  setIsOnline,
+}) => {
   const jumpToMarker = (coords) => {
     mapRef.current?.animateToRegion(
       { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
