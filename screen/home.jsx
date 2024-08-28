@@ -12,7 +12,6 @@ import {
 import Constants from "expo-constants";
 
 import MapView, { Marker } from "react-native-maps";
-import { PROVIDER_GOOGLE } from "react-native-maps";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as Location from "expo-location";
@@ -29,11 +28,11 @@ import Toast from "react-native-toast-message";
 import LottieView from "lottie-react-native";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import useAddOnline from "../hooks/useAddOnline";
-import people from "../assets/user.png";
-import rider from "../assets/motorcycle.png";
+
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import ScreenModal from "../components/screenModal";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import BearRiderMap from "../components/BearRiderMap";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -61,8 +60,7 @@ const Home = ({ route, navigation }) => {
   const pahatodInputRef = useRef();
 
   // Hooks
-  const { mapView, currentUser, historyModal, setHistoryModal } =
-    useSmokeContext();
+  const { historyModal, setHistoryModal, currentUser } = useSmokeContext();
   const {
     addTransaction,
     deleteTransaction,
@@ -73,7 +71,7 @@ const Home = ({ route, navigation }) => {
     setSingleData,
     completeTransaction,
   } = useCrudTransaction();
-  const { addOnlineUser, deleteOnlineUser, onlineUsers } = useAddOnline();
+  const { addOnlineUser, deleteOnlineUser } = useAddOnline();
 
   // Constant Value
   const center = {
@@ -256,14 +254,6 @@ const Home = ({ route, navigation }) => {
       console.error(error);
       return null;
     }
-  };
-
-  const MarkerUserImage = () => {
-    return <Image source={people} style={{ width: 50, height: 50 }} />;
-  };
-
-  const MarkerRiderImage = () => {
-    return <Image source={rider} style={{ width: 40, height: 40 }} />;
   };
 
   return (
@@ -574,188 +564,15 @@ const Home = ({ route, navigation }) => {
       <View style={{ flex: 1, position: "relative" }}>
         {/* Maps View */}
         {location && (
-          <MapView
-            mapType={mapView}
-            showsBuildings
-            showsUserLocation
-            ref={mapRef}
-            showsTraffic={true}
-            provider={PROVIDER_GOOGLE}
-            showsMyLocationButton={true}
-            style={{ flex: 1, minHeight: 500, minWidth: 500 }}
-            initialRegion={{
-              latitude: 14.0996,
-              longitude: 122.955,
-              latitudeDelta: 0.8,
-              longitudeDelta: 0.5,
-            }}
-            region={{
-              latitude: location?.latitude,
-              longitude: location?.longitude,
-              latitudeDelta: 0.009,
-              longitudeDelta: 0.009,
-            }}
-          >
-            {/* Current Location */}
-            {location && (
-              <Marker
-                onPress={() =>
-                  jumpToMarker({
-                    latitude: location?.latitude,
-                    longitude: location?.longitude,
-                  })
-                }
-                coordinate={{
-                  latitude: location?.latitude,
-                  longitude: location?.longitude,
-                }}
-                title="Current Location"
-                description="This is where you are"
-                pinColor={"#B80B00"}
-              />
-            )}
-
-            {selectedLocation && (
-              <Marker
-                draggable
-                onDragEnd={async (event) => {
-                  const { latitude, longitude } = event.nativeEvent.coordinate;
-                  const address = await reverseGeocode(latitude, longitude);
-                  pahatodInputRef.current?.setAddressText(address);
-
-                  setSelectedLocation({ latitude, longitude, address });
-                }}
-                onPress={() =>
-                  jumpToMarker({
-                    latitude: selectedLocation?.latitude,
-                    longitude: selectedLocation?.longitude,
-                  })
-                }
-                coordinate={{
-                  latitude: selectedLocation?.latitude,
-                  longitude: selectedLocation?.longitude,
-                }}
-                pinColor="#003082"
-                title="Selected Location"
-              />
-            )}
-
-            {location && selectedLocation && (
-              <MapViewDirections
-                strokeWidth={4}
-                strokeColor="#B80B00"
-                origin={{
-                  latitude: location?.latitude,
-                  longitude: location?.longitude,
-                }}
-                destination={{
-                  latitude: selectedLocation?.latitude,
-                  longitude: selectedLocation?.longitude,
-                }}
-                apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-              />
-            )}
-            {/* Online Users */}
-            {onlineUsers.length >= 1 &&
-              !selectedTransaction &&
-              (isOnline || !IS_RIDER) && (
-                <>
-                  {onlineUsers?.map((user) => {
-                    if (user.currentUser.id !== currentUser.id) {
-                      return (
-                        <Marker
-                          children={
-                            user.currentUser.role == "Rider" ? (
-                              <MarkerRiderImage />
-                            ) : (
-                              <MarkerUserImage />
-                            )
-                          }
-                          pinColor="yellow"
-                          key={user.id}
-                          onPress={() =>
-                            jumpToMarker({
-                              latitude: user.latitude,
-                              longitude: user.longitude,
-                            })
-                          }
-                          coordinate={{
-                            latitude: user.latitude,
-                            longitude: user.longitude,
-                          }}
-                          title={user.currentUser.firstName}
-                          description={
-                            user.currentUser.role == "Rider"
-                              ? "Rider"
-                              : "Customer"
-                          }
-                        />
-                      );
-                    }
-                  })}
-                </>
-              )}
-            {selectedTransaction && IS_RIDER && (
-              <>
-                <Marker
-                  onPress={() =>
-                    jumpToMarker({
-                      latitude: selectedTransaction.destination?.latitude,
-                      longitude: selectedTransaction.destination?.longitude,
-                    })
-                  }
-                  coordinate={{
-                    latitude: selectedTransaction.destination?.latitude,
-                    longitude: selectedTransaction.destination?.longitude,
-                  }}
-                  title="Destination / Drop Off"
-                  description="Customer Destination"
-                  pinColor={"#003082"}
-                />
-                <Marker
-                  children={<MarkerUserImage />}
-                  onPress={() =>
-                    jumpToMarker({
-                      latitude: selectedTransaction.origin?.latitude,
-                      longitude: selectedTransaction.origin?.longitude,
-                    })
-                  }
-                  coordinate={{
-                    latitude: selectedTransaction.origin?.latitude,
-                    longitude: selectedTransaction.origin?.longitude,
-                  }}
-                  title={selectedTransaction.currentUser.firstName}
-                  description="Customer Location"
-                />
-                <MapViewDirections
-                  strokeWidth={4}
-                  strokeColor="#B80B00"
-                  origin={{
-                    latitude: selectedTransaction.origin?.latitude,
-                    longitude: selectedTransaction.origin?.longitude,
-                  }}
-                  destination={{
-                    latitude: selectedTransaction.destination?.latitude,
-                    longitude: selectedTransaction.destination?.longitude,
-                  }}
-                  apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-                />
-                <MapViewDirections
-                  strokeWidth={4}
-                  strokeColor="#003082"
-                  origin={{
-                    latitude: location?.latitude,
-                    longitude: location?.longitude,
-                  }}
-                  destination={{
-                    latitude: selectedTransaction.origin?.latitude,
-                    longitude: selectedTransaction.origin?.longitude,
-                  }}
-                  apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-                />
-              </>
-            )}
-          </MapView>
+          <BearRiderMap
+            location={location}
+            selectedLocation={selectedLocation}
+            setSelectedLocation={setSelectedLocation}
+            selectedTransaction={selectedTransaction}
+            isOnline={isOnline}
+            IS_RIDER={IS_RIDER}
+            pahatodInputRef={pahatodInputRef}
+          />
         )}
 
         {/* App Header */}
@@ -1393,6 +1210,7 @@ const Home = ({ route, navigation }) => {
                           setPahatodModal(false);
                           setSelectedLocation(null);
                           deleteTransaction(singleData);
+                          setSelectedTransaction(null);
                         }}
                         text="Cancel Ride"
                         bgColor={"#B80B00"}
