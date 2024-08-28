@@ -33,6 +33,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import ScreenModal from "../components/screenModal";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import BearRiderMap from "../components/BearRiderMap";
+import PickServiceContent from "../components/pickServiceContent";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -273,26 +274,10 @@ const Home = ({ route, navigation }) => {
         modalVisible={serviceModal}
         closeModal={() => setServiceModal(false)}
       >
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Text style={{ fontSize: 25, marginBottom: 10 }}>Pick a service</Text>
-          <Button
-            width={300}
-            text="Pahatod Services"
-            bgColor={"#B80B00"}
-            event={() => {
-              setPahatodModal(true);
-              setServiceModal(false);
-            }}
-          />
-          <Button
-            width={300}
-            text="Padara Services"
-            bgColor={"#B80B00"}
-            event={() => {
-              setServiceModal(false);
-            }}
-          />
-        </View>
+        <PickServiceContent
+          setPahatodModal={setPahatodModal}
+          setServiceModal={setServiceModal}
+        />
       </BottomModal>
 
       {/* Transaction Modal */}
