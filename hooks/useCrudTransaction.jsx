@@ -29,9 +29,13 @@ const useCrudTransaction = () => {
     });
   }, []);
 
-  const addTransaction = (forms) => {
+  const addTransaction = async (forms) => {
     const colRef = collection(db, "transaction");
-    addDoc(colRef, { ...forms, createdAt: serverTimestamp() });
+    const output = await addDoc(colRef, {
+      ...forms,
+      createdAt: serverTimestamp(),
+    });
+    return { id: output.id };
   };
   const deleteTransaction = async (transaction) => {
     const docRef = doc(db, "transaction", transaction.id);

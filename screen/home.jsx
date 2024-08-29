@@ -179,7 +179,7 @@ const Home = ({ route, navigation }) => {
     }
   }, [selectedTransaction]);
 
-  console.log(singleData, "Lfdkl");
+  console.log(singleData, "SIngle Data");
 
   //Handle when user is not on in the app
 
@@ -213,7 +213,7 @@ const Home = ({ route, navigation }) => {
     setLocation({ latitude: lat, longitude: long, address });
   };
 
-  const handleAddTransaction = () => {
+  const handleAddTransaction = async () => {
     if (selectedLocation) {
       const transaction = {
         origin: {
@@ -232,7 +232,8 @@ const Home = ({ route, navigation }) => {
         totalPrice: (distance * chargePerKilometer).toFixed(2),
       };
       setFindingRider(true);
-      addTransaction(transaction);
+      const output = await addTransaction(transaction);
+      setSelectedTransaction(output);
     } else {
       Toast.show({
         type: "info",
@@ -321,6 +322,7 @@ const Home = ({ route, navigation }) => {
             selectedTransaction={selectedTransaction}
             isOnline={isOnline}
             IS_RIDER={IS_RIDER}
+            singleData={singleData}
             pahatodInputRef={pahatodInputRef}
           />
         )}

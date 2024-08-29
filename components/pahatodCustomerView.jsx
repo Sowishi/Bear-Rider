@@ -217,10 +217,10 @@ const PahatodCustomerView = ({
                 <View style={{ width: "100%" }}>
                   <Image
                     style={{ width: 50, height: 50 }}
-                    source={{ uri: singleData?.rider.profilePic }}
+                    source={{ uri: singleData?.rider?.profilePic }}
                   />
                   <Text style={{ fontSize: 15 }}>
-                    {singleData?.rider.firstName} {singleData.rider.lastName}
+                    {singleData?.rider?.firstName} {singleData.rider?.lastName}
                   </Text>
                 </View>
               </>

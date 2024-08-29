@@ -18,6 +18,7 @@ const BearRiderMap = ({
   IS_RIDER,
   pahatodInputRef,
   mapRef,
+  singleData,
 }) => {
   const { mapView, currentUser } = useSmokeContext();
   const { onlineUsers } = useAddOnline();
@@ -231,18 +232,18 @@ const BearRiderMap = ({
           />
         </>
       )}
-      {selectedTransaction && !IS_RIDER && (
+      {singleData && !IS_RIDER && (
         <>
           <Marker
             onPress={() =>
               jumpToMarker({
-                latitude: selectedTransaction.destination?.latitude,
-                longitude: selectedTransaction.destination?.longitude,
+                latitude: singleData.destination?.latitude,
+                longitude: singleData.destination?.longitude,
               })
             }
             coordinate={{
-              latitude: selectedTransaction.destination?.latitude,
-              longitude: selectedTransaction.destination?.longitude,
+              latitude: singleData.destination?.latitude,
+              longitude: singleData.destination?.longitude,
             }}
             title="Destination / Drop Off"
             description="Customer Destination"
@@ -253,17 +254,17 @@ const BearRiderMap = ({
             strokeWidth={4}
             strokeColor="#B80B00"
             origin={{
-              latitude: selectedTransaction.origin?.latitude,
-              longitude: selectedTransaction.origin?.longitude,
+              latitude: singleData.origin?.latitude,
+              longitude: singleData.origin?.longitude,
             }}
             destination={{
-              latitude: selectedTransaction.destination?.latitude,
-              longitude: selectedTransaction.destination?.longitude,
+              latitude: singleData.destination?.latitude,
+              longitude: singleData.destination?.longitude,
             }}
             apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
           />
 
-          {selectedTransaction.riderLocation && (
+          {singleData.riderLocation && (
             <>
               <MapViewDirections
                 strokeWidth={4}
@@ -273,8 +274,8 @@ const BearRiderMap = ({
                   longitude: location?.longitude,
                 }}
                 destination={{
-                  latitude: selectedTransaction.riderLocation?.latitude,
-                  longitude: selectedTransaction.riderLocation?.longitude,
+                  latitude: singleData.riderLocation?.latitude,
+                  longitude: singleData.riderLocation?.longitude,
                 }}
                 apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
               />
@@ -282,15 +283,15 @@ const BearRiderMap = ({
                 children={<MarkerRiderImage />}
                 onPress={() =>
                   jumpToMarker({
-                    latitude: selectedTransaction.riderLocation?.latitude,
-                    longitude: selectedTransaction.riderLocation?.longitude,
+                    latitude: singleData.riderLocation?.latitude,
+                    longitude: singleData.riderLocation?.longitude,
                   })
                 }
                 coordinate={{
-                  latitude: selectedTransaction.riderLocation?.latitude,
-                  longitude: selectedTransaction.riderLocation?.longitude,
+                  latitude: singleData.riderLocation?.latitude,
+                  longitude: singleData.riderLocation?.longitude,
                 }}
-                title={selectedTransaction?.rider.firstName}
+                title={singleData?.rider.firstName}
                 description="Customer Location"
               />
             </>
