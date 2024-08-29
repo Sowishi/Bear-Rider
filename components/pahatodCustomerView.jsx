@@ -309,7 +309,18 @@ const PahatodCustomerView = ({
                               },
                               location
                             )}{" "}
-                            km
+                            km (
+                            {calculateArrivalTime(
+                              haversineDistance(
+                                {
+                                  latitude: singleData.riderLocation.latitude,
+                                  longitude: singleData.riderLocation.longitude,
+                                },
+                                location
+                              ),
+                              60
+                            )}{" "}
+                            mins away )
                           </Text>
                         )}
                       </Text>
