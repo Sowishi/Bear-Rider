@@ -56,7 +56,7 @@ const RiderBottomNavigation = ({
                           setSelectedTransaction(null);
                           setSingleData(null);
                         }}
-                        text="Close Modal"
+                        text="Hide Modal"
                         bgColor={"#B80B00"}
                       />
                     </TouchableOpacity>
