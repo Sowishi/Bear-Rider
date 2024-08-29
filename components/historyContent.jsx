@@ -4,6 +4,7 @@ import blueMarker from "../assets/blue-marker.png";
 import Button from "./button";
 import { useSmokeContext } from "../utils/appContext";
 import TransactionCard from "./transactionCard";
+import EmptyList from "./emptyList";
 const HistoryContent = ({
   transactions,
   setSelectedTransaction,
@@ -30,6 +31,19 @@ const HistoryContent = ({
     setTransactionModal(false);
     setHistoryModal(false);
   };
+
+  const riderData = transactions.filter((transaction) => {
+    if (transaction?.rider?.id == currentUser.id && transaction.status) {
+      return transaction;
+    }
+  });
+
+  const customerData = transactions.filter((transaction) => {
+    if (transaction.currentUser.id == currentUser.id) {
+      return transaction;
+    }
+  });
+
   return (
     <>
       <View>
@@ -37,7 +51,9 @@ const HistoryContent = ({
           Transaction History
         </Text>
       </View>
-      {IS_RIDER && (
+
+      {IS_RIDER && riderData.length <= 0 && <EmptyList title={"No History"} />}
+      {IS_RIDER && riderData.length >= 1 && (
         <ScrollView
           style={{
             flex: 1,
@@ -46,24 +62,21 @@ const HistoryContent = ({
             marginTop: 30,
           }}
         >
-          {transactions?.map((transaction) => {
-            if (
-              transaction?.rider?.id == currentUser.id &&
-              transaction.status
-            ) {
-              return (
-                <TransactionCard
-                  key={transaction.id}
-                  handleViewRider={handleViewRider}
-                  transaction={transaction}
-                />
-              );
-            }
+          {riderData?.map((transaction) => {
+            return (
+              <TransactionCard
+                key={transaction.id}
+                handleViewRider={handleViewRider}
+                transaction={transaction}
+              />
+            );
           })}
         </ScrollView>
       )}
-
-      {!IS_RIDER && (
+      {!IS_RIDER && customerData.length <= 0 && (
+        <EmptyList title={"No History"} />
+      )}
+      {!IS_RIDER && customerData.length >= 1 && (
         <ScrollView
           style={{
             flex: 1,
@@ -72,16 +85,14 @@ const HistoryContent = ({
             marginTop: 30,
           }}
         >
-          {transactions?.map((transaction) => {
-            if (transaction.currentUser.id == currentUser.id) {
-              return (
-                <TransactionCard
-                  key={transaction.id}
-                  handleViewCustomer={handleViewCustomer}
-                  transaction={transaction}
-                />
-              );
-            }
+          {customerData?.map((transaction) => {
+            return (
+              <TransactionCard
+                key={transaction.id}
+                handleViewCustomer={handleViewCustomer}
+                transaction={transaction}
+              />
+            );
           })}
         </ScrollView>
       )}
