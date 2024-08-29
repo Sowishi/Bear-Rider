@@ -69,6 +69,15 @@ const PahatodCustomerView = ({
           paddingVertical: 30,
         }}
       >
+        <View
+          style={{
+            height: 6,
+            width: 150,
+            backgroundColor: "gray",
+            marginBottom: 30,
+            borderRadius: 20,
+          }}
+        ></View>
         {!findingRider && (
           <>
             <Text

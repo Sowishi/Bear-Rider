@@ -20,7 +20,7 @@ const PickServiceButton = ({ setServiceModal }) => {
         style={{
           height: 6,
           width: 150,
-          backgroundColor: "black",
+          backgroundColor: "gray",
           marginTop: 20,
           marginBottom: 30,
           borderRadius: 20,
