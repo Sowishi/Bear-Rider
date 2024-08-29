@@ -163,7 +163,7 @@ const RiderBottomNavigation = ({
                       {transactionCount}
                     </Text>
                   </View>
-                  <Text style={{ fontSize: 10 }}>Transaction</Text>
+                  <Text style={{ fontSize: 10 }}>Transactions</Text>
                 </TouchableOpacity>
               </View>
               <View
