@@ -7,6 +7,8 @@ const TransactionCard = ({
   transaction,
   handleViewRider,
   handleViewCustomer,
+  handleViewTransaction,
+  isTransactionPage,
 }) => {
   const timeStamp = transaction.createdAt.toDate();
   const date = moment(timeStamp).format("LLL");
@@ -108,16 +110,30 @@ const TransactionCard = ({
 
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           {transaction.status !== "Completed" && (
-            <Button
-              event={() => {
-                handleViewCustomer
-                  ? handleViewCustomer(transaction)
-                  : handleViewRider(transaction);
-              }}
-              icon="chevron-right"
-              text="View Transaction"
-              bgColor={"#B80B00"}
-            />
+            <>
+              {isTransactionPage && (
+                <Button
+                  event={() => {
+                    handleViewTransaction(transaction);
+                  }}
+                  icon="chevron-right"
+                  text="View Transaction"
+                  bgColor={"#B80B00"}
+                />
+              )}
+              {!isTransactionPage && (
+                <Button
+                  event={() => {
+                    handleViewCustomer
+                      ? handleViewCustomer(transaction)
+                      : handleViewRider(transaction);
+                  }}
+                  icon="chevron-right"
+                  text="View Transaction"
+                  bgColor={"#B80B00"}
+                />
+              )}
+            </>
           )}
         </View>
       </View>
