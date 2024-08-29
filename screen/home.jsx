@@ -66,7 +66,8 @@ const Home = ({ route, navigation }) => {
   const pahatodInputRef = useRef();
 
   // Hooks
-  const { historyModal, setHistoryModal, currentUser } = useSmokeContext();
+  const { historyModal, setHistoryModal, currentUser, setTransactionCount } =
+    useSmokeContext();
   const {
     addTransaction,
     deleteTransaction,
@@ -80,11 +81,7 @@ const Home = ({ route, navigation }) => {
   const { addOnlineUser, deleteOnlineUser } = useAddOnline();
 
   // Constant Value
-  const center = {
-    lat: 14.0996, // Approximate center latitude of Camarines Norte
-    lng: 122.955, // Approximate center longitude of Camarines Norte
-  };
-  const radius = 50000;
+
   const chargePerKilometer = 10;
   const IS_RIDER = currentUser?.role;
 
@@ -179,7 +176,16 @@ const Home = ({ route, navigation }) => {
     }
   }, [selectedTransaction]);
 
-  console.log(singleData, "SIngle Data");
+  //Set the transaction count of rider
+
+  useEffect(() => {
+    const filter = transactions.filter((transaction) => {
+      if (!transaction.status) {
+        return transactions;
+      }
+    });
+    setTransactionCount(filter.length);
+  }, [transactions]);
 
   //Handle when user is not on in the app
 

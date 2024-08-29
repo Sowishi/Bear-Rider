@@ -13,7 +13,7 @@ const RiderBottomNavigation = ({
   selectedTransaction,
   location,
 }) => {
-  const { currentUser } = useSmokeContext();
+  const { currentUser, transactionCount } = useSmokeContext();
   return (
     <View
       style={{
@@ -117,6 +117,16 @@ const RiderBottomNavigation = ({
             <>
               <View
                 style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "33%",
+                }}
+              >
+                <FontAwesome name="bolt" size={30} color="#003082" />
+                <Text style={{ fontSize: 10 }}>Auto Accept</Text>
+              </View>
+              <View
+                style={{
                   width: "33%",
                   justifyContent: "center",
                   alignItems: "center",
@@ -129,19 +139,32 @@ const RiderBottomNavigation = ({
                     alignItems: "center",
                   }}
                 >
-                  <FontAwesome name="motorcycle" size={30} color="#003082" />
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <FontAwesome name="motorcycle" size={30} color="#003082" />
+                    <Text
+                      style={{
+                        fontSize: 12,
+                        backgroundColor: "red",
+                        color: "white",
+                        borderRadius: 100,
+                        width: 18,
+                        height: 18,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        textAlign: "center",
+                      }}
+                    >
+                      {transactionCount}
+                    </Text>
+                  </View>
                   <Text style={{ fontSize: 10 }}>Transaction</Text>
                 </TouchableOpacity>
-              </View>
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "33%",
-                }}
-              >
-                <FontAwesome name="bolt" size={30} color="#003082" />
-                <Text style={{ fontSize: 10 }}>Auto Accept</Text>
               </View>
               <View
                 style={{

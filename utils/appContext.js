@@ -6,6 +6,7 @@ export const MyProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [mapView, setMapView] = useState("standard");
   const [historyModal, setHistoryModal] = useState(false);
+  const [transactionCount, setTransactionCount] = useState(0);
 
   return (
     <MyContext.Provider
@@ -16,6 +17,8 @@ export const MyProvider = ({ children }) => {
         setMapView,
         historyModal,
         setHistoryModal,
+        transactionCount,
+        setTransactionCount,
       }}
     >
       {children}
