@@ -83,7 +83,6 @@ const PahatodCustomerView = ({
             <Text
               style={{
                 fontSize: 25,
-                marginBottom: 10,
                 color: "black",
                 fontWeight: "bold",
                 marginBottom: 15,

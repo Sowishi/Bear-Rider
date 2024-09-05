@@ -78,8 +78,11 @@ const TransactionCard = ({
             marginTop: 10,
           }}
         >
-          <Text style={{ marginVertical: 3 }}>
-            Service Type: {transaction.serviceType}
+          <Text style={{ marginVertical: 3, fontSize: 12 }}>
+            Service Type:{" "}
+            {transaction.serviceType == "Pahatod"
+              ? "Transportation"
+              : "Delivery"}
           </Text>
           <Text style={{ marginVertical: 3, fontWeight: "bold", fontSize: 14 }}>
             Total Price: ₱{transaction.totalPrice}

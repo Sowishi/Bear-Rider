@@ -1,4 +1,5 @@
 import { Image, Text, View } from "react-native";
+import cod from "../assets/cash-on-delivery.png";
 
 const RiderAcceptedView = ({ singleData, chargePerKilometer }) => {
   return (
@@ -17,39 +18,82 @@ const RiderAcceptedView = ({ singleData, chargePerKilometer }) => {
       }}
     >
       <View>
-        <Image
-          style={{ width: 50, height: 50 }}
-          source={{
-            uri: singleData?.currentUser.profilePic,
-          }}
-        />
-        <Text style={{ fontSize: 15 }}>
-          {singleData?.currentUser.firstName} {singleData?.currentUser.lastName}
-        </Text>
-        <View
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <View
+            style={{
+              height: 6,
+              width: 150,
+              backgroundColor: "gray",
+              marginBottom: 30,
+              borderRadius: 20,
+            }}
+          ></View>
+          <Text
+            style={{
+              fontSize: 25,
+              color: "black",
+              fontWeight: "bold",
+              textAlign: "center",
+              marginBottom: 15,
+            }}
+          >
+            {singleData?.serviceType == "Pahatod"
+              ? "Transportation Service"
+              : "Delivery Service"}
+          </Text>
+          <Image
+            style={{ width: 75, height: 75 }}
+            source={{
+              uri: singleData?.currentUser.profilePic,
+            }}
+          />
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginTop: 10 }}>
+            {singleData?.currentUser.firstName}{" "}
+            {singleData?.currentUser.lastName}
+          </Text>
+        </View>
+      </View>
+
+      <View
+        style={{
+          width: "100%",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingVertical: 10,
+        }}
+      >
+        <Text
           style={{
-            width: 100,
-            height: 2,
-            backgroundColor: "gray",
-            marginVertical: 4,
+            color: "black",
+            fontSize: 13,
           }}
-        ></View>
+        >
+          Payment Method
+        </Text>
+        <Text
+          style={{
+            color: "black",
+            fontWeight: "bold",
+            fontSize: 20,
+          }}
+        >
+          Total: ₱{(singleData?.distance * chargePerKilometer).toFixed(2)}
+        </Text>
       </View>
       <View
         style={{
-          borderRadius: 10,
-          justifyContent: "space-between",
-          alignItems: "center",
+          backgroundColor: "#FFB8B850",
+          width: "100%",
+          paddingVertical: 13,
+          paddingHorizontal: 10,
+          color: "white",
           flexDirection: "row",
+          borderRadius: 10,
         }}
       >
-        <View>
-          <Text>Service Type: {singleData?.serviceType}</Text>
-          <Text>Distance: {singleData?.distance} km</Text>
-        </View>
-        <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-          Price: ₱{(singleData?.distance * chargePerKilometer).toFixed(2)}
-        </Text>
+        <Image source={cod} style={{ width: 20, height: 20, marginRight: 5 }} />
+        <Text>Cash on Arrival</Text>
       </View>
     </View>
   );
