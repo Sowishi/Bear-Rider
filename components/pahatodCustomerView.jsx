@@ -28,6 +28,7 @@ const PahatodCustomerView = ({
   setSingleData,
   deleteTransaction,
   completeTransaction,
+  serviceType,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -51,7 +52,6 @@ const PahatodCustomerView = ({
     );
   };
 
-  console.log(singleData);
   return (
     <>
       <View
@@ -89,7 +89,9 @@ const PahatodCustomerView = ({
                 marginBottom: 15,
               }}
             >
-              Pahatod Service
+              {serviceType == "Pahatod"
+                ? "Transportation Service"
+                : "Delivery Service"}
             </Text>
             <View
               style={{
@@ -204,6 +206,19 @@ const PahatodCustomerView = ({
           <>
             {singleData?.status !== "Accepted" && (
               <>
+                <Text
+                  style={{
+                    fontSize: 25,
+                    marginBottom: 10,
+                    color: "black",
+                    fontWeight: "bold",
+                    marginBottom: 15,
+                  }}
+                >
+                  {serviceType == "Pahatod"
+                    ? "Transportation Service"
+                    : "Delivery Service"}
+                </Text>
                 <LottieView
                   autoPlay
                   style={{ width: 100, height: 100 }}
@@ -379,6 +394,7 @@ const PahatodCustomerView = ({
             )}
 
             {/* Pricing */}
+
             <View
               style={{
                 width: "100%",

@@ -1,7 +1,11 @@
 import { Text, View } from "react-native";
 import Button from "./button";
 
-const PickServiceContent = ({ setPahatodModal, setServiceModal }) => {
+const PickServiceContent = ({
+  setPahatodModal,
+  setServiceModal,
+  setServiceType,
+}) => {
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
       <View
@@ -16,19 +20,22 @@ const PickServiceContent = ({ setPahatodModal, setServiceModal }) => {
       <Text style={{ fontSize: 25, marginBottom: 10 }}>Pick a service</Text>
       <Button
         width={300}
-        text="Pahatod Services"
+        text="Transportation Services"
         bgColor={"#B80B00"}
         event={() => {
           setPahatodModal(true);
           setServiceModal(false);
+          setServiceType("Pahatod");
         }}
       />
       <Button
         width={300}
-        text="Padara Services"
+        text="Delivery Services"
         bgColor={"#B80B00"}
         event={() => {
+          setPahatodModal(true);
           setServiceModal(false);
+          setServiceType("Padara");
         }}
       />
     </View>

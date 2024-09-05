@@ -53,6 +53,7 @@ const Home = ({ route, navigation }) => {
   // Modal State
   const [serviceModal, setServiceModal] = useState(false);
   const [pahatodModal, setPahatodModal] = useState(false);
+  const [serviceType, setServiceType] = useState(null);
   const [transactionModal, setTransactionModal] = useState(false);
 
   //Location State
@@ -234,7 +235,7 @@ const Home = ({ route, navigation }) => {
         },
         currentUser: currentUser,
         distance,
-        serviceType: "Pahatod",
+        serviceType: serviceType,
         totalPrice: (distance * chargePerKilometer).toFixed(2),
       };
       setFindingRider(true);
@@ -283,6 +284,7 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setServiceModal(false)}
       >
         <PickServiceContent
+          setServiceType={setServiceType}
           setPahatodModal={setPahatodModal}
           setServiceModal={setServiceModal}
         />
@@ -377,6 +379,7 @@ const Home = ({ route, navigation }) => {
 
         {pahatodModal && (
           <PahatodCustomerView
+            serviceType={serviceType}
             location={location}
             setSelectedLocation={setSelectedLocation}
             setSelectedTransaction={setSelectedTransaction}
