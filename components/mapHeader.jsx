@@ -9,6 +9,7 @@ const MapHeader = ({
   navigation,
   isOnline,
   setIsOnline,
+  setNoficationModal,
 }) => {
   const jumpToMarker = (coords) => {
     mapRef.current?.animateToRegion(
@@ -95,7 +96,7 @@ const MapHeader = ({
           >
             {!IS_RIDER ? (
               <FontAwesome
-                onPress={() => navigation.navigate("Notification")}
+                onPress={() => setNoficationModal(true)}
                 name="bell"
                 size={25}
                 color={"#B80B00"}

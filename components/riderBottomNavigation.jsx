@@ -2,6 +2,8 @@ import { TouchableOpacity, View, Text } from "react-native";
 import Button from "./button";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useSmokeContext } from "../utils/appContext";
+import Toast from "react-native-toast-message";
+import useCrudNotification from "../hooks/useCrudNotification";
 
 const RiderBottomNavigation = ({
   isOnline,
@@ -14,6 +16,14 @@ const RiderBottomNavigation = ({
   location,
 }) => {
   const { currentUser, transactionCount } = useSmokeContext();
+  const { addNotification } = useCrudNotification();
+
+  const handleAcceptTransaction = () => {
+    acceptTransaction(selectedTransaction, currentUser, location);
+    addNotification(selectedTransaction, currentUser, "accept rider");
+    Toast.show({ type: "success", text1: "Successfully accepeted ride." });
+  };
+
   return (
     <View
       style={{
@@ -98,13 +108,7 @@ const RiderBottomNavigation = ({
                         justifyContent: "center",
                         alignItems: "center",
                       }}
-                      onPress={() => {
-                        acceptTransaction(
-                          selectedTransaction,
-                          currentUser,
-                          location
-                        );
-                      }}
+                      onPress={handleAcceptTransaction}
                     >
                       <AntDesign name="checkcircle" size={24} color="green" />
                       <Text style={{ fontSize: 10 }}>Accept Ride</Text>

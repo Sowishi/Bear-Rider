@@ -1,35 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import {
-  Image,
-  Text,
-  TextInput,
-  View,
-  BackHandler,
-  AppState,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, BackHandler, AppState } from "react-native";
 import Constants from "expo-constants";
 
-import MapView, { Marker } from "react-native-maps";
-import Entypo from "@expo/vector-icons/Entypo";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
-import Button from "../components/button";
 import BottomModal from "../components/bottomModal";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useSmokeContext } from "../utils/appContext";
-import MapViewDirections from "react-native-maps-directions";
 import haversineDistance from "../utils/calculateDistance";
 import Toast from "react-native-toast-message";
-import LottieView from "lottie-react-native";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import useAddOnline from "../hooks/useAddOnline";
 
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import ScreenModal from "../components/screenModal";
-import AntDesign from "@expo/vector-icons/AntDesign";
 import BearRiderMap from "../components/BearRiderMap";
 import PickServiceContent from "../components/pickServiceContent";
 import TransactionContent from "../components/transactionContent";
@@ -39,6 +21,7 @@ import PickServiceButton from "../components/pickServiceButton";
 import RiderAcceptedView from "../components/riderAcceptedView";
 import RiderBottomNavigation from "../components/riderBottomNavigation";
 import PahatodCustomerView from "../components/pahatodCustomerView";
+import NotificationContent from "../components/notificationContent";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -55,6 +38,7 @@ const Home = ({ route, navigation }) => {
   const [pahatodModal, setPahatodModal] = useState(false);
   const [serviceType, setServiceType] = useState(null);
   const [transactionModal, setTransactionModal] = useState(false);
+  const [notificationModal, setNotificationModal] = useState(false);
 
   //Location State
   const [location, setLocation] = useState(null);
@@ -319,6 +303,14 @@ const Home = ({ route, navigation }) => {
         />
       </ScreenModal>
 
+      {/* Notification Modal */}
+      <ScreenModal
+        modalVisible={notificationModal}
+        closeModal={() => setNotificationModal(false)}
+      >
+        <NotificationContent />
+      </ScreenModal>
+
       <View style={{ flex: 1, position: "relative" }}>
         {/* Maps View */}
         {location && (
@@ -345,6 +337,7 @@ const Home = ({ route, navigation }) => {
             navigation={navigation}
             isOnline={isOnline}
             setIsOnline={setIsOnline}
+            setNoficationModal={setNotificationModal}
           />
         )}
 
