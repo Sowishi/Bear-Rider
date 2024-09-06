@@ -92,6 +92,13 @@ const PahatodCustomerView = ({
                 ? "Transportation Service"
                 : "Delivery Service"}
             </Text>
+            <View style={{ width: "100%" }}>
+              <Text style={{ marginBottom: 5 }}>
+                {serviceType == "Pahatod"
+                  ? "Current Location"
+                  : "Drop off Location"}
+              </Text>
+            </View>
             <View
               style={{
                 flexDirection: "row",
@@ -118,6 +125,14 @@ const PahatodCustomerView = ({
                   paddingHorizontal: 10,
                 }}
               />
+            </View>
+
+            <View style={{ width: "100%" }}>
+              <Text style={{ marginBottom: 5 }}>
+                {serviceType == "Pahatod"
+                  ? "Drop off location"
+                  : "Shop to location"}
+              </Text>
             </View>
             <View
               style={{
@@ -148,7 +163,7 @@ const PahatodCustomerView = ({
                   },
                   textInput: { marginHorizontal: 10 },
                 }}
-                placeholder="Drop Off"
+                placeholder={serviceType == "Pahatod" ? "Drop Off" : "Shop to"}
                 onPress={async (data, details = null) => {
                   const lat = details?.geometry?.location.lat;
                   const lng = details?.geometry?.location.lng;
