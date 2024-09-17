@@ -1,60 +1,47 @@
-import React, { useState, useEffect } from "react";
-import { View, Button, StyleSheet, Image } from "react-native";
-import { Camera } from "expo-camera";
+import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import { useRef, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Button from "../components/button";
 
-const BearCamera = () => {
-  const [hasPermission, setHasPermission] = useState(null);
+export default function BearCamera() {
+  const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
-  const [photo, setPhoto] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-
-  if (hasPermission === null) {
+  if (!permission) {
+    // Camera permissions are still loading.
     return <View />;
   }
 
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          We need your permission to show the camera
+        </Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
   }
 
-  const takePicture = async () => {
-    if (cameraRef) {
-      const { uri } = await cameraRef.takePictureAsync();
-      setPhoto(uri);
-    }
-  };
-
   return (
-    <View style={styles.container}>
-      {photo ? (
-        <Image source={{ uri: photo }} style={styles.image} />
-      ) : (
-        <Camera style={styles.camera} ref={(ref) => setCameraRef(ref)} />
-      )}
-      <Button title="Take Photo" onPress={takePicture} />
+    <View>
+      <CameraView
+        ref={(ref) => setCameraRef(ref)}
+        style={{ width: 500, height: 500 }}
+        facing="back"
+      ></CameraView>
+      <Button
+        event={async () => {
+          if (cameraRef) {
+            const photo = await cameraRef.takePictureAsync();
+            console.log("Photo taken:", photo.uri);
+            // Handle the photo URI, e.g., display it or upload it
+          }
+        }}
+        text="Proceed"
+        bgColor={"#003082"}
+      ></Button>
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  camera: {
-    width: "100%",
-    height: "80%",
-  },
-  image: {
-    width: "100%",
-    height: "80%",
-  },
-});
-
-export default BearCamera;
+}

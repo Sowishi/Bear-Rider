@@ -9,10 +9,11 @@ import * as Location from "expo-location";
 import useAddUser from "../hooks/useAddUser";
 import { useSmokeContext } from "../utils/appContext";
 import BearCamera from "../components/BearCamera";
+import license from "../components/Group 43.png";
 
 const Rider = ({ navigation }) => {
-  const [steps, setSteps] = useState(1);
   const [location, setLocation] = useState(null);
+  const [licenseCamera, setLicenseCamera] = useState(false);
   const [forms, setForms] = useState({
     fullName: "",
     phoneNumber: "",
@@ -72,7 +73,7 @@ const Rider = ({ navigation }) => {
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar backgroundColor={"white"} style="dark" />
       <View
-        style={{ flex: 0.3, justifyContent: "center", alignItems: "center" }}
+        style={{ flex: 0.2, justifyContent: "center", alignItems: "center" }}
       >
         <Image
           style={{ width: 150, height: 150, objectFit: "contain" }}
@@ -256,7 +257,16 @@ const Rider = ({ navigation }) => {
             this service requires a rider’s non-professional & professional
             driver’s license
           </Text>
-          <BearCamera />
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={{ fontWeight: "bold", fontSize: 15, marginTop: 20 }}>
+              Upload your driver’s License ID
+            </Text>
+            <Image
+              style={{ width: 150, height: 150, objectFit: "contain" }}
+              source={license}
+            />
+            <Button text="Take Picture" bgColor={"#003082"} />
+          </View>
         </View>
       </ScrollView>
     </View>
