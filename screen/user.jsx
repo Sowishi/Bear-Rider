@@ -215,7 +215,11 @@ const User = ({ navigation }) => {
               </Text>
             </View>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Button text="Become a rider" bgColor={"#B80B00"} />
+              <Button
+                event={() => navigation.navigate("Rider")}
+                text="Become a rider"
+                bgColor={"#B80B00"}
+              />
             </View>
           </View>
         </>
