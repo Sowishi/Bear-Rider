@@ -9,12 +9,11 @@ import * as Location from "expo-location";
 import useAddUser from "../hooks/useAddUser";
 import { useSmokeContext } from "../utils/appContext";
 import BearCamera from "../components/BearCamera";
-import license from "../components/Group 43.png";
+import licensePhoto from "../components/Group 43.png";
 import Camera from "./camera";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
-  const [licenseCamera, setLicenseCamera] = useState(false);
   const [forms, setForms] = useState({
     fullName: "",
     phoneNumber: "",
@@ -24,7 +23,7 @@ const Rider = ({ navigation }) => {
   });
 
   const { addUser } = useAddUser();
-  const { setCurrentUser } = useSmokeContext();
+  const { setCurrentUser, license } = useSmokeContext();
 
   const handleValidateForms = () => {
     let isFormsFilled = true;
@@ -69,6 +68,8 @@ const Rider = ({ navigation }) => {
       setLocation(location);
     })();
   }, []);
+
+  console.log(license, "f");
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -240,13 +241,7 @@ const Rider = ({ navigation }) => {
               alignItems: "center",
               marginBottom: 20,
             }}
-          >
-            {/* <Button
-              event={handleValidateForms}
-              text="Proceed"
-              bgColor={"#003082"}
-            /> */}
-          </View>
+          ></View>
         </View>
 
         {/* Step 2 */}
@@ -259,20 +254,44 @@ const Rider = ({ navigation }) => {
             driver’s license
           </Text>
           <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text style={{ fontWeight: "bold", fontSize: 15, marginTop: 20 }}>
+            <Text
+              style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
+            >
               Upload your driver’s License ID
             </Text>
-            <Image
-              style={{ width: 150, height: 150, objectFit: "contain" }}
-              source={license}
-            />
-
+            {!license && (
+              <Image
+                style={{ width: 150, height: 150, objectFit: "contain" }}
+                source={licensePhoto}
+              />
+            )}
+            {license && (
+              <Image
+                style={{ width: 300, height: 300 }}
+                source={{ uri: license }}
+              />
+            )}
             <Button
-              event={() => navigation.navigate("Camera")}
-              text="Open Camera"
+              event={() => navigation.navigate("Camera", { type: "license" })}
+              text={!license ? "Open Camera" : "Retake Photo"}
               bgColor={"#003082"}
             />
           </View>
+        </View>
+
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 20,
+          }}
+        >
+          <Button
+            width={400}
+            event={handleValidateForms}
+            text="Become a rider"
+            bgColor={"red"}
+          />
         </View>
       </ScrollView>
     </View>

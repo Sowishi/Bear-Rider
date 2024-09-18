@@ -53,6 +53,7 @@ export default function App() {
             tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
             tabBarShowLabel: false,
             headerShown: true,
+            title: "Rider Registration",
           }}
           name="Rider"
           component={Rider}

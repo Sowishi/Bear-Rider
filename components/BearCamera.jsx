@@ -2,10 +2,13 @@ import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
 import { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Button from "../components/button";
+import { useSmokeContext } from "../utils/appContext";
+import * as ImageManipulator from "expo-image-manipulator";
 
-export default function BearCamera({ navigation }) {
+export default function BearCamera({ navigation, type }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
+  const { setLicense } = useSmokeContext();
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -45,8 +48,13 @@ export default function BearCamera({ navigation }) {
           event={async () => {
             if (cameraRef) {
               const photo = await cameraRef.takePictureAsync();
+              const resizedImage = await ImageManipulator.manipulateAsync(
+                photo.uri,
+                [{ resize: { width: 500 } }],
+                { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
+              );
+              setLicense(resizedImage.uri);
               navigation.navigate("Rider");
-              console.log("Photo taken:", photo.uri);
               // Handle the photo URI, e.g., display it or upload it
             }
           }}
