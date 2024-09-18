@@ -11,6 +11,7 @@ import Notification from "./screen/notification";
 import Register from "./screen/register";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Rider from "./screen/rider";
+import Camera from "./screen/camera";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -47,6 +48,23 @@ export default function App() {
           name="Notification"
           component={Notification}
         />
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
+            tabBarShowLabel: false,
+            headerShown: true,
+          }}
+          name="Rider"
+          component={Rider}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
+            tabBarShowLabel: false,
+          }}
+          name="Camera"
+          component={Camera}
+        />
       </Tab.Navigator>
     );
   }
@@ -59,11 +77,7 @@ export default function App() {
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Register} />
 
-            <Stack.Screen
-              name="main"
-              options={{ headerShown: true }}
-              component={Rider}
-            />
+            <Stack.Screen name="main" component={MainScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </MyProvider>

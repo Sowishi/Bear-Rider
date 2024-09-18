@@ -82,6 +82,34 @@ const User = ({ navigation }) => {
                 />
               </View>
             </View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.closeDrawer();
+                navigation.navigate("Home");
+              }}
+              style={{
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                borderRadius: 10,
+                backgroundColor: "white",
+                padding: 10,
+                paddingHorizontal: 20,
+                flexDirection: "row",
+                justifyContent: "flex-start",
+                alignItems: "center",
+                marginVertical: 15,
+              }}
+            >
+              <Text style={{ fontSize: 20, marginRight: 5 }}>Home</Text>
+              <MaterialIcons name="home" size={24} color="black" />
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => {

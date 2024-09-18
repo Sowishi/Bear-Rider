@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Button from "../components/button";
 
-export default function BearCamera() {
+export default function BearCamera({ navigation }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
 
@@ -28,20 +28,32 @@ export default function BearCamera() {
     <View>
       <CameraView
         ref={(ref) => setCameraRef(ref)}
-        style={{ width: 500, height: 500 }}
+        style={{ height: "100%" }}
         facing="back"
       ></CameraView>
-      <Button
-        event={async () => {
-          if (cameraRef) {
-            const photo = await cameraRef.takePictureAsync();
-            console.log("Photo taken:", photo.uri);
-            // Handle the photo URI, e.g., display it or upload it
-          }
+
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
         }}
-        text="Proceed"
-        bgColor={"#003082"}
-      ></Button>
+      >
+        <Button
+          event={async () => {
+            if (cameraRef) {
+              const photo = await cameraRef.takePictureAsync();
+              navigation.navigate("Rider");
+              console.log("Photo taken:", photo.uri);
+              // Handle the photo URI, e.g., display it or upload it
+            }
+          }}
+          text="Proceed"
+          bgColor={"#003082"}
+        ></Button>
+      </View>
     </View>
   );
 }

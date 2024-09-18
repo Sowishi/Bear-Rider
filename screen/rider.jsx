@@ -10,6 +10,7 @@ import useAddUser from "../hooks/useAddUser";
 import { useSmokeContext } from "../utils/appContext";
 import BearCamera from "../components/BearCamera";
 import license from "../components/Group 43.png";
+import Camera from "./camera";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -265,7 +266,12 @@ const Rider = ({ navigation }) => {
               style={{ width: 150, height: 150, objectFit: "contain" }}
               source={license}
             />
-            <Button text="Take Picture" bgColor={"#003082"} />
+
+            <Button
+              event={() => navigation.navigate("Camera")}
+              text="Open Camera"
+              bgColor={"#003082"}
+            />
           </View>
         </View>
       </ScrollView>
