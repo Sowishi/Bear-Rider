@@ -8,6 +8,7 @@ export const MyProvider = ({ children }) => {
   const [historyModal, setHistoryModal] = useState(false);
   const [transactionCount, setTransactionCount] = useState(0);
   const [license, setLicense] = useState();
+  const [selfie, setSelfie] = useState();
 
   return (
     <MyContext.Provider
@@ -22,6 +23,8 @@ export const MyProvider = ({ children }) => {
         setTransactionCount,
         license,
         setLicense,
+        selfie,
+        setSelfie,
       }}
     >
       {children}

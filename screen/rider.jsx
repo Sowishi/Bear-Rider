@@ -10,7 +10,12 @@ import useAddUser from "../hooks/useAddUser";
 import { useSmokeContext } from "../utils/appContext";
 import BearCamera from "../components/BearCamera";
 import licensePhoto from "../components/Group 43.png";
+import cameraPhoto from "../assets/camera-icon-logo-template-illustration-design-vector-eps-10-removebg-preview 1.png";
+
 import Camera from "./camera";
+
+import { storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -23,9 +28,10 @@ const Rider = ({ navigation }) => {
   });
 
   const { addUser } = useAddUser();
-  const { setCurrentUser, license } = useSmokeContext();
+  const { setCurrentUser, license, selfie } = useSmokeContext();
 
-  const handleValidateForms = () => {
+  const handleValidateForms = async () => {
+    const licenseUrl = await handleUploadImage(license);
     let isFormsFilled = true;
 
     if (!isFormsFilled) {
@@ -54,6 +60,23 @@ const Rider = ({ navigation }) => {
   const handleChange = (inputName, text) => {
     const output = { ...forms, [inputName]: text };
     setForms(output);
+  };
+
+  const handleUploadImage = async (uri) => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob(); // Convert the image into a Blob
+      const storageRef = ref(storage, "images/" + new Date().getTime()); // Firebase storage reference
+
+      // Upload the Blob to Firebase Storage
+      const uploadTask = await uploadBytes(storageRef, blob);
+
+      // Get the download URL
+      const downloadURL = await getDownloadURL(uploadTask.ref);
+      return downloadURL;
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
   };
 
   useEffect(() => {
@@ -246,37 +269,74 @@ const Rider = ({ navigation }) => {
 
         {/* Step 2 */}
         <View>
-          <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-            Delivery and Transportation Service
-          </Text>
-          <Text style={{ marginTop: 5, color: "gray" }}>
-            this service requires a rider’s non-professional & professional
-            driver’s license
-          </Text>
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Text
-              style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
-            >
-              Upload your driver’s License ID
+          <>
+            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+              Delivery and Transportation Service
             </Text>
-            {!license && (
-              <Image
-                style={{ width: 150, height: 150, objectFit: "contain" }}
-                source={licensePhoto}
+            <Text style={{ marginTop: 5, color: "gray" }}>
+              this service requires a rider’s non-professional & professional
+              driver’s license
+            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
+              >
+                Upload your driver’s License ID
+              </Text>
+              {!license && (
+                <Image
+                  style={{ width: 150, height: 150, objectFit: "contain" }}
+                  source={licensePhoto}
+                />
+              )}
+              {license && (
+                <Image
+                  style={{ width: 300, height: 300 }}
+                  source={{ uri: license }}
+                />
+              )}
+              <Button
+                event={() => navigation.navigate("Camera", { type: "license" })}
+                text={!license ? "Open Camera" : "Retake Photo"}
+                bgColor={"#003082"}
               />
-            )}
-            {license && (
-              <Image
-                style={{ width: 300, height: 300 }}
-                source={{ uri: license }}
+            </View>
+          </>
+          <>
+            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}>
+              Capture your selfie{" "}
+            </Text>
+            <Text style={{ marginTop: 5, color: "gray" }}>
+              Please take a clear, well-lit photo of yourself for verification.
+              Ensure your face is fully visible, without any obstructions like
+              hats or sunglasses. This photo will be used for your rider
+              profile.
+            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
+              >
+                Upload your selfie
+              </Text>
+              {!selfie && (
+                <Image
+                  style={{ width: 150, height: 150, objectFit: "contain" }}
+                  source={cameraPhoto}
+                />
+              )}
+              {selfie && (
+                <Image
+                  style={{ width: 300, height: 300 }}
+                  source={{ uri: selfie }}
+                />
+              )}
+              <Button
+                event={() => navigation.navigate("Camera", { type: "selfie" })}
+                text={!license ? "Open Camera" : "Retake Photo"}
+                bgColor={"#003082"}
               />
-            )}
-            <Button
-              event={() => navigation.navigate("Camera", { type: "license" })}
-              text={!license ? "Open Camera" : "Retake Photo"}
-              bgColor={"#003082"}
-            />
-          </View>
+            </View>
+          </>
         </View>
 
         <View

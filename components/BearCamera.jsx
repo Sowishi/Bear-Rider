@@ -8,7 +8,7 @@ import * as ImageManipulator from "expo-image-manipulator";
 export default function BearCamera({ navigation, type }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
-  const { setLicense } = useSmokeContext();
+  const { setLicense, setSelfie } = useSmokeContext();
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -32,7 +32,7 @@ export default function BearCamera({ navigation, type }) {
       <CameraView
         ref={(ref) => setCameraRef(ref)}
         style={{ height: "100%" }}
-        facing="back"
+        facing={type == "license" ? "back" : "front"}
       ></CameraView>
 
       <View
@@ -53,7 +53,11 @@ export default function BearCamera({ navigation, type }) {
                 [{ resize: { width: 500 } }],
                 { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
               );
-              setLicense(resizedImage.uri);
+              if (type == "license") {
+                setLicense(resizedImage.uri);
+              } else {
+                setSelfie(resizedImage.uri);
+              }
               navigation.navigate("Rider");
               // Handle the photo URI, e.g., display it or upload it
             }
