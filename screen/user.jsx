@@ -33,11 +33,18 @@ const User = ({ navigation }) => {
             }}
           >
             <Image
-              style={{ width: 100, height: 100 }}
-              source={{ uri: currentUser.profilePic }}
+              style={{ width: 100, height: 100, borderRadius: 200 }}
+              source={{
+                uri:
+                  currentUser.role == "Rider"
+                    ? currentUser.selfieUrl
+                    : currentUser.profilePic,
+              }}
             />
             <Text style={{ fontSize: 25, marginTop: 5, fontWeight: "bold" }}>
-              {currentUser.firstName + " " + currentUser.lastName}
+              {currentUser.role == "Rider"
+                ? currentUser.fullName
+                : currentUser.firstName + " " + currentUser.lastName}
             </Text>
             <Text style={{ fontSize: 16, marginTop: 5 }}>
               Role: {currentUser.role ? currentUser.role : "Customer"}
@@ -242,13 +249,15 @@ const User = ({ navigation }) => {
                 Logout
               </Text>
             </View>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Button
-                event={() => navigation.navigate("Rider")}
-                text="Become a rider"
-                bgColor={"#B80B00"}
-              />
-            </View>
+            {currentUser.role !== "Rider" && (
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Button
+                  event={() => navigation.navigate("Rider")}
+                  text="Become a rider"
+                  bgColor={"#B80B00"}
+                />
+              </View>
+            )}
           </View>
         </>
       )}

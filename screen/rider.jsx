@@ -1,4 +1,11 @@
-import { Image, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import bear2 from "../assets/Welcome.png";
 import { StatusBar } from "expo-status-bar";
 import Button from "../components/button";
@@ -16,9 +23,12 @@ import Camera from "./camera";
 
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import SelectDropdown from "react-native-select-dropdown";
+import Loader from "../components/loader";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [forms, setForms] = useState({
     fullName: "",
     phoneNumber: "",
@@ -31,11 +41,15 @@ const Rider = ({ navigation }) => {
   const { setCurrentUser, license, selfie } = useSmokeContext();
 
   const handleValidateForms = async () => {
+    setLoading(true);
     const licenseUrl = await handleUploadImage(license);
+    const selfieUrl = await handleUploadImage(selfie);
     let isFormsFilled = true;
 
     if (!isFormsFilled) {
       Toast.show({ type: "error", text1: "Please fill all the fields" });
+      setLoading(false);
+
       return;
     }
     const phoneNumber = forms.phoneNumber;
@@ -45,6 +59,8 @@ const Rider = ({ navigation }) => {
         type: "error",
         text1: "Invalid Phone Number",
       });
+      setLoading(false);
+
       return;
     }
 
@@ -53,8 +69,24 @@ const Rider = ({ navigation }) => {
         type: "error",
         text1: "Password does not match",
       });
+      setLoading(false);
+
       return;
     }
+
+    const userData = {
+      ...forms,
+      licenseUrl,
+      selfieUrl,
+      role: "Rider",
+      riderStatus: "Pending",
+    };
+    addUser(userData);
+    Toast.show({
+      type: "success",
+      text1: "Uploaded Successfully!",
+    });
+    setLoading(false);
   };
 
   const handleChange = (inputName, text) => {
@@ -92,10 +124,26 @@ const Rider = ({ navigation }) => {
     })();
   }, []);
 
-  console.log(license, "f");
+  const emojisWithIcons = [
+    { title: "happy", icon: "emoticon-happy-outline" },
+    { title: "cool", icon: "emoticon-cool-outline" },
+    { title: "lol", icon: "emoticon-lol-outline" },
+    { title: "sad", icon: "emoticon-sad-outline" },
+    { title: "cry", icon: "emoticon-cry-outline" },
+    { title: "angry", icon: "emoticon-angry-outline" },
+    { title: "confused", icon: "emoticon-confused-outline" },
+    { title: "excited", icon: "emoticon-excited-outline" },
+    { title: "kiss", icon: "emoticon-kiss-outline" },
+    { title: "devil", icon: "emoticon-devil-outline" },
+    { title: "dead", icon: "emoticon-dead-outline" },
+    { title: "wink", icon: "emoticon-wink-outline" },
+    { title: "sick", icon: "emoticon-sick-outline" },
+    { title: "frown", icon: "emoticon-frown-outline" },
+  ];
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
+      {loading && <Loader title="Uploading you documents, please wait..." />}
       <StatusBar backgroundColor={"white"} style="dark" />
       <View
         style={{ flex: 0.2, justifyContent: "center", alignItems: "center" }}
@@ -110,7 +158,7 @@ const Rider = ({ navigation }) => {
           flex: 1,
           marginHorizontal: 25,
         }}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 50 }}
       >
         {/* Step 1 */}
         <View>
@@ -126,7 +174,6 @@ const Rider = ({ navigation }) => {
           <View
             style={{
               flex: 1,
-              paddingBottom: 30,
             }}
           >
             <View
@@ -153,7 +200,6 @@ const Rider = ({ navigation }) => {
                 }}
               />
             </View>
-
             <View
               style={{
                 flexDirection: "row",
@@ -205,6 +251,7 @@ const Rider = ({ navigation }) => {
                 }}
               />
             </View>
+
             <View
               style={{
                 flexDirection: "row",
@@ -350,9 +397,12 @@ const Rider = ({ navigation }) => {
             width={400}
             event={handleValidateForms}
             text="Become a rider"
-            bgColor={"red"}
+            bgColor={"#B80B00"}
           />
         </View>
+        <Text style={{ textAlign: "center", color: "gray" }}>
+          Bear Rider ©2024
+        </Text>
       </ScrollView>
     </View>
   );

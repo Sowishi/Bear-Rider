@@ -1,11 +1,11 @@
 import { View, Text, ActivityIndicator } from "react-native";
 
-const Loader = () => {
+const Loader = ({ title }) => {
   return (
     <View
       style={{
         flex: 1,
-        backgroundColor: "#0D97AC99",
+        backgroundColor: "#00308299",
         position: "absolute",
         width: "100%",
         height: "100%",
@@ -16,14 +16,14 @@ const Loader = () => {
     >
       <Text
         style={{
-          fontSize: 30,
+          fontSize: 23,
           color: "white",
           fontWeight: "bold",
           textAlign: "center",
           marginHorizontal: 20,
         }}
       >
-        Loading, please wait...{" "}
+        {title}
         <ActivityIndicator size={"large"} color={"white"} />
       </Text>
     </View>
