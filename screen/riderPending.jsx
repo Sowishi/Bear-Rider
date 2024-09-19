@@ -1,6 +1,8 @@
 import { BackHandler, Text, View } from "react-native";
 import { useSmokeContext } from "../utils/appContext";
 import Button from "../components/button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { DevSettings } from "react-native";
 
 const RiderPending = () => {
   const { currentUser } = useSmokeContext();
@@ -31,8 +33,11 @@ const RiderPending = () => {
         We still processing your documents, please wait...
       </Text>
       <Button
-        event={() => BackHandler.exitApp()}
-        text={"Exit App"}
+        event={() => {
+          AsyncStorage.removeItem("user");
+          DevSettings.reload();
+        }}
+        text={"Reload App"}
         bgColor={"red"}
       />
     </View>

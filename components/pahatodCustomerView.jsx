@@ -303,8 +303,13 @@ const PahatodCustomerView = ({
                   }}
                 >
                   <Image
-                    style={{ width: 80, height: 80, marginRight: 10 }}
-                    source={{ uri: singleData?.rider?.profilePic }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      marginRight: 10,
+                      borderRadius: 100,
+                    }}
+                    source={{ uri: singleData?.rider?.selfieUrl }}
                   />
                   <View>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>

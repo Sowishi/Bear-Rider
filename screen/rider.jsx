@@ -86,6 +86,7 @@ const Rider = ({ navigation }) => {
       type: "success",
       text1: "Uploaded Successfully!",
     });
+    navigation.navigate("Home");
     setLoading(false);
   };
 
