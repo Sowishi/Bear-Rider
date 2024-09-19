@@ -12,6 +12,7 @@ import Register from "./screen/register";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import Rider from "./screen/rider";
 import Camera from "./screen/camera";
+import RiderPending from "./screen/riderPending";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -65,6 +66,14 @@ export default function App() {
           }}
           name="Camera"
           component={Camera}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
+            tabBarShowLabel: false,
+          }}
+          name="RiderPending"
+          component={RiderPending}
         />
       </Tab.Navigator>
     );

@@ -74,6 +74,12 @@ const Home = ({ route, navigation }) => {
   useEffect(() => {
     googlePlacesRef.current?.setAddressText("Daet Camarines Norte");
     handleLocationRequestAndPermission();
+
+    if (currentUser.role == "Rider") {
+      if (currentUser.riderStatus == "Pending") {
+        navigation.navigate("RiderPending");
+      }
+    }
   }, []);
 
   // Handle Disable Back Button
