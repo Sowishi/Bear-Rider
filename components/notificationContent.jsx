@@ -34,7 +34,7 @@ const NotificationContent = () => {
               }}
             >
               <Image
-                source={{ uri: item.currentUser.profilePic }}
+                source={{ uri: item.currentUser.selfieUrl }}
                 style={{ width: 50, height: 50, borderRadius: 100 }}
               />
               <View
@@ -48,9 +48,7 @@ const NotificationContent = () => {
               >
                 <View>
                   <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                    {item.currentUser.firstName +
-                      " " +
-                      item.currentUser.lastName}
+                    {item.currentUser.fullName}
                   </Text>
                   <Text style={{ fontSize: 12 }}>Just accepted your ride.</Text>
                 </View>

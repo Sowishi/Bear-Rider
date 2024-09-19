@@ -1,6 +1,7 @@
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
-import { useRef, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Camera } from "expo-camera";
+import { useEffect, useRef, useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Button from "../components/button";
 import { useSmokeContext } from "../utils/appContext";
 import * as ImageManipulator from "expo-image-manipulator";
@@ -18,14 +19,14 @@ export default function BearCamera({ navigation, type }) {
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
-      <View style={styles.container}>
-        <Text style={styles.message}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>We need your permission to show the camera</Text>
+        <Button event={requestPermission} text="grant permission" />
       </View>
     );
   }
+
+  console.log(permission);
 
   return (
     <View>
