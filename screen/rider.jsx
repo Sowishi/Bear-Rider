@@ -51,6 +51,7 @@ const Rider = ({ navigation }) => {
   } = useSmokeContext();
 
   const handleValidateForms = async () => {
+    console.log(frontLicense, backLicense, OR, CR, clearance, selfie);
     // setLoading(true);
     // const licenseUrl = await handleUploadImage(license);
     // const selfieUrl = await handleUploadImage(selfie);
@@ -647,6 +648,17 @@ const Rider = ({ navigation }) => {
                     }
                     text={!selfie ? "Open Camera" : "Retake Photo"}
                     bgColor={"#003082"}
+                  />
+                </View>
+
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Button
+                    width={400}
+                    event={handleValidateForms}
+                    text="Become a Rider"
+                    bgColor={"#B80B00"}
                   />
                 </View>
               </>

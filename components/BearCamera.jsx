@@ -40,8 +40,23 @@ export default function BearCamera({ navigation, type, facing }) {
   }
 
   const getCameraText = () => {
-    if (type == "fornt") {
-      return "Please take a clear photo of your license";
+    if (type == "frontLicense") {
+      return "Please take a clear photo of your front license";
+    }
+
+    if (type == "backLicense") {
+      return "Please take a clear photo of your back license";
+    }
+
+    if (type == "OR") {
+      return "Please take a clear photo of your official receipt";
+    }
+    if (type == "CR") {
+      return "Please take a clear photo of your certificate of recognition";
+    }
+
+    if (type == "clearance") {
+      return "Please take a clear photo of your goverment clearance";
     }
 
     if (type == "selfie") {
