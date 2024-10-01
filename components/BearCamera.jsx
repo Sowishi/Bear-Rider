@@ -8,10 +8,17 @@ import * as ImageManipulator from "expo-image-manipulator";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import LottieView from "lottie-react-native";
 import Scanner from "../assets/scanner.json";
-export default function BearCamera({ navigation, type }) {
+export default function BearCamera({ navigation, type, facing }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
-  const { setLicense, setSelfie } = useSmokeContext();
+  const {
+    setFrontLicense,
+    setSelfie,
+    setBackLicense,
+    setOR,
+    setCR,
+    setClearance,
+  } = useSmokeContext();
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -32,14 +39,22 @@ export default function BearCamera({ navigation, type }) {
     );
   }
 
-  console.log(permission);
+  const getCameraText = () => {
+    if (type == "fornt") {
+      return "Please take a clear photo of your license";
+    }
+
+    if (type == "selfie") {
+      return "Please take a clear photo of yourself in light room";
+    }
+  };
 
   return (
     <View style={{ position: "relative" }}>
       <CameraView
         ref={(ref) => setCameraRef(ref)}
         style={{ height: "100%" }}
-        facing={type == "license" ? "back" : "front"}
+        facing={type == "selfie" ? "front" : "back"}
       ></CameraView>
 
       <View
@@ -51,7 +66,7 @@ export default function BearCamera({ navigation, type }) {
         }}
       >
         <Text style={{ fontSize: 20, color: "#fefefe99", textAlign: "center" }}>
-          Please take a clear photo of your license
+          {getCameraText()}
         </Text>
       </View>
       <View
@@ -91,11 +106,28 @@ export default function BearCamera({ navigation, type }) {
                 [{ resize: { width: 500 } }],
                 { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
               );
-              if (type == "license") {
-                setLicense(resizedImage.uri);
-              } else {
+              if (type == "frontLicense") {
+                setFrontLicense(resizedImage.uri);
+              }
+              if (type == "backLicense") {
+                setBackLicense(resizedImage.uri);
+              }
+
+              if (type == "OR") {
+                setOR(resizedImage.uri);
+              }
+
+              if (type == "CR") {
+                setCR(resizedImage.uri);
+              }
+
+              if (type == "clearance") {
+                setClearance(resizedImage.uri);
+              }
+              if (type == "selfie") {
                 setSelfie(resizedImage.uri);
               }
+
               navigation.navigate("Rider");
               // Handle the photo URI, e.g., display it or upload it
             }

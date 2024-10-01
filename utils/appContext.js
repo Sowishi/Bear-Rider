@@ -7,8 +7,12 @@ export const MyProvider = ({ children }) => {
   const [mapView, setMapView] = useState("standard");
   const [historyModal, setHistoryModal] = useState(false);
   const [transactionCount, setTransactionCount] = useState(0);
-  const [license, setLicense] = useState();
+  const [frontLicense, setFrontLicense] = useState();
+  const [backLicense, setBackLicense] = useState();
   const [selfie, setSelfie] = useState();
+  const [OR, setOR] = useState();
+  const [CR, setCR] = useState();
+  const [clearance, setClearance] = useState();
 
   return (
     <MyContext.Provider
@@ -21,10 +25,18 @@ export const MyProvider = ({ children }) => {
         setHistoryModal,
         transactionCount,
         setTransactionCount,
-        license,
-        setLicense,
+        frontLicense,
+        setFrontLicense,
         selfie,
         setSelfie,
+        backLicense,
+        setBackLicense,
+        OR,
+        setOR,
+        CR,
+        setCR,
+        clearance,
+        setClearance,
       }}
     >
       {children}

@@ -35,30 +35,39 @@ const Rider = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
 
   const [disclosure, setDisclosure] = useState("become");
+  const [documents, setDocuments] = useState();
   const [accept, setAccept] = useState(false);
 
   const { addRider } = useAddRider();
-  const { setCurrentUser, license, selfie, currentUser } = useSmokeContext();
+  const {
+    setCurrentUser,
+    frontLicense,
+    selfie,
+    currentUser,
+    backLicense,
+    OR,
+    CR,
+    clearance,
+  } = useSmokeContext();
 
   const handleValidateForms = async () => {
-    setLoading(true);
-    const licenseUrl = await handleUploadImage(license);
-    const selfieUrl = await handleUploadImage(selfie);
-
-    const userData = {
-      ...currentUser,
-      licenseUrl,
-      selfieUrl,
-      role: "Rider",
-      riderStatus: "Pending",
-    };
-    addRider(userData, currentUser);
-    Toast.show({
-      type: "success",
-      text1: "Uploaded Successfully!",
-    });
-    navigation.navigate("Home");
-    setLoading(false);
+    // setLoading(true);
+    // const licenseUrl = await handleUploadImage(license);
+    // const selfieUrl = await handleUploadImage(selfie);
+    // const userData = {
+    //   ...currentUser,
+    //   licenseUrl,
+    //   selfieUrl,
+    //   role: "Rider",
+    //   riderStatus: "Pending",
+    // };
+    // addRider(userData, currentUser);
+    // Toast.show({
+    //   type: "success",
+    //   text1: "Uploaded Successfully!",
+    // });
+    // navigation.navigate("Home");
+    // setLoading(false);
   };
 
   const handleChange = (inputName, text) => {
@@ -317,6 +326,348 @@ const Rider = ({ navigation }) => {
     }
   }
 
+  if (documents) {
+    return (
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        {loading && <Loader title="Uploading you documents, please wait..." />}
+        <StatusBar backgroundColor={"white"} style="dark" />
+
+        <View
+          style={{ flex: 0.2, justifyContent: "center", alignItems: "center" }}
+        >
+          <Image
+            style={{ width: 150, height: 150, objectFit: "contain" }}
+            source={bear2}
+          />
+        </View>
+        <ScrollView
+          style={{
+            flex: 1,
+            marginHorizontal: 25,
+          }}
+          contentContainerStyle={{ paddingBottom: 50 }}
+        >
+          {/* Step 2 */}
+          <View>
+            {/* License  */}
+            {documents == "license" && (
+              <>
+                <Text style={{ fontSize: 25, fontWeight: "bold" }}>
+                  Delivery and Transportation Service
+                </Text>
+                <Text style={{ marginTop: 5, color: "gray" }}>
+                  this service requires a rider’s non-professional &
+                  professional driver’s license
+                </Text>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      marginVertical: 20,
+                    }}
+                  >
+                    Upload your driver’s License ID (Front)
+                  </Text>
+                  {!frontLicense && (
+                    <Image
+                      style={{ width: 150, height: 150, objectFit: "contain" }}
+                      source={licensePhoto}
+                    />
+                  )}
+                  {frontLicense && (
+                    <Image
+                      style={{ width: 300, height: 300 }}
+                      source={{ uri: frontLicense }}
+                    />
+                  )}
+                  <Button
+                    event={() =>
+                      navigation.navigate("Camera", {
+                        type: "frontLicense",
+                        facing: false,
+                      })
+                    }
+                    text={!frontLicense ? "Open Camera" : "Retake Photo"}
+                    bgColor={"#003082"}
+                  />
+                </View>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      marginVertical: 20,
+                    }}
+                  >
+                    Upload your driver’s License ID (Back)
+                  </Text>
+                  {!backLicense && (
+                    <Image
+                      style={{ width: 150, height: 150, objectFit: "contain" }}
+                      source={licensePhoto}
+                    />
+                  )}
+                  {backLicense && (
+                    <Image
+                      style={{ width: 300, height: 300 }}
+                      source={{ uri: backLicense }}
+                    />
+                  )}
+                  <Button
+                    event={() =>
+                      navigation.navigate("Camera", {
+                        type: "backLicense",
+                        facing: false,
+                      })
+                    }
+                    text={!backLicense ? "Open Camera" : "Retake Photo"}
+                    bgColor={"#003082"}
+                  />
+                </View>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Button
+                    width={400}
+                    event={() => {
+                      setDocuments("orcr");
+                    }}
+                    text="Next"
+                    bgColor={"#B80B00"}
+                  />
+                </View>
+              </>
+            )}
+
+            {/* Documents */}
+            {documents == "orcr" && (
+              <>
+                <Text
+                  style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}
+                >
+                  Official Receipt / Certificate of Registration{" "}
+                </Text>
+                <Text style={{ marginTop: 5, color: "gray" }}>
+                  this service requires a rider’s OR/CR
+                </Text>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      marginVertical: 20,
+                    }}
+                  >
+                    Upload your Official Receipt{" "}
+                  </Text>
+                  {!OR && (
+                    <Image
+                      style={{ width: 150, height: 150, objectFit: "contain" }}
+                      source={documentPhoto}
+                    />
+                  )}
+                  {OR && (
+                    <Image
+                      style={{ width: 300, height: 300 }}
+                      source={{ uri: OR }}
+                    />
+                  )}
+                  <Button
+                    event={() =>
+                      navigation.navigate("Camera", {
+                        type: "OR",
+                        facing: false,
+                      })
+                    }
+                    text={!OR ? "Open Camera" : "Retake Photo"}
+                    bgColor={"#003082"}
+                  />
+                </View>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      marginVertical: 20,
+                    }}
+                  >
+                    Upload your Certificate of Regsitration{" "}
+                  </Text>
+                  {!CR && (
+                    <Image
+                      style={{ width: 150, height: 150, objectFit: "contain" }}
+                      source={documentPhoto}
+                    />
+                  )}
+                  {CR && (
+                    <Image
+                      style={{ width: 300, height: 300 }}
+                      source={{ uri: CR }}
+                    />
+                  )}
+                  <Button
+                    event={() =>
+                      navigation.navigate("Camera", {
+                        type: "CR",
+                        facing: false,
+                      })
+                    }
+                    text={!CR ? "Open Camera" : "Retake Photo"}
+                    bgColor={"#003082"}
+                  />
+                  <View
+                    style={{ justifyContent: "center", alignItems: "center" }}
+                  >
+                    <Button
+                      width={400}
+                      event={() => {
+                        setDocuments("clearance");
+                      }}
+                      text="Next"
+                      bgColor={"#B80B00"}
+                    />
+                  </View>
+                </View>
+              </>
+            )}
+
+            {/* Clearance */}
+
+            {documents == "clearance" && (
+              <>
+                <Text
+                  style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}
+                >
+                  Government Mandatory Clearance
+                </Text>
+                <Text style={{ marginTop: 5, color: "gray" }}>
+                  this service requires a rider’s non-professional &
+                  professional driver’s license
+                </Text>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      marginVertical: 20,
+                    }}
+                  >
+                    Upload your clearance
+                  </Text>
+                  {!clearance && (
+                    <Image
+                      style={{ width: 150, height: 150, objectFit: "contain" }}
+                      source={documentPhoto}
+                    />
+                  )}
+                  {clearance && (
+                    <Image
+                      style={{ width: 300, height: 300 }}
+                      source={{ uri: clearance }}
+                    />
+                  )}
+                  <Button
+                    event={() =>
+                      navigation.navigate("Camera", { type: "clearance" })
+                    }
+                    text={!clearance ? "Open Camera" : "Retake Photo"}
+                    bgColor={"#003082"}
+                  />
+                </View>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Button
+                    width={400}
+                    event={() => {
+                      setDocuments("selfie");
+                    }}
+                    text="Next"
+                    bgColor={"#B80B00"}
+                  />
+                </View>
+              </>
+            )}
+            {/* Selfie */}
+
+            {documents == "selfie" && (
+              <>
+                <Text
+                  style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}
+                >
+                  Capture your selfie{" "}
+                </Text>
+                <Text style={{ marginTop: 5, color: "gray" }}>
+                  Please take a clear, well-lit photo of yourself for
+                  verification. Ensure your face is fully visible, without any
+                  obstructions like hats or sunglasses. This photo will be used
+                  for your rider profile.
+                </Text>
+                <View
+                  style={{ justifyContent: "center", alignItems: "center" }}
+                >
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 15,
+                      marginVertical: 20,
+                    }}
+                  >
+                    Upload your selfie
+                  </Text>
+                  {!selfie && (
+                    <Image
+                      style={{ width: 150, height: 150, objectFit: "contain" }}
+                      source={cameraPhoto}
+                    />
+                  )}
+                  {selfie && (
+                    <Image
+                      style={{ width: 300, height: 300 }}
+                      source={{ uri: selfie }}
+                    />
+                  )}
+                  <Button
+                    event={() =>
+                      navigation.navigate("Camera", {
+                        type: "selfie",
+                        facing: true,
+                      })
+                    }
+                    text={!selfie ? "Open Camera" : "Retake Photo"}
+                    bgColor={"#003082"}
+                  />
+                </View>
+              </>
+            )}
+          </View>
+
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 20,
+            }}
+          ></View>
+          <Text style={{ textAlign: "center", color: "gray" }}>
+            Bear Rider ©2024
+          </Text>
+        </ScrollView>
+      </View>
+    );
+  }
+
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       {loading && <Loader title="Uploading you documents, please wait..." />}
@@ -347,6 +698,10 @@ const Rider = ({ navigation }) => {
             }}
           >
             Become a Rider
+          </Text>
+          <Text style={{ marginVertical: 10, color: "gray" }}>
+            Please confirm your credentials below then proceed of becoming a
+            rider.
           </Text>
           <View
             style={{
@@ -497,150 +852,6 @@ const Rider = ({ navigation }) => {
           ></View>
         </View>
 
-        {/* Step 2 */}
-        <View>
-          {/* License  */}
-          <>
-            <Text style={{ fontSize: 25, fontWeight: "bold" }}>
-              Delivery and Transportation Service
-            </Text>
-            <Text style={{ marginTop: 5, color: "gray" }}>
-              this service requires a rider’s non-professional & professional
-              driver’s license
-            </Text>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text
-                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
-              >
-                Upload your driver’s License ID
-              </Text>
-              {!license && (
-                <Image
-                  style={{ width: 150, height: 150, objectFit: "contain" }}
-                  source={licensePhoto}
-                />
-              )}
-              {license && (
-                <Image
-                  style={{ width: 300, height: 300 }}
-                  source={{ uri: license }}
-                />
-              )}
-              <Button
-                event={() => navigation.navigate("Camera", { type: "license" })}
-                text={!license ? "Open Camera" : "Retake Photo"}
-                bgColor={"#003082"}
-              />
-            </View>
-          </>
-          {/* Documents */}
-          <>
-            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}>
-              Capture your selfie{" "}
-            </Text>
-            <Text style={{ marginTop: 5, color: "gray" }}>
-              Please take a clear, well-lit photo of yourself for verification.
-              Ensure your face is fully visible, without any obstructions like
-              hats or sunglasses. This photo will be used for your rider
-              profile.
-            </Text>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text
-                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
-              >
-                Upload your selfie
-              </Text>
-              {!selfie && (
-                <Image
-                  style={{ width: 150, height: 150, objectFit: "contain" }}
-                  source={documentPhoto}
-                />
-              )}
-              {selfie && (
-                <Image
-                  style={{ width: 300, height: 300 }}
-                  source={{ uri: selfie }}
-                />
-              )}
-              <Button
-                event={() => navigation.navigate("Camera", { type: "selfie" })}
-                text={!license ? "Open Camera" : "Retake Photo"}
-                bgColor={"#003082"}
-              />
-            </View>
-          </>
-          <>
-            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}>
-              Capture your selfie{" "}
-            </Text>
-            <Text style={{ marginTop: 5, color: "gray" }}>
-              Please take a clear, well-lit photo of yourself for verification.
-              Ensure your face is fully visible, without any obstructions like
-              hats or sunglasses. This photo will be used for your rider
-              profile.
-            </Text>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text
-                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
-              >
-                Upload your selfie
-              </Text>
-              {!selfie && (
-                <Image
-                  style={{ width: 150, height: 150, objectFit: "contain" }}
-                  source={documentPhoto}
-                />
-              )}
-              {selfie && (
-                <Image
-                  style={{ width: 300, height: 300 }}
-                  source={{ uri: selfie }}
-                />
-              )}
-              <Button
-                event={() => navigation.navigate("Camera", { type: "selfie" })}
-                text={!license ? "Open Camera" : "Retake Photo"}
-                bgColor={"#003082"}
-              />
-            </View>
-          </>
-          <>
-            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}>
-              Capture your selfie{" "}
-            </Text>
-            <Text style={{ marginTop: 5, color: "gray" }}>
-              Please take a clear, well-lit photo of yourself for verification.
-              Ensure your face is fully visible, without any obstructions like
-              hats or sunglasses. This photo will be used for your rider
-              profile.
-            </Text>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text
-                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
-              >
-                Upload your selfie
-              </Text>
-              {!selfie && (
-                <Image
-                  style={{ width: 150, height: 150, objectFit: "contain" }}
-                  source={cameraPhoto}
-                />
-              )}
-              {selfie && (
-                <Image
-                  style={{ width: 300, height: 300 }}
-                  source={{ uri: selfie }}
-                />
-              )}
-              <Button
-                event={() => navigation.navigate("Camera", { type: "selfie" })}
-                text={!license ? "Open Camera" : "Retake Photo"}
-                bgColor={"#003082"}
-              />
-            </View>
-          </>
-        </View>
-
         <View
           style={{
             justifyContent: "center",
@@ -650,8 +861,8 @@ const Rider = ({ navigation }) => {
         >
           <Button
             width={400}
-            event={handleValidateForms}
-            text="Become a rider"
+            event={() => setDocuments("license")}
+            text="Proceed"
             bgColor={"#B80B00"}
           />
         </View>
