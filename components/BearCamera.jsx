@@ -21,7 +21,11 @@ export default function BearCamera({ navigation, type }) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <Text>We need your permission to show the camera</Text>
-        <Button event={requestPermission} text="grant permission" />
+        <Button
+          bgColor={"#003082"}
+          event={requestPermission}
+          text="grant permission"
+        />
       </View>
     );
   }
