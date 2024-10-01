@@ -5,7 +5,9 @@ import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Button from "../components/button";
 import { useSmokeContext } from "../utils/appContext";
 import * as ImageManipulator from "expo-image-manipulator";
-
+import AntDesign from "@expo/vector-icons/AntDesign";
+import LottieView from "lottie-react-native";
+import Scanner from "../assets/scanner.json";
 export default function BearCamera({ navigation, type }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
@@ -33,7 +35,7 @@ export default function BearCamera({ navigation, type }) {
   console.log(permission);
 
   return (
-    <View>
+    <View style={{ position: "relative" }}>
       <CameraView
         ref={(ref) => setCameraRef(ref)}
         style={{ height: "100%" }}
@@ -43,14 +45,45 @@ export default function BearCamera({ navigation, type }) {
       <View
         style={{
           position: "absolute",
+          width: "100%",
+          top: 50,
+          padding: 20,
+        }}
+      >
+        <Text style={{ fontSize: 20, color: "#fefefe99", textAlign: "center" }}>
+          Please take a clear photo of your license
+        </Text>
+      </View>
+      <View
+        style={{
+          position: "absolute",
+          width: "100%",
+          top: "30%",
+          padding: 20,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <LottieView
+          autoPlay
+          style={{ width: 300, height: 300 }}
+          source={Scanner}
+        ></LottieView>
+      </View>
+
+      <View
+        style={{
+          position: "absolute",
           bottom: 0,
           justifyContent: "center",
           alignItems: "center",
           width: "100%",
+          flexDirection: "row",
         }}
       >
-        <Button
-          event={async () => {
+        <TouchableOpacity
+          style={{ padding: 30 }}
+          onPress={async () => {
             if (cameraRef) {
               const photo = await cameraRef.takePictureAsync();
               const resizedImage = await ImageManipulator.manipulateAsync(
@@ -67,9 +100,9 @@ export default function BearCamera({ navigation, type }) {
               // Handle the photo URI, e.g., display it or upload it
             }
           }}
-          text="Proceed"
-          bgColor={"#003082"}
-        ></Button>
+        >
+          <AntDesign name="camera" size={45} color="white" />
+        </TouchableOpacity>
       </View>
     </View>
   );

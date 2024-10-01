@@ -18,7 +18,7 @@ import { useSmokeContext } from "../utils/appContext";
 import BearCamera from "../components/BearCamera";
 import licensePhoto from "../components/Group 43.png";
 import cameraPhoto from "../assets/camera-icon-logo-template-illustration-design-vector-eps-10-removebg-preview 1.png";
-
+import documentPhoto from "../assets/Group 39382.png";
 import Camera from "./camera";
 import riderDisclosure from "../assets/Group 39398.png";
 import riderNeeds from "../assets/Group 39399.png";
@@ -28,65 +28,31 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import SelectDropdown from "react-native-select-dropdown";
 import Loader from "../components/loader";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import useAddRider from "../hooks/useAddRider";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [forms, setForms] = useState({
-    fullName: "",
-    phoneNumber: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
+
   const [disclosure, setDisclosure] = useState("become");
   const [accept, setAccept] = useState(false);
 
-  const { addUser } = useAddUser();
-  const { setCurrentUser, license, selfie } = useSmokeContext();
+  const { addRider } = useAddRider();
+  const { setCurrentUser, license, selfie, currentUser } = useSmokeContext();
 
   const handleValidateForms = async () => {
     setLoading(true);
     const licenseUrl = await handleUploadImage(license);
     const selfieUrl = await handleUploadImage(selfie);
-    let isFormsFilled = true;
-
-    if (!isFormsFilled) {
-      Toast.show({ type: "error", text1: "Please fill all the fields" });
-      setLoading(false);
-
-      return;
-    }
-    const phoneNumber = forms.phoneNumber;
-
-    if (!(phoneNumber.startsWith("09") && phoneNumber.length === 11)) {
-      Toast.show({
-        type: "error",
-        text1: "Invalid Phone Number",
-      });
-      setLoading(false);
-
-      return;
-    }
-
-    if (forms.password !== forms.confirmPassword) {
-      Toast.show({
-        type: "error",
-        text1: "Password does not match",
-      });
-      setLoading(false);
-
-      return;
-    }
 
     const userData = {
-      ...forms,
+      ...currentUser,
       licenseUrl,
       selfieUrl,
       role: "Rider",
       riderStatus: "Pending",
     };
-    addUser(userData);
+    addRider(userData, currentUser);
     Toast.show({
       type: "success",
       text1: "Uploaded Successfully!",
@@ -402,6 +368,7 @@ const Rider = ({ navigation }) => {
               }}
             >
               <TextInput
+                editable={false}
                 onChangeText={(text) => handleChange("fullName", text)}
                 placeholder="Full Name"
                 style={{
@@ -409,6 +376,7 @@ const Rider = ({ navigation }) => {
                   paddingVertical: 15,
                   paddingHorizontal: 10,
                 }}
+                value={currentUser.firstName + " " + currentUser.lastName}
               />
             </View>
             <View
@@ -435,6 +403,8 @@ const Rider = ({ navigation }) => {
                   paddingVertical: 15,
                   paddingHorizontal: 10,
                 }}
+                editable={false}
+                value={currentUser.phoneNumber}
               />
             </View>
             <View
@@ -453,6 +423,8 @@ const Rider = ({ navigation }) => {
               }}
             >
               <TextInput
+                value={currentUser.email}
+                editable={false}
                 onChangeText={(text) => handleChange("email", text)}
                 placeholder="Email"
                 style={{
@@ -463,7 +435,7 @@ const Rider = ({ navigation }) => {
               />
             </View>
 
-            <View
+            {/* <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
@@ -514,7 +486,7 @@ const Rider = ({ navigation }) => {
                   paddingHorizontal: 10,
                 }}
               />
-            </View>
+            </View> */}
           </View>
           <View
             style={{
@@ -527,6 +499,7 @@ const Rider = ({ navigation }) => {
 
         {/* Step 2 */}
         <View>
+          {/* License  */}
           <>
             <Text style={{ fontSize: 25, fontWeight: "bold" }}>
               Delivery and Transportation Service
@@ -555,6 +528,77 @@ const Rider = ({ navigation }) => {
               )}
               <Button
                 event={() => navigation.navigate("Camera", { type: "license" })}
+                text={!license ? "Open Camera" : "Retake Photo"}
+                bgColor={"#003082"}
+              />
+            </View>
+          </>
+          {/* Documents */}
+          <>
+            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}>
+              Capture your selfie{" "}
+            </Text>
+            <Text style={{ marginTop: 5, color: "gray" }}>
+              Please take a clear, well-lit photo of yourself for verification.
+              Ensure your face is fully visible, without any obstructions like
+              hats or sunglasses. This photo will be used for your rider
+              profile.
+            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
+              >
+                Upload your selfie
+              </Text>
+              {!selfie && (
+                <Image
+                  style={{ width: 150, height: 150, objectFit: "contain" }}
+                  source={documentPhoto}
+                />
+              )}
+              {selfie && (
+                <Image
+                  style={{ width: 300, height: 300 }}
+                  source={{ uri: selfie }}
+                />
+              )}
+              <Button
+                event={() => navigation.navigate("Camera", { type: "selfie" })}
+                text={!license ? "Open Camera" : "Retake Photo"}
+                bgColor={"#003082"}
+              />
+            </View>
+          </>
+          <>
+            <Text style={{ fontSize: 25, fontWeight: "bold", marginTop: 20 }}>
+              Capture your selfie{" "}
+            </Text>
+            <Text style={{ marginTop: 5, color: "gray" }}>
+              Please take a clear, well-lit photo of yourself for verification.
+              Ensure your face is fully visible, without any obstructions like
+              hats or sunglasses. This photo will be used for your rider
+              profile.
+            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Text
+                style={{ fontWeight: "bold", fontSize: 15, marginVertical: 20 }}
+              >
+                Upload your selfie
+              </Text>
+              {!selfie && (
+                <Image
+                  style={{ width: 150, height: 150, objectFit: "contain" }}
+                  source={documentPhoto}
+                />
+              )}
+              {selfie && (
+                <Image
+                  style={{ width: 300, height: 300 }}
+                  source={{ uri: selfie }}
+                />
+              )}
+              <Button
+                event={() => navigation.navigate("Camera", { type: "selfie" })}
                 text={!license ? "Open Camera" : "Retake Photo"}
                 bgColor={"#003082"}
               />
