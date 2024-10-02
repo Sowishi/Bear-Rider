@@ -434,6 +434,7 @@ const Rider = ({ navigation }) => {
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
                   <Button
+                    isDisable={!frontLicense || !backLicense}
                     width={400}
                     event={() => {
                       setDocuments("orcr");
@@ -529,6 +530,7 @@ const Rider = ({ navigation }) => {
                     style={{ justifyContent: "center", alignItems: "center" }}
                   >
                     <Button
+                      isDisable={!OR || !CR}
                       width={400}
                       event={() => {
                         setDocuments("clearance");
@@ -590,6 +592,7 @@ const Rider = ({ navigation }) => {
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
                   <Button
+                    isDisable={!clearance}
                     width={400}
                     event={() => {
                       setDocuments("selfie");
@@ -655,6 +658,7 @@ const Rider = ({ navigation }) => {
                   style={{ justifyContent: "center", alignItems: "center" }}
                 >
                   <Button
+                    isDisable={!selfie}
                     width={400}
                     event={handleValidateForms}
                     text="Become a Rider"
