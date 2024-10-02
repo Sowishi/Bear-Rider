@@ -11,7 +11,7 @@ const useAddRider = () => {
   const addRider = (forms, currentUser) => {
     const docRef = doc(db, "users", currentUser.id);
 
-    updateDoc(docRef, forms);
+    updateDoc(docRef, { ...forms, createdAt: serverTimestamp() });
   };
 
   return { addRider };

@@ -52,23 +52,32 @@ const Rider = ({ navigation }) => {
 
   const handleValidateForms = async () => {
     console.log(frontLicense, backLicense, OR, CR, clearance, selfie);
-    // setLoading(true);
-    // const licenseUrl = await handleUploadImage(license);
-    // const selfieUrl = await handleUploadImage(selfie);
-    // const userData = {
-    //   ...currentUser,
-    //   licenseUrl,
-    //   selfieUrl,
-    //   role: "Rider",
-    //   riderStatus: "Pending",
-    // };
-    // addRider(userData, currentUser);
-    // Toast.show({
-    //   type: "success",
-    //   text1: "Uploaded Successfully!",
-    // });
-    // navigation.navigate("Home");
-    // setLoading(false);
+    setLoading(true);
+    const frontLicenseUrl = await handleUploadImage(frontLicense);
+    const backLicenseUrl = await handleUploadImage(backLicense);
+    const ORUrl = await handleUploadImage(OR);
+    const CRUrl = await handleUploadImage(CR);
+    const clearanceUrl = await handleUploadImage(clearance);
+    const selfieUrl = await handleUploadImage(selfie);
+
+    const userData = {
+      ...currentUser,
+      frontLicenseUrl,
+      backLicenseUrl,
+      ORUrl,
+      CRUrl,
+      clearanceUrl,
+      selfieUrl,
+      role: "Rider",
+      riderStatus: "Pending",
+    };
+    addRider(userData, currentUser);
+    Toast.show({
+      type: "success",
+      text1: "Uploaded Successfully!",
+    });
+    navigation.navigate("Home");
+    setLoading(false);
   };
 
   const handleChange = (inputName, text) => {
