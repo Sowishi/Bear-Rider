@@ -24,6 +24,9 @@ const Register = ({ navigation }) => {
     confirmPassword: "",
   });
 
+  const [code, setCode] = useState();
+  const [otp, setOtp] = useState();
+
   const { addUser } = useAddUser();
   const { setCurrentUser } = useSmokeContext();
 
@@ -72,9 +75,28 @@ const Register = ({ navigation }) => {
     navigation.navigate("login");
   };
 
+  const handleSendOTP = async () => {
+    const res = await fetch(
+      `https://api.semaphore.co/api/v4/otp?apikey=03000f1b8631cb27d06d4916fc994d4e&number=${forms.phoneNumber}&message=Thank you for registering with Bear Rider Express! Your one-time OTP is: {otp}`,
+      {
+        method: "POST",
+      }
+    );
+    const output = await res.json();
+    setCode(output[0].code);
+  };
+
   const handleChange = (inputName, text) => {
     const output = { ...forms, [inputName]: text };
     setForms(output);
+  };
+
+  const verifyPhone = () => {
+    if (parseInt(code) == parseInt(otp)) {
+      handleValidateForms();
+    } else {
+      Toast.show({ type: "error", text1: "Invalid OTP" });
+    }
   };
 
   useEffect(() => {
@@ -310,7 +332,7 @@ const Register = ({ navigation }) => {
             }}
           >
             <Button
-              event={handleValidateForms}
+              event={() => setSteps(2)}
               text="Proceed"
               bgColor={"#B80B00"}
             />
@@ -372,10 +394,70 @@ const Register = ({ navigation }) => {
             <Button
               style={{ marginTop: 30 }}
               text="Confirm Address"
-              event={() => navigation.navigate("main")}
+              event={() => {
+                setSteps(3);
+                handleSendOTP();
+              }}
               bgColor={"#B80B00"}
             />
           </View>
+        </View>
+      )}
+      {steps == 3 && (
+        <View
+          style={{
+            flex: 1,
+            marginHorizontal: 25,
+            paddingBottom: 20,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 25,
+              fontWeight: "bold",
+              marginBottom: 10,
+            }}
+          >
+            Phone Number Verification
+          </Text>
+          <Text style={{ color: "grey", fontSize: 15, letterSpacing: 1 }}>
+            We will send you a one-time password to this mobile number
+            <Text style={{ color: "blue" }}> {forms.phoneNumber}</Text>
+          </Text>
+
+          <>
+            <View style={{ marginTop: 40 }}>
+              <TextInput
+                onChangeText={(text) => setOtp(text)}
+                keyboardType="numeric"
+                style={{
+                  textAlign: "center",
+                  borderRadius: 50,
+                  paddingVertical: 25,
+                  fontSize: 40,
+                  letterSpacing: 20,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 4,
+                  },
+                  shadowOpacity: 0.32,
+                  shadowRadius: 5.46,
+
+                  elevation: 9,
+                  backgroundColor: "white",
+                }}
+              ></TextInput>
+            </View>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Button
+                style={{ marginTop: 30 }}
+                text="Verify Phone Number"
+                event={verifyPhone}
+                bgColor={"#B80B00"}
+              />
+            </View>
+          </>
         </View>
       )}
     </View>
