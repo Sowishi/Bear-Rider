@@ -140,7 +140,6 @@ const Rider = ({ navigation }) => {
           }}
           contentContainerStyle={{ paddingBottom: 50 }}
         >
-          {/* Step 2 */}
           <View>
             {/* License  */}
             {documents == "license" && (
@@ -213,7 +212,11 @@ const Rider = ({ navigation }) => {
                   />
                 </View>
                 <View
-                  style={{ justifyContent: "center", alignItems: "center" }}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginTop: 20,
+                  }}
                 >
                   <Button
                     isDisable={!frontLicense || !backLicense}
@@ -299,11 +302,25 @@ const Rider = ({ navigation }) => {
                     removeEvent={setCR}
                   />
                   <View
-                    style={{ justifyContent: "center", alignItems: "center" }}
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      marginTop: 20,
+                    }}
                   >
                     <Button
+                      isDisable={!frontLicense || !backLicense}
+                      width={100}
+                      event={() => {
+                        setDocuments("license");
+                      }}
+                      text="Back"
+                      bgColor={"#003082"}
+                    />
+                    <Button
                       isDisable={!OR || !CR}
-                      width={400}
+                      width={100}
                       event={() => {
                         setDocuments("clearance");
                       }}
@@ -359,11 +376,25 @@ const Rider = ({ navigation }) => {
                   />
                 </View>
                 <View
-                  style={{ justifyContent: "center", alignItems: "center" }}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    marginTop: 20,
+                  }}
                 >
                   <Button
+                    isDisable={!frontLicense || !backLicense}
+                    width={100}
+                    event={() => {
+                      setDocuments("orcr");
+                    }}
+                    text="Back"
+                    bgColor={"#003082"}
+                  />
+                  <Button
                     isDisable={!clearance}
-                    width={400}
+                    width={100}
                     event={() => {
                       setDocuments("selfie");
                     }}
@@ -420,13 +451,27 @@ const Rider = ({ navigation }) => {
                 </View>
 
                 <View
-                  style={{ justifyContent: "center", alignItems: "center" }}
+                  style={{
+                    justifyContent: "center",
+                    alignItems: "center",
+                    flexDirection: "row",
+                    marginTop: 20,
+                  }}
                 >
                   <Button
+                    isDisable={!frontLicense || !backLicense}
+                    width={100}
+                    event={() => {
+                      setDocuments("clearance");
+                    }}
+                    text="Back"
+                    bgColor={"#003082"}
+                  />
+                  <Button
                     isDisable={!selfie}
-                    width={400}
+                    width={100}
                     event={handleValidateForms}
-                    text="Become a Rider"
+                    text="Submit"
                     bgColor={"#B80B00"}
                   />
                 </View>
