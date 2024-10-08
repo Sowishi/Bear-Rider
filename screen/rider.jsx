@@ -26,6 +26,7 @@ import TermsAndConditions from "../components/TermsAndConditions";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import CameraButton from "../components/cameraButton";
 import DisclosurePage from "../components/disclosurePage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -77,7 +78,8 @@ const Rider = ({ navigation }) => {
       type: "success",
       text1: "Uploaded Successfully!",
     });
-    navigation.navigate("Home");
+    await AsyncStorage.removeItem("user");
+    navigation.navigate("login");
     setLoading(false);
   };
 
