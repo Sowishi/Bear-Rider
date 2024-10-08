@@ -11,26 +11,21 @@ import { StatusBar } from "expo-status-bar";
 import Button from "../components/button";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import * as Location from "expo-location";
-import useAddUser from "../hooks/useAddUser";
 import { useSmokeContext } from "../utils/appContext";
-import BearCamera from "../components/BearCamera";
 import licensePhoto from "../components/Group 43.png";
 import cameraPhoto from "../assets/camera-icon-logo-template-illustration-design-vector-eps-10-removebg-preview 1.png";
 import documentPhoto from "../assets/Group 39382.png";
-import Camera from "./camera";
-import riderDisclosure from "../assets/Group 39398.png";
 import riderNeeds from "../assets/Group 39399.png";
 import AntDesign from "@expo/vector-icons/AntDesign";
-
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import SelectDropdown from "react-native-select-dropdown";
 import Loader from "../components/loader";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import useAddRider from "../hooks/useAddRider";
 import TermsAndConditions from "../components/TermsAndConditions";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import CameraButton from "../components/cameraButton";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
@@ -50,10 +45,15 @@ const Rider = ({ navigation }) => {
     OR,
     CR,
     clearance,
+    setFrontLicense,
+    setBackLicense,
+    setOR,
+    setCR,
+    setClearance,
+    setSelfie,
   } = useSmokeContext();
 
   const handleValidateForms = async () => {
-    console.log(frontLicense, backLicense, OR, CR, clearance, selfie);
     setLoading(true);
     const frontLicenseUrl = await handleUploadImage(frontLicense);
     const backLicenseUrl = await handleUploadImage(backLicense);
@@ -239,14 +239,6 @@ const Rider = ({ navigation }) => {
         {loading && <Loader title="Uploading you documents, please wait..." />}
         <StatusBar backgroundColor={"white"} style="dark" />
 
-        <View
-          style={{ flex: 0.2, justifyContent: "center", alignItems: "center" }}
-        >
-          <Image
-            style={{ width: 150, height: 150, objectFit: "contain" }}
-            source={bear2}
-          />
-        </View>
         <ScrollView
           style={{
             flex: 1,
@@ -290,15 +282,10 @@ const Rider = ({ navigation }) => {
                       source={{ uri: frontLicense }}
                     />
                   )}
-                  <Button
-                    event={() =>
-                      navigation.navigate("Camera", {
-                        type: "frontLicense",
-                        facing: false,
-                      })
-                    }
-                    text={!frontLicense ? "Open Camera" : "Retake Photo"}
-                    bgColor={"#003082"}
+                  <CameraButton
+                    navigation={navigation}
+                    type={"frontLicense"}
+                    removeEvent={setFrontLicense}
                   />
                 </View>
                 <View
@@ -325,15 +312,10 @@ const Rider = ({ navigation }) => {
                       source={{ uri: backLicense }}
                     />
                   )}
-                  <Button
-                    event={() =>
-                      navigation.navigate("Camera", {
-                        type: "backLicense",
-                        facing: false,
-                      })
-                    }
-                    text={!backLicense ? "Open Camera" : "Retake Photo"}
-                    bgColor={"#003082"}
+                  <CameraButton
+                    navigation={navigation}
+                    type={"backLicense"}
+                    removeEvent={setBackLicense}
                   />
                 </View>
                 <View
@@ -387,15 +369,10 @@ const Rider = ({ navigation }) => {
                       source={{ uri: OR }}
                     />
                   )}
-                  <Button
-                    event={() =>
-                      navigation.navigate("Camera", {
-                        type: "OR",
-                        facing: false,
-                      })
-                    }
-                    text={!OR ? "Open Camera" : "Retake Photo"}
-                    bgColor={"#003082"}
+                  <CameraButton
+                    navigation={navigation}
+                    type={"OR"}
+                    removeEvent={setOR}
                   />
                 </View>
                 <View
@@ -422,15 +399,10 @@ const Rider = ({ navigation }) => {
                       source={{ uri: CR }}
                     />
                   )}
-                  <Button
-                    event={() =>
-                      navigation.navigate("Camera", {
-                        type: "CR",
-                        facing: false,
-                      })
-                    }
-                    text={!CR ? "Open Camera" : "Retake Photo"}
-                    bgColor={"#003082"}
+                  <CameraButton
+                    navigation={navigation}
+                    type={"CR"}
+                    removeEvent={setCR}
                   />
                   <View
                     style={{ justifyContent: "center", alignItems: "center" }}
@@ -486,12 +458,10 @@ const Rider = ({ navigation }) => {
                       source={{ uri: clearance }}
                     />
                   )}
-                  <Button
-                    event={() =>
-                      navigation.navigate("Camera", { type: "clearance" })
-                    }
-                    text={!clearance ? "Open Camera" : "Retake Photo"}
-                    bgColor={"#003082"}
+                  <CameraButton
+                    navigation={navigation}
+                    type={"clearance"}
+                    removeEvent={setClearance}
                   />
                 </View>
                 <View
@@ -548,15 +518,10 @@ const Rider = ({ navigation }) => {
                       source={{ uri: selfie }}
                     />
                   )}
-                  <Button
-                    event={() =>
-                      navigation.navigate("Camera", {
-                        type: "selfie",
-                        facing: true,
-                      })
-                    }
-                    text={!selfie ? "Open Camera" : "Retake Photo"}
-                    bgColor={"#003082"}
+                  <CameraButton
+                    navigation={navigation}
+                    type={"selfie"}
+                    removeEvent={setSelfie}
                   />
                 </View>
 
@@ -711,59 +676,6 @@ const Rider = ({ navigation }) => {
                 }}
               />
             </View>
-
-            {/* <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.8,
-                shadowRadius: 2,
-                elevation: 3,
-                paddingHorizontal: 10,
-                marginTop: 20,
-                backgroundColor: "white",
-                borderRadius: 10,
-              }}
-            >
-              <TextInput
-                secureTextEntry
-                onChangeText={(text) => handleChange("password", text)}
-                placeholder="Password"
-                style={{
-                  flex: 1,
-                  paddingVertical: 15,
-                  paddingHorizontal: 10,
-                }}
-              />
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.8,
-                shadowRadius: 2,
-                elevation: 3,
-                paddingHorizontal: 10,
-                marginTop: 20,
-                backgroundColor: "white",
-                borderRadius: 10,
-              }}
-            >
-              <TextInput
-                secureTextEntry
-                onChangeText={(text) => handleChange("confirmPassword", text)}
-                placeholder="Confirm Password"
-                style={{
-                  flex: 1,
-                  paddingVertical: 15,
-                  paddingHorizontal: 10,
-                }}
-              />
-            </View> */}
           </View>
           <View
             style={{
