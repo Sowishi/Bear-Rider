@@ -8,9 +8,12 @@ import * as ImageManipulator from "expo-image-manipulator";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import LottieView from "lottie-react-native";
 import Scanner from "../assets/scanner.json";
-export default function BearCamera({ navigation, type, facing }) {
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+
+export default function BearCamera({ navigation, type }) {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
+  const [facing, setFacing] = useState("back");
   const {
     setFrontLicense,
     setSelfie,
@@ -69,7 +72,7 @@ export default function BearCamera({ navigation, type, facing }) {
       <CameraView
         ref={(ref) => setCameraRef(ref)}
         style={{ height: "100%" }}
-        facing={type == "selfie" ? "front" : "back"}
+        facing={facing}
       ></CameraView>
 
       <View
@@ -105,12 +108,15 @@ export default function BearCamera({ navigation, type, facing }) {
         style={{
           position: "absolute",
           bottom: 0,
-          justifyContent: "center",
+          justifyContent: "space-around",
           alignItems: "center",
           width: "100%",
           flexDirection: "row",
         }}
       >
+        <TouchableOpacity onPress={() => navigation.navigate("Rider")}>
+          <MaterialCommunityIcons name="cancel" size={30} color="white" />
+        </TouchableOpacity>
         <TouchableOpacity
           style={{ padding: 30 }}
           onPress={async () => {
@@ -148,7 +154,14 @@ export default function BearCamera({ navigation, type, facing }) {
             }
           }}
         >
-          <AntDesign name="camera" size={45} color="white" />
+          <AntDesign name="camera" size={55} color="white" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setFacing(facing == "back" ? "front" : "back");
+          }}
+        >
+          <MaterialCommunityIcons name="camera-flip" size={30} color="white" />
         </TouchableOpacity>
       </View>
     </View>
