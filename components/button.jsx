@@ -23,15 +23,9 @@ const Button = ({ text, icon, bgColor, event, isDisable, style, width }) => {
       }}
       disabled={isDisable}
     >
-      {isDisable ? (
-        <Text style={{ fontSize: 18, color: "white", marginRight: 5 }}>
-          Disabled
-        </Text>
-      ) : (
-        <Text style={{ fontSize: 18, color: "white", marginRight: 5 }}>
-          {text}
-        </Text>
-      )}
+      <Text style={{ fontSize: 18, color: "white", marginRight: 5 }}>
+        {text}
+      </Text>
       <MaterialCommunityIcons name={icon} size={20} color="white" />
     </TouchableOpacity>
   );

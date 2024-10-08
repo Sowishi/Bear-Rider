@@ -22,6 +22,7 @@ import documentPhoto from "../assets/Group 39382.png";
 import Camera from "./camera";
 import riderDisclosure from "../assets/Group 39398.png";
 import riderNeeds from "../assets/Group 39399.png";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 import { storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -29,12 +30,13 @@ import SelectDropdown from "react-native-select-dropdown";
 import Loader from "../components/loader";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import useAddRider from "../hooks/useAddRider";
+import TermsAndConditions from "../components/TermsAndConditions";
 
 const Rider = ({ navigation }) => {
   const [location, setLocation] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const [disclosure, setDisclosure] = useState("become");
+  const [disclosure, setDisclosure] = useState("needs");
   const [documents, setDocuments] = useState();
   const [accept, setAccept] = useState(false);
 
@@ -116,41 +118,10 @@ const Rider = ({ navigation }) => {
   }, []);
 
   if (disclosure) {
-    if (disclosure == "become") {
-      return (
-        <View
-          style={{ flex: 1, backgroundColor: "#FFFEF7", paddingVertical: 10 }}
-        >
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "space-around",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{ fontSize: 27, fontWeight: "bold", textAlign: "center" }}
-            >
-              How to Become a rider
-            </Text>
-            <Image
-              style={{ objectFit: "contain", width: 400, height: 400 }}
-              source={riderDisclosure}
-            />
-            <Button
-              event={() => setDisclosure("needs")}
-              text={"Next"}
-              bgColor={"#003082"}
-            />
-          </View>
-        </View>
-      );
-    }
-
     if (disclosure == "needs") {
       return (
         <View
-          style={{ flex: 1, backgroundColor: "#FFFEF7", paddingVertical: 10 }}
+          style={{ flex: 1, backgroundColor: "white", paddingVertical: 10 }}
         >
           <View
             style={{
@@ -189,7 +160,7 @@ const Rider = ({ navigation }) => {
     if (disclosure == "terms") {
       return (
         <View
-          style={{ flex: 1, backgroundColor: "#FFFEF7", paddingVertical: 10 }}
+          style={{ flex: 1, backgroundColor: "white", paddingVertical: 10 }}
         >
           <View
             style={{
@@ -205,7 +176,6 @@ const Rider = ({ navigation }) => {
             </Text>
             <ScrollView
               style={{
-                padding: 20,
                 borderWidth: 2,
                 margin: 10,
                 marginVertical: 30,
@@ -213,85 +183,7 @@ const Rider = ({ navigation }) => {
                 borderColor: "#1C2873",
               }}
             >
-              <Text>
-                Welcome to Bear Rider Express ("the Company"). By signing up and
-                working as a rider for Bear Rider Express, you agree to comply
-                with the following terms and conditions. Please read them
-                carefully before accepting any assignments. 1. Acceptance of
-                Terms By registering as a rider with Bear Rider Express, you
-                agree to be bound by these Terms and Conditions, as well as any
-                additional rules or guidelines provided by the Company from time
-                to time. If you do not agree with these terms, you are not
-                authorized to provide services on behalf of Bear Rider Express.
-                2. Eligibility To become a rider, you must: Be at least 18 years
-                old. Hold a valid driver’s license for the vehicle type used for
-                deliveries. Have a registered vehicle that meets local safety
-                standards. Possess appropriate insurance coverage as required by
-                local law. Successfully complete any training or onboarding
-                process required by the Company. 3. Rider Obligations As a rider
-                for Bear Rider Express, you agree to: Provide prompt, efficient,
-                and safe delivery of goods to customers. Maintain a professional
-                and courteous attitude at all times when dealing with customers
-                and the Company. Keep all customer information confidential and
-                only use it for the purpose of completing a delivery. Use the
-                Bear Rider Express platform and app only for lawful purposes.
-                Comply with all local traffic regulations and parking laws while
-                making deliveries. Maintain the vehicle used for deliveries in
-                good working condition, and ensure that it meets all safety
-                requirements. Communicate any issues or delays with the Company
-                or the customer in a timely manner. 4. Compensation Riders will
-                be compensated based on the delivery rates set by the Company.
-                Payment terms include: Rates may vary depending on the type of
-                delivery, distance, or any other applicable factors. Payments
-                will be made on a weekly basis through the method of payment
-                chosen by the Company (e.g., bank transfer, mobile wallet).
-                Riders are responsible for any taxes associated with their
-                earnings. Bear Rider Express reserves the right to adjust rider
-                fees at any time. You will be notified of any changes to your
-                compensation in advance. 5. Insurance Riders are responsible for
-                ensuring that their vehicle is appropriately insured for
-                commercial use. The Company does not provide vehicle insurance,
-                health insurance, or any other form of insurance to riders. Bear
-                Rider Express is not liable for any accidents, theft, damage, or
-                injury sustained while performing delivery services. 6.
-                Termination Bear Rider Express may suspend or terminate your
-                account if you violate any of these Terms and Conditions,
-                including but not limited to: Repeated complaints from
-                customers. Failure to deliver goods in a timely manner. Using
-                the platform for illegal activities. Failure to maintain
-                required insurance or a valid driver’s license. Providing
-                inaccurate information during the registration process. Riders
-                may also terminate their contract with Bear Rider Express at any
-                time by providing written notice. 7. Confidentiality Riders
-                agree to maintain the confidentiality of all proprietary
-                information shared by Bear Rider Express, including but not
-                limited to customer information, delivery data, and business
-                operations. Any breach of confidentiality will result in
-                termination and potential legal action. 8. Use of the Bear Rider
-                Express App The Bear Rider Express app is provided to riders for
-                the purpose of facilitating deliveries. Riders agree not to:
-                Share their login credentials with others. Use the app for any
-                unauthorized purposes. Interfere with the proper functioning of
-                the app or manipulate its data. 9. Dispute Resolution In the
-                event of a dispute between you and Bear Rider Express, both
-                parties agree to first attempt to resolve the issue through
-                informal negotiation. If a resolution cannot be reached,
-                disputes may be submitted to binding arbitration in accordance
-                with local laws. 10. Changes to Terms and Conditions Bear Rider
-                Express reserves the right to modify or update these Terms and
-                Conditions at any time. Riders will be notified of any changes
-                through the app or via email. Continued use of the service
-                following changes to the terms constitutes acceptance of the new
-                terms. 11. Governing Law These Terms and Conditions are governed
-                by and construed in accordance with the laws of
-                [Country/Region]. Any legal proceedings arising out of or
-                related to these terms will be brought in the courts of
-                [Country/Region]. 12. Contact Information For any questions or
-                concerns regarding these Terms and Conditions, please contact
-                Bear Rider Express at: Email: support@bearriderexpress.com
-                Phone: [Insert Phone Number] Address: [Insert Company Address]
-                doloribus!
-              </Text>
+              <TermsAndConditions />
             </ScrollView>
             <View
               style={{
@@ -312,7 +204,12 @@ const Rider = ({ navigation }) => {
                   backgroundColor: accept ? "green" : "grey",
                 }}
               >
-                <Text style={{ color: "white" }}>Agree</Text>
+                <Text style={{ color: "white" }}>
+                  Agree{" "}
+                  {accept && (
+                    <AntDesign name="checkcircle" size={15} color="white" />
+                  )}
+                </Text>
               </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row" }}>
