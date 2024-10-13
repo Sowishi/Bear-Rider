@@ -232,13 +232,15 @@ const PahatodCustomerView = ({
                 text="Cancel"
                 bgColor={"#00308299"}
               />
-              <Button
-                event={() => setTransactionRemarksModal(true)}
-                width={150}
-                style={{ marginTop: 20 }}
-                text="Proceed"
-                bgColor={"#B80B00"}
-              />
+              {selectedLocation && (
+                <Button
+                  event={() => setTransactionRemarksModal(true)}
+                  width={150}
+                  style={{ marginTop: 20 }}
+                  text="Proceed"
+                  bgColor={"#B80B00"}
+                />
+              )}
             </View>
           </>
         )}

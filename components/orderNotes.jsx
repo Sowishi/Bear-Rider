@@ -8,8 +8,14 @@ import {
 import OrderNotesCard from "./orderNotesCard";
 import Input from "./input";
 import { useRef, useState } from "react";
+import Button from "./button";
 
-const OrderNotes = ({ serviceType, setDeliveryNotes, deliveryNotes }) => {
+const OrderNotes = ({
+  serviceType,
+  setDeliveryNotes,
+  deliveryNotes,
+  setTransactionRemarksModal,
+}) => {
   const [note, setNote] = useState("");
 
   const textInputRef = useRef();
@@ -50,79 +56,107 @@ const OrderNotes = ({ serviceType, setDeliveryNotes, deliveryNotes }) => {
   };
 
   return (
-    <ScrollView
+    <View
       style={{
+        flex: 1,
         width: "100%",
         marginTop: 5,
-        height: 100,
       }}
     >
-      <Text
+      <ScrollView
         style={{
-          fontSize: 25,
-          color: "black",
-          fontWeight: "bold",
-          marginBottom: 15,
+          width: "100%",
         }}
       >
-        {serviceType == "Pahatod" ? "Transportation Service" : "Order Notes"}
-      </Text>
-      <View
-        style={{
-          marginBottom: 20,
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+        <Text
+          style={{
+            fontSize: 25,
+            color: "black",
+            fontWeight: "bold",
+            marginBottom: 15,
+          }}
+        >
+          {serviceType == "Pahatod" ? "Transportation Service" : "Order Notes"}
+        </Text>
         <View
           style={{
-            flex: 1,
+            marginBottom: 20,
             flexDirection: "row",
             alignItems: "center",
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 1 },
-            shadowOpacity: 0.8,
-            shadowRadius: 2,
-            elevation: 3,
-            paddingHorizontal: 10,
-            backgroundColor: "white",
-            borderRadius: 10,
+            justifyContent: "center",
           }}
         >
-          <TextInput
-            ref={textInputRef}
-            onChangeText={(text) => setNote(text)}
-            placeholder="Enter your order here"
+          <View
             style={{
               flex: 1,
-              paddingVertical: 5,
+              flexDirection: "row",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 3,
+              paddingHorizontal: 10,
+              backgroundColor: "white",
+              borderRadius: 10,
             }}
-          />
+          >
+            <TextInput
+              ref={textInputRef}
+              onChangeText={(text) => setNote(text)}
+              placeholder="Enter your order here"
+              style={{
+                flex: 1,
+                paddingVertical: 5,
+              }}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={handleAddNotes}
+            style={{
+              marginLeft: 10,
+              backgroundColor: "#003082",
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+              borderRadius: 5,
+            }}
+          >
+            <Text style={{ color: "white" }}>Add</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity
-          onPress={handleAddNotes}
-          style={{
-            marginLeft: 10,
-            backgroundColor: "#003082",
-            paddingHorizontal: 10,
-            paddingVertical: 5,
-            borderRadius: 5,
-          }}
-        >
-          <Text style={{ color: "white" }}>Add</Text>
-        </TouchableOpacity>
+        {deliveryNotes.map((item) => {
+          return (
+            <OrderNotesCard
+              key={item.id}
+              item={item}
+              handleQuantityChange={handleQuantityChange}
+              handleDelete={handleDelete}
+            />
+          );
+        })}
+      </ScrollView>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Button
+          event={() => setTransactionRemarksModal(false)}
+          width={100}
+          style={{ marginTop: 20 }}
+          text="Cancel"
+          bgColor={"#003082"}
+        />
+        <Button
+          width={150}
+          style={{ marginTop: 20 }}
+          text="Find a rider"
+          bgColor={"#B80B00"}
+        />
       </View>
-      {deliveryNotes.map((item) => {
-        return (
-          <OrderNotesCard
-            item={item}
-            handleQuantityChange={handleQuantityChange}
-            handleDelete={handleDelete}
-          />
-        );
-      })}
-    </ScrollView>
+    </View>
   );
 };
 

@@ -298,6 +298,7 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setTransactionRemarksModal(false)}
       >
         <OrderNotes
+          setTransactionRemarksModal={setTransactionRemarksModal}
           deliveryNotes={deliveryNotes}
           setDeliveryNotes={setDeliveryNotes}
           serviceType={serviceType}
