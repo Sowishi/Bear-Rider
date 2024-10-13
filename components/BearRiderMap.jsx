@@ -9,6 +9,7 @@ import { PROVIDER_GOOGLE } from "react-native-maps";
 import useAddOnline from "../hooks/useAddOnline";
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
+import { riderMapStyle } from "../utils/riderMapStyle";
 
 const BearRiderMap = ({
   location,
@@ -80,6 +81,7 @@ const BearRiderMap = ({
         </View>
       )}
       <MapView
+        customMapStyle={IS_RIDER ? riderMapStyle : ""}
         onMapLoaded={() => {
           setMapLoading(false);
         }}

@@ -1,5 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { View, BackHandler, AppState } from "react-native";
+import {
+  View,
+  BackHandler,
+  AppState,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import Constants from "expo-constants";
 
 import * as Location from "expo-location";
@@ -22,12 +29,14 @@ import RiderAcceptedView from "../components/riderAcceptedView";
 import RiderBottomNavigation from "../components/riderBottomNavigation";
 import PahatodCustomerView from "../components/pahatodCustomerView";
 import NotificationContent from "../components/notificationContent";
+import OrderNotes from "../components/orderNotes";
 
 const Home = ({ route, navigation }) => {
   //Other State
   const [distance, setDistance] = useState(0);
   const [appState, setAppState] = useState(AppState.currentState);
   const [watchInstance, setWatchInstance] = useState(null);
+  const [deliveryNotes, setDeliveryNotes] = useState([]);
 
   //Boolean State
   const [isOnline, setIsOnline] = useState(false);
@@ -39,6 +48,7 @@ const Home = ({ route, navigation }) => {
   const [serviceType, setServiceType] = useState(null);
   const [transactionModal, setTransactionModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
+  const [transactionRemarksModal, setTransactionRemarksModal] = useState(false);
 
   //Location State
   const [location, setLocation] = useState(null);
@@ -280,6 +290,20 @@ const Home = ({ route, navigation }) => {
         />
       </BottomModal>
 
+      {/* Transaction Remarks Modal */}
+
+      <BottomModal
+        heightPx={500}
+        modalVisible={transactionRemarksModal}
+        closeModal={() => setTransactionRemarksModal(false)}
+      >
+        <OrderNotes
+          deliveryNotes={deliveryNotes}
+          setDeliveryNotes={setDeliveryNotes}
+          serviceType={serviceType}
+        />
+      </BottomModal>
+
       {/* Transaction Modal */}
       <ScreenModal
         modalVisible={transactionModal}
@@ -396,6 +420,7 @@ const Home = ({ route, navigation }) => {
             deleteTransaction={deleteTransaction}
             completeTransaction={completeTransaction}
             currentUser={currentUser}
+            setTransactionRemarksModal={setTransactionRemarksModal}
           />
         )}
       </View>

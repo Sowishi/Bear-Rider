@@ -1,4 +1,11 @@
-import { TouchableOpacity, View, Text, Image, TextInput } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  TextInput,
+  ScrollView,
+} from "react-native";
 import Button from "./button";
 import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import redMarker from "../assets/red-marker.png";
@@ -11,6 +18,7 @@ import haversineDistance from "../utils/calculateDistance";
 import { useSmokeContext } from "../utils/appContext";
 import calculateArrivalTime from "../utils/calculateArrivalTime";
 import cod from "../assets/cash-on-delivery.png";
+import { useEffect } from "react";
 const PahatodCustomerView = ({
   findingRider,
   setFindingRider,
@@ -29,6 +37,7 @@ const PahatodCustomerView = ({
   deleteTransaction,
   completeTransaction,
   serviceType,
+  setTransactionRemarksModal,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -51,6 +60,10 @@ const PahatodCustomerView = ({
       1000
     );
   };
+
+  useEffect(() => {
+    pahatodInputRef.current?.setAddressText("Camarines Norte: ");
+  }, []);
 
   return (
     <>
@@ -78,8 +91,11 @@ const PahatodCustomerView = ({
             borderRadius: 20,
           }}
         ></View>
+
+        {/* Still Finding a rider */}
         {!findingRider && (
           <>
+            {/* Header Title */}
             <Text
               style={{
                 fontSize: 25,
@@ -92,102 +108,112 @@ const PahatodCustomerView = ({
                 ? "Transportation Service"
                 : "Delivery Service"}
             </Text>
-            <View style={{ width: "100%" }}>
-              <Text style={{ marginBottom: 5 }}>
-                {serviceType == "Pahatod"
-                  ? "Current Location"
-                  : "Drop off Location"}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.8,
-                shadowRadius: 2,
-                elevation: 3,
-                paddingHorizontal: 10,
-                backgroundColor: "#D3D3D3",
-                borderRadius: 10,
-                marginBottom: 20,
-              }}
-            >
-              <Image source={redMarker} />
-              <TextInput
-                editable={false}
-                onChangeText={(text) => setEmail(text)}
-                placeholder={location?.address}
+
+            {/* Current Location of customer      */}
+            <>
+              <View style={{ width: "100%" }}>
+                <Text style={{ marginBottom: 5 }}>
+                  {serviceType == "Pahatod"
+                    ? "Current Location"
+                    : "Drop off Location"}
+                </Text>
+              </View>
+              <View
                 style={{
-                  flex: 1,
-                  paddingVertical: 15,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
                   paddingHorizontal: 10,
+                  backgroundColor: "#D3D3D3",
+                  borderRadius: 10,
+                  marginBottom: 20,
                 }}
-              />
-            </View>
+              >
+                <Image source={redMarker} />
+                <TextInput
+                  editable={false}
+                  placeholder={location?.address}
+                  style={{
+                    flex: 1,
+                    paddingVertical: 15,
+                    paddingHorizontal: 10,
+                  }}
+                />
+              </View>
+            </>
 
-            <View style={{ width: "100%" }}>
-              <Text style={{ marginBottom: 5 }}>
-                {serviceType == "Pahatod"
-                  ? "Drop off location"
-                  : "Shop to location"}
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.8,
-                shadowRadius: 2,
-                elevation: 3,
-                paddingHorizontal: 10,
-                backgroundColor: "white",
-                borderRadius: 10,
-              }}
-            >
-              <GooglePlacesAutocomplete
-                ref={pahatodInputRef}
-                enablePoweredByContainer={false}
-                renderLeftButton={() => {
-                  return <Image source={blueMarker} />;
+            {/* Drop of or shop to location */}
+            <>
+              <View style={{ width: "100%" }}>
+                <Text style={{ marginBottom: 5 }}>
+                  {serviceType == "Pahatod"
+                    ? "Drop off location"
+                    : "Shop to location"}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
+                  paddingHorizontal: 10,
+                  backgroundColor: "white",
+                  borderRadius: 10,
                 }}
-                styles={{
-                  textInputContainer: {
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    paddingVertical: 3,
-                  },
-                  textInput: { marginHorizontal: 10 },
-                }}
-                placeholder={serviceType == "Pahatod" ? "Drop Off" : "Shop to"}
-                onPress={async (data, details = null) => {
-                  const lat = details?.geometry?.location.lat;
-                  const lng = details?.geometry?.location.lng;
-                  const address = await reverseGeocode(lat, lng);
+              >
+                <GooglePlacesAutocomplete
+                  ref={pahatodInputRef}
+                  enablePoweredByContainer={false}
+                  renderLeftButton={() => {
+                    return <Image source={blueMarker} />;
+                  }}
+                  styles={{
+                    textInputContainer: {
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                      paddingVertical: 3,
+                    },
+                    textInput: { marginHorizontal: 10 },
+                  }}
+                  placeholder={
+                    serviceType == "Pahatod" ? "Drop Off" : "Shop to"
+                  }
+                  onPress={async (data, details = null) => {
+                    const lat = details?.geometry?.location.lat;
+                    const lng = details?.geometry?.location.lng;
+                    const address = await reverseGeocode(lat, lng);
 
-                  jumpToMarker({
-                    longitude: lng,
-                    latitude: lat,
-                  });
-                  setSelectedLocation({
-                    latitude: lat,
-                    longitude: lng,
-                    address,
-                  });
-                }}
-                fetchDetails={true}
-                GooglePlacesDetailsQuery={{ fields: "geometry" }}
-                query={{
-                  key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
-                  language: "en",
-                  components: "country:ph",
-                }}
-              />
-            </View>
+                    jumpToMarker({
+                      longitude: lng,
+                      latitude: lat,
+                    });
+                    setSelectedLocation({
+                      latitude: lat,
+                      longitude: lng,
+                      address,
+                    });
+                  }}
+                  fetchDetails={true}
+                  GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                  query={{
+                    key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
+                    language: "en",
+                    components: "country:ph",
+                  }}
+                />
+              </View>
+            </>
+
+            {/* Find a rider button */}
             <View
               style={{
                 justifyContent: "center",
@@ -207,15 +233,18 @@ const PahatodCustomerView = ({
                 bgColor={"#00308299"}
               />
               <Button
-                event={handleAddTransaction}
+                event={() => setTransactionRemarksModal(true)}
                 width={150}
                 style={{ marginTop: 20 }}
-                text="Find a rider"
+                text="Proceed"
                 bgColor={"#B80B00"}
               />
             </View>
           </>
         )}
+
+        {/* Rider Found */}
+
         {findingRider && (
           <>
             {singleData?.status !== "Accepted" && (
