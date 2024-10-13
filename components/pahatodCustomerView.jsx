@@ -19,6 +19,8 @@ import { useSmokeContext } from "../utils/appContext";
 import calculateArrivalTime from "../utils/calculateArrivalTime";
 import cod from "../assets/cash-on-delivery.png";
 import { useEffect } from "react";
+import Timeline from "react-native-timeline-flatlist";
+
 const PahatodCustomerView = ({
   findingRider,
   setFindingRider,
@@ -38,6 +40,7 @@ const PahatodCustomerView = ({
   completeTransaction,
   serviceType,
   setTransactionRemarksModal,
+  setTransactionDetailsModal,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -490,6 +493,28 @@ const PahatodCustomerView = ({
                 style={{ width: 20, height: 20, marginRight: 5 }}
               />
               <Text>Cash on Arrival</Text>
+            </View>
+            <View
+              style={{
+                marginVertical: 15,
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                flexDirection: "row",
+              }}
+            >
+              <Text>Transaction Details</Text>
+              <TouchableOpacity
+                onPress={() => setTransactionDetailsModal(true)}
+                style={{
+                  backgroundColor: "gray",
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  borderRadius: 10,
+                }}
+              >
+                <Text style={{ color: "white" }}>View Detail</Text>
+              </TouchableOpacity>
             </View>
 
             {/* Buttons */}

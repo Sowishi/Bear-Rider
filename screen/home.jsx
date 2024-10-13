@@ -49,7 +49,7 @@ const Home = ({ route, navigation }) => {
   const [transactionModal, setTransactionModal] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [transactionRemarksModal, setTransactionRemarksModal] = useState(false);
-
+  const [transactionDetailsModal, setTransactionDetailsModal] = useState(false);
   //Location State
   const [location, setLocation] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -237,10 +237,13 @@ const Home = ({ route, navigation }) => {
         distance,
         serviceType: serviceType,
         totalPrice: (distance * chargePerKilometer).toFixed(2),
+        deliveryNotes,
       };
       setFindingRider(true);
       const output = await addTransaction(transaction);
       setSelectedTransaction(output);
+      setTransactionRemarksModal(false);
+      setDeliveryNotes([]);
     } else {
       Toast.show({
         type: "info",
@@ -298,11 +301,32 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setTransactionRemarksModal(false)}
       >
         <OrderNotes
+          handleAddTransaction={handleAddTransaction}
           setTransactionRemarksModal={setTransactionRemarksModal}
           deliveryNotes={deliveryNotes}
           setDeliveryNotes={setDeliveryNotes}
           serviceType={serviceType}
         />
+      </BottomModal>
+
+      {/* Transaction Remarks Details */}
+
+      <BottomModal
+        heightPx={500}
+        modalVisible={transactionDetailsModal}
+        closeModal={() => setTransactionDetailsModal(false)}
+      >
+        {singleData && (
+          <OrderNotes
+            handleAddTransaction={handleAddTransaction}
+            setTransactionDetailsModal={setTransactionDetailsModal}
+            setTransactionRemarksModal={setTransactionRemarksModal}
+            deliveryNotes={singleData.deliveryNotes}
+            setDeliveryNotes={setDeliveryNotes}
+            serviceType={serviceType}
+            viewOnly={true}
+          />
+        )}
       </BottomModal>
 
       {/* Transaction Modal */}
@@ -422,6 +446,7 @@ const Home = ({ route, navigation }) => {
             completeTransaction={completeTransaction}
             currentUser={currentUser}
             setTransactionRemarksModal={setTransactionRemarksModal}
+            setTransactionDetailsModal={setTransactionDetailsModal}
           />
         )}
       </View>
