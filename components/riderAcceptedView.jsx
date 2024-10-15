@@ -1,7 +1,8 @@
 import { Image, Text, View } from "react-native";
 import cod from "../assets/cash-on-delivery.png";
-
-const RiderAcceptedView = ({ singleData, chargePerKilometer }) => {
+import redMarker from "../assets/red-marker.png";
+import blueMarker from "../assets/blue-marker.png";
+const RiderAcceptedView = ({ singleData, chargePerKilometer, baseFare }) => {
   return (
     <View
       style={{
@@ -71,10 +72,11 @@ const RiderAcceptedView = ({ singleData, chargePerKilometer }) => {
           style={{
             color: "black",
             fontWeight: "bold",
-            fontSize: 20,
+            fontSize: 18,
           }}
         >
-          Total: ₱{(singleData?.distance * chargePerKilometer).toFixed(2)}
+          {singleData.serviceType == "Pahatod" ? "Fare" : "Delivery Fee"}: ₱
+          {singleData?.distance * chargePerKilometer + baseFare}
         </Text>
       </View>
       <View
@@ -90,6 +92,30 @@ const RiderAcceptedView = ({ singleData, chargePerKilometer }) => {
       >
         <Image source={cod} style={{ width: 20, height: 20, marginRight: 5 }} />
         <Text>Cash on Arrival</Text>
+      </View>
+      <View style={{ flexDirection: "column", marginTop: 10 }}>
+        <Text style={{ fontSize: 10, color: "#B80B00", marginBottom: 1 }}>
+          Current Location
+        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{ width: 20, height: 20, marginRight: 5 }}
+            source={redMarker}
+          />
+          <Text>{singleData.origin.address}</Text>
+        </View>
+      </View>
+      <View style={{ flexDirection: "column", marginTop: 10 }}>
+        <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
+          Drop-off Location
+        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{ width: 20, height: 20, marginRight: 5 }}
+            source={blueMarker}
+          />
+          <Text>{singleData.destination.address}</Text>
+        </View>
       </View>
     </View>
   );

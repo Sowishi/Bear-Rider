@@ -33,21 +33,27 @@ const TransactionCard = ({
       >
         <Text
           style={{
-            fontSize: 20,
-            marginBottom: 5,
+            fontSize: 18,
             fontWeight: "bold",
           }}
         >
           {transaction.currentUser.firstName} {transaction.currentUser.lastName}
         </Text>
-        {/* <Text
-          style={{
-            fontSize: 13,
-            marginBottom: 5,
-          }}
-        >
-          {date}
-        </Text> */}
+        <View style={{ flexDirection: "column" }}>
+          <Text
+            style={{
+              color: "#FFC30E",
+              fontWeight: "bold",
+              fontSize: 13,
+              marginBottom: 5,
+            }}
+          >
+            {transaction.serviceType == "Padara"
+              ? "Delivery"
+              : "Transportation"}
+          </Text>
+          <Text style={{ fontSize: 8 }}>{date}</Text>
+        </View>
       </View>
 
       <View style={{ flexDirection: "column" }}>
@@ -109,7 +115,7 @@ const TransactionCard = ({
             style={{
               marginVertical: 3,
               color: getColorStatus(transaction.status),
-              fontSize: 17,
+              fontSize: 15,
             }}
           >
             Status: {transaction.status ? transaction.status : "Pending"}

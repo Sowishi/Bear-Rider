@@ -79,6 +79,7 @@ const Home = ({ route, navigation }) => {
   // Constant Value
 
   const chargePerKilometer = 10;
+  const baseFare = 30;
   const IS_RIDER = currentUser?.role;
 
   // Request Permission and Get location
@@ -413,6 +414,7 @@ const Home = ({ route, navigation }) => {
               setViewTransactionModal={setViewTransactionModal}
               singleData={singleData}
               chargePerKilometer={chargePerKilometer}
+              baseFare={baseFare}
             />
           </BottomModal>
         )}
