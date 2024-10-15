@@ -496,25 +496,18 @@ const PahatodCustomerView = ({
             </View>
             <View
               style={{
-                marginVertical: 15,
-                justifyContent: "space-between",
+                justifyContent: "center",
                 alignItems: "center",
                 width: "100%",
-                flexDirection: "row",
               }}
             >
-              <Text>Transaction Details</Text>
-              <TouchableOpacity
-                onPress={() => setTransactionDetailsModal(true)}
-                style={{
-                  backgroundColor: "gray",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  borderRadius: 10,
-                }}
-              >
-                <Text style={{ color: "white" }}>View Detail</Text>
-              </TouchableOpacity>
+              <Button
+                event={() => setTransactionDetailsModal(true)}
+                style={{ marginTop: 10 }}
+                width={"90%"}
+                text="Order Details"
+                bgColor={"#003082"}
+              />
             </View>
 
             {/* Buttons */}

@@ -1,15 +1,34 @@
-import { Image, Text, View } from "react-native";
+import { Image, ScrollView, Text, View } from "react-native";
 import cod from "../assets/cash-on-delivery.png";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
-const RiderAcceptedView = ({ singleData, chargePerKilometer, baseFare }) => {
+import Button from "./button";
+import { useSmokeContext } from "../utils/appContext";
+import Toast from "react-native-toast-message";
+import useCrudTransaction from "../hooks/useCrudTransaction";
+import useCrudNotification from "../hooks/useCrudNotification";
+const RiderAcceptedView = ({
+  singleData,
+  chargePerKilometer,
+  baseFare,
+  setTransactionDetailsModal,
+  location,
+}) => {
+  const { currentUser } = useSmokeContext();
+  const { acceptTransaction } = useCrudTransaction();
+  const { addNotification } = useCrudNotification();
+
+  const handleAcceptTransaction = () => {
+    acceptTransaction(singleData, currentUser, location);
+    addNotification(singleData, currentUser, "accept rider");
+    Toast.show({ type: "success", text1: "Successfully accepeted ride." });
+  };
   return (
-    <View
+    <ScrollView
+      contentContainerStyle={{ paddingBottom: 20 }}
       style={{
         backgroundColor: "white",
         flex: 1,
-        minHeight: 50,
-        width: "100%",
         paddingVertical: 20,
         borderRadius: 10,
       }}
@@ -117,7 +136,42 @@ const RiderAcceptedView = ({ singleData, chargePerKilometer, baseFare }) => {
           <Text>{singleData.destination.address}</Text>
         </View>
       </View>
-    </View>
+      {singleData.status && (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Button
+            event={() => setTransactionDetailsModal(true)}
+            style={{ marginTop: 10 }}
+            width={"90%"}
+            text="Order Details"
+            bgColor={"#003082"}
+          />
+        </View>
+      )}
+
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "row",
+          marginTop: 10,
+        }}
+      >
+        <Button
+          event={() => setTransactionDetailsModal(false)}
+          style={{ marginTop: 10 }}
+          width={100}
+          text="Decline"
+          bgColor={"#003082"}
+        />
+        <Button
+          event={handleAcceptTransaction}
+          style={{ marginTop: 10 }}
+          width={100}
+          text="Accept"
+          bgColor={"#B80B00"}
+        />
+      </View>
+    </ScrollView>
   );
 };
 

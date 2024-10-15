@@ -411,6 +411,8 @@ const Home = ({ route, navigation }) => {
             closeModal={() => setViewTransactionModal(false)}
           >
             <RiderAcceptedView
+              location={location}
+              setTransactionDetailsModal={setTransactionDetailsModal}
               setViewTransactionModal={setViewTransactionModal}
               singleData={singleData}
               chargePerKilometer={chargePerKilometer}
