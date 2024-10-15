@@ -9,6 +9,7 @@ const TransactionContent = ({
   transactions,
   setSelectedTransaction,
   setTransactionModal,
+  setViewTransactionModal,
 }) => {
   const filter = transactions.filter((transaction) => {
     if (!transaction.status) {
@@ -19,6 +20,7 @@ const TransactionContent = ({
   const handleViewTransaction = (transaction) => {
     setSelectedTransaction(transaction);
     setTransactionModal(false);
+    setViewTransactionModal(true);
   };
 
   return (

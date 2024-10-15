@@ -50,6 +50,7 @@ const Home = ({ route, navigation }) => {
   const [notificationModal, setNotificationModal] = useState(false);
   const [transactionRemarksModal, setTransactionRemarksModal] = useState(false);
   const [transactionDetailsModal, setTransactionDetailsModal] = useState(false);
+  const [viewTransactionModal, setViewTransactionModal] = useState(false);
   //Location State
   const [location, setLocation] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -335,6 +336,7 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setTransactionModal(false)}
       >
         <TransactionContent
+          setViewTransactionModal={setViewTransactionModal}
           transactions={transactions}
           setSelectedTransaction={setSelectedTransaction}
           setTransactionModal={setTransactionModal}
@@ -403,10 +405,16 @@ const Home = ({ route, navigation }) => {
         {/* Rider Accepeted View */}
 
         {singleData && IS_RIDER && (
-          <RiderAcceptedView
-            singleData={singleData}
-            chargePerKilometer={chargePerKilometer}
-          />
+          <BottomModal
+            modalVisible={viewTransactionModal}
+            closeModal={() => setViewTransactionModal(false)}
+          >
+            <RiderAcceptedView
+              setViewTransactionModal={setViewTransactionModal}
+              singleData={singleData}
+              chargePerKilometer={chargePerKilometer}
+            />
+          </BottomModal>
         )}
         {/* Rider bottom navigation */}
 

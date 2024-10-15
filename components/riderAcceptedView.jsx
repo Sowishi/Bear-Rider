@@ -5,14 +5,10 @@ const RiderAcceptedView = ({ singleData, chargePerKilometer }) => {
   return (
     <View
       style={{
-        position: "absolute",
         backgroundColor: "white",
-        bottom: 130,
         flex: 1,
-        marginHorizontal: 20,
         minHeight: 50,
-        width: "90%",
-        paddingHorizontal: 20,
+        width: "100%",
         paddingVertical: 20,
         borderRadius: 10,
       }}

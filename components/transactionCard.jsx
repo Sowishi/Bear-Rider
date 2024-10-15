@@ -33,36 +33,46 @@ const TransactionCard = ({
       >
         <Text
           style={{
-            fontSize: 17,
+            fontSize: 20,
             marginBottom: 5,
             fontWeight: "bold",
           }}
         >
           {transaction.currentUser.firstName} {transaction.currentUser.lastName}
         </Text>
-        <Text
+        {/* <Text
           style={{
             fontSize: 13,
             marginBottom: 5,
           }}
         >
           {date}
-        </Text>
+        </Text> */}
       </View>
 
-      <View style={{ flexDirection: "row" }}>
-        <Image
-          style={{ width: 20, height: 20, marginRight: 5 }}
-          source={redMarker}
-        />
-        <Text>{transaction.origin.address}</Text>
+      <View style={{ flexDirection: "column" }}>
+        <Text style={{ fontSize: 10, color: "#B80B00", marginBottom: 1 }}>
+          Current Location
+        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{ width: 20, height: 20, marginRight: 5 }}
+            source={redMarker}
+          />
+          <Text>{transaction.origin.address}</Text>
+        </View>
       </View>
-      <View style={{ flexDirection: "row", marginTop: 5 }}>
-        <Image
-          style={{ width: 20, height: 20, marginRight: 5 }}
-          source={blueMarker}
-        />
-        <Text>{transaction.destination.address}</Text>
+      <View style={{ flexDirection: "column", marginTop: 10 }}>
+        <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
+          Drop-off Location
+        </Text>
+        <View style={{ flexDirection: "row" }}>
+          <Image
+            style={{ width: 20, height: 20, marginRight: 5 }}
+            source={blueMarker}
+          />
+          <Text>{transaction.destination.address}</Text>
+        </View>
       </View>
       <View
         style={{
@@ -70,7 +80,7 @@ const TransactionCard = ({
           marginTop: 10,
         }}
       >
-        <View
+        {/* <View
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
@@ -87,7 +97,7 @@ const TransactionCard = ({
           <Text style={{ marginVertical: 3, fontWeight: "bold", fontSize: 14 }}>
             Total Price: ₱{transaction.totalPrice}
           </Text>
-        </View>
+        </View> */}
         <View
           style={{
             flexDirection: "row",
@@ -95,16 +105,11 @@ const TransactionCard = ({
             alignItems: "center",
           }}
         >
-          {!transaction.status && (
-            <ActivityIndicator style={{ marginRight: 5 }} />
-          )}
-
           <Text
             style={{
               marginVertical: 3,
               color: getColorStatus(transaction.status),
-              fontWeight: "bold",
-              fontSize: 20,
+              fontSize: 17,
             }}
           >
             Status: {transaction.status ? transaction.status : "Pending"}
@@ -139,22 +144,6 @@ const TransactionCard = ({
             </>
           )}
         </View>
-      </View>
-
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          paddingVertical: 10,
-        }}
-      >
-        <View
-          style={{
-            width: 200,
-            height: 2,
-            backgroundColor: "gray",
-          }}
-        ></View>
       </View>
     </View>
   );
