@@ -58,7 +58,9 @@ const TransactionCard = ({
 
       <View style={{ flexDirection: "column" }}>
         <Text style={{ fontSize: 10, color: "#B80B00", marginBottom: 1 }}>
-          Current Location
+          {transaction.serviceType == "Padara"
+            ? "Drop-off Location"
+            : "Current Location"}
         </Text>
         <View style={{ flexDirection: "row" }}>
           <Image
@@ -70,7 +72,9 @@ const TransactionCard = ({
       </View>
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
-          Drop-off Location
+          {transaction.serviceType == "Padara"
+            ? "Shop to Location"
+            : "Drop-off Location"}
         </Text>
         <View style={{ flexDirection: "row" }}>
           <Image

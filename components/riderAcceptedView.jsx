@@ -13,6 +13,7 @@ const RiderAcceptedView = ({
   baseFare,
   setTransactionDetailsModal,
   location,
+  setViewTransactionModal,
 }) => {
   const { currentUser } = useSmokeContext();
   const { acceptTransaction } = useCrudTransaction();
@@ -24,7 +25,6 @@ const RiderAcceptedView = ({
     Toast.show({ type: "success", text1: "Successfully accepeted ride." });
   };
 
-  console.log(singleData);
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 20 }}
@@ -116,7 +116,9 @@ const RiderAcceptedView = ({
       </View>
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={{ fontSize: 10, color: "#B80B00", marginBottom: 1 }}>
-          Current Location
+          {singleData.serviceType == "Padara"
+            ? "Drop-off Location"
+            : "Current Location"}{" "}
         </Text>
         <View style={{ flexDirection: "row" }}>
           <Image
@@ -128,7 +130,9 @@ const RiderAcceptedView = ({
       </View>
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
-          Drop-off Location
+          {singleData.serviceType == "Padara"
+            ? "Shop to Location"
+            : "Drop-off Location"}
         </Text>
         <View style={{ flexDirection: "row" }}>
           <Image
@@ -160,7 +164,7 @@ const RiderAcceptedView = ({
           }}
         >
           <Button
-            event={() => setTransactionDetailsModal(false)}
+            event={() => setViewTransactionModal(false)}
             style={{ marginTop: 10 }}
             width={100}
             text="Decline"

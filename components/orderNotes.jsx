@@ -1,4 +1,5 @@
 import {
+  Image,
   ScrollView,
   Text,
   TextInput,
@@ -9,6 +10,8 @@ import OrderNotesCard from "./orderNotesCard";
 import Input from "./input";
 import { useRef, useState } from "react";
 import Button from "./button";
+import redMarker from "../assets/red-marker.png";
+import blueMarker from "../assets/blue-marker.png";
 
 const OrderNotes = ({
   serviceType,
@@ -18,6 +21,7 @@ const OrderNotes = ({
   handleAddTransaction,
   viewOnly,
   IS_RIDER,
+  singleData,
 }) => {
   const [note, setNote] = useState("");
 
@@ -132,7 +136,23 @@ const OrderNotes = ({
             </TouchableOpacity>
           </View>
         )}
-        {deliveryNotes.map((item) => {
+
+        <View>
+          <Text style={{ fontSize: 15 }}>Store to Shop</Text>
+          <View style={{ flexDirection: "column", marginTop: 10 }}>
+            <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
+              {singleData.serviceType == "Padara" ? "Shop to Location" : ""}
+            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Image
+                style={{ width: 20, height: 20, marginRight: 5 }}
+                source={blueMarker}
+              />
+              <Text>{singleData.destination.address}</Text>
+            </View>
+          </View>
+        </View>
+        {/* {deliveryNotes.map((item) => {
           return (
             <OrderNotesCard
               viewOnly={viewOnly}
@@ -142,9 +162,10 @@ const OrderNotes = ({
               handleDelete={handleDelete}
             />
           );
-        })}
+        })} */}
       </ScrollView>
 
+      {/* Find a rider button */}
       {!viewOnly && (
         <View
           style={{

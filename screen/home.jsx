@@ -314,12 +314,13 @@ const Home = ({ route, navigation }) => {
       {/* Transaction Remarks Details */}
 
       <BottomModal
-        heightPx={500}
+        heightPx={700}
         modalVisible={transactionDetailsModal}
         closeModal={() => setTransactionDetailsModal(false)}
       >
         {singleData && (
           <OrderNotes
+            singleData={singleData}
             IS_RIDER={IS_RIDER}
             handleAddTransaction={handleAddTransaction}
             setTransactionDetailsModal={setTransactionDetailsModal}
