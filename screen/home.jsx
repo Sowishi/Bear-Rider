@@ -238,7 +238,7 @@ const Home = ({ route, navigation }) => {
         currentUser: currentUser,
         distance,
         serviceType: serviceType,
-        totalPrice: (distance * chargePerKilometer).toFixed(2),
+        totalPrice: distance * chargePerKilometer + baseFare,
         deliveryNotes,
       };
       setFindingRider(true);
@@ -320,6 +320,7 @@ const Home = ({ route, navigation }) => {
       >
         {singleData && (
           <OrderNotes
+            IS_RIDER={IS_RIDER}
             handleAddTransaction={handleAddTransaction}
             setTransactionDetailsModal={setTransactionDetailsModal}
             setTransactionRemarksModal={setTransactionRemarksModal}
@@ -358,6 +359,7 @@ const Home = ({ route, navigation }) => {
           transactions={transactions}
           setSelectedTransaction={setSelectedTransaction}
           setTransactionModal={setTransactionModal}
+          setViewTransactionModal={setViewTransactionModal}
         />
       </ScreenModal>
 
@@ -459,6 +461,7 @@ const Home = ({ route, navigation }) => {
             currentUser={currentUser}
             setTransactionRemarksModal={setTransactionRemarksModal}
             setTransactionDetailsModal={setTransactionDetailsModal}
+            baseFare={baseFare}
           />
         )}
       </View>

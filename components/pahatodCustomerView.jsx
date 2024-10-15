@@ -41,6 +41,7 @@ const PahatodCustomerView = ({
   serviceType,
   setTransactionRemarksModal,
   setTransactionDetailsModal,
+  baseFare,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -67,6 +68,15 @@ const PahatodCustomerView = ({
   useEffect(() => {
     pahatodInputRef.current?.setAddressText("Camarines Norte: ");
   }, []);
+
+  const getTransactionStatusLabel = (status) => {
+    if (status == "Accepted") {
+      return {
+        title: "Processing",
+        sub: "your rider is processing your order",
+      };
+    }
+  };
 
   return (
     <>
@@ -292,19 +302,29 @@ const PahatodCustomerView = ({
                   <Text
                     style={{
                       fontSize: 30,
-                      marginBottom: 10,
                       color: "black",
                       fontWeight: "bold",
+                      textAlign: "center",
+                    }}
+                  >
+                    {getTransactionStatusLabel(singleData.status).title}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      marginBottom: 10,
+                      color: "red",
+                      fontStyle: "italic",
                       marginBottom: 15,
                       textAlign: "center",
                     }}
                   >
-                    Arriving
+                    {getTransactionStatusLabel(singleData.status).sub}
                   </Text>
                   {location && (
                     <Text
                       style={{
-                        fontSize: 13,
+                        fontSize: 10,
                         marginBottom: 10,
                         color: "red",
                         fontStyle: "italic",
@@ -472,7 +492,7 @@ const PahatodCustomerView = ({
                   fontSize: 20,
                 }}
               >
-                Total: ₱{(distance * chargePerKilometer).toFixed(2)}
+                Total: ₱{distance * chargePerKilometer + baseFare}
               </Text>
             </View>
 

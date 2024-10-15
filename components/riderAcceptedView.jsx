@@ -23,6 +23,8 @@ const RiderAcceptedView = ({
     addNotification(singleData, currentUser, "accept rider");
     Toast.show({ type: "success", text1: "Successfully accepeted ride." });
   };
+
+  console.log(singleData);
   return (
     <ScrollView
       contentContainerStyle={{ paddingBottom: 20 }}
@@ -148,29 +150,31 @@ const RiderAcceptedView = ({
         </View>
       )}
 
-      <View
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "row",
-          marginTop: 10,
-        }}
-      >
-        <Button
-          event={() => setTransactionDetailsModal(false)}
-          style={{ marginTop: 10 }}
-          width={100}
-          text="Decline"
-          bgColor={"#003082"}
-        />
-        <Button
-          event={handleAcceptTransaction}
-          style={{ marginTop: 10 }}
-          width={100}
-          text="Accept"
-          bgColor={"#B80B00"}
-        />
-      </View>
+      {!singleData.status && (
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            marginTop: 10,
+          }}
+        >
+          <Button
+            event={() => setTransactionDetailsModal(false)}
+            style={{ marginTop: 10 }}
+            width={100}
+            text="Decline"
+            bgColor={"#003082"}
+          />
+          <Button
+            event={handleAcceptTransaction}
+            style={{ marginTop: 10 }}
+            width={100}
+            text="Accept"
+            bgColor={"#B80B00"}
+          />
+        </View>
+      )}
     </ScrollView>
   );
 };

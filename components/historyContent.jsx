@@ -14,6 +14,7 @@ const HistoryContent = ({
   setPahatodModal,
   setFindingRider,
   setSelectedLocation,
+  setViewTransactionModal,
 }) => {
   const { currentUser } = useSmokeContext();
 
@@ -21,6 +22,7 @@ const HistoryContent = ({
     setSelectedTransaction(transaction);
     setTransactionModal(false);
     setHistoryModal(false);
+    setViewTransactionModal(true);
   };
 
   const handleViewCustomer = (transaction) => {

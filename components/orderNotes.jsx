@@ -17,6 +17,7 @@ const OrderNotes = ({
   setTransactionRemarksModal,
   handleAddTransaction,
   viewOnly,
+  IS_RIDER,
 }) => {
   const [note, setNote] = useState("");
 
@@ -81,7 +82,7 @@ const OrderNotes = ({
             marginBottom: 15,
           }}
         >
-          {serviceType == "Pahatod" ? "Transportation Service" : "Order Notes"}
+          Order Details
         </Text>
         {!viewOnly && (
           <View
