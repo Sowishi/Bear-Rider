@@ -14,6 +14,7 @@ const RiderAcceptedView = ({
   setTransactionDetailsModal,
   location,
   setViewTransactionModal,
+  navigation,
 }) => {
   const { currentUser } = useSmokeContext();
   const { acceptTransaction } = useCrudTransaction();
@@ -145,7 +146,10 @@ const RiderAcceptedView = ({
       {singleData.status && (
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Button
-            event={() => setTransactionDetailsModal(true)}
+            event={() => {
+              setTransactionDetailsModal(true);
+              // navigation.navigate("OrderDetails", { data: singleData });
+            }}
             style={{ marginTop: 10 }}
             width={"90%"}
             text="Order Details"

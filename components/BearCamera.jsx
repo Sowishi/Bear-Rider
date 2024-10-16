@@ -21,6 +21,7 @@ export default function BearCamera({ navigation, type }) {
     setOR,
     setCR,
     setClearance,
+    setProofOfPurchase,
   } = useSmokeContext();
 
   if (!permission) {
@@ -64,6 +65,10 @@ export default function BearCamera({ navigation, type }) {
 
     if (type == "selfie") {
       return "Please take a clear photo of yourself in light room";
+    }
+
+    if (type == "proofOfPurchase") {
+      return "Please take a clear picture of receipts";
     }
   };
 
@@ -147,6 +152,12 @@ export default function BearCamera({ navigation, type }) {
               }
               if (type == "selfie") {
                 setSelfie(resizedImage.uri);
+              }
+
+              if (type == "proofOfPurchase") {
+                setProofOfPurchase(resizedImage.uri);
+                navigation.navigate("OrderDetails");
+                return;
               }
 
               navigation.navigate("Rider");

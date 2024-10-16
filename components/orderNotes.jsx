@@ -12,6 +12,8 @@ import { useRef, useState } from "react";
 import Button from "./button";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
+import CameraButton from "./cameraButton";
+import { useSmokeContext } from "../utils/appContext";
 
 const OrderNotes = ({
   serviceType,
@@ -22,6 +24,7 @@ const OrderNotes = ({
   viewOnly,
   IS_RIDER,
   singleData,
+  navigation,
 }) => {
   const [note, setNote] = useState("");
 
@@ -64,6 +67,8 @@ const OrderNotes = ({
 
     setDeliveryNotes(output);
   };
+
+  const { proofOfPurchase } = useSmokeContext();
 
   return (
     <View
@@ -136,8 +141,14 @@ const OrderNotes = ({
             </TouchableOpacity>
           </View>
         )}
-
-        <View>
+        <View
+          style={{
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+            backgroundColor: "#FFFEF7",
+            borderRadius: 10,
+          }}
+        >
           <Text style={{ fontSize: 15 }}>Store to Shop</Text>
           <View style={{ flexDirection: "column", marginTop: 10 }}>
             <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
@@ -152,17 +163,50 @@ const OrderNotes = ({
             </View>
           </View>
         </View>
-        {/* {deliveryNotes.map((item) => {
-          return (
-            <OrderNotesCard
-              viewOnly={viewOnly}
-              key={item.id}
-              item={item}
-              handleQuantityChange={handleQuantityChange}
-              handleDelete={handleDelete}
-            />
-          );
-        })} */}
+        <View
+          style={{
+            marginTop: 20,
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+            backgroundColor: "#FFFEF7",
+            borderRadius: 10,
+          }}
+        >
+          <Text style={{ fontSize: 15 }}>Order/s</Text>
+          <View style={{ flexDirection: "column", marginTop: 10 }}>
+            {deliveryNotes.map((item) => {
+              return (
+                <OrderNotesCard
+                  viewOnly={viewOnly}
+                  key={item.id}
+                  item={item}
+                  handleQuantityChange={handleQuantityChange}
+                  handleDelete={handleDelete}
+                />
+              );
+            })}
+          </View>
+        </View>
+        <View
+          style={{
+            marginTop: 20,
+            paddingHorizontal: 15,
+            paddingVertical: 10,
+            backgroundColor: "#FFFEF7",
+            borderRadius: 10,
+          }}
+        >
+          <Text style={{ fontSize: 15 }}>Proof of Purchase / Receipt</Text>
+          <View
+            style={{
+              flexDirection: "column",
+              marginTop: 10,
+              marginVertical: 10,
+            }}
+          >
+            <CameraButton navigation={navigation} type={"proofOfPurchase"} />
+          </View>
+        </View>
       </ScrollView>
 
       {/* Find a rider button */}
