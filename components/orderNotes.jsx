@@ -28,6 +28,8 @@ const OrderNotes = ({
   IS_RIDER,
   singleData,
   navigataion,
+  chargePerKilometer,
+  baseFare,
 }) => {
   const [note, setNote] = useState("");
   const [openCamera, setOpenCamera] = useState(false);
@@ -113,6 +115,7 @@ const OrderNotes = ({
       )}
 
       <ScrollView
+        contentContainerStyle={{ paddingBottom: 20 }}
         style={{
           width: "100%",
         }}
@@ -269,6 +272,72 @@ const OrderNotes = ({
           type={"proofOfPurchase"}
           navigation={navigataion}
         />
+
+        <>
+          <Text style={{ fontSize: 15, marginTop: 20 }}>Total Item Cost</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 1 },
+              shadowOpacity: 0.8,
+              shadowRadius: 2,
+              elevation: 3,
+              paddingHorizontal: 10,
+              backgroundColor: "white",
+              borderRadius: 10,
+            }}
+          >
+            <TextInput
+              placeholder="Total Item Cost"
+              style={{
+                flex: 1,
+                paddingVertical: 15,
+                paddingHorizontal: 10,
+              }}
+            />
+          </View>
+        </>
+
+        <View style={{ marginVertical: 10 }}>
+          <Text
+            style={{
+              color: "black",
+              fontSize: 15,
+            }}
+          >
+            Delivery Fee:
+            <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+              {" "}
+              ₱{singleData?.distance * chargePerKilometer + baseFare}
+            </Text>
+          </Text>
+          <Text
+            style={{
+              color: "black",
+              fontSize: 15,
+            }}
+          >
+            Purchase Cost:
+            <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+              {" "}
+              ₱{singleData?.distance * chargePerKilometer + baseFare}
+            </Text>
+          </Text>
+          <Text style={{ marginVertical: 10 }}>
+            Total <Text style={{ fontSize: 25 }}> ₱299</Text>
+          </Text>
+        </View>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Button
+            event={() => setTransactionDetailsModal(true)}
+            style={{ marginTop: 10 }}
+            width={"90%"}
+            text="Confirm"
+            bgColor={"#003082"}
+          />
+        </View>
       </ScrollView>
 
       {/* Find a rider button */}

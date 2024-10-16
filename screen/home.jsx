@@ -303,6 +303,8 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setTransactionRemarksModal(false)}
       >
         <OrderNotes
+          chargePerKilometer={chargePerKilometer}
+          baseFare={baseFare}
           handleAddTransaction={handleAddTransaction}
           setTransactionRemarksModal={setTransactionRemarksModal}
           deliveryNotes={deliveryNotes}
@@ -320,6 +322,8 @@ const Home = ({ route, navigation }) => {
       >
         {singleData && (
           <OrderNotes
+            chargePerKilometer={chargePerKilometer}
+            baseFare={baseFare}
             singleData={singleData}
             IS_RIDER={IS_RIDER}
             handleAddTransaction={handleAddTransaction}
