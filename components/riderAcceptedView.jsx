@@ -1,4 +1,4 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import cod from "../assets/cash-on-delivery.png";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
@@ -72,35 +72,7 @@ const RiderAcceptedView = ({
         </View>
       </View>
 
-      <View
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingVertical: 10,
-        }}
-      >
-        <Text
-          style={{
-            color: "black",
-            fontSize: 13,
-          }}
-        >
-          Payment Method
-        </Text>
-        <Text
-          style={{
-            color: "black",
-            fontWeight: "bold",
-            fontSize: 18,
-          }}
-        >
-          {singleData.serviceType == "Pahatod" ? "Fare" : "Delivery Fee"}: ₱
-          {singleData?.distance * chargePerKilometer + baseFare}
-        </Text>
-      </View>
-      <View
+      {/* <View
         style={{
           backgroundColor: "#FFB8B850",
           width: "100%",
@@ -113,7 +85,7 @@ const RiderAcceptedView = ({
       >
         <Image source={cod} style={{ width: 20, height: 20, marginRight: 5 }} />
         <Text>Cash on Arrival</Text>
-      </View>
+      </View> */}
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={{ fontSize: 10, color: "#B80B00", marginBottom: 1 }}>
           {singleData.serviceType == "Padara"
@@ -142,6 +114,51 @@ const RiderAcceptedView = ({
           <Text>{singleData.destination.address}</Text>
         </View>
       </View>
+
+      <View
+        style={{
+          marginVertical: 10,
+        }}
+      >
+        <Text
+          style={{
+            color: "black",
+            fontSize: 18,
+          }}
+        >
+          {singleData.serviceType == "Pahatod" ? "Fare" : "Delivery Fee"}:
+          <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+            {" "}
+            ₱{singleData?.distance * chargePerKilometer + baseFare}
+          </Text>
+        </Text>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+          marginVertical: 10,
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            borderWidth: 2,
+            width: 100,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingVertical: 5,
+            borderRadius: 5,
+            borderColor: "#003082",
+          }}
+        >
+          <Text style={{ borderColor: "#003082" }}>Call</Text>
+        </TouchableOpacity>
+        <TouchableOpacity>
+          <Text>Message</Text>
+        </TouchableOpacity>
+      </View>
+
       {singleData.status && (
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Button

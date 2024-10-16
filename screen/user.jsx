@@ -1,11 +1,10 @@
-import { Image, ScrollView, Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { useSmokeContext } from "../utils/appContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Button from "../components/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const User = ({ navigation }) => {
   const { currentUser, setMapView, setHistoryModal } = useSmokeContext();

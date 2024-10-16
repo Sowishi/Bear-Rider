@@ -179,37 +179,88 @@ const OrderNotes = ({
         )}
 
         {singleData && (
-          <View>
+          <>
             <Text style={{ fontSize: 15 }}>Store to Shop</Text>
-            <View style={{ flexDirection: "column", marginTop: 10 }}>
-              <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
-                {singleData.serviceType == "Padara" ? "Shop to Location" : ""}
-              </Text>
-              <View style={{ flexDirection: "row" }}>
-                <Image
-                  style={{ width: 20, height: 20, marginRight: 5 }}
-                  source={blueMarker}
-                />
-                <Text>{singleData.destination.address}</Text>
+            <View
+              style={{
+                padding: 10,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                backgroundColor: "white",
+                margin: 10,
+                borderRadius: 10,
+              }}
+            >
+              <View style={{ flexDirection: "column", marginTop: 10 }}>
+                <Text
+                  style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}
+                >
+                  {singleData.serviceType == "Padara" ? "Shop to Location" : ""}
+                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <Image
+                    style={{ width: 20, height: 20, marginRight: 5 }}
+                    source={blueMarker}
+                  />
+                  <Text>{singleData.destination.address}</Text>
+                </View>
               </View>
             </View>
-          </View>
+          </>
         )}
 
-        {deliveryNotes.map((item) => {
-          return (
-            <OrderNotesCard
-              viewOnly={viewOnly}
-              key={item.id}
-              item={item}
-              handleQuantityChange={handleQuantityChange}
-              handleDelete={handleDelete}
-            />
-          );
-        })}
+        <>
+          <Text style={{ fontSize: 15 }}>Order/s</Text>
+          <View
+            style={{
+              padding: 10,
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+              backgroundColor: "white",
+              margin: 10,
+              borderRadius: 10,
+            }}
+          >
+            {deliveryNotes.map((item) => {
+              return (
+                <OrderNotesCard
+                  viewOnly={viewOnly}
+                  key={item.id}
+                  item={item}
+                  handleQuantityChange={handleQuantityChange}
+                  handleDelete={handleDelete}
+                />
+              );
+            })}
+          </View>
+        </>
 
         {proof && (
-          <Image style={{ width: 300, height: 300 }} source={{ uri: proof }} />
+          <>
+            <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
+              Proof of Purchase / Receipt
+            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Image
+                style={{ width: 250, height: 250, borderRadius: 10 }}
+                source={{ uri: proof }}
+              />
+            </View>
+          </>
         )}
 
         <CameraButton
