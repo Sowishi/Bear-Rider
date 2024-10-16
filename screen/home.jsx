@@ -320,7 +320,6 @@ const Home = ({ route, navigation }) => {
       >
         {singleData && (
           <OrderNotes
-            navigation={navigation}
             singleData={singleData}
             IS_RIDER={IS_RIDER}
             handleAddTransaction={handleAddTransaction}
@@ -330,6 +329,7 @@ const Home = ({ route, navigation }) => {
             setDeliveryNotes={setDeliveryNotes}
             serviceType={serviceType}
             viewOnly={true}
+            navigataion={navigation}
           />
         )}
       </BottomModal>
@@ -415,7 +415,6 @@ const Home = ({ route, navigation }) => {
             closeModal={() => setViewTransactionModal(false)}
           >
             <RiderAcceptedView
-              navigation={navigation}
               location={location}
               setTransactionDetailsModal={setTransactionDetailsModal}
               setViewTransactionModal={setViewTransactionModal}

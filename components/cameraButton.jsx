@@ -1,7 +1,7 @@
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
 
-const CameraButton = ({ navigation, type, removeEvent }) => {
+const CameraButton = ({ navigation, type, removeEvent, event }) => {
   return (
     <View
       style={{
@@ -29,10 +29,14 @@ const CameraButton = ({ navigation, type, removeEvent }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("Camera", {
-              type,
-              facing: false,
-            });
+            if (event) {
+              event();
+            } else {
+              navigation.navigate("Camera", {
+                type,
+                facing: false,
+              });
+            }
           }}
           style={{
             justifyContent: "center",
@@ -68,10 +72,14 @@ const CameraButton = ({ navigation, type, removeEvent }) => {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Camera", {
-                type,
-                facing: false,
-              });
+              if (event) {
+                event();
+              } else {
+                navigation.navigate("Camera", {
+                  type,
+                  facing: false,
+                });
+              }
             }}
             style={{
               justifyContent: "center",

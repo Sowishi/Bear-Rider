@@ -13,7 +13,7 @@ export const MyProvider = ({ children }) => {
   const [OR, setOR] = useState();
   const [CR, setCR] = useState();
   const [clearance, setClearance] = useState();
-  const [proofOfPurchase, setProofOfPurchase] = useState();
+  const [proof, setProof] = useState();
 
   return (
     <MyContext.Provider
@@ -38,8 +38,8 @@ export const MyProvider = ({ children }) => {
         setCR,
         clearance,
         setClearance,
-        proofOfPurchase,
-        setProofOfPurchase,
+        proof,
+        setProof,
       }}
     >
       {children}

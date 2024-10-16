@@ -13,6 +13,9 @@ import Button from "./button";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
 import CameraButton from "./cameraButton";
+import BottomModal from "./bottomModal";
+import BearCamera from "./BearCamera";
+import { CameraView, useCameraPermissions } from "expo-camera";
 import { useSmokeContext } from "../utils/appContext";
 
 const OrderNotes = ({
@@ -24,10 +27,12 @@ const OrderNotes = ({
   viewOnly,
   IS_RIDER,
   singleData,
-  navigation,
+  navigataion,
 }) => {
   const [note, setNote] = useState("");
-
+  const [openCamera, setOpenCamera] = useState(false);
+  const [permission, requestPermission] = useCameraPermissions();
+  const { proof, setProof } = useSmokeContext();
   const textInputRef = useRef();
 
   const handleAddNotes = () => {
@@ -68,7 +73,24 @@ const OrderNotes = ({
     setDeliveryNotes(output);
   };
 
-  const { proofOfPurchase } = useSmokeContext();
+  if (!permission) {
+    // Camera permissions are still loading.
+    return <View />;
+  }
+
+  if (!permission.granted) {
+    // Camera permissions are not granted yet.
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>We need your permission to show the camera</Text>
+        <Button
+          bgColor={"#003082"}
+          event={requestPermission}
+          text="grant permission"
+        />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -78,6 +100,18 @@ const OrderNotes = ({
         marginTop: 5,
       }}
     >
+      {openCamera && (
+        <BottomModal
+          heightPx={700}
+          modalVisible={openCamera}
+          closeModal={() => setOpenCamera(false)}
+        >
+          <View style={{ width: 350, height: 600, backgroundColor: "red" }}>
+            <BearCamera setOpenCamera={setOpenCamera} proofOfPurchase />
+          </View>
+        </BottomModal>
+      )}
+
       <ScrollView
         style={{
           width: "100%",
@@ -93,6 +127,8 @@ const OrderNotes = ({
         >
           Order Details
         </Text>
+
+        {/* Add Order Notes Button */}
         {!viewOnly && (
           <View
             style={{
@@ -141,72 +177,47 @@ const OrderNotes = ({
             </TouchableOpacity>
           </View>
         )}
-        <View
-          style={{
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            backgroundColor: "#FFFEF7",
-            borderRadius: 10,
-          }}
-        >
-          <Text style={{ fontSize: 15 }}>Store to Shop</Text>
-          <View style={{ flexDirection: "column", marginTop: 10 }}>
-            <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
-              {singleData.serviceType == "Padara" ? "Shop to Location" : ""}
-            </Text>
-            <View style={{ flexDirection: "row" }}>
-              <Image
-                style={{ width: 20, height: 20, marginRight: 5 }}
-                source={blueMarker}
-              />
-              <Text>{singleData.destination.address}</Text>
+
+        {singleData && (
+          <View>
+            <Text style={{ fontSize: 15 }}>Store to Shop</Text>
+            <View style={{ flexDirection: "column", marginTop: 10 }}>
+              <Text style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}>
+                {singleData.serviceType == "Padara" ? "Shop to Location" : ""}
+              </Text>
+              <View style={{ flexDirection: "row" }}>
+                <Image
+                  style={{ width: 20, height: 20, marginRight: 5 }}
+                  source={blueMarker}
+                />
+                <Text>{singleData.destination.address}</Text>
+              </View>
             </View>
           </View>
-        </View>
-        <View
-          style={{
-            marginTop: 20,
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            backgroundColor: "#FFFEF7",
-            borderRadius: 10,
-          }}
-        >
-          <Text style={{ fontSize: 15 }}>Order/s</Text>
-          <View style={{ flexDirection: "column", marginTop: 10 }}>
-            {deliveryNotes.map((item) => {
-              return (
-                <OrderNotesCard
-                  viewOnly={viewOnly}
-                  key={item.id}
-                  item={item}
-                  handleQuantityChange={handleQuantityChange}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
-          </View>
-        </View>
-        <View
-          style={{
-            marginTop: 20,
-            paddingHorizontal: 15,
-            paddingVertical: 10,
-            backgroundColor: "#FFFEF7",
-            borderRadius: 10,
-          }}
-        >
-          <Text style={{ fontSize: 15 }}>Proof of Purchase / Receipt</Text>
-          <View
-            style={{
-              flexDirection: "column",
-              marginTop: 10,
-              marginVertical: 10,
-            }}
-          >
-            <CameraButton navigation={navigation} type={"proofOfPurchase"} />
-          </View>
-        </View>
+        )}
+
+        {deliveryNotes.map((item) => {
+          return (
+            <OrderNotesCard
+              viewOnly={viewOnly}
+              key={item.id}
+              item={item}
+              handleQuantityChange={handleQuantityChange}
+              handleDelete={handleDelete}
+            />
+          );
+        })}
+
+        {proof && (
+          <Image style={{ width: 300, height: 300 }} source={{ uri: proof }} />
+        )}
+
+        <CameraButton
+          removeEvent={setProof}
+          event={() => setOpenCamera(true)}
+          type={"proofOfPurchase"}
+          navigation={navigataion}
+        />
       </ScrollView>
 
       {/* Find a rider button */}

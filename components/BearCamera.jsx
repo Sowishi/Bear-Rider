@@ -10,7 +10,12 @@ import LottieView from "lottie-react-native";
 import Scanner from "../assets/scanner.json";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function BearCamera({ navigation, type }) {
+export default function BearCamera({
+  navigation,
+  type,
+  proofOfPurchase,
+  setOpenCamera,
+}) {
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
   const [facing, setFacing] = useState("back");
@@ -21,7 +26,7 @@ export default function BearCamera({ navigation, type }) {
     setOR,
     setCR,
     setClearance,
-    setProofOfPurchase,
+    setProof,
   } = useSmokeContext();
 
   if (!permission) {
@@ -44,6 +49,9 @@ export default function BearCamera({ navigation, type }) {
   }
 
   const getCameraText = () => {
+    if (proofOfPurchase) {
+      return "Please take a clear photo of receipts";
+    }
     if (type == "frontLicense") {
       return "Please take a clear photo of your front license";
     }
@@ -66,17 +74,13 @@ export default function BearCamera({ navigation, type }) {
     if (type == "selfie") {
       return "Please take a clear photo of yourself in light room";
     }
-
-    if (type == "proofOfPurchase") {
-      return "Please take a clear picture of receipts";
-    }
   };
 
   return (
     <View style={{ position: "relative" }}>
       <CameraView
         ref={(ref) => setCameraRef(ref)}
-        style={{ height: "100%" }}
+        style={{ height: "100%", width: "100%", borderWidth: 1 }}
         facing={facing}
       ></CameraView>
 
@@ -132,6 +136,13 @@ export default function BearCamera({ navigation, type }) {
                 [{ resize: { width: 500 } }],
                 { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
               );
+
+              if (proofOfPurchase) {
+                setProof(resizedImage.uri);
+                setOpenCamera(false);
+                return;
+              }
+
               if (type == "frontLicense") {
                 setFrontLicense(resizedImage.uri);
               }
@@ -152,12 +163,6 @@ export default function BearCamera({ navigation, type }) {
               }
               if (type == "selfie") {
                 setSelfie(resizedImage.uri);
-              }
-
-              if (type == "proofOfPurchase") {
-                setProofOfPurchase(resizedImage.uri);
-                navigation.navigate("OrderDetails");
-                return;
               }
 
               navigation.navigate("Rider");
