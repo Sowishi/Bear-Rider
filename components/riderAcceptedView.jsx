@@ -26,13 +26,10 @@ const RiderAcceptedView = ({
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{ paddingBottom: 20 }}
+    <View
       style={{
         backgroundColor: "white",
         flex: 1,
-        paddingVertical: 20,
-        borderRadius: 10,
       }}
     >
       <View>
@@ -154,8 +151,21 @@ const RiderAcceptedView = ({
         >
           <Text style={{ borderColor: "#003082" }}>Call</Text>
         </TouchableOpacity>
-        <TouchableOpacity>
-          <Text>Message</Text>
+        <TouchableOpacity
+          style={{
+            borderWidth: 2,
+            width: 100,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingVertical: 5,
+            borderRadius: 5,
+            borderColor: "#003082",
+            backgroundColor: "#003082",
+          }}
+        >
+          <Text style={{ borderColor: "#003082", color: "white" }}>
+            Message
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -196,7 +206,7 @@ const RiderAcceptedView = ({
           />
         </View>
       )}
-    </ScrollView>
+    </View>
   );
 };
 
