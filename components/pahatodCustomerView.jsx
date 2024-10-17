@@ -246,7 +246,7 @@ const PahatodCustomerView = ({
                   setPahatodModal(false);
                   setSelectedLocation(null);
                 }}
-                width={150}
+                width={selectedLocation ? 150 : 250}
                 style={{ marginTop: 20 }}
                 text="Cancel"
                 bgColor={"#00308299"}

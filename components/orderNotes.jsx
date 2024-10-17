@@ -239,6 +239,7 @@ const OrderNotes = ({
             </View>
           </>
         )}
+
         <>
           <Text style={{ fontSize: 15 }}>Order/s</Text>
           <View
@@ -271,34 +272,37 @@ const OrderNotes = ({
             })}
           </View>
         </>
-        <>
-          <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
-            Proof of Purchase / Receipt
-          </Text>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-              borderWidth: 1,
-              borderRadius: 10,
-            }}
-          >
-            <Image
+        {singleData?.status == "Transit" && (
+          <>
+            <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
+              Proof of Purchase / Receipt
+            </Text>
+            <View
               style={{
-                width: "100%",
-                height: 250,
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                borderWidth: 1,
                 borderRadius: 10,
               }}
-              source={{
-                uri:
-                  singleData?.status == "Transit"
-                    ? singleData?.proofOfPurchase
-                    : proof,
-              }}
-            />
-          </View>
-        </>
+            >
+              <Image
+                style={{
+                  width: "100%",
+                  height: 250,
+                  borderRadius: 10,
+                }}
+                source={{
+                  uri:
+                    singleData?.status == "Transit"
+                      ? singleData?.proofOfPurchase
+                      : proof,
+                }}
+              />
+            </View>
+          </>
+        )}
+
         {IS_RIDER && (
           <CameraButton
             removeEvent={setProof}
@@ -337,47 +341,49 @@ const OrderNotes = ({
             </View>
           </>
         )}
-        {/* Sub Total of the orders */}
-        <View style={{ marginVertical: 10 }}>
-          <Text
-            style={{
-              color: "black",
-              fontSize: 15,
-            }}
-          >
-            Delivery Fee:
-            <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-              {" "}
-              ₱
-              {singleData?.status == "Transit"
-                ? singleData?.deliveryFee
-                : deliveryFee}
+
+        <>
+          {/* Sub Total of the orders */}
+          <View style={{ marginVertical: 10 }}>
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+              }}
+            >
+              Delivery Fee:
+              <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                {" "}
+                ₱{deliveryFee ? deliveryFee : "----"}
+              </Text>
             </Text>
-          </Text>
-          <Text
-            style={{
-              color: "black",
-              fontSize: 15,
-            }}
-          >
-            Purchase Cost:
-            <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-              ₱
-              {singleData?.status == "Transit"
-                ? singleData?.purchaseCost
-                : purchaseCost}
+            <Text
+              style={{
+                color: "black",
+                fontSize: 15,
+              }}
+            >
+              Purchase Cost:
+              <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                ₱
+                {singleData?.status == "Transit"
+                  ? singleData?.purchaseCost
+                  : purchaseCost}
+              </Text>
             </Text>
-          </Text>
-          <Text style={{ marginVertical: 10 }}>
-            Total{" "}
-            <Text style={{ fontSize: 25 }}>
-              ₱
-              {singleData?.status == "Transit"
-                ? singleData?.totalPrice
-                : totalPrice}{" "}
+            <Text style={{ marginVertical: 10 }}>
+              Total{" "}
+              <Text style={{ fontSize: 25 }}>
+                ₱
+                {singleData?.status == "Transit"
+                  ? singleData.totalPrice
+                  : totalPrice
+                  ? totalPrice
+                  : "---"}{" "}
+              </Text>
             </Text>
-          </Text>
-        </View>
+          </View>
+        </>
         {/* Confirm Button */}
         {IS_RIDER && (
           <View style={{ justifyContent: "center", alignItems: "center" }}>
