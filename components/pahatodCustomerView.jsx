@@ -498,7 +498,7 @@ const PahatodCustomerView = ({
                   fontSize: 20,
                 }}
               >
-                Total: ₱{singleData?.totalPrice}
+                Total: ₱{parseInt(singleData?.totalPrice)}
               </Text>
             </View>
 
@@ -548,7 +548,7 @@ const PahatodCustomerView = ({
                   setSingleData(null);
                   // deleteTransaction(currentUser);
                 }}
-                text="Hide Modal"
+                text="Close"
                 bgColor={"#00308299"}
               />
               {singleData && singleData?.status !== "Transit" && (
@@ -571,7 +571,7 @@ const PahatodCustomerView = ({
                 />
               )}
 
-              {singleData?.status == "Accepted" && (
+              {/* {singleData?.status == "Accepted" && (
                 <Button
                   width={150}
                   event={() => {
@@ -589,7 +589,7 @@ const PahatodCustomerView = ({
                   text="Complete Ride"
                   bgColor={"green"}
                 />
-              )}
+              )} */}
             </View>
           </>
         )}

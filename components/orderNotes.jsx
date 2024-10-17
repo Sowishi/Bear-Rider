@@ -18,6 +18,7 @@ import BearCamera from "./BearCamera";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useSmokeContext } from "../utils/appContext";
 import useCrudTransaction from "../hooks/useCrudTransaction";
+import { handleUploadImage } from "../utils/handleUploadImage";
 
 const OrderNotes = ({
   serviceType,
@@ -79,8 +80,15 @@ const OrderNotes = ({
     setDeliveryNotes(output);
   };
 
-  const handleSubmit = () => {
-    confirmOrderDetails(singleData.id, purchaseCost, proof, totalPrice);
+  const handleSubmit = async () => {
+    const proofUrl = await handleUploadImage(proof);
+    confirmOrderDetails(
+      singleData.id,
+      purchaseCost,
+      proofUrl,
+      totalPrice,
+      deliveryFee
+    );
   };
 
   if (!permission) {
@@ -102,7 +110,9 @@ const OrderNotes = ({
     );
   }
 
-  const deliveryFee = singleData?.distance * chargePerKilometer + baseFare;
+  const deliveryFee = parseInt(
+    singleData?.distance * chargePerKilometer + baseFare
+  );
   const totalPrice = parseInt(deliveryFee) + parseInt(purchaseCost);
 
   return (
@@ -141,7 +151,6 @@ const OrderNotes = ({
         >
           Order Details
         </Text>
-
         {/* Add Order Notes Button */}
         {!viewOnly && (
           <View
@@ -191,7 +200,6 @@ const OrderNotes = ({
             </TouchableOpacity>
           </View>
         )}
-
         {singleData && (
           <>
             <Text style={{ fontSize: 15 }}>Store to Shop</Text>
@@ -216,20 +224,21 @@ const OrderNotes = ({
                 <Text
                   style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}
                 >
-                  {singleData.serviceType == "Padara" ? "Shop to Location" : ""}
+                  {singleData?.serviceType == "Padara"
+                    ? "Shop to Location"
+                    : ""}
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Image
                     style={{ width: 20, height: 20, marginRight: 5 }}
                     source={blueMarker}
                   />
-                  <Text>{singleData.destination.address}</Text>
+                  <Text>{singleData?.destination.address}</Text>
                 </View>
               </View>
             </View>
           </>
         )}
-
         <>
           <Text style={{ fontSize: 15 }}>Order/s</Text>
           <View
@@ -262,57 +271,73 @@ const OrderNotes = ({
             })}
           </View>
         </>
-
-        {proof && (
-          <>
-            <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
-              Proof of Purchase / Receipt
-            </Text>
-            <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Image
-                style={{ width: 250, height: 250, borderRadius: 10 }}
-                source={{ uri: proof }}
-              />
-            </View>
-          </>
-        )}
-
-        <CameraButton
-          removeEvent={setProof}
-          event={() => setOpenCamera(true)}
-          type={"proofOfPurchase"}
-          navigation={navigataion}
-        />
-
         <>
-          <Text style={{ fontSize: 15, marginTop: 20 }}>Total Item Cost</Text>
+          <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
+            Proof of Purchase / Receipt
+          </Text>
           <View
             style={{
-              flexDirection: "row",
+              flex: 1,
+              justifyContent: "center",
               alignItems: "center",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 1 },
-              shadowOpacity: 0.8,
-              shadowRadius: 2,
-              elevation: 3,
-              paddingHorizontal: 10,
-              backgroundColor: "white",
+              borderWidth: 1,
               borderRadius: 10,
             }}
           >
-            <TextInput
-              onChangeText={(text) => setPurchaseCost(text)}
-              keyboardType="numeric"
-              placeholder="Total Item Cost"
+            <Image
               style={{
-                flex: 1,
-                paddingVertical: 15,
-                paddingHorizontal: 10,
+                width: "100%",
+                height: 250,
+                borderRadius: 10,
+              }}
+              source={{
+                uri:
+                  singleData?.status == "Transit"
+                    ? singleData?.proofOfPurchase
+                    : proof,
               }}
             />
           </View>
         </>
-
+        {IS_RIDER && (
+          <CameraButton
+            removeEvent={setProof}
+            event={() => setOpenCamera(true)}
+            type={"proofOfPurchase"}
+            navigation={navigataion}
+          />
+        )}
+        {IS_RIDER && (
+          <>
+            <Text style={{ fontSize: 15, marginTop: 20 }}>Total Item Cost</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 1 },
+                shadowOpacity: 0.8,
+                shadowRadius: 2,
+                elevation: 3,
+                paddingHorizontal: 10,
+                backgroundColor: "white",
+                borderRadius: 10,
+              }}
+            >
+              <TextInput
+                onChangeText={(text) => setPurchaseCost(text)}
+                keyboardType="numeric"
+                placeholder="Total Item Cost"
+                style={{
+                  flex: 1,
+                  paddingVertical: 15,
+                  paddingHorizontal: 10,
+                }}
+              />
+            </View>
+          </>
+        )}
+        {/* Sub Total of the orders */}
         <View style={{ marginVertical: 10 }}>
           <Text
             style={{
@@ -323,7 +348,10 @@ const OrderNotes = ({
             Delivery Fee:
             <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
               {" "}
-              ₱{deliveryFee}
+              ₱
+              {singleData?.status == "Transit"
+                ? singleData?.deliveryFee
+                : deliveryFee}
             </Text>
           </Text>
           <Text
@@ -334,24 +362,35 @@ const OrderNotes = ({
           >
             Purchase Cost:
             <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-              {" "}
-              ₱{purchaseCost}
+              ₱
+              {singleData?.status == "Transit"
+                ? singleData?.purchaseCost
+                : purchaseCost}
             </Text>
           </Text>
           <Text style={{ marginVertical: 10 }}>
-            Total <Text style={{ fontSize: 25 }}> ₱{totalPrice}</Text>
+            Total{" "}
+            <Text style={{ fontSize: 25 }}>
+              ₱
+              {singleData?.status == "Transit"
+                ? singleData?.totalPrice
+                : totalPrice}{" "}
+            </Text>
           </Text>
         </View>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Button
-            event={handleSubmit}
-            isDisable={purchaseCost <= 0 || !proof}
-            style={{ marginTop: 10 }}
-            width={"90%"}
-            text="Confirm"
-            bgColor={"#003082"}
-          />
-        </View>
+        {/* Confirm Button */}
+        {IS_RIDER && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Button
+              event={handleSubmit}
+              isDisable={purchaseCost <= 0 || !proof}
+              style={{ marginTop: 10 }}
+              width={"90%"}
+              text={singleData?.status == "Transit" ? "Update" : "Confirm"}
+              bgColor={"#003082"}
+            />
+          </View>
+        )}
       </ScrollView>
 
       {/* Find a rider button */}

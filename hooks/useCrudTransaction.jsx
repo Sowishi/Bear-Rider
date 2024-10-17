@@ -81,12 +81,20 @@ const useCrudTransaction = () => {
     });
   };
 
-  const confirmOrderDetails = async (id, purchaseCost, proof, totalPrice) => {
+  const confirmOrderDetails = async (
+    id,
+    purchaseCost,
+    proof,
+    totalPrice,
+    deliveryFee
+  ) => {
     const docRef = doc(db, "transaction", id);
     await updateDoc(docRef, {
       totalPrice,
       purchaseCost,
       status: "Transit",
+      deliveryFee,
+      proofOfPurchase: proof,
     });
   };
 

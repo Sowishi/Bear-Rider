@@ -62,8 +62,13 @@ const Home = ({ route, navigation }) => {
   const pahatodInputRef = useRef();
 
   // Hooks
-  const { historyModal, setHistoryModal, currentUser, setTransactionCount } =
-    useSmokeContext();
+  const {
+    historyModal,
+    setHistoryModal,
+    currentUser,
+    setTransactionCount,
+    setProof,
+  } = useSmokeContext();
   const {
     addTransaction,
     deleteTransaction,
@@ -300,7 +305,10 @@ const Home = ({ route, navigation }) => {
       <BottomModal
         heightPx={500}
         modalVisible={transactionRemarksModal}
-        closeModal={() => setTransactionRemarksModal(false)}
+        closeModal={() => {
+          setTransactionRemarksModal(false);
+          setProof(null);
+        }}
       >
         <OrderNotes
           chargePerKilometer={chargePerKilometer}
@@ -318,7 +326,10 @@ const Home = ({ route, navigation }) => {
       <BottomModal
         heightPx={700}
         modalVisible={transactionDetailsModal}
-        closeModal={() => setTransactionDetailsModal(false)}
+        closeModal={() => {
+          setTransactionDetailsModal(false);
+          setProof(null);
+        }}
       >
         {singleData && (
           <OrderNotes

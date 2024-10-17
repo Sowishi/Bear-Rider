@@ -126,7 +126,7 @@ const RiderAcceptedView = ({
           {singleData.serviceType == "Pahatod" ? "Fare" : "Delivery Fee"}:
           <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
             {" "}
-            ₱{singleData?.distance * chargePerKilometer + baseFare}
+            ₱{parseInt(singleData?.distance * chargePerKilometer + baseFare)}
           </Text>
         </Text>
       </View>
