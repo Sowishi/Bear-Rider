@@ -1,4 +1,11 @@
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  Linking,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import cod from "../assets/cash-on-delivery.png";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
@@ -23,6 +30,20 @@ const RiderAcceptedView = ({
     acceptTransaction(singleData, currentUser, location);
     addNotification(singleData, currentUser, "accept rider");
     Toast.show({ type: "success", text1: "Successfully accepeted ride." });
+  };
+
+  const dialPhone = (number) => {
+    let phoneUrl = `tel:${number}`;
+
+    Linking.canOpenURL(phoneUrl)
+      .then((supported) => {
+        if (supported) {
+          Linking.openURL(phoneUrl);
+        } else {
+          Alert.alert("Error", "Phone number is not available");
+        }
+      })
+      .catch((err) => console.error("Error opening phone number:", err));
   };
 
   return (
@@ -141,6 +162,7 @@ const RiderAcceptedView = ({
           }}
         >
           <TouchableOpacity
+            onPress={() => dialPhone(singleData.currentUser.phoneNumber)}
             style={{
               borderWidth: 2,
               width: 100,
