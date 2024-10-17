@@ -272,7 +272,7 @@ const OrderNotes = ({
             })}
           </View>
         </>
-        {singleData?.status == "Transit" && (
+        {singleData?.status !== undefined && (
           <>
             <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
               Proof of Purchase / Receipt

@@ -130,44 +130,47 @@ const RiderAcceptedView = ({
           </Text>
         </Text>
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-around",
-          alignItems: "center",
-          marginVertical: 10,
-        }}
-      >
-        <TouchableOpacity
+
+      {singleData.status !== undefined && (
+        <View
           style={{
-            borderWidth: 2,
-            width: 100,
+            flexDirection: "row",
+            justifyContent: "space-around",
             alignItems: "center",
-            justifyContent: "center",
-            paddingVertical: 5,
-            borderRadius: 5,
-            borderColor: "#003082",
+            marginVertical: 10,
           }}
         >
-          <Text style={{ borderColor: "#003082" }}>Call</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            borderWidth: 2,
-            width: 100,
-            alignItems: "center",
-            justifyContent: "center",
-            paddingVertical: 5,
-            borderRadius: 5,
-            borderColor: "#003082",
-            backgroundColor: "#003082",
-          }}
-        >
-          <Text style={{ borderColor: "#003082", color: "white" }}>
-            Message
-          </Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={{
+              borderWidth: 2,
+              width: 100,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 5,
+              borderRadius: 5,
+              borderColor: "#003082",
+            }}
+          >
+            <Text style={{ borderColor: "#003082" }}>Call</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              borderWidth: 2,
+              width: 100,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 5,
+              borderRadius: 5,
+              borderColor: "#003082",
+              backgroundColor: "#003082",
+            }}
+          >
+            <Text style={{ borderColor: "#003082", color: "white" }}>
+              Message
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
       {singleData.status && (
         <View style={{ justifyContent: "center", alignItems: "center" }}>
