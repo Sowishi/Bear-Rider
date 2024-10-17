@@ -335,7 +335,7 @@ const OrderNotes = ({
             Purchase Cost:
             <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
               {" "}
-              ₱{parseInt(deliveryFee)}
+              ₱{purchaseCost}
             </Text>
           </Text>
           <Text style={{ marginVertical: 10 }}>

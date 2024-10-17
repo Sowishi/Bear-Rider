@@ -76,6 +76,12 @@ const PahatodCustomerView = ({
         sub: "your rider is processing your order",
       };
     }
+    if (status == "Transit") {
+      return {
+        title: "In Transit",
+        sub: "your rider is on the way",
+      };
+    }
   };
 
   return (
@@ -262,7 +268,7 @@ const PahatodCustomerView = ({
 
         {findingRider && (
           <>
-            {singleData?.status !== "Accepted" && (
+            {singleData?.status == undefined && (
               <>
                 <Text
                   style={{
@@ -296,7 +302,7 @@ const PahatodCustomerView = ({
               </>
             )}
 
-            {singleData && singleData?.status == "Accepted" && (
+            {singleData && singleData?.status !== undefined && (
               <>
                 <View>
                   <Text
@@ -307,7 +313,7 @@ const PahatodCustomerView = ({
                       textAlign: "center",
                     }}
                   >
-                    {getTransactionStatusLabel(singleData.status).title}
+                    {getTransactionStatusLabel(singleData.status)?.title}
                   </Text>
                   <Text
                     style={{
@@ -319,7 +325,7 @@ const PahatodCustomerView = ({
                       textAlign: "center",
                     }}
                   >
-                    {getTransactionStatusLabel(singleData.status).sub}
+                    {getTransactionStatusLabel(singleData.status)?.sub}
                   </Text>
                   {location && (
                     <Text
@@ -492,7 +498,7 @@ const PahatodCustomerView = ({
                   fontSize: 20,
                 }}
               >
-                Total: ₱{distance * chargePerKilometer + baseFare}
+                Total: ₱{singleData?.totalPrice}
               </Text>
             </View>
 
