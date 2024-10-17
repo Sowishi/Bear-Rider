@@ -551,7 +551,7 @@ const PahatodCustomerView = ({
                 text="Hide Modal"
                 bgColor={"#00308299"}
               />
-              {singleData && singleData?.status !== "Accepted" && (
+              {singleData && singleData?.status !== "Transit" && (
                 <Button
                   width={150}
                   event={() => {
