@@ -13,6 +13,7 @@ import {
 import { db } from "../firebase";
 import { serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
+import Toast from "react-native-toast-message";
 
 const useCrudTransaction = () => {
   const [data, setData] = useState([]);
@@ -80,6 +81,15 @@ const useCrudTransaction = () => {
     });
   };
 
+  const confirmOrderDetails = async (id, purchaseCost, proof, totalPrice) => {
+    const docRef = doc(db, "transaction", id);
+    await updateDoc(docRef, {
+      totalPrice,
+      purchaseCost,
+      status: "Transit",
+    });
+  };
+
   return {
     addTransaction,
     deleteTransaction,
@@ -89,6 +99,7 @@ const useCrudTransaction = () => {
     singleData,
     setSingleData,
     completeTransaction,
+    confirmOrderDetails,
   };
 };
 

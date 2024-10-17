@@ -17,6 +17,7 @@ import BottomModal from "./bottomModal";
 import BearCamera from "./BearCamera";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useSmokeContext } from "../utils/appContext";
+import useCrudTransaction from "../hooks/useCrudTransaction";
 
 const OrderNotes = ({
   serviceType,
@@ -37,6 +38,8 @@ const OrderNotes = ({
   const [permission, requestPermission] = useCameraPermissions();
   const { proof, setProof } = useSmokeContext();
   const textInputRef = useRef();
+
+  const { confirmOrderDetails } = useCrudTransaction();
 
   const handleAddNotes = () => {
     if (note.length >= 1) {
@@ -76,6 +79,10 @@ const OrderNotes = ({
     setDeliveryNotes(output);
   };
 
+  const handleSubmit = () => {
+    confirmOrderDetails(singleData.id, purchaseCost, proof, totalPrice);
+  };
+
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -96,6 +103,7 @@ const OrderNotes = ({
   }
 
   const deliveryFee = singleData?.distance * chargePerKilometer + baseFare;
+  const totalPrice = parseInt(deliveryFee) + parseInt(purchaseCost);
 
   return (
     <View
@@ -331,15 +339,12 @@ const OrderNotes = ({
             </Text>
           </Text>
           <Text style={{ marginVertical: 10 }}>
-            Total{" "}
-            <Text style={{ fontSize: 25 }}>
-              {" "}
-              ₱{parseInt(deliveryFee) + parseInt(purchaseCost)}
-            </Text>
+            Total <Text style={{ fontSize: 25 }}> ₱{totalPrice}</Text>
           </Text>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Button
+            event={handleSubmit}
             isDisable={purchaseCost <= 0 || !proof}
             style={{ marginTop: 10 }}
             width={"90%"}
