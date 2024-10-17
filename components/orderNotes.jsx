@@ -32,6 +32,7 @@ const OrderNotes = ({
   baseFare,
 }) => {
   const [note, setNote] = useState("");
+  const [purchaseCost, setPurchaseCost] = useState(0);
   const [openCamera, setOpenCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
   const { proof, setProof } = useSmokeContext();
@@ -93,6 +94,8 @@ const OrderNotes = ({
       </View>
     );
   }
+
+  const deliveryFee = singleData?.distance * chargePerKilometer + baseFare;
 
   return (
     <View
@@ -290,6 +293,8 @@ const OrderNotes = ({
             }}
           >
             <TextInput
+              onChangeText={(text) => setPurchaseCost(text)}
+              keyboardType="numeric"
               placeholder="Total Item Cost"
               style={{
                 flex: 1,
@@ -310,7 +315,7 @@ const OrderNotes = ({
             Delivery Fee:
             <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
               {" "}
-              ₱{singleData?.distance * chargePerKilometer + baseFare}
+              ₱{deliveryFee}
             </Text>
           </Text>
           <Text
@@ -322,16 +327,20 @@ const OrderNotes = ({
             Purchase Cost:
             <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
               {" "}
-              ₱{singleData?.distance * chargePerKilometer + baseFare}
+              ₱{parseInt(deliveryFee)}
             </Text>
           </Text>
           <Text style={{ marginVertical: 10 }}>
-            Total <Text style={{ fontSize: 25 }}> ₱299</Text>
+            Total{" "}
+            <Text style={{ fontSize: 25 }}>
+              {" "}
+              ₱{parseInt(deliveryFee) + parseInt(purchaseCost)}
+            </Text>
           </Text>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
           <Button
-            event={() => setTransactionDetailsModal(true)}
+            isDisable={purchaseCost <= 0 || !proof}
             style={{ marginTop: 10 }}
             width={"90%"}
             text="Confirm"
