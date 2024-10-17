@@ -14,6 +14,7 @@ import { useSmokeContext } from "../utils/appContext";
 import Toast from "react-native-toast-message";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import useCrudNotification from "../hooks/useCrudNotification";
+import { dialPhone } from "../utils/dialPhone";
 const RiderAcceptedView = ({
   singleData,
   chargePerKilometer,
@@ -30,20 +31,6 @@ const RiderAcceptedView = ({
     acceptTransaction(singleData, currentUser, location);
     addNotification(singleData, currentUser, "accept rider");
     Toast.show({ type: "success", text1: "Successfully accepeted ride." });
-  };
-
-  const dialPhone = (number) => {
-    let phoneUrl = `tel:${number}`;
-
-    Linking.canOpenURL(phoneUrl)
-      .then((supported) => {
-        if (supported) {
-          Linking.openURL(phoneUrl);
-        } else {
-          Alert.alert("Error", "Phone number is not available");
-        }
-      })
-      .catch((err) => console.error("Error opening phone number:", err));
   };
 
   return (

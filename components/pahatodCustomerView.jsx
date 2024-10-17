@@ -20,6 +20,7 @@ import calculateArrivalTime from "../utils/calculateArrivalTime";
 import cod from "../assets/cash-on-delivery.png";
 import { useEffect } from "react";
 import Timeline from "react-native-timeline-flatlist";
+import { dialPhone } from "../utils/dialPhone";
 
 const PahatodCustomerView = ({
   findingRider,
@@ -520,6 +521,48 @@ const PahatodCustomerView = ({
               />
               <Text>Cash on Arrival</Text>
             </View>
+            {singleData?.status && (
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                  marginVertical: 10,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => dialPhone(singleData.rider.phoneNumber)}
+                  style={{
+                    borderWidth: 2,
+                    width: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    borderColor: "#003082",
+                  }}
+                >
+                  <Text style={{ borderColor: "#003082" }}>Call</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    borderWidth: 2,
+                    width: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    borderColor: "#003082",
+                    backgroundColor: "#003082",
+                  }}
+                >
+                  <Text style={{ borderColor: "#003082", color: "white" }}>
+                    Message
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
             <View
               style={{
                 justifyContent: "center",

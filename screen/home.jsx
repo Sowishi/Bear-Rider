@@ -200,7 +200,7 @@ const Home = ({ route, navigation }) => {
   const handleAppStateChange = (nextAppState) => {
     if (appState === "active" && nextAppState.match(/inactive|background/)) {
       // deleteTransaction(currentUser);
-      setFindingRider(false);
+      // setFindingRider(false);
       deleteOnlineUser(currentUser.id);
       if (watchInstance) {
         watchInstance.remove();
