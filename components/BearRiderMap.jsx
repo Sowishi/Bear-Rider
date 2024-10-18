@@ -22,7 +22,7 @@ const BearRiderMap = ({
   mapRef,
   singleData,
 }) => {
-  const { mapView, currentUser } = useSmokeContext();
+  const { mapView, currentUser, viewDirection } = useSmokeContext();
   const { onlineUsers } = useAddOnline();
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -123,7 +123,6 @@ const BearRiderMap = ({
             pinColor={"#B80B00"}
           />
         )}
-
         {selectedLocation && (
           <Marker
             draggable
@@ -148,7 +147,6 @@ const BearRiderMap = ({
             title="Selected Location"
           />
         )}
-
         {location && selectedLocation && (
           <MapViewDirections
             strokeWidth={4}
@@ -202,7 +200,8 @@ const BearRiderMap = ({
               })}
             </>
           )}
-        {selectedTransaction && IS_RIDER && (
+        {/* Rider Direction to Customer and Shop Location or Destination Location */}
+        {selectedTransaction && IS_RIDER && viewDirection && (
           <>
             <Marker
               onPress={() =>
@@ -234,6 +233,7 @@ const BearRiderMap = ({
               title={selectedTransaction?.currentUser.firstName}
               description="Customer Location"
             />
+            {/* Customer  to Destination  or Shop to location */}
             <MapViewDirections
               strokeWidth={4}
               strokeColor="#B80B00"
@@ -247,6 +247,8 @@ const BearRiderMap = ({
               }}
               apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
             />
+
+            {/* Ridet to Customer Destintation */}
             <MapViewDirections
               strokeWidth={4}
               strokeColor="#003082"

@@ -23,7 +23,7 @@ const RiderAcceptedView = ({
   location,
   setViewTransactionModal,
 }) => {
-  const { currentUser } = useSmokeContext();
+  const { currentUser, setViewDirection } = useSmokeContext();
   const { acceptTransaction } = useCrudTransaction();
   const { addNotification } = useCrudNotification();
 
@@ -77,20 +77,6 @@ const RiderAcceptedView = ({
         </View>
       </View>
 
-      {/* <View
-        style={{
-          backgroundColor: "#FFB8B850",
-          width: "100%",
-          paddingVertical: 13,
-          paddingHorizontal: 10,
-          color: "white",
-          flexDirection: "row",
-          borderRadius: 10,
-        }}
-      >
-        <Image source={cod} style={{ width: 20, height: 20, marginRight: 5 }} />
-        <Text>Cash on Arrival</Text>
-      </View> */}
       <View style={{ flexDirection: "column", marginTop: 10 }}>
         <Text style={{ fontSize: 10, color: "#B80B00", marginBottom: 1 }}>
           {singleData.serviceType == "Padara"
@@ -139,6 +125,7 @@ const RiderAcceptedView = ({
         </Text>
       </View>
 
+      {/* Message and call buttons     */}
       {singleData.status !== undefined && (
         <View
           style={{
@@ -182,13 +169,30 @@ const RiderAcceptedView = ({
       )}
 
       {singleData.status && (
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "row",
+            paddingVertical: 10,
+          }}
+        >
           <Button
             event={() => setTransactionDetailsModal(true)}
             style={{ marginTop: 10 }}
-            width={"90%"}
+            width={150}
             text="Order Details"
             bgColor={"#003082"}
+          />
+          <Button
+            event={() => {
+              setViewTransactionModal(false);
+              setViewDirection(true);
+            }}
+            style={{ marginTop: 10 }}
+            width={150}
+            text="Direction"
+            bgColor={"#B80B00"}
           />
         </View>
       )}

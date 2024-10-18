@@ -14,6 +14,7 @@ export const MyProvider = ({ children }) => {
   const [CR, setCR] = useState();
   const [clearance, setClearance] = useState();
   const [proof, setProof] = useState();
+  const [viewDirection, setViewDirection] = useState(false);
 
   return (
     <MyContext.Provider
@@ -40,6 +41,8 @@ export const MyProvider = ({ children }) => {
         setClearance,
         proof,
         setProof,
+        viewDirection,
+        setViewDirection,
       }}
     >
       {children}
