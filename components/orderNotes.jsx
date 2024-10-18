@@ -40,7 +40,7 @@ const OrderNotes = ({
   const { proof, setProof } = useSmokeContext();
   const textInputRef = useRef();
 
-  const { confirmOrderDetails } = useCrudTransaction();
+  const { confirmOrderDetails, markNearby } = useCrudTransaction();
 
   const handleAddNotes = () => {
     if (note.length >= 1) {
@@ -386,15 +386,42 @@ const OrderNotes = ({
         </>
         {/* Confirm Button */}
         {IS_RIDER && (
-          <View style={{ justifyContent: "center", alignItems: "center" }}>
-            <Button
-              event={handleSubmit}
-              isDisable={purchaseCost <= 0 || !proof}
-              style={{ marginTop: 10 }}
-              width={"90%"}
-              text={singleData?.status == "Transit" ? "Update" : "Confirm"}
-              bgColor={"#003082"}
-            />
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            {singleData.status !== "Nearby" && (
+              <Button
+                event={handleSubmit}
+                isDisable={purchaseCost <= 0 || !proof}
+                style={{ marginTop: 10 }}
+                width={singleData?.status == "Transit" ? 130 : "90%"}
+                text={singleData?.status == "Transit" ? "Update" : "Confirm"}
+                bgColor={"#003082"}
+              />
+            )}
+
+            {singleData?.status == "Transit" && (
+              <Button
+                event={() => markNearby(singleData.id)}
+                style={{ marginTop: 10 }}
+                width={singleData?.status == "Transit" ? 130 : "90%"}
+                text={"Nearby"}
+                bgColor={"#B80B00"}
+              />
+            )}
+            {singleData?.status == "Nearby" && (
+              <Button
+                event={() => markNearby(singleData.id)}
+                style={{ marginTop: 10 }}
+                width={singleData?.status == "Transit" ? 130 : "90%"}
+                text={"Open QR Code"}
+                bgColor={"#B80B00"}
+              />
+            )}
           </View>
         )}
       </ScrollView>

@@ -98,6 +98,12 @@ const useCrudTransaction = () => {
     });
   };
 
+  const markNearby = async (id) => {
+    const docRef = doc(db, "transaction", id);
+    await updateDoc(docRef, {
+      status: "Nearby",
+    });
+  };
   return {
     addTransaction,
     deleteTransaction,
@@ -108,6 +114,7 @@ const useCrudTransaction = () => {
     setSingleData,
     completeTransaction,
     confirmOrderDetails,
+    markNearby,
   };
 };
 

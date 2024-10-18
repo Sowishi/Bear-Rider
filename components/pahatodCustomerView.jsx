@@ -83,6 +83,12 @@ const PahatodCustomerView = ({
         sub: "your rider is on the way",
       };
     }
+    if (status == "Nearby") {
+      return {
+        title: "Rider is Near",
+        sub: "Waiting for you",
+      };
+    }
   };
 
   return (
@@ -595,23 +601,27 @@ const PahatodCustomerView = ({
                 bgColor={"#00308299"}
               />
               {singleData && singleData?.status !== "Transit" && (
-                <Button
-                  width={150}
-                  event={() => {
-                    setFindingRider(false);
-                    setPahatodModal(false);
-                    setSelectedLocation(null);
-                    setSelectedTransaction(null);
-                    setSingleData(null);
-                    deleteTransaction(singleData);
-                    Toast.show({
-                      type: "success",
-                      text1: "Your ride is cancelled successfully.",
-                    });
-                  }}
-                  text="Cancel Ride"
-                  bgColor={"#B80B00"}
-                />
+                <>
+                  {singleData.status !== "Nearby" && (
+                    <Button
+                      width={150}
+                      event={() => {
+                        setFindingRider(false);
+                        setPahatodModal(false);
+                        setSelectedLocation(null);
+                        setSelectedTransaction(null);
+                        setSingleData(null);
+                        deleteTransaction(singleData);
+                        Toast.show({
+                          type: "success",
+                          text1: "Your ride is cancelled successfully.",
+                        });
+                      }}
+                      text="Cancel Ride"
+                      bgColor={"#B80B00"}
+                    />
+                  )}
+                </>
               )}
 
               {/* {singleData?.status == "Accepted" && (
