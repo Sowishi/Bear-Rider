@@ -30,6 +30,7 @@ import RiderBottomNavigation from "../components/riderBottomNavigation";
 import PahatodCustomerView from "../components/pahatodCustomerView";
 import NotificationContent from "../components/notificationContent";
 import OrderNotes from "../components/orderNotes";
+import Wallet from "./wallet";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -68,6 +69,8 @@ const Home = ({ route, navigation }) => {
     currentUser,
     setTransactionCount,
     setProof,
+    walletModal,
+    setWalletModal,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -386,6 +389,14 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setNotificationModal(false)}
       >
         <NotificationContent />
+      </ScreenModal>
+
+      {/* Wallet Modal */}
+      <ScreenModal
+        modalVisible={walletModal}
+        closeModal={() => setWalletModal(false)}
+      >
+        <Wallet />
       </ScreenModal>
 
       <View style={{ flex: 1, position: "relative" }}>

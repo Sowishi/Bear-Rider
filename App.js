@@ -13,6 +13,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import Rider from "./screen/rider";
 import Camera from "./screen/camera";
 import RiderPending from "./screen/riderPending";
+import Wallet from "./screen/wallet";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -32,7 +33,6 @@ export default function App() {
           name="Home"
           component={Home}
         />
-
         <Tab.Screen
           options={{
             tabBarIcon: () => <Entypo name="user" size={18} color="#001F47" />,
@@ -58,6 +58,16 @@ export default function App() {
           }}
           name="Rider"
           component={Rider}
+        />
+        <Tab.Screen
+          options={{
+            tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
+            tabBarShowLabel: false,
+            headerShown: true,
+            title: "Rider Registration",
+          }}
+          name="Wallet"
+          component={Wallet}
         />
         <Tab.Screen
           options={{

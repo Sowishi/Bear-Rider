@@ -6,6 +6,8 @@ export const MyProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [mapView, setMapView] = useState("standard");
   const [historyModal, setHistoryModal] = useState(false);
+  const [walletModal, setWalletModal] = useState(false);
+
   const [transactionCount, setTransactionCount] = useState(0);
   const [frontLicense, setFrontLicense] = useState();
   const [backLicense, setBackLicense] = useState();
@@ -43,6 +45,8 @@ export const MyProvider = ({ children }) => {
         setProof,
         viewDirection,
         setViewDirection,
+        walletModal,
+        setWalletModal,
       }}
     >
       {children}

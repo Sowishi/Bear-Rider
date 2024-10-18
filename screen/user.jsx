@@ -7,7 +7,8 @@ import Button from "../components/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const User = ({ navigation }) => {
-  const { currentUser, setMapView, setHistoryModal } = useSmokeContext();
+  const { currentUser, setMapView, setHistoryModal, setWalletModal } =
+    useSmokeContext();
 
   return (
     <ScrollView
@@ -145,7 +146,11 @@ const User = ({ navigation }) => {
               <Text style={{ fontSize: 20, marginRight: 5 }}>History</Text>
               <MaterialIcons name="history" size={24} color="black" />
             </TouchableOpacity>
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                navigation.closeDrawer();
+                setWalletModal(true);
+              }}
               style={{
                 marginVertical: 15,
                 shadowColor: "#000",
@@ -168,7 +173,7 @@ const User = ({ navigation }) => {
             >
               <Text style={{ fontSize: 20, marginRight: 10 }}>Wallet</Text>
               <SimpleLineIcons name="wallet" size={21} color="black" />
-            </View>
+            </TouchableOpacity>
             <View
               style={{
                 marginVertical: 15,
