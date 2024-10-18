@@ -2,14 +2,17 @@ import MapView, { Marker } from "react-native-maps";
 import { useSmokeContext } from "../utils/appContext";
 import MapViewDirections from "react-native-maps-directions";
 import { Image, Text, View, Dimensions } from "react-native";
-import people from "../assets/user.png";
-import rider from "../assets/motorcycle.png";
+import people from "../assets/icons8-human-24 1.png";
+import rider from "../assets/motorcyle.png";
+import shop from "../assets/image 14.png";
 import { useEffect, useRef, useState } from "react";
 import { PROVIDER_GOOGLE } from "react-native-maps";
 import useAddOnline from "../hooks/useAddOnline";
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
 import { riderMapStyle } from "../utils/riderMapStyle";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 const BearRiderMap = ({
   location,
@@ -29,11 +32,15 @@ const BearRiderMap = ({
   const [mapLoading, setMapLoading] = useState(true);
 
   const MarkerUserImage = () => {
-    return <Image source={people} style={{ width: 50, height: 50 }} />;
+    return <FontAwesome name="user" size={30} color="#B80B00" />;
   };
 
   const MarkerRiderImage = () => {
-    return <Image source={rider} style={{ width: 40, height: 40 }} />;
+    return <FontAwesome name="motorcycle" size={30} color="#003082" />;
+  };
+
+  const ShopImage = () => {
+    return <FontAwesome5 name="store" size={30} color="#FFC30E" />;
   };
 
   const jumpToMarker = (coords) => {
@@ -214,9 +221,8 @@ const BearRiderMap = ({
                 latitude: selectedTransaction.destination?.latitude,
                 longitude: selectedTransaction.destination?.longitude,
               }}
-              title="Destination / Drop Off"
-              description="Customer Destination"
-              pinColor={"#003082"}
+              title="Shop Location / Drop Off Location"
+              children={<ShopImage />}
             />
             <Marker
               children={<MarkerUserImage />}
