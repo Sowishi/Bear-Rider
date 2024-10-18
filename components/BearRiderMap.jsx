@@ -251,7 +251,7 @@ const BearRiderMap = ({
             {/* Ridet to Customer Destintation */}
             <MapViewDirections
               strokeWidth={4}
-              strokeColor="#003082"
+              strokeColor="#FFC30E"
               origin={{
                 latitude: location?.latitude,
                 longitude: location?.longitude,

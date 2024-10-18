@@ -13,6 +13,7 @@ const RiderBottomNavigation = ({
   setSelectedTransaction,
   acceptTransaction,
   selectedTransaction,
+  setViewTransactionModal,
   location,
 }) => {
   const { currentUser, transactionCount } = useSmokeContext();
@@ -38,12 +39,71 @@ const RiderBottomNavigation = ({
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
-        paddingHorizontal: 20,
         paddingVertical: 20,
       }}
     >
       {isOnline ? (
         <>
+          {singleData && (
+            <View
+              style={{
+                marginVertical: 10,
+                position: "absolute",
+                top: -70,
+                width: "100%",
+                backgroundColor: "white",
+                borderRadius: 5,
+                paddingVertical: 10,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  alignItems: "center",
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    setViewTransactionModal(true);
+                  }}
+                  style={{
+                    borderWidth: 2,
+                    width: 150,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    borderColor: "#003082",
+                  }}
+                >
+                  <Text style={{ borderColor: "#003082" }}>
+                    View Transaction
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setSingleData(null);
+                    setSelectedTransaction(null);
+                  }}
+                  style={{
+                    borderWidth: 2,
+                    width: 100,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    borderColor: "#003082",
+                    backgroundColor: "#003082",
+                  }}
+                >
+                  <Text style={{ borderColor: "#003082", color: "white" }}>
+                    Close
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
           <View
             style={{
               justifyContent: "center",
@@ -108,7 +168,15 @@ const RiderBottomNavigation = ({
         </>
       ) : (
         <>
-          <Text style={{ fontSize: 13, textAlign: "center" }}>
+          <Text
+            style={{
+              fontSize: 13,
+              textAlign: "center",
+              justifyContent: "center",
+              alignItems: "center",
+              marginLeft: 10,
+            }}
+          >
             You're offline, please turn the power button 🔴
           </Text>
         </>
