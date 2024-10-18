@@ -91,6 +91,10 @@ const OrderNotes = ({
     );
   };
 
+  const handleMarkNearby = async () => {
+    await markNearby(singleData.id);
+  };
+
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -294,7 +298,8 @@ const OrderNotes = ({
                 }}
                 source={{
                   uri:
-                    singleData?.status == "Transit"
+                    singleData?.status == "Transit" ||
+                    singleData?.status == "Nearby"
                       ? singleData?.proofOfPurchase
                       : proof,
                 }}
@@ -311,7 +316,7 @@ const OrderNotes = ({
             navigation={navigataion}
           />
         )}
-        {IS_RIDER && (
+        {IS_RIDER && singleData?.status !== "Nearby" && (
           <>
             <Text style={{ fontSize: 15, marginTop: 20 }}>Total Item Cost</Text>
             <View
@@ -375,7 +380,8 @@ const OrderNotes = ({
               Total{" "}
               <Text style={{ fontSize: 25 }}>
                 ₱
-                {singleData?.status == "Transit"
+                {singleData?.status == "Transit" ||
+                singleData?.status == "Nearby"
                   ? singleData.totalPrice
                   : totalPrice
                   ? totalPrice
@@ -415,7 +421,7 @@ const OrderNotes = ({
             )}
             {singleData?.status == "Nearby" && (
               <Button
-                event={() => markNearby(singleData.id)}
+                event={handleMarkNearby}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
                 text={"Open QR Code"}
