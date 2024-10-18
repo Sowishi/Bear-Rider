@@ -123,6 +123,18 @@ const RiderAcceptedView = ({
             ₱{parseInt(singleData?.distance * chargePerKilometer + baseFare)}
           </Text>
         </Text>
+        <Text
+          style={{
+            color: "black",
+            fontSize: 18,
+          }}
+        >
+          Total
+          <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+            {" "}
+            ₱{parseInt(singleData.totalPrice ? singleData.totalPrice : "----")}
+          </Text>
+        </Text>
       </View>
 
       {/* Message and call buttons     */}
