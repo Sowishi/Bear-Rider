@@ -371,7 +371,8 @@ const OrderNotes = ({
               Purchase Cost:
               <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                 ₱
-                {singleData?.status == "Transit"
+                {singleData?.status == "Transit" ||
+                singleData.status == "Nearby"
                   ? singleData?.purchaseCost
                   : purchaseCost}
               </Text>
