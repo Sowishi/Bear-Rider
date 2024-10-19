@@ -36,6 +36,7 @@ const OrderNotes = ({
   chargePerKilometer,
   baseFare,
   setPahatodModal,
+  setSelectedTransaction,
 }) => {
   const [note, setNote] = useState("");
   const [qrModal, setQrModal] = useState(false);
@@ -152,6 +153,7 @@ const OrderNotes = ({
         >
           <View style={{ width: 350, height: 600, backgroundColor: "white" }}>
             <BearScanner
+              setSelectedTransaction={setSelectedTransaction}
               setPahatodModal={setPahatodModal}
               singleData={singleData}
               setTransactionDetailsModal={setTransactionDetailsModal}

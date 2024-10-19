@@ -7,6 +7,7 @@ import { useSmokeContext } from "../utils/appContext";
 import useCrudWallet from "../hooks/useCrudWallet";
 import Toast from "react-native-toast-message";
 import useCrudTransaction from "../hooks/useCrudTransaction";
+import Loader from "./loader";
 
 export default function BearScanner({
   totalPrice,
@@ -15,9 +16,11 @@ export default function BearScanner({
   singleData,
   setPahatodModal,
   setTransactionDetailsModal,
+  setSelectedTransaction,
 }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { handleMakePayment, setSingleData } = useCrudWallet();
   const { currentUser } = useSmokeContext();
@@ -32,19 +35,20 @@ export default function BearScanner({
   }, []);
 
   const handleBarCodeScanned = async ({ type, data }) => {
-    setScanned(true);
+    setLoading(true);
     await handleMakePayment(data, totalPrice, currentUser?.id);
     completeTransaction(singleData);
     setScan(false);
     setTransactionRemarksModal(false);
     setPahatodModal(false);
     setTransactionDetailsModal(false);
-    setSingleData(null);
+    setSelectedTransaction(null);
     Toast.show({
       type: "success",
       text1: "Payment Processed Successfully!",
       text2: "Thank you for choosing, Bear Rider Express! 😊",
     });
+    setLoading(false);
   };
 
   if (hasPermission === null) {
@@ -60,6 +64,7 @@ export default function BearScanner({
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
+      {loading && <Loader />}
       <View
         style={{
           position: "absolute",

@@ -349,6 +349,7 @@ const Home = ({ route, navigation }) => {
             serviceType={serviceType}
             viewOnly={true}
             navigataion={navigation}
+            setSelectedTransaction={setSelectedTransaction}
           />
         )}
       </BottomModal>
