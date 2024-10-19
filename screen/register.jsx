@@ -339,7 +339,7 @@ const Register = ({ navigation }) => {
           </View>
         </ScrollView>
       )}
-      {steps == 1 && (
+      {steps == 2 && (
         <View
           style={{
             flex: 1,
@@ -403,7 +403,7 @@ const Register = ({ navigation }) => {
           </View>
         </View>
       )}
-      {steps == 2 && (
+      {steps == 3 && (
         <View
           style={{
             flex: 1,
