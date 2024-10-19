@@ -21,6 +21,7 @@ import useCrudTransaction from "../hooks/useCrudTransaction";
 import { handleUploadImage } from "../utils/handleUploadImage";
 import QRCode from "react-native-qrcode-svg";
 import logo from "../assets/bear.png";
+import BearScanner from "./barcodeScanner";
 const OrderNotes = ({
   serviceType,
   setDeliveryNotes,
@@ -36,6 +37,7 @@ const OrderNotes = ({
 }) => {
   const [note, setNote] = useState("");
   const [qrModal, setQrModal] = useState(false);
+  const [scan, setScan] = useState(false);
   const [purchaseCost, setPurchaseCost] = useState(0);
   const [openCamera, setOpenCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
@@ -137,6 +139,17 @@ const OrderNotes = ({
         >
           <View style={{ width: 350, height: 600, backgroundColor: "red" }}>
             <BearCamera setOpenCamera={setOpenCamera} proofOfPurchase />
+          </View>
+        </BottomModal>
+      )}
+      {scan && (
+        <BottomModal
+          heightPx={700}
+          modalVisible={scan}
+          closeModal={() => setScan(false)}
+        >
+          <View style={{ width: 350, height: 600, backgroundColor: "white" }}>
+            <BearScanner />
           </View>
         </BottomModal>
       )}
@@ -450,6 +463,15 @@ const OrderNotes = ({
               />
             )}
           </View>
+        )}
+        {singleData?.status == "Nearby" && !IS_RIDER && (
+          <Button
+            event={() => setScan(true)}
+            style={{ marginTop: 10 }}
+            width={singleData?.status == "Transit" ? 130 : "90%"}
+            text={"Pay"}
+            bgColor={"#B80B00"}
+          />
         )}
       </ScrollView>
 
