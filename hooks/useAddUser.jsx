@@ -1,12 +1,21 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
 import { db } from "../firebase";
 
 const useAddUser = () => {
-  const addUser = (forms) => {
+  const addUser = async (forms) => {
     const colRef = collection(db, "users");
     addDoc(colRef, {
       ...forms,
       createdAt: serverTimestamp(),
+    }).then((docRef) => {
+      const walletDoc = doc(db, "wallet", docRef.id);
+      setDoc(walletDoc, { balance: 0, transaction: [] });
     });
   };
 

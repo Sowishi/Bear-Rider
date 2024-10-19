@@ -44,13 +44,13 @@ const Register = ({ navigation }) => {
     }
     const phoneNumber = forms.phoneNumber;
 
-    if (!(phoneNumber.startsWith("09") && phoneNumber.length === 11)) {
-      Toast.show({
-        type: "error",
-        text1: "Invalid Phone Number",
-      });
-      return;
-    }
+    // if (!(phoneNumber.startsWith("09") && phoneNumber.length === 11)) {
+    //   Toast.show({
+    //     type: "error",
+    //     text1: "Invalid Phone Number",
+    //   });
+    //   return;
+    // }
 
     if (forms.password !== forms.confirmPassword) {
       Toast.show({
