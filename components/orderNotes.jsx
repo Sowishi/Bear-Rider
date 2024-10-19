@@ -149,7 +149,10 @@ const OrderNotes = ({
           closeModal={() => setScan(false)}
         >
           <View style={{ width: 350, height: 600, backgroundColor: "white" }}>
-            <BearScanner />
+            <BearScanner
+              setScan={setScan}
+              totalPrice={singleData?.totalPrice}
+            />
           </View>
         </BottomModal>
       )}

@@ -3,10 +3,16 @@ import { Text, View, StyleSheet, Button } from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import LottieView from "lottie-react-native";
 import Scanner from "../assets/scanner.json";
+import { useSmokeContext } from "../utils/appContext";
+import useCrudWallet from "../hooks/useCrudWallet";
+import Toast from "react-native-toast-message";
 
-export default function BearScanner() {
+export default function BearScanner({ totalPrice, setScan }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
+
+  const { handleMakePayment, data } = useCrudWallet();
+  const { currentUser } = useSmokeContext();
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -17,9 +23,11 @@ export default function BearScanner() {
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = ({ type, data }) => {
+  const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    await handleMakePayment(data, totalPrice, currentUser?.id);
+    Toast.show({ type: "success", text1: "Payment Processed Succesfully!" });
+    setScan(false);
   };
 
   if (hasPermission === null) {
