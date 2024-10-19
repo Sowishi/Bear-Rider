@@ -6,14 +6,22 @@ import Scanner from "../assets/scanner.json";
 import { useSmokeContext } from "../utils/appContext";
 import useCrudWallet from "../hooks/useCrudWallet";
 import Toast from "react-native-toast-message";
+import useCrudTransaction from "../hooks/useCrudTransaction";
 
-export default function BearScanner({ totalPrice, setScan }) {
+export default function BearScanner({
+  totalPrice,
+  setScan,
+  setTransactionRemarksModal,
+  singleData,
+  setPahatodModal,
+  setTransactionDetailsModal,
+}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
-  const { handleMakePayment, data } = useCrudWallet();
+  const { handleMakePayment, setSingleData } = useCrudWallet();
   const { currentUser } = useSmokeContext();
-
+  const { completeTransaction } = useCrudTransaction();
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -26,8 +34,17 @@ export default function BearScanner({ totalPrice, setScan }) {
   const handleBarCodeScanned = async ({ type, data }) => {
     setScanned(true);
     await handleMakePayment(data, totalPrice, currentUser?.id);
-    Toast.show({ type: "success", text1: "Payment Processed Succesfully!" });
+    completeTransaction(singleData);
     setScan(false);
+    setTransactionRemarksModal(false);
+    setPahatodModal(false);
+    setTransactionDetailsModal(false);
+    setSingleData(null);
+    Toast.show({
+      type: "success",
+      text1: "Payment Processed Successfully!",
+      text2: "Thank you for choosing, Bear Rider Express! 😊",
+    });
   };
 
   if (hasPermission === null) {

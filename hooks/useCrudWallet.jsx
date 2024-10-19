@@ -16,6 +16,7 @@ const useCrudWallet = () => {
   };
 
   const handleMakePayment = async (receiver, price, sender) => {
+    console.log(receiver, price, sender);
     const senderRef = doc(db, "wallet", sender);
     const receiverRef = doc(db, "wallet", receiver);
 

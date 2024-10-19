@@ -343,6 +343,7 @@ const Home = ({ route, navigation }) => {
             handleAddTransaction={handleAddTransaction}
             setTransactionDetailsModal={setTransactionDetailsModal}
             setTransactionRemarksModal={setTransactionRemarksModal}
+            setPahatodModal={setPahatodModal}
             deliveryNotes={singleData.deliveryNotes}
             setDeliveryNotes={setDeliveryNotes}
             serviceType={serviceType}
