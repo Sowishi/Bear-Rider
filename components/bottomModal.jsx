@@ -18,7 +18,6 @@ const BottomModal = ({
       backgroundColor: background ? background : "white",
       borderTopLeftRadius: 50,
       borderTopRightRadius: 50,
-
       width: "100%",
       minHeight: heightPx ? heightPx : 500,
       padding: 35,

@@ -437,7 +437,7 @@ const Home = ({ route, navigation }) => {
 
         {singleData && IS_RIDER && (
           <BottomModal
-            heightPx={540}
+            heightPx={560}
             modalVisible={viewTransactionModal}
             closeModal={() => setViewTransactionModal(false)}
           >

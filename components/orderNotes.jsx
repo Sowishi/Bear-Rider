@@ -19,7 +19,8 @@ import { CameraView, useCameraPermissions } from "expo-camera";
 import { useSmokeContext } from "../utils/appContext";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import { handleUploadImage } from "../utils/handleUploadImage";
-
+import QRCode from "react-native-qrcode-svg";
+import logo from "../assets/bear.png";
 const OrderNotes = ({
   serviceType,
   setDeliveryNotes,
@@ -34,10 +35,11 @@ const OrderNotes = ({
   baseFare,
 }) => {
   const [note, setNote] = useState("");
+  const [qrModal, setQrModal] = useState(false);
   const [purchaseCost, setPurchaseCost] = useState(0);
   const [openCamera, setOpenCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
-  const { proof, setProof } = useSmokeContext();
+  const { proof, setProof, currentUser } = useSmokeContext();
   const textInputRef = useRef();
 
   const { confirmOrderDetails, markNearby } = useCrudTransaction();
@@ -138,6 +140,24 @@ const OrderNotes = ({
           </View>
         </BottomModal>
       )}
+
+      <BottomModal modalVisible={qrModal} closeModal={() => setQrModal(false)}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <Text style={{ fontSize: 20, marginBottom: 20 }}>
+            Account Name:{" "}
+            <Text style={{ fontWeight: "bold" }}>
+              {currentUser.firstName + " " + currentUser.lastName}
+            </Text>
+          </Text>
+          <QRCode logo={logo} size={300} value={currentUser.id} />
+        </View>
+      </BottomModal>
 
       <ScrollView
         contentContainerStyle={{ paddingBottom: 20 }}
@@ -372,7 +392,7 @@ const OrderNotes = ({
               <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                 ₱
                 {singleData?.status == "Transit" ||
-                singleData.status == "Nearby"
+                singleData?.status == "Nearby"
                   ? singleData?.purchaseCost
                   : purchaseCost}
               </Text>
@@ -422,7 +442,7 @@ const OrderNotes = ({
             )}
             {singleData?.status == "Nearby" && (
               <Button
-                event={handleMarkNearby}
+                event={() => setQrModal(true)}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
                 text={"Open QR Code"}
