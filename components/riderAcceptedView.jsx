@@ -193,7 +193,7 @@ const RiderAcceptedView = ({
             event={() => setTransactionDetailsModal(true)}
             style={{ marginTop: 10 }}
             width={150}
-            text="Order Details"
+            text="Details"
             bgColor={"#003082"}
           />
           <Button

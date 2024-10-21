@@ -197,7 +197,9 @@ const OrderNotes = ({
             marginBottom: 15,
           }}
         >
-          Order Details
+          {singleData?.serviceType == "Padara"
+            ? "Order Details"
+            : "Transportation Details"}
         </Text>
         {/* Add Order Notes Button */}
         {!viewOnly && (
@@ -250,7 +252,12 @@ const OrderNotes = ({
         )}
         {singleData && (
           <>
-            <Text style={{ fontSize: 15 }}>Store to Shop</Text>
+            <Text style={{ fontSize: 15 }}>
+              {" "}
+              {singleData?.serviceType == "Padara"
+                ? "Store to Shop"
+                : "Drop off Locataion"}
+            </Text>
             <View
               style={{
                 padding: 10,
@@ -274,7 +281,7 @@ const OrderNotes = ({
                 >
                   {singleData?.serviceType == "Padara"
                     ? "Shop to Location"
-                    : ""}
+                    : "Drop off Locataion"}
                 </Text>
                 <View style={{ flexDirection: "row" }}>
                   <Image
@@ -288,71 +295,75 @@ const OrderNotes = ({
           </>
         )}
 
-        <>
-          <Text style={{ fontSize: 15 }}>Order/s</Text>
-          <View
-            style={{
-              padding: 10,
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-
-              elevation: 5,
-              backgroundColor: "white",
-              margin: 10,
-              borderRadius: 10,
-            }}
-          >
-            {deliveryNotes.map((item) => {
-              return (
-                <OrderNotesCard
-                  viewOnly={viewOnly}
-                  key={item.id}
-                  item={item}
-                  handleQuantityChange={handleQuantityChange}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
-          </View>
-        </>
-        {singleData?.status !== undefined && (
+        {singleData?.serviceType == "Padara" && (
           <>
-            <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
-              Proof of Purchase / Receipt
-            </Text>
+            <Text style={{ fontSize: 15 }}>Order/s</Text>
             <View
               style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center",
-                borderWidth: 1,
+                padding: 10,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                backgroundColor: "white",
+                margin: 10,
                 borderRadius: 10,
               }}
             >
-              <Image
-                style={{
-                  width: "100%",
-                  height: 250,
-                  borderRadius: 10,
-                }}
-                source={{
-                  uri:
-                    singleData?.status == "Transit" ||
-                    singleData?.status == "Nearby"
-                      ? singleData?.proofOfPurchase
-                      : proof,
-                }}
-              />
+              {deliveryNotes.map((item) => {
+                return (
+                  <OrderNotesCard
+                    viewOnly={viewOnly}
+                    key={item.id}
+                    item={item}
+                    handleQuantityChange={handleQuantityChange}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })}
             </View>
           </>
         )}
 
-        {IS_RIDER && (
+        {singleData?.status !== undefined &&
+          singleData?.serviceType == "Padara" && (
+            <>
+              <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
+                Proof of Purchase / Receipt
+              </Text>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderWidth: 1,
+                  borderRadius: 10,
+                }}
+              >
+                <Image
+                  style={{
+                    width: "100%",
+                    height: 250,
+                    borderRadius: 10,
+                  }}
+                  source={{
+                    uri:
+                      singleData?.status == "Transit" ||
+                      singleData?.status == "Nearby"
+                        ? singleData?.proofOfPurchase
+                        : proof,
+                  }}
+                />
+              </View>
+            </>
+          )}
+
+        {IS_RIDER && singleData?.serviceType == "Padara" && (
           <CameraButton
             removeEvent={setProof}
             event={() => setOpenCamera(true)}
@@ -360,36 +371,40 @@ const OrderNotes = ({
             navigation={navigataion}
           />
         )}
-        {IS_RIDER && singleData?.status !== "Nearby" && (
-          <>
-            <Text style={{ fontSize: 15, marginTop: 20 }}>Total Item Cost</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: 0.8,
-                shadowRadius: 2,
-                elevation: 3,
-                paddingHorizontal: 10,
-                backgroundColor: "white",
-                borderRadius: 10,
-              }}
-            >
-              <TextInput
-                onChangeText={(text) => setPurchaseCost(text)}
-                keyboardType="numeric"
-                placeholder="Total Item Cost"
+        {IS_RIDER &&
+          singleData?.status !== "Nearby" &&
+          singleData?.serviceType == "Padara" && (
+            <>
+              <Text style={{ fontSize: 15, marginTop: 20 }}>
+                Total Item Cost
+              </Text>
+              <View
                 style={{
-                  flex: 1,
-                  paddingVertical: 15,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
                   paddingHorizontal: 10,
+                  backgroundColor: "white",
+                  borderRadius: 10,
                 }}
-              />
-            </View>
-          </>
-        )}
+              >
+                <TextInput
+                  onChangeText={(text) => setPurchaseCost(text)}
+                  keyboardType="numeric"
+                  placeholder="Total Item Cost"
+                  style={{
+                    flex: 1,
+                    paddingVertical: 15,
+                    paddingHorizontal: 10,
+                  }}
+                />
+              </View>
+            </>
+          )}
 
         <>
           {/* Sub Total of the orders */}

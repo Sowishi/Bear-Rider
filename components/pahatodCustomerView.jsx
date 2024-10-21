@@ -260,7 +260,13 @@ const PahatodCustomerView = ({
               />
               {selectedLocation && (
                 <Button
-                  event={() => setTransactionRemarksModal(true)}
+                  event={() => {
+                    if (serviceType == "Pahatod") {
+                      handleAddTransaction();
+                    } else {
+                      setTransactionRemarksModal(true);
+                    }
+                  }}
                   width={150}
                   style={{ marginTop: 20 }}
                   text="Proceed"
@@ -580,7 +586,7 @@ const PahatodCustomerView = ({
                 event={() => setTransactionDetailsModal(true)}
                 style={{ marginTop: 10 }}
                 width={"90%"}
-                text="Order Details"
+                text="Details"
                 bgColor={"#003082"}
               />
             </View>
