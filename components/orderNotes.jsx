@@ -130,8 +130,6 @@ const OrderNotes = ({
   );
   const totalPrice = parseInt(deliveryFee) + parseInt(purchaseCost);
 
-  console.log(singleData.status, "fdklf");
-
   return (
     <View
       style={{
@@ -461,50 +459,55 @@ const OrderNotes = ({
             </>
           )}
 
-        <>
-          {/* Sub Total of the orders */}
-          <View style={{ marginVertical: 10 }}>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-              }}
-            >
-              Delivery Fee:
-              <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-                {" "}
-                ₱{deliveryFee ? deliveryFee : "----"}
+        {singleData && (
+          <>
+            {/* Sub Total of the orders */}
+            <View style={{ marginVertical: 10 }}>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                }}
+              >
+                {singleData?.serviceType == "Padara" ? "Delivery Fee" : "Fare"}
+                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                  {" "}
+                  ₱{deliveryFee ? deliveryFee : "----"}
+                </Text>
               </Text>
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 15,
-              }}
-            >
-              Purchase Cost:
-              <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-                ₱
-                {singleData?.status == "Transit" ||
-                singleData?.status == "Nearby"
-                  ? singleData?.purchaseCost
-                  : purchaseCost}
+              {singleData?.serviceType == "Padara" && (
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                  }}
+                >
+                  Purchase Cost:
+                  <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                    ₱
+                    {singleData?.status == "Transit" ||
+                    singleData?.status == "Nearby"
+                      ? singleData?.purchaseCost
+                      : purchaseCost}
+                  </Text>
+                </Text>
+              )}
+              <Text style={{ marginVertical: 10 }}>
+                Total{" "}
+                <Text style={{ fontSize: 25 }}>
+                  ₱
+                  {singleData?.status == "Transit" ||
+                  singleData?.status == "Nearby"
+                    ? parseInt(singleData.totalPrice)
+                    : totalPrice
+                    ? totalPrice
+                    : "---"}{" "}
+                </Text>
               </Text>
-            </Text>
-            <Text style={{ marginVertical: 10 }}>
-              Total{" "}
-              <Text style={{ fontSize: 25 }}>
-                ₱
-                {singleData?.status == "Transit" ||
-                singleData?.status == "Nearby"
-                  ? parseInt(singleData.totalPrice)
-                  : totalPrice
-                  ? totalPrice
-                  : "---"}{" "}
-              </Text>
-            </Text>
-          </View>
-        </>
+            </View>
+          </>
+        )}
+
         {/* Confirm Button */}
 
         {IS_RIDER && singleData?.serviceType == "Padara" && (
@@ -515,7 +518,7 @@ const OrderNotes = ({
               flexDirection: "row",
             }}
           >
-            {singleData.status !== "Nearby" && (
+            {singleData?.status !== "Nearby" && (
               <Button
                 event={handleSubmit}
                 isDisable={purchaseCost <= 0 || !proof}
@@ -555,7 +558,7 @@ const OrderNotes = ({
               flexDirection: "row",
             }}
           >
-            {singleData.status == "Accepted" && (
+            {singleData?.status == "Accepted" && (
               <Button
                 event={handleSubmit}
                 style={{ marginTop: 10 }}
@@ -567,7 +570,7 @@ const OrderNotes = ({
 
             {singleData?.status == "Transit" && (
               <Button
-                event={() => markNearby(singleData.id)}
+                event={() => markNearby(singleData?.id)}
                 style={{ marginTop: 10 }}
                 width={"90%"}
                 text={"Nearby"}
