@@ -91,6 +91,8 @@ const PahatodCustomerView = ({
     }
   };
 
+  console.log(findingRider, "finding a rider");
+
   return (
     <>
       <View

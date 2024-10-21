@@ -297,6 +297,9 @@ const Home = ({ route, navigation }) => {
         closeModal={() => setServiceModal(false)}
       >
         <PickServiceContent
+          setFindingRider={setFindingRider}
+          setSingleData={setSingleData}
+          setSelectedTransaction={setSelectedTransaction}
           setServiceType={setServiceType}
           setPahatodModal={setPahatodModal}
           setServiceModal={setServiceModal}

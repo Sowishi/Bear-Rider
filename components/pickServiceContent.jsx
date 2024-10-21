@@ -5,6 +5,9 @@ const PickServiceContent = ({
   setPahatodModal,
   setServiceModal,
   setServiceType,
+  setSelectedTransaction,
+  setSingleData,
+  setFindingRider,
 }) => {
   return (
     <View style={{ justifyContent: "center", alignItems: "center" }}>
@@ -26,6 +29,9 @@ const PickServiceContent = ({
           setPahatodModal(true);
           setServiceModal(false);
           setServiceType("Pahatod");
+          setSelectedTransaction(null);
+          setSingleData(null);
+          setFindingRider(false);
         }}
       />
       <Button
@@ -36,6 +42,9 @@ const PickServiceContent = ({
           setPahatodModal(true);
           setServiceModal(false);
           setServiceType("Padara");
+          setSelectedTransaction(null);
+          setSingleData(null);
+          setFindingRider(false);
         }}
       />
     </View>
