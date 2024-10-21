@@ -47,7 +47,7 @@ const OrderNotes = ({
   const { proof, setProof, currentUser } = useSmokeContext();
   const textInputRef = useRef();
 
-  const { confirmOrderDetails, markNearby } = useCrudTransaction();
+  const { confirmOrderDetails, markNearby, markTransit } = useCrudTransaction();
 
   const handleAddNotes = () => {
     if (note.length >= 1) {
@@ -97,6 +97,8 @@ const OrderNotes = ({
         totalPrice,
         deliveryFee
       );
+    } else {
+      markTransit(singleData?.id);
     }
   };
 
@@ -127,6 +129,8 @@ const OrderNotes = ({
     singleData?.distance * chargePerKilometer + baseFare
   );
   const totalPrice = parseInt(deliveryFee) + parseInt(purchaseCost);
+
+  console.log(singleData.status, "fdklf");
 
   return (
     <View
@@ -191,18 +195,32 @@ const OrderNotes = ({
           width: "100%",
         }}
       >
-        <Text
-          style={{
-            fontSize: 25,
-            color: "black",
-            fontWeight: "bold",
-            marginBottom: 15,
-          }}
-        >
-          {singleData?.serviceType == "Padara"
-            ? "Order Details"
-            : "Transportation Details"}
-        </Text>
+        {singleData && (
+          <Text
+            style={{
+              fontSize: 25,
+              color: "black",
+              fontWeight: "bold",
+              marginBottom: 15,
+            }}
+          >
+            {singleData?.serviceType == "Padara"
+              ? "Order Details"
+              : "Transportation Details"}
+          </Text>
+        )}
+        {singleData == undefined && (
+          <Text
+            style={{
+              fontSize: 25,
+              color: "black",
+              fontWeight: "bold",
+              marginBottom: 15,
+            }}
+          >
+            Transaction Details
+          </Text>
+        )}
         {/* Add Order Notes Button */}
         {!viewOnly && (
           <View
@@ -332,7 +350,7 @@ const OrderNotes = ({
           </>
         )}
 
-        {!viewOnly && (
+        {singleData == undefined && (
           <>
             <Text style={{ fontSize: 15 }}>Order/s</Text>
             <View
@@ -479,7 +497,7 @@ const OrderNotes = ({
                 ₱
                 {singleData?.status == "Transit" ||
                 singleData?.status == "Nearby"
-                  ? singleData.totalPrice
+                  ? parseInt(singleData.totalPrice)
                   : totalPrice
                   ? totalPrice
                   : "---"}{" "}
@@ -537,7 +555,7 @@ const OrderNotes = ({
               flexDirection: "row",
             }}
           >
-            {singleData.status !== "Nearby" && (
+            {singleData.status == "Accepted" && (
               <Button
                 event={handleSubmit}
                 style={{ marginTop: 10 }}
@@ -551,7 +569,7 @@ const OrderNotes = ({
               <Button
                 event={() => markNearby(singleData.id)}
                 style={{ marginTop: 10 }}
-                width={singleData?.status == "Transit" ? 130 : "90%"}
+                width={"90%"}
                 text={"Nearby"}
                 bgColor={"#B80B00"}
               />
