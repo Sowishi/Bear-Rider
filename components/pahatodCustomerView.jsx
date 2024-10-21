@@ -292,7 +292,7 @@ const PahatodCustomerView = ({
                     marginBottom: 15,
                   }}
                 >
-                  {serviceType == "Pahatod"
+                  {singleData?.serviceType == "Pahatod"
                     ? "Transportation Service"
                     : "Delivery Service"}
                 </Text>

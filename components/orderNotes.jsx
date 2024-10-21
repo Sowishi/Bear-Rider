@@ -88,14 +88,16 @@ const OrderNotes = ({
   };
 
   const handleSubmit = async () => {
-    const proofUrl = await handleUploadImage(proof);
-    confirmOrderDetails(
-      singleData.id,
-      purchaseCost,
-      proofUrl,
-      totalPrice,
-      deliveryFee
-    );
+    if (singleData?.serviceType == "Padara") {
+      const proofUrl = await handleUploadImage(proof);
+      confirmOrderDetails(
+        singleData.id,
+        purchaseCost,
+        proofUrl,
+        totalPrice,
+        deliveryFee
+      );
+    }
   };
 
   const handleMarkNearby = async () => {
@@ -295,7 +297,7 @@ const OrderNotes = ({
           </>
         )}
 
-        {singleData?.serviceType == "Padara" && (
+        {serviceType == "Padara" && (
           <>
             <Text style={{ fontSize: 15 }}>Order/s</Text>
             <View
@@ -451,7 +453,8 @@ const OrderNotes = ({
           </View>
         </>
         {/* Confirm Button */}
-        {IS_RIDER && (
+
+        {IS_RIDER && singleData?.serviceType == "Padara" && (
           <View
             style={{
               justifyContent: "center",
@@ -490,6 +493,46 @@ const OrderNotes = ({
             )}
           </View>
         )}
+
+        {IS_RIDER && singleData?.serviceType == "Pahatod" && (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "row",
+            }}
+          >
+            {singleData.status !== "Nearby" && (
+              <Button
+                event={handleSubmit}
+                style={{ marginTop: 10 }}
+                width={singleData?.status == "Transit" ? 130 : "90%"}
+                text={"Confirm"}
+                bgColor={"#003082"}
+              />
+            )}
+
+            {singleData?.status == "Transit" && (
+              <Button
+                event={() => markNearby(singleData.id)}
+                style={{ marginTop: 10 }}
+                width={singleData?.status == "Transit" ? 130 : "90%"}
+                text={"Nearby"}
+                bgColor={"#B80B00"}
+              />
+            )}
+            {singleData?.status == "Nearby" && (
+              <Button
+                event={() => setQrModal(true)}
+                style={{ marginTop: 10 }}
+                width={singleData?.status == "Transit" ? 130 : "90%"}
+                text={"Open QR Code"}
+                bgColor={"#B80B00"}
+              />
+            )}
+          </View>
+        )}
+
         {singleData?.status == "Nearby" && !IS_RIDER && (
           <Button
             event={() => setScan(true)}

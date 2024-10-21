@@ -222,7 +222,7 @@ const BearRiderMap = ({
                 longitude: selectedTransaction.destination?.longitude,
               }}
               title="Shop Location / Drop Off Location"
-              children={<ShopImage />}
+              pinColor="#003082"
             />
             <Marker
               children={<MarkerUserImage />}
