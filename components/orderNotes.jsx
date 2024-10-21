@@ -297,7 +297,42 @@ const OrderNotes = ({
           </>
         )}
 
-        {serviceType == "Padara" && (
+        {singleData?.serviceType == "Padara" && (
+          <>
+            <Text style={{ fontSize: 15 }}>Order/s</Text>
+            <View
+              style={{
+                padding: 10,
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                backgroundColor: "white",
+                margin: 10,
+                borderRadius: 10,
+              }}
+            >
+              {deliveryNotes.map((item) => {
+                return (
+                  <OrderNotesCard
+                    viewOnly={viewOnly}
+                    key={item.id}
+                    item={item}
+                    handleQuantityChange={handleQuantityChange}
+                    handleDelete={handleDelete}
+                  />
+                );
+              })}
+            </View>
+          </>
+        )}
+
+        {!viewOnly && (
           <>
             <Text style={{ fontSize: 15 }}>Order/s</Text>
             <View
