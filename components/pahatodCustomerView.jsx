@@ -18,9 +18,10 @@ import haversineDistance from "../utils/calculateDistance";
 import { useSmokeContext } from "../utils/appContext";
 import calculateArrivalTime from "../utils/calculateArrivalTime";
 import cod from "../assets/cash-on-delivery.png";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Timeline from "react-native-timeline-flatlist";
 import { dialPhone } from "../utils/dialPhone";
+import ConfirmationModal from "./confirmationModal";
 
 const PahatodCustomerView = ({
   findingRider,
@@ -91,8 +92,27 @@ const PahatodCustomerView = ({
     }
   };
 
+  const [confirmModal, setConfirmModal] = useState(false);
+
   return (
     <>
+      <ConfirmationModal
+        handleConfirm={() => {
+          setFindingRider(false);
+          setPahatodModal(false);
+          setSelectedLocation(null);
+          setSelectedTransaction(null);
+          setSingleData(null);
+          deleteTransaction(singleData);
+          Toast.show({
+            type: "success",
+            text1: "Your ride is cancelled successfully.",
+          });
+        }}
+        open={confirmModal}
+        handleClose={() => setConfirmModal(false)}
+      />
+
       <View
         style={{
           justifyContent: "flex-start",
@@ -612,16 +632,7 @@ const PahatodCustomerView = ({
                     <Button
                       width={150}
                       event={() => {
-                        setFindingRider(false);
-                        setPahatodModal(false);
-                        setSelectedLocation(null);
-                        setSelectedTransaction(null);
-                        setSingleData(null);
-                        deleteTransaction(singleData);
-                        Toast.show({
-                          type: "success",
-                          text1: "Your ride is cancelled successfully.",
-                        });
+                        setConfirmModal(true);
                       }}
                       text="Cancel Ride"
                       bgColor={"#B80B00"}
