@@ -469,6 +469,30 @@ const OrderNotes = ({
                   fontSize: 15,
                 }}
               >
+                Base Fare:
+                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                  {" "}
+                  ₱{baseFare}
+                </Text>
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                }}
+              >
+                Fare per Kilometer
+                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                  {" "}
+                  ₱{deliveryFee - baseFare}
+                </Text>
+              </Text>
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                }}
+              >
                 {singleData?.serviceType == "Padara" ? "Delivery Fee" : "Fare"}
                 <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                   {" "}
