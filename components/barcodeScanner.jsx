@@ -46,7 +46,8 @@ export default function BearScanner({
       const paymentResult = await handleMakePayment(
         data,
         totalPrice,
-        currentUser?.id
+        currentUser?.id,
+        singleData?.serviceType
       );
 
       // Validate if payment succeeded before completing transaction

@@ -1,18 +1,23 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import useCrudWallet from "../hooks/useCrudWallet";
 import { useEffect } from "react";
 import { useSmokeContext } from "../utils/appContext";
+import moment from "moment";
 
 const Wallet = () => {
-  const { data, getWallet } = useCrudWallet();
+  const { data, getWallet, getTransactionHistory, transactionHistory } =
+    useCrudWallet();
 
   const { currentUser } = useSmokeContext();
   useEffect(() => {
     if (currentUser.id) {
       getWallet(currentUser.id);
+      getTransactionHistory(currentUser.id);
     }
   }, []);
+
+  console.log(transactionHistory);
 
   return (
     <View style={{ flex: 1, width: "100%" }}>
@@ -56,52 +61,96 @@ const Wallet = () => {
           </Text>
         </LinearGradient>
       </View>
-      <View style={{ flex: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>
           Transaction History
         </Text>
-        {data?.transaction.length >= 1 && (
+        {transactionHistory.length >= 1 && (
           <>
-            {data?.transaction.map((item) => {
+            {transactionHistory.map((item) => {
+              const date = item.date
+                ? moment(item.date.toDate()).format("LLL")
+                : "...";
               return (
                 <View
+                  key={item.id}
                   style={{
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
                     marginVertical: 10,
                     shadowColor: "#000",
-                    shadowOffset: {
-                      width: 0,
-                      height: 3,
-                    },
+                    shadowOffset: { width: 0, height: 3 },
                     shadowOpacity: 0.27,
                     shadowRadius: 4.65,
-
                     elevation: 6,
-                    backgroundColor: "white",
-                    padding: 10,
+                    backgroundColor:
+                      item.type === "plus" ? "#e8f7e2" : "#fce7e6",
+                    padding: 15,
                     borderRadius: 10,
+                    borderLeftWidth: 5,
+                    borderLeftColor:
+                      item.type === "plus" ? "#4CAF50" : "#F44336",
                   }}
                 >
-                  <View>
-                    <Text style={{ fontSize: 18 }}>Delivery</Text>
-                    <Text>Aug 32, 2023</Text>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    {/* Icon for type */}
+                    <View
+                      style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 15,
+                        backgroundColor:
+                          item.type === "plus" ? "#4CAF50" : "#F44336",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginRight: 10,
+                      }}
+                    >
+                      <Text style={{ color: "white", fontSize: 16 }}>
+                        {item.type === "plus" ? "↑" : "↓"}
+                      </Text>
+                    </View>
+                    {/* Transaction details */}
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 18,
+                          color: "black",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {item.serviceType === "Pahatod"
+                          ? "Transportation"
+                          : "Delivery"}
+                      </Text>
+                      <Text style={{ color: "#666" }}>{date}</Text>
+                    </View>
                   </View>
-                  <Text>+100</Text>
+
+                  {/* Amount with conditional color */}
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "bold",
+                      color: item.type === "plus" ? "#4CAF50" : "#F44336",
+                    }}
+                  >
+                    {item.type === "plus" ? "+" : "-"} ₱{parseInt(item.amount)}
+                  </Text>
                 </View>
               );
             })}
           </>
         )}
-        {data?.transaction.length <= 0 && (
+        {transactionHistory.length <= 0 && (
           <>
             <Text style={{ textAlign: "center", marginTop: 50 }}>
               No Transaction Yet.
             </Text>
           </>
         )}
-      </View>
+      </ScrollView>
     </View>
   );
 };
