@@ -22,7 +22,9 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
 
   const renderMessage = ({ item }) => {
     const ownMessage = item.sender == currentUser.id;
-    const date = moment(item.timestamp.toDate()).format("LLL");
+    const date = item.timestamp
+      ? moment(item.timestamp.toDate()).format("LLL")
+      : "sending...";
 
     return (
       <View
@@ -95,14 +97,17 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
       </View>
 
       {/* Body */}
-      <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id}
-        renderItem={renderMessage}
-        contentContainerStyle={{ padding: 10 }}
-        style={{ flex: 1 }}
-        inverted
-      />
+
+      {messages.length >= 1 && (
+        <FlatList
+          data={messages}
+          keyExtractor={(item) => item.id}
+          renderItem={renderMessage}
+          contentContainerStyle={{ padding: 10 }}
+          style={{ flex: 1 }}
+          inverted
+        />
+      )}
 
       {/* Footer */}
       <KeyboardAvoidingView
