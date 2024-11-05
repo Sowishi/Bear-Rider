@@ -1,7 +1,14 @@
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Button from "./button";
 
-const PickServiceButton = ({ setServiceModal }) => {
+const PickServiceButton = ({
+  setServiceModal,
+  singleData,
+  setSingleData,
+  setSelectedTransaction,
+  setViewTransactionModal,
+  setPahatodModal,
+}) => {
   return (
     <View
       style={{
@@ -16,6 +23,65 @@ const PickServiceButton = ({ setServiceModal }) => {
         borderTopRightRadius: 50,
       }}
     >
+      {singleData && (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            alignItems: "flex-end",
+            width: "100%",
+          }}
+        >
+          {/* <TouchableOpacity
+              onPress={() => {
+                console.log("Fldkfj");
+                setViewTransactionModal(true);
+              }}
+              style={{
+                borderWidth: 2,
+                width: 150,
+                alignItems: "center",
+                justifyContent: "center",
+                paddingVertical: 5,
+                borderRadius: 5,
+                borderColor: "#003082",
+              }}
+            >
+              <Text style={{ borderColor: "#003082" }}>View Transaction</Text>
+            </TouchableOpacity> */}
+          <TouchableOpacity
+            onPress={() => {
+              setSingleData(null);
+              setSelectedTransaction(null);
+            }}
+            style={{
+              borderWidth: 2,
+              width: 60,
+              height: 60,
+              alignItems: "center",
+              justifyContent: "center",
+              paddingVertical: 5,
+              borderRadius: 5,
+              borderColor: "#003082",
+              backgroundColor: "red",
+              borderRadius: 200,
+              position: "absolute",
+              right: 20,
+            }}
+          >
+            <Text
+              style={{
+                borderColor: "#003082",
+                color: "white",
+                textAlign: "center",
+              }}
+            >
+              Close
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       <View
         style={{
           height: 6,

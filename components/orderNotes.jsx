@@ -576,7 +576,11 @@ const OrderNotes = ({
                 isDisable={purchaseCost <= 0 || !proof}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={singleData?.status == "Transit" ? "Update" : "Confirm"}
+                text={
+                  singleData?.status == "Transit"
+                    ? "Update"
+                    : "Confirm / In Transit"
+                }
                 bgColor={"#003082"}
               />
             )}
@@ -615,7 +619,7 @@ const OrderNotes = ({
                 event={handleSubmit}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={"Confirm"}
+                text={"Confirm / In Transit"}
                 bgColor={"#003082"}
               />
             )}

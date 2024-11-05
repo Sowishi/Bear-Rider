@@ -147,7 +147,7 @@ const TransactionCard = ({
                       : handleViewRider(transaction);
                   }}
                   icon="chevron-right"
-                  text="View Transaction"
+                  text="View Transaction  "
                   bgColor={"#B80B00"}
                 />
               )}

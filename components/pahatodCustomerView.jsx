@@ -639,20 +639,16 @@ const PahatodCustomerView = ({
                 text="Close"
                 bgColor={"#00308299"}
               />
-              {singleData && singleData?.status !== "Transit" && (
-                <>
-                  {singleData.status !== "Nearby" && (
-                    <Button
-                      width={150}
-                      event={() => {
-                        setConfirmModal(true);
-                      }}
-                      text="Cancel Ride"
-                      bgColor={"#B80B00"}
-                    />
-                  )}
-                </>
-              )}
+              <Button
+                width={150}
+                event={() => {
+                  setFindingRider(false);
+                  setPahatodModal(false);
+                  setSelectedLocation(null);
+                }}
+                text="Rider State"
+                bgColor={"#B80B00"}
+              />
 
               {/* {singleData?.status == "Accepted" && (
                 <Button

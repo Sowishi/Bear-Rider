@@ -470,7 +470,14 @@ const Home = ({ route, navigation }) => {
 
         {/* Pick a service Button Customer*/}
         {!pahatodModal && !IS_RIDER && (
-          <PickServiceButton setServiceModal={setServiceModal} />
+          <PickServiceButton
+            setPahatodModal={setPahatodModal}
+            singleData={singleData}
+            setSingleData={setSingleData}
+            setServiceModal={setServiceModal}
+            setSelectedTransaction={setSelectedTransaction}
+            setViewTransactionModal={setViewTransactionModal}
+          />
         )}
         {/* Rider Accepeted View */}
 
