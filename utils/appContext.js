@@ -7,7 +7,7 @@ export const MyProvider = ({ children }) => {
   const [mapView, setMapView] = useState("standard");
   const [historyModal, setHistoryModal] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
-
+  const [conversationModal, setConversationModal] = useState(false);
   const [transactionCount, setTransactionCount] = useState(0);
   const [frontLicense, setFrontLicense] = useState();
   const [backLicense, setBackLicense] = useState();
@@ -17,6 +17,10 @@ export const MyProvider = ({ children }) => {
   const [clearance, setClearance] = useState();
   const [proof, setProof] = useState();
   const [viewDirection, setViewDirection] = useState(false);
+  const [messageInfo, setMessageInfo] = useState({
+    receiver: "",
+    sender: "",
+  });
 
   return (
     <MyContext.Provider
@@ -47,6 +51,10 @@ export const MyProvider = ({ children }) => {
         setViewDirection,
         walletModal,
         setWalletModal,
+        conversationModal,
+        setConversationModal,
+        messageInfo,
+        setMessageInfo,
       }}
     >
       {children}

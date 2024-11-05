@@ -13,10 +13,7 @@ import useCrudMessage from "../hooks/useCrudMessage";
 import moment from "moment";
 
 const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
-  const { handleSendMessage, messages } = useCrudMessage(
-    IS_RIDER ? singleData.currentUser.id : singleData.rider.id,
-    currentUser.id
-  );
+  const { handleSendMessage, messages } = useCrudMessage();
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -98,17 +95,14 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
 
       {/* Body */}
 
-      {messages.length >= 1 && (
-        <FlatList
-          data={messages}
-          keyExtractor={(item) => item.id}
-          renderItem={renderMessage}
-          contentContainerStyle={{ padding: 10 }}
-          style={{ flex: 1 }}
-          inverted
-        />
-      )}
-
+      <FlatList
+        data={messages}
+        keyExtractor={(item) => item.id}
+        renderItem={renderMessage}
+        contentContainerStyle={{ padding: 10 }}
+        style={{ flex: 1 }}
+        inverted
+      />
       {/* Footer */}
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}

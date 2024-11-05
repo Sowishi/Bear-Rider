@@ -12,9 +12,16 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { useEffect, useState } from "react";
+import { useSmokeContext } from "../utils/appContext";
 
-const useCrudMessage = (receiver, sender) => {
+const useCrudMessage = () => {
   const [messages, setMessages] = useState([]);
+  const { messageInfo, currentUser } = useSmokeContext();
+
+  console.log(messageInfo, "fdkf");
+
+  const sender = messageInfo.sender;
+  const receiver = messageInfo.receiver;
 
   const handleSendMessage = async (content) => {
     console.log(receiver, sender, content);

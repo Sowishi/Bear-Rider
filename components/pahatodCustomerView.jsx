@@ -45,6 +45,7 @@ const PahatodCustomerView = ({
   setTransactionDetailsModal,
   baseFare,
   setMessageModal,
+  IS_RIDER,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -94,6 +95,8 @@ const PahatodCustomerView = ({
   };
 
   const [confirmModal, setConfirmModal] = useState(false);
+
+  const { setMessageInfo, currentUser } = useSmokeContext();
 
   return (
     <>
@@ -579,7 +582,15 @@ const PahatodCustomerView = ({
                   <Text style={{ borderColor: "#003082" }}>Call</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => setMessageModal(true)}
+                  onPress={() => {
+                    setMessageModal(true);
+                    setMessageInfo({
+                      receiver: IS_RIDER
+                        ? singleData.currentUser.id
+                        : singleData.rider.id,
+                      sender: currentUser.id,
+                    });
+                  }}
                   style={{
                     borderWidth: 2,
                     width: 100,

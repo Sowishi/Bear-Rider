@@ -5,10 +5,16 @@ import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import Button from "../components/button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const User = ({ navigation }) => {
-  const { currentUser, setMapView, setHistoryModal, setWalletModal } =
-    useSmokeContext();
+  const {
+    currentUser,
+    setMapView,
+    setHistoryModal,
+    setWalletModal,
+    setConversationModal,
+  } = useSmokeContext();
 
   return (
     <ScrollView
@@ -172,7 +178,11 @@ const User = ({ navigation }) => {
               <Text style={{ fontSize: 20, marginRight: 10 }}>Wallet</Text>
               <SimpleLineIcons name="wallet" size={21} color="black" />
             </TouchableOpacity>
-            <View
+            <TouchableOpacity
+              onPress={() => {
+                navigation.closeDrawer();
+                setConversationModal(true);
+              }}
               style={{
                 marginVertical: 15,
                 shadowColor: "#000",
@@ -193,9 +203,11 @@ const User = ({ navigation }) => {
                 alignItems: "center",
               }}
             >
-              <Text style={{ fontSize: 20, marginRight: 10 }}>Support</Text>
-              <FontAwesome5 name="headset" size={24} color="black" />
-            </View>
+              <Text style={{ fontSize: 20, marginRight: 10 }}>
+                Conversation
+              </Text>
+              <AntDesign name="message1" size={24} color="black" />
+            </TouchableOpacity>
             <View
               style={{
                 marginVertical: 15,

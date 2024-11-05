@@ -32,6 +32,7 @@ import NotificationContent from "../components/notificationContent";
 import OrderNotes from "../components/orderNotes";
 import Wallet from "./wallet";
 import Message from "../components/message";
+import ConversationList from "../components/conversation";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -74,6 +75,8 @@ const Home = ({ route, navigation }) => {
     setProof,
     walletModal,
     setWalletModal,
+    conversationModal,
+    setConversationModal,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -419,6 +422,14 @@ const Home = ({ route, navigation }) => {
         />
       </ScreenModal>
 
+      {/* Conversation Modal */}
+      <ScreenModal
+        modalVisible={conversationModal}
+        closeModal={() => setConversationModal(false)}
+      >
+        <ConversationList currentUser={currentUser} />
+      </ScreenModal>
+
       <View style={{ flex: 1, position: "relative" }}>
         {/* Maps View */}
         {location && (
@@ -514,6 +525,7 @@ const Home = ({ route, navigation }) => {
             setTransactionDetailsModal={setTransactionDetailsModal}
             setMessageModal={setMessageModal}
             baseFare={baseFare}
+            IS_RIDER={IS_RIDER}
           />
         )}
       </View>
