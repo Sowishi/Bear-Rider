@@ -169,7 +169,7 @@ const Home = ({ route, navigation }) => {
             // if (IS_RIDER && isOnline) {
             //   addOnlineUser({ longitude, latitude, currentUser });
             // }
-            addOnlineUser({ longitude, latitude, currentUser });
+            // addOnlineUser({ longitude, latitude, currentUser });
           }
         );
         setWatchInstance(subscription);

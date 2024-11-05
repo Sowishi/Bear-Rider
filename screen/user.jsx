@@ -208,7 +208,7 @@ const User = ({ navigation }) => {
               </Text>
               <AntDesign name="message1" size={24} color="black" />
             </TouchableOpacity>
-            <View
+            {/* <View
               style={{
                 marginVertical: 15,
                 shadowColor: "#000",
@@ -231,7 +231,7 @@ const User = ({ navigation }) => {
             >
               <Text style={{ fontSize: 20, marginRight: 10 }}>Feedback</Text>
               <MaterialIcons name="feedback" size={24} color="black" />
-            </View>
+            </View> */}
             <View
               style={{
                 marginVertical: 15,

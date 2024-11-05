@@ -22,9 +22,10 @@ export default function BearScanner({
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const { handleMakePayment, setSingleData } = useCrudWallet();
+  const { handleMakePayment } = useCrudWallet();
   const { currentUser } = useSmokeContext();
   const { completeTransaction } = useCrudTransaction();
+
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -36,19 +37,52 @@ export default function BearScanner({
 
   const handleBarCodeScanned = async ({ type, data }) => {
     setLoading(true);
-    await handleMakePayment(data, totalPrice, currentUser?.id);
-    completeTransaction(singleData);
-    setScan(false);
-    setTransactionRemarksModal(false);
-    setPahatodModal(false);
-    setTransactionDetailsModal(false);
-    setSelectedTransaction(null);
-    Toast.show({
-      type: "success",
-      text1: "Payment Processed Successfully!",
-      text2: "Thank you for choosing, Bear Rider Express! 😊",
-    });
-    setLoading(false);
+    try {
+      // Attempt to make payment
+      const paymentResult = await handleMakePayment(
+        data,
+        totalPrice,
+        currentUser?.id
+      );
+
+      // Validate if payment succeeded before completing transaction
+      if (!paymentResult?.success) {
+        throw new Error(
+          paymentResult?.message || "Payment could not be completed."
+        );
+      }
+
+      // Proceed with completing the transaction if payment is successful
+      await completeTransaction(singleData);
+
+      // Close the modals and reset state
+      setScan(false);
+      setTransactionRemarksModal(false);
+      setPahatodModal(false);
+      setTransactionDetailsModal(false);
+      setSelectedTransaction(null);
+
+      Toast.show({
+        type: "success",
+        text1: "Payment Processed Successfully!",
+        text2: "Thank you for choosing Bear Rider Express! 😊",
+      });
+    } catch (error) {
+      // Handle errors such as insufficient balance
+      setScan(false);
+      setTransactionRemarksModal(false);
+      setPahatodModal(false);
+      setTransactionDetailsModal(false);
+      setSelectedTransaction(null);
+      Toast.show({
+        type: "error",
+        text1: "Payment Failed",
+        text2:
+          error.message || "An error occurred while processing your payment.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (hasPermission === null) {
@@ -91,7 +125,7 @@ export default function BearScanner({
           autoPlay
           style={{ width: 300, height: 300 }}
           source={Scanner}
-        ></LottieView>
+        />
       </View>
       {scanned && (
         <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />

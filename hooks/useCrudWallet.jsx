@@ -25,6 +25,11 @@ const useCrudWallet = () => {
       const senderDoc = await getDoc(senderRef);
       const senderBalance = senderDoc.data().balance;
 
+      // Check if the sender has enough balance
+      if (senderBalance < price) {
+        throw new Error("Insufficient balance to complete the payment.");
+      }
+
       // Subtract the price from the sender's balance
       const newSenderBalance = senderBalance - price;
 
@@ -37,10 +42,14 @@ const useCrudWallet = () => {
 
       const newReceiverBalance = receiverBalance + price;
       await updateDoc(receiverRef, { balance: newReceiverBalance });
+
+      console.log("Payment processed successfully.");
     } catch (error) {
-      console.error("Error processing payment: ", error);
+      console.error("Error processing payment: ", error.message);
+      // Handle the error appropriately (e.g., show a notification)
     }
   };
+
   return { getWallet, data, handleMakePayment };
 };
 
