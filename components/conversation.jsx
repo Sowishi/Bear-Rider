@@ -12,6 +12,7 @@ import { AntDesign } from "@expo/vector-icons";
 import useCrudConversation from "../hooks/useCrudConversation";
 import useGetUsers from "../hooks/useGetUsers";
 import { useSmokeContext } from "../utils/appContext";
+import EmptyList from "./emptyList";
 
 const conversationsData = [
   {
@@ -109,11 +110,17 @@ const ConversationList = ({ currentUser, setMessageModal, IS_RIDER }) => {
         <AntDesign name="message1" size={24} color="black" />
         <Text style={styles.headerTitle}>Conversations</Text>
       </View>
-      <FlatList
-        data={conversationsData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      {conversationsData.length >= 1 ? (
+        <FlatList
+          data={conversationsData}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      ) : (
+        <>
+          <EmptyList title={"There's no conversation yet"} />
+        </>
+      )}
     </View>
   );
 };

@@ -4,6 +4,7 @@ import { AntDesign, FontAwesome } from "@expo/vector-icons";
 import { useSmokeContext } from "../utils/appContext";
 import Toast from "react-native-toast-message";
 import useCrudNotification from "../hooks/useCrudNotification";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
 
 const RiderBottomNavigation = ({
   isOnline,
@@ -16,7 +17,12 @@ const RiderBottomNavigation = ({
   setViewTransactionModal,
   location,
 }) => {
-  const { currentUser, transactionCount } = useSmokeContext();
+  const {
+    currentUser,
+    transactionCount,
+    setConversationModal,
+    setWalletModal,
+  } = useSmokeContext();
   const { addNotification } = useCrudNotification();
 
   const handleAcceptTransaction = () => {
@@ -104,16 +110,17 @@ const RiderBottomNavigation = ({
               </View>
             </View>
           )}
-          <View
+          <TouchableOpacity
+            onPress={() => setWalletModal(true)}
             style={{
               justifyContent: "center",
               alignItems: "center",
               width: "33%",
             }}
           >
-            <FontAwesome name="bolt" size={30} color="#003082" />
-            <Text style={{ fontSize: 10 }}>Auto Accept</Text>
-          </View>
+            <SimpleLineIcons name="wallet" size={21} color="black" />
+            <Text style={{ fontSize: 10 }}>Wallet</Text>
+          </TouchableOpacity>
           <View
             style={{
               width: "33%",
@@ -155,16 +162,17 @@ const RiderBottomNavigation = ({
               <Text style={{ fontSize: 10 }}>Transactions</Text>
             </TouchableOpacity>
           </View>
-          <View
+          <TouchableOpacity
+            onPress={() => setConversationModal(true)}
             style={{
               justifyContent: "center",
               alignItems: "center",
               width: "33%",
             }}
           >
-            <FontAwesome name="user" size={30} color="#003082" />
-            <Text style={{ fontSize: 10 }}>My Account</Text>
-          </View>
+            <AntDesign name="message1" size={24} color="#003082" />
+            <Text style={{ fontSize: 10 }}>Messages</Text>
+          </TouchableOpacity>
         </>
       ) : (
         <>

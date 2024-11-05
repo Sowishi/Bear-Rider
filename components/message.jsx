@@ -70,7 +70,7 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
         <View
           style={{
             padding: 10,
-            backgroundColor: ownMessage ? "#DCF8C6" : "#EAEAEA",
+            backgroundColor: ownMessage ? "#FFB8B899" : "#EAEAEA",
             borderRadius: 10,
             maxWidth: "70%",
             position: "relative",
@@ -100,16 +100,18 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
           backgroundColor: "#003082",
           padding: 15,
           alignItems: "center",
+          marginBottom: 10,
+          borderRadius: 5,
         }}
       >
         {messageUserInfo ? (
           <>
-            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
               {messageUserInfo.firstName + " " + messageUserInfo.lastName}
             </Text>
           </>
         ) : (
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+          <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
             {IS_RIDER
               ? singleData?.currentUser.firstName +
                 " " +
