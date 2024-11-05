@@ -10,6 +10,7 @@ import {
   Platform,
 } from "react-native";
 import useCrudMessage from "../hooks/useCrudMessage";
+import moment from "moment";
 
 const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
   const { handleSendMessage, messages } = useCrudMessage(
@@ -21,6 +22,7 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
 
   const renderMessage = ({ item }) => {
     const ownMessage = item.sender == currentUser.id;
+    const date = moment(item.timestamp.toDate()).format("LLL");
 
     return (
       <View
@@ -31,15 +33,21 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
         }}
       >
         {/* Avatar */}
-        <Image
-          source={{ uri: singleData.rider.selfieUrl }}
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 20,
-            marginHorizontal: 5,
-          }}
-        />
+        {!ownMessage && (
+          <Image
+            source={{
+              uri: !IS_RIDER
+                ? singleData.rider.selfieUrl
+                : singleData.currentUser.profilePic,
+            }}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              marginHorizontal: 5,
+            }}
+          />
+        )}
 
         {/* Message Bubble */}
         <View
@@ -59,7 +67,9 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
               textAlign: "right",
               marginTop: 5,
             }}
-          ></Text>
+          >
+            {date}
+          </Text>
         </View>
       </View>
     );
