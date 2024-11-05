@@ -33,6 +33,7 @@ import OrderNotes from "../components/orderNotes";
 import Wallet from "./wallet";
 import Message from "../components/message";
 import ConversationList from "../components/conversation";
+import PopupModal from "../components/popupModal";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -169,7 +170,7 @@ const Home = ({ route, navigation }) => {
             // if (IS_RIDER && isOnline) {
             //   addOnlineUser({ longitude, latitude, currentUser });
             // }
-            // addOnlineUser({ longitude, latitude, currentUser });
+            addOnlineUser({ longitude, latitude, currentUser });
           }
         );
         setWatchInstance(subscription);
@@ -202,6 +203,8 @@ const Home = ({ route, navigation }) => {
         return transactions;
       }
     });
+
+    console.log(transactions);
     setTransactionCount(filter.length);
   }, [transactions]);
 
@@ -437,6 +440,8 @@ const Home = ({ route, navigation }) => {
           currentUser={currentUser}
         />
       </ScreenModal>
+
+      {/* {IS_RIDER && <PopupModal visible={false} />} */}
 
       <View style={{ flex: 1, position: "relative" }}>
         {/* Maps View */}

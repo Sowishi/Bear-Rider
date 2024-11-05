@@ -4,6 +4,7 @@ import blueMarker from "../assets/blue-marker.png";
 import Button from "./button";
 import EmptyList from "./emptyList";
 import TransactionCard from "./transactionCard";
+import PopupModal from "./popupModal";
 
 const TransactionContent = ({
   transactions,
