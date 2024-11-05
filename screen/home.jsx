@@ -427,7 +427,11 @@ const Home = ({ route, navigation }) => {
         modalVisible={conversationModal}
         closeModal={() => setConversationModal(false)}
       >
-        <ConversationList currentUser={currentUser} />
+        <ConversationList
+          IS_RIDER={IS_RIDER}
+          setMessageModal={setMessageModal}
+          currentUser={currentUser}
+        />
       </ScreenModal>
 
       <View style={{ flex: 1, position: "relative" }}>

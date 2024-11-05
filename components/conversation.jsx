@@ -6,9 +6,12 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import useCrudConversation from "../hooks/useCrudConversation";
+import useGetUsers from "../hooks/useGetUsers";
+import { useSmokeContext } from "../utils/appContext";
 
 const conversationsData = [
   {
@@ -31,20 +34,72 @@ const conversationsData = [
   },
 ];
 
-const ConversationList = ({ currentUser }) => {
+const ConversationList = ({ currentUser, setMessageModal, IS_RIDER }) => {
   const { conversations: conversationsData } = useCrudConversation(currentUser);
+  const { data: users } = useGetUsers();
+  const { setMessageInfo } = useSmokeContext();
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.conversationContainer}>
-      <View style={styles.textContainer}>
-        <Text style={styles.participantsText}>
-          {item.participants.join(" & ")}
-        </Text>
-        <Text style={styles.lastMessageText}>{item.lastMessage}</Text>
-      </View>
-      <Text style={styles.timestampText}>{item.timestamp}</Text>
-    </TouchableOpacity>
-  );
+  const handleGetUser = (id) => {
+    const output = users.filter((user) => {
+      if (user.id == id) {
+        return user;
+      }
+    });
+    return output[0];
+  };
+
+  const renderItem = ({ item }) => {
+    let userID = null;
+    let senderNumber = null;
+    if (item.participants[0] == currentUser.id) {
+      userID = item.participants[1];
+      senderNumber = 0;
+    } else {
+      userID = item.participants[0];
+      senderNumber = 1;
+    }
+
+    let sender = item.participants[senderNumber];
+    let receiver = item.participants[senderNumber == 0 ? 1 : 0];
+
+    const user = handleGetUser(userID);
+
+    return (
+      <TouchableOpacity
+        style={styles.conversationContainer}
+        onPress={() => {
+          setMessageModal(true);
+          setMessageInfo({
+            receiver,
+            sender,
+          });
+        }}
+      >
+        {user && (
+          <>
+            <Image
+              style={{
+                width: 40, // Set width
+                height: 40, // Set height
+                borderRadius: 20, // Make it circular
+                marginRight: 10, // Space between image and text
+              }}
+              source={{
+                uri: user.selfieUrl ? user.selfieUrl : user.profilePic,
+              }} // Adjust this to your image source
+            />
+            <View style={styles.textContainer}>
+              <Text style={styles.participantsText}>
+                {user.firstName + " " + user.lastName}
+              </Text>
+              <Text style={styles.lastMessageText}>{item.lastMessage}</Text>
+            </View>
+            <Text style={styles.timestampText}>{item.timestamp}</Text>
+          </>
+        )}
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>

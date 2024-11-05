@@ -11,9 +11,11 @@ import {
 } from "react-native";
 import useCrudMessage from "../hooks/useCrudMessage";
 import moment from "moment";
+import { useSmokeContext } from "../utils/appContext";
 
-const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
+const Message = ({ recipientName, singleData, IS_RIDER }) => {
   const { handleSendMessage, messages } = useCrudMessage();
+  const { currentUser } = useSmokeContext();
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -36,8 +38,8 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
           <Image
             source={{
               uri: !IS_RIDER
-                ? singleData.rider.selfieUrl
-                : singleData.currentUser.profilePic,
+                ? singleData?.rider.selfieUrl
+                : singleData?.currentUser.profilePic,
             }}
             style={{
               width: 40,
@@ -86,10 +88,10 @@ const Message = ({ recipientName, singleData, currentUser, IS_RIDER }) => {
       >
         <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
           {IS_RIDER
-            ? singleData.currentUser.firstName +
+            ? singleData?.currentUser.firstName +
               " " +
-              singleData.currentUser.lastName
-            : singleData.rider.firstName + " " + singleData.rider.lastName}
+              singleData?.currentUser.lastName
+            : singleData?.rider.firstName + " " + singleData?.rider.lastName}
         </Text>
       </View>
 
