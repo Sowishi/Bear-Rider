@@ -36,7 +36,11 @@ export default function BearScanner({
   }, []);
 
   const handleBarCodeScanned = async ({ type, data }) => {
+    if (scanned) return; // Prevent multiple scans
+
+    setScanned(true);
     setLoading(true);
+
     try {
       // Attempt to make payment
       const paymentResult = await handleMakePayment(
@@ -68,18 +72,19 @@ export default function BearScanner({
         text2: "Thank you for choosing Bear Rider Express! 😊",
       });
     } catch (error) {
-      // Handle errors such as insufficient balance
       setScan(false);
       setTransactionRemarksModal(false);
       setPahatodModal(false);
       setTransactionDetailsModal(false);
       setSelectedTransaction(null);
+      // Handle errors such as insufficient balance
       Toast.show({
         type: "error",
         text1: "Payment Failed",
         text2:
           error.message || "An error occurred while processing your payment.",
       });
+      setScanned(false); // Allow rescan if there was an error
     } finally {
       setLoading(false);
     }

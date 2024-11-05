@@ -4,6 +4,7 @@ import { db } from "../firebase";
 
 const useCrudWallet = () => {
   const [data, setData] = useState();
+
   const getWallet = (id) => {
     const docRef = doc(db, "wallet", id);
     onSnapshot(docRef, (doc) => {
@@ -16,37 +17,34 @@ const useCrudWallet = () => {
   };
 
   const handleMakePayment = async (receiver, price, sender) => {
-    console.log(receiver, price, sender);
     const senderRef = doc(db, "wallet", sender);
     const receiverRef = doc(db, "wallet", receiver);
 
     try {
       // Get the sender's current balance
       const senderDoc = await getDoc(senderRef);
-      const senderBalance = senderDoc.data().balance;
+      const senderBalance = senderDoc.data()?.balance;
 
-      // Check if the sender has enough balance
+      // Check if sender has enough balance
       if (senderBalance < price) {
-        throw new Error("Insufficient balance to complete the payment.");
+        console.error("Insufficient balance");
+        return { success: false, message: "Insufficient balance" };
       }
 
-      // Subtract the price from the sender's balance
+      // Calculate new balances
       const newSenderBalance = senderBalance - price;
-
-      // Update the sender's balance
-      await updateDoc(senderRef, { balance: newSenderBalance });
-
-      // (Optional) You can also update the receiver's balance
       const receiverDoc = await getDoc(receiverRef);
-      const receiverBalance = receiverDoc.data().balance;
-
+      const receiverBalance = receiverDoc.data()?.balance;
       const newReceiverBalance = receiverBalance + price;
+
+      // Update the sender's and receiver's balances
+      await updateDoc(senderRef, { balance: newSenderBalance });
       await updateDoc(receiverRef, { balance: newReceiverBalance });
 
-      console.log("Payment processed successfully.");
+      return { success: true };
     } catch (error) {
-      console.error("Error processing payment: ", error.message);
-      // Handle the error appropriately (e.g., show a notification)
+      console.error("Error processing payment:", error);
+      return { success: false, message: error.message };
     }
   };
 
