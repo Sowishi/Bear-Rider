@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Text,
   TextInput,
@@ -12,10 +12,12 @@ import {
 import useCrudMessage from "../hooks/useCrudMessage";
 import moment from "moment";
 import { useSmokeContext } from "../utils/appContext";
+import useGetUsers from "../hooks/useGetUsers";
 
 const Message = ({ recipientName, singleData, IS_RIDER }) => {
   const { handleSendMessage, messages } = useCrudMessage();
   const { currentUser } = useSmokeContext();
+  const { messageUserInfo } = useSmokeContext();
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -34,12 +36,26 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
         }}
       >
         {/* Avatar */}
-        {!ownMessage && (
+        {!ownMessage && !messageUserInfo && (
           <Image
             source={{
               uri: !IS_RIDER
                 ? singleData?.rider.selfieUrl
                 : singleData?.currentUser.profilePic,
+            }}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              marginHorizontal: 5,
+            }}
+          />
+        )}
+
+        {messageUserInfo && !ownMessage && (
+          <Image
+            source={{
+              uri: messageUserInfo.profilePic,
             }}
             style={{
               width: 40,
@@ -86,13 +102,21 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
           alignItems: "center",
         }}
       >
-        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-          {IS_RIDER
-            ? singleData?.currentUser.firstName +
-              " " +
-              singleData?.currentUser.lastName
-            : singleData?.rider.firstName + " " + singleData?.rider.lastName}
-        </Text>
+        {messageUserInfo ? (
+          <>
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+              {messageUserInfo.firstName + " " + messageUserInfo.lastName}
+            </Text>
+          </>
+        ) : (
+          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+            {IS_RIDER
+              ? singleData?.currentUser.firstName +
+                " " +
+                singleData?.currentUser.lastName
+              : singleData?.rider.firstName + " " + singleData?.rider.lastName}
+          </Text>
+        )}
       </View>
 
       {/* Body */}

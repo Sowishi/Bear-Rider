@@ -13,7 +13,6 @@ const ConfirmationModal = ({ open, handleClose, handleConfirm }) => {
 
   const handleCancel = () => {
     // Optionally log or handle the cancellation reason here
-    console.log("Cancellation Reason:", cancellationReason);
     setCancellationReason(""); // Clear the input field
     handleClose(); // Close the modal
   };

@@ -37,7 +37,7 @@ const conversationsData = [
 const ConversationList = ({ currentUser, setMessageModal, IS_RIDER }) => {
   const { conversations: conversationsData } = useCrudConversation(currentUser);
   const { data: users } = useGetUsers();
-  const { setMessageInfo } = useSmokeContext();
+  const { setMessageInfo, setMessageUserInfo } = useSmokeContext();
 
   const handleGetUser = (id) => {
     const output = users.filter((user) => {
@@ -73,6 +73,8 @@ const ConversationList = ({ currentUser, setMessageModal, IS_RIDER }) => {
             receiver,
             sender,
           });
+
+          setMessageUserInfo(user);
         }}
       >
         {user && (

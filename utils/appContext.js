@@ -22,6 +22,8 @@ export const MyProvider = ({ children }) => {
     sender: "",
   });
 
+  const [messageUserInfo, setMessageUserInfo] = useState();
+
   return (
     <MyContext.Provider
       value={{
@@ -55,6 +57,8 @@ export const MyProvider = ({ children }) => {
         setConversationModal,
         messageInfo,
         setMessageInfo,
+        messageUserInfo,
+        setMessageUserInfo,
       }}
     >
       {children}

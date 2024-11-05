@@ -40,7 +40,6 @@ const useCrudTransaction = () => {
   };
   const deleteTransaction = async (transaction) => {
     const docRef = doc(db, "transaction", transaction.id);
-    console.log(transaction, "delete");
     deleteDoc(docRef);
     // const colRef = collection(db, "transaction");
     // const transactions = await getDocs(colRef);

@@ -18,14 +18,10 @@ const useCrudMessage = () => {
   const [messages, setMessages] = useState([]);
   const { messageInfo, currentUser } = useSmokeContext();
 
-  console.log(messageInfo, "fdkf");
-
   const sender = messageInfo.sender;
   const receiver = messageInfo.receiver;
 
   const handleSendMessage = async (content) => {
-    console.log(receiver, sender, content);
-
     // Step 1: Check if a conversation exists between these two users
     const conversationsRef = collection(db, "conversations");
     const participants = [sender, receiver].sort(); // Sort to maintain consistent order
