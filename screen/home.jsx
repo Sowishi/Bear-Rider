@@ -77,6 +77,7 @@ const Home = ({ route, navigation }) => {
     setWalletModal,
     conversationModal,
     setConversationModal,
+    setMessageUserInfo,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -413,7 +414,10 @@ const Home = ({ route, navigation }) => {
       {/* Message Modal */}
       <ScreenModal
         modalVisible={messageModal}
-        closeModal={() => setMessageModal(false)}
+        closeModal={() => {
+          setMessageModal(false);
+          setMessageUserInfo(null);
+        }}
       >
         <Message
           IS_RIDER={IS_RIDER}
