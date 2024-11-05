@@ -31,6 +31,7 @@ import PahatodCustomerView from "../components/pahatodCustomerView";
 import NotificationContent from "../components/notificationContent";
 import OrderNotes from "../components/orderNotes";
 import Wallet from "./wallet";
+import Message from "../components/message";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -52,6 +53,8 @@ const Home = ({ route, navigation }) => {
   const [transactionRemarksModal, setTransactionRemarksModal] = useState(false);
   const [transactionDetailsModal, setTransactionDetailsModal] = useState(false);
   const [viewTransactionModal, setViewTransactionModal] = useState(false);
+  const [messageModal, setMessageModal] = useState(false);
+
   //Location State
   const [location, setLocation] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -404,6 +407,18 @@ const Home = ({ route, navigation }) => {
         <Wallet />
       </ScreenModal>
 
+      {/* Message Modal */}
+      <ScreenModal
+        modalVisible={messageModal}
+        closeModal={() => setMessageModal(false)}
+      >
+        <Message
+          IS_RIDER={IS_RIDER}
+          singleData={singleData}
+          currentUser={currentUser}
+        />
+      </ScreenModal>
+
       <View style={{ flex: 1, position: "relative" }}>
         {/* Maps View */}
         {location && (
@@ -447,6 +462,7 @@ const Home = ({ route, navigation }) => {
             closeModal={() => setViewTransactionModal(false)}
           >
             <RiderAcceptedView
+              setMessageModal={setMessageModal}
               location={location}
               setTransactionDetailsModal={setTransactionDetailsModal}
               setViewTransactionModal={setViewTransactionModal}
@@ -496,6 +512,7 @@ const Home = ({ route, navigation }) => {
             currentUser={currentUser}
             setTransactionRemarksModal={setTransactionRemarksModal}
             setTransactionDetailsModal={setTransactionDetailsModal}
+            setMessageModal={setMessageModal}
             baseFare={baseFare}
           />
         )}

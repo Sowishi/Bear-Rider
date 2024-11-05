@@ -44,6 +44,7 @@ const PahatodCustomerView = ({
   setTransactionRemarksModal,
   setTransactionDetailsModal,
   baseFare,
+  setMessageModal,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -275,7 +276,7 @@ const PahatodCustomerView = ({
                 }}
                 width={selectedLocation ? 150 : 250}
                 style={{ marginTop: 20 }}
-                text="Cancel"
+                text="Close"
                 bgColor={"#00308299"}
               />
               {selectedLocation && (
@@ -578,6 +579,7 @@ const PahatodCustomerView = ({
                   <Text style={{ borderColor: "#003082" }}>Call</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  onPress={() => setMessageModal(true)}
                   style={{
                     borderWidth: 2,
                     width: 100,

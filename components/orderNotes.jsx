@@ -22,6 +22,7 @@ import { handleUploadImage } from "../utils/handleUploadImage";
 import QRCode from "react-native-qrcode-svg";
 import logo from "../assets/bear.png";
 import BearScanner from "./barcodeScanner";
+import EmptyList from "./emptyList";
 const OrderNotes = ({
   serviceType,
   setDeliveryNotes,
@@ -188,6 +189,7 @@ const OrderNotes = ({
       </BottomModal>
 
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingBottom: 20 }}
         style={{
           width: "100%",
@@ -254,17 +256,18 @@ const OrderNotes = ({
                 }}
               />
             </View>
+
             <TouchableOpacity
               onPress={handleAddNotes}
               style={{
                 marginLeft: 10,
                 backgroundColor: "#003082",
                 paddingHorizontal: 10,
-                paddingVertical: 5,
+                paddingVertical: 8,
                 borderRadius: 5,
               }}
             >
-              <Text style={{ color: "white" }}>Add</Text>
+              <Text style={{ color: "white" }}>Add Order</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -351,35 +354,55 @@ const OrderNotes = ({
         {singleData == undefined && (
           <>
             <Text style={{ fontSize: 15 }}>Order/s</Text>
-            <View
-              style={{
-                padding: 10,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-                backgroundColor: "white",
-                margin: 10,
-                borderRadius: 10,
-              }}
-            >
-              {deliveryNotes.map((item) => {
-                return (
-                  <OrderNotesCard
-                    viewOnly={viewOnly}
-                    key={item.id}
-                    item={item}
-                    handleQuantityChange={handleQuantityChange}
-                    handleDelete={handleDelete}
-                  />
-                );
-              })}
-            </View>
+            {deliveryNotes.length >= 1 ? (
+              <View
+                style={{
+                  padding: 10,
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                  backgroundColor: "white",
+                  margin: 10,
+                  borderRadius: 10,
+                }}
+              >
+                {deliveryNotes.map((item) => {
+                  return (
+                    <OrderNotesCard
+                      viewOnly={viewOnly}
+                      key={item.id}
+                      item={item}
+                      handleQuantityChange={handleQuantityChange}
+                      handleDelete={handleDelete}
+                    />
+                  );
+                })}
+              </View>
+            ) : (
+              <View
+                style={{
+                  padding: 20,
+                  margin: 10,
+                  backgroundColor: "#f9f9f9",
+                  borderRadius: 10,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 2,
+                  elevation: 3,
+                }}
+              >
+                <Text
+                  style={{ fontSize: 16, color: "#555", textAlign: "center" }}
+                >
+                  Please enter some orders to display here.
+                </Text>
+              </View>
+            )}
           </>
         )}
 

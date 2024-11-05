@@ -22,6 +22,7 @@ const RiderAcceptedView = ({
   setTransactionDetailsModal,
   location,
   setViewTransactionModal,
+  setMessageModal,
 }) => {
   const { currentUser, setViewDirection } = useSmokeContext();
   const { acceptTransaction } = useCrudTransaction();
@@ -162,6 +163,9 @@ const RiderAcceptedView = ({
             <Text style={{ borderColor: "#003082" }}>Call</Text>
           </TouchableOpacity>
           <TouchableOpacity
+            onPress={() => {
+              setMessageModal(true);
+            }}
             style={{
               borderWidth: 2,
               width: 100,
