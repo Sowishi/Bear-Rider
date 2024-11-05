@@ -24,7 +24,7 @@ const RiderAcceptedView = ({
   setViewTransactionModal,
   setMessageModal,
 }) => {
-  const { currentUser, setViewDirection } = useSmokeContext();
+  const { currentUser, setViewDirection, setMessageInfo } = useSmokeContext();
   const { acceptTransaction } = useCrudTransaction();
   const { addNotification } = useCrudNotification();
 
@@ -165,6 +165,10 @@ const RiderAcceptedView = ({
           <TouchableOpacity
             onPress={() => {
               setMessageModal(true);
+              setMessageInfo({
+                receiver: singleData.currentUser.id,
+                sender: currentUser.id,
+              });
             }}
             style={{
               borderWidth: 2,
