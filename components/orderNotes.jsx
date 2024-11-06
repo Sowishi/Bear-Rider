@@ -23,6 +23,7 @@ import QRCode from "react-native-qrcode-svg";
 import logo from "../assets/bear.png";
 import BearScanner from "./barcodeScanner";
 import EmptyList from "./emptyList";
+import ConfirmPayModal from "./confirmPayModal";
 const OrderNotes = ({
   serviceType,
   setDeliveryNotes,
@@ -46,6 +47,8 @@ const OrderNotes = ({
   const [purchaseCost, setPurchaseCost] = useState(0);
   const [openCamera, setOpenCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
+  const [showModal, setShowModal] = useState(false); // State to handle modal visibility
+
   const {
     proof,
     setProof,
@@ -218,6 +221,15 @@ const OrderNotes = ({
           <Text style={{ color: "white", fontSize: 18 }}>Payment Done</Text>
         </TouchableOpacity>
       </BottomModal>
+
+      <ConfirmPayModal
+        handleConfirm={() => {
+          setScan(true);
+          setShowModal(false);
+        }}
+        open={showModal}
+        handleClose={() => setShowModal(false)}
+      />
 
       <ScrollView
         keyboardShouldPersistTaps="handled"
@@ -776,7 +788,7 @@ const OrderNotes = ({
 
         {singleData?.status == "Nearby" && !IS_RIDER && (
           <Button
-            event={() => setScan(true)}
+            event={() => setShowModal(true)}
             style={{ marginTop: 10 }}
             width={singleData?.status == "Transit" ? 130 : "90%"}
             text={"Pay"}

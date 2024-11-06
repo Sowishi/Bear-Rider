@@ -144,7 +144,7 @@ const RiderAcceptedView = ({
             event={() => setTransactionDetailsModal(true)}
             style={{ marginTop: 10 }}
             width={150}
-            text="Detaissls"
+            text="Details"
             bgColor={"#003082"}
           />
         </View>
