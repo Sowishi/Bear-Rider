@@ -85,6 +85,7 @@ const Home = ({ route, navigation }) => {
     viewRiderState,
     setViewRiderState,
     setShowBook,
+    storeName,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -264,6 +265,7 @@ const Home = ({ route, navigation }) => {
         serviceType: serviceType,
         totalPrice: distance * chargePerKilometer + baseFare,
         deliveryNotes,
+        storeName,
       };
       setFindingRider(true);
       const output = await addTransaction(transaction);

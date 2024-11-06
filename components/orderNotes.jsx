@@ -53,6 +53,8 @@ const OrderNotes = ({
     setBookLocation,
     setViewRiderState,
     setShowRiderBubble,
+    storeName,
+    setStoreName,
   } = useSmokeContext();
   const textInputRef = useRef();
 
@@ -308,6 +310,16 @@ const OrderNotes = ({
                 ? "Store to Shop"
                 : "Drop off Locataion"}
             </Text>
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 20,
+                marginVertical: 10,
+                fontWeight: "bold",
+              }}
+            >
+              {singleData.storeName}
+            </Text>
             <View
               style={{
                 padding: 10,
@@ -382,6 +394,36 @@ const OrderNotes = ({
 
         {singleData == undefined && (
           <>
+            <View style={{ width: "100%", marginTop: 10 }}>
+              <Text style={{ marginBottom: 5 }}>Store Name</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 1 },
+                  shadowOpacity: 0.8,
+                  shadowRadius: 2,
+                  elevation: 3,
+                  paddingHorizontal: 10,
+                  backgroundColor: "white",
+                  borderRadius: 10,
+                  marginBottom: 10,
+                }}
+              >
+                {/* TextInput Field */}
+                <TextInput
+                  onChangeText={(text) => setStoreName(text)}
+                  style={{
+                    flex: 1,
+                    height: 40,
+                    paddingVertical: 3,
+                    paddingHorizontal: 10,
+                    fontSize: 16,
+                  }}
+                />
+              </View>
+            </View>
             <Text style={{ fontSize: 15 }}>Order/s</Text>
             {deliveryNotes.length >= 1 ? (
               <View
@@ -755,7 +797,7 @@ const OrderNotes = ({
             bgColor={"#003082"}
           />
           <Button
-            isDisable={deliveryNotes.length <= 0}
+            isDisable={deliveryNotes.length <= 0 || storeName.length <= 0}
             event={handleAddTransaction}
             width={150}
             style={{ marginTop: 20 }}

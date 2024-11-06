@@ -28,6 +28,7 @@ export const MyProvider = ({ children }) => {
   const [showSelectedLocation, setShowSelectedLocation] = useState(false);
   const bookLocationRef = useRef();
   const [showBook, setShowBook] = useState(true);
+  const [storeName, setStoreName] = useState("");
 
   return (
     <MyContext.Provider
@@ -75,6 +76,8 @@ export const MyProvider = ({ children }) => {
         setShowSelectedLocation,
         showBook,
         setShowBook,
+        storeName,
+        setStoreName,
       }}
     >
       {children}
