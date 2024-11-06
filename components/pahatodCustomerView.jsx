@@ -702,6 +702,8 @@ const PahatodCustomerView = ({
                   setSelectedTransaction(null);
                   setSingleData(null);
                   setBookLocation(null);
+                  setViewRiderState(false);
+                  setShowBook(true);
                   // deleteTransaction(currentUser);
                 }}
                 text="Close"

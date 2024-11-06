@@ -32,6 +32,7 @@ const HistoryContent = ({
     setSelectedLocation(transaction.destination);
     setTransactionModal(false);
     setHistoryModal(false);
+    console.log("pota");
   };
 
   const riderData = transactions.filter((transaction) => {

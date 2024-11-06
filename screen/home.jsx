@@ -521,28 +521,48 @@ const Home = ({ route, navigation }) => {
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
+              justifyContent: "center",
+              alignItems: "center",
               width: "100%",
+              position: "absolute",
+              bottom: 40,
             }}
           >
-            {/* <TouchableOpacity
+            {/* View Transaction Button */}
+            <TouchableOpacity
               onPress={() => {
-                console.log("Fldkfj");
-                setViewTransactionModal(true);
+                setPahatodModal(true);
+                setFindingRider(true);
               }}
               style={{
-                borderWidth: 2,
                 width: 150,
+                height: 50,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingVertical: 5,
-                borderRadius: 5,
+                borderRadius: 8, // Rounded corners, not circular
                 borderColor: "#003082",
+                borderWidth: 2,
+                backgroundColor: "#B80B00",
+                marginHorizontal: 10, // Spacing between buttons
+                shadowColor: "#000",
+                shadowOpacity: 0.2,
+                shadowOffset: { width: 0, height: 2 },
+                shadowRadius: 4,
+                elevation: 3,
               }}
             >
-              <Text style={{ borderColor: "#003082" }}>View Transaction</Text>
-            </TouchableOpacity> */}
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 16,
+                  fontWeight: "600",
+                }}
+              >
+                View Transaction
+              </Text>
+            </TouchableOpacity>
+
+            {/* Back Button */}
             <TouchableOpacity
               onPress={() => {
                 setSingleData(null);
@@ -552,28 +572,30 @@ const Home = ({ route, navigation }) => {
                 setViewRiderState(false);
               }}
               style={{
-                borderWidth: 2,
-                width: 60,
-                height: 60,
+                width: 150,
+                height: 50,
                 alignItems: "center",
                 justifyContent: "center",
-                paddingVertical: 5,
-                borderRadius: 5,
+                borderRadius: 8, // Rounded corners
                 borderColor: "#003082",
-                backgroundColor: "red",
-                borderRadius: 200,
-                position: "absolute",
-                right: 20,
+                borderWidth: 2,
+                backgroundColor: "#003082",
+                marginHorizontal: 10, // Spacing between buttons
+                shadowColor: "#000",
+                shadowOpacity: 0.2,
+                shadowOffset: { width: 0, height: 2 },
+                shadowRadius: 4,
+                elevation: 3,
               }}
             >
               <Text
                 style={{
-                  borderColor: "#003082",
                   color: "white",
-                  textAlign: "center",
+                  fontSize: 16,
+                  fontWeight: "600",
                 }}
               >
-                Close
+                Back
               </Text>
             </TouchableOpacity>
           </View>
