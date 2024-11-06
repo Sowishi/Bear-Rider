@@ -444,6 +444,30 @@ const Home = ({ route, navigation }) => {
       {/* {IS_RIDER && <PopupModal visible={false} />} */}
 
       <View style={{ flex: 1, position: "relative" }}>
+        {location && selectedLocation && !singleData && (
+          <View
+            style={{
+              position: "absolute",
+              width: "100%",
+              top: 100,
+              left: 0,
+              zIndex: 5,
+              backgroundColor: "#00308299",
+              paddingVertical: 5,
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "center",
+                fontSize: 15,
+                fontStyle: "italic",
+                color: "white",
+              }}
+            >
+              You can drag the pin to your destined location
+            </Text>
+          </View>
+        )}
         {/* Maps View */}
         {location && (
           <BearRiderMap

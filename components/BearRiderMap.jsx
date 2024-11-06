@@ -87,6 +87,7 @@ const BearRiderMap = ({
           />
         </View>
       )}
+
       <MapView
         customMapStyle={IS_RIDER ? riderMapStyle : ""}
         onMapLoaded={() => {
@@ -132,7 +133,7 @@ const BearRiderMap = ({
         )}
         {selectedLocation && (
           <Marker
-            draggable
+            draggable={!singleData}
             onDragEnd={async (event) => {
               const { latitude, longitude } = event.nativeEvent.coordinate;
               const address = await reverseGeocode(latitude, longitude);
