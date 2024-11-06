@@ -1,5 +1,6 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import Button from "./button";
+import { useSmokeContext } from "../utils/appContext";
 
 const PickServiceButton = ({
   setServiceModal,
@@ -9,6 +10,8 @@ const PickServiceButton = ({
   setViewTransactionModal,
   setPahatodModal,
 }) => {
+  const { setBookLocation } = useSmokeContext();
+
   return (
     <View
       style={{
@@ -53,6 +56,7 @@ const PickServiceButton = ({
             onPress={() => {
               setSingleData(null);
               setSelectedTransaction(null);
+              // setBookLocation(null);
             }}
             style={{
               borderWidth: 2,

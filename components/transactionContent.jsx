@@ -1,10 +1,7 @@
 import { Image, ScrollView, Text, View } from "react-native";
-import redMarker from "../assets/red-marker.png";
-import blueMarker from "../assets/blue-marker.png";
-import Button from "./button";
 import EmptyList from "./emptyList";
 import TransactionCard from "./transactionCard";
-import PopupModal from "./popupModal";
+import { useSmokeContext } from "../utils/appContext";
 
 const TransactionContent = ({
   transactions,
@@ -17,6 +14,8 @@ const TransactionContent = ({
       return transactions;
     }
   });
+
+  const { setBookLocation } = useSmokeContext();
 
   const handleViewTransaction = (transaction) => {
     setSelectedTransaction(transaction);

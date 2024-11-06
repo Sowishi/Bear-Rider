@@ -23,7 +23,7 @@ export default function BearScanner({
   const [loading, setLoading] = useState(false);
 
   const { handleMakePayment } = useCrudWallet();
-  const { currentUser } = useSmokeContext();
+  const { currentUser, setBookLocation } = useSmokeContext();
   const { completeTransaction } = useCrudTransaction();
 
   useEffect(() => {
@@ -66,6 +66,7 @@ export default function BearScanner({
       setPahatodModal(false);
       setTransactionDetailsModal(false);
       setSelectedTransaction(null);
+      // setBookLocation(null);
 
       Toast.show({
         type: "success",
@@ -78,6 +79,8 @@ export default function BearScanner({
       setPahatodModal(false);
       setTransactionDetailsModal(false);
       setSelectedTransaction(null);
+      // setBookLocation(null);
+
       // Handle errors such as insufficient balance
       Toast.show({
         type: "error",

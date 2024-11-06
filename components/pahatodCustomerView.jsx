@@ -114,6 +114,7 @@ const PahatodCustomerView = ({
             type: "success",
             text1: "Your ride is cancelled successfully.",
           });
+          setBookLocation(null);
         }}
         open={confirmModal}
         handleClose={() => setConfirmModal(false)}
@@ -174,8 +175,8 @@ const PahatodCustomerView = ({
               >
                 <Text style={{ marginBottom: 5 }}>
                   {serviceType == "Pahatod"
-                    ? "Pick off Location"
-                    : "Drop off Location"}
+                    ? "Pick Off Location"
+                    : "Drop Off Location"}
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
@@ -259,7 +260,7 @@ const PahatodCustomerView = ({
               <View style={{ width: "100%" }}>
                 <Text style={{ marginBottom: 5 }}>
                   {serviceType == "Pahatod"
-                    ? "Drop off location"
+                    ? "Drop Off Location"
                     : "Shop to location"}
                 </Text>
               </View>
@@ -352,7 +353,7 @@ const PahatodCustomerView = ({
                   }}
                   width={150}
                   style={{ marginTop: 20 }}
-                  text="Proceed"
+                  text="Continue"
                   bgColor={"#B80B00"}
                 />
               )}
@@ -438,8 +439,8 @@ const PahatodCustomerView = ({
                       {calculateArrivalTime(
                         haversineDistance(
                           {
-                            latitude: singleData.riderLocation.latitude,
-                            longitude: singleData.riderLocation.longitude,
+                            latitude: singleData?.riderLocation.latitude,
+                            longitude: singleData?.riderLocation.longitude,
                           },
                           location
                         ),
@@ -494,8 +495,8 @@ const PahatodCustomerView = ({
                             Rider:{" "}
                             {haversineDistance(
                               {
-                                latitude: singleData.riderLocation.latitude,
-                                longitude: singleData.riderLocation.longitude,
+                                latitude: singleData?.riderLocation.latitude,
+                                longitude: singleData?.riderLocation.longitude,
                               },
                               location
                             )}{" "}
@@ -503,8 +504,9 @@ const PahatodCustomerView = ({
                             {calculateArrivalTime(
                               haversineDistance(
                                 {
-                                  latitude: singleData.riderLocation.latitude,
-                                  longitude: singleData.riderLocation.longitude,
+                                  latitude: singleData?.riderLocation.latitude,
+                                  longitude:
+                                    singleData?.riderLocation.longitude,
                                 },
                                 location
                               ),

@@ -22,6 +22,7 @@ const RiderBottomNavigation = ({
     transactionCount,
     setConversationModal,
     setWalletModal,
+    setBookLocation,
   } = useSmokeContext();
   const { addNotification } = useCrudNotification();
 
@@ -91,6 +92,7 @@ const RiderBottomNavigation = ({
                   onPress={() => {
                     setSingleData(null);
                     setSelectedTransaction(null);
+                    setBookLocation(null);
                   }}
                   style={{
                     borderWidth: 2,

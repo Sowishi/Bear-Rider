@@ -132,10 +132,10 @@ const Home = ({ route, navigation }) => {
   useEffect(() => {
     let output = 0;
     if (selectedLocation) {
-      output = haversineDistance(location, selectedLocation);
+      output = haversineDistance(bookLocation, selectedLocation);
     }
     setDistance(output);
-  }, [selectedLocation]);
+  }, [bookLocation, selectedLocation]);
 
   // When app is back in home screen cancel the transaction
   useEffect(() => {
@@ -242,12 +242,12 @@ const Home = ({ route, navigation }) => {
   };
 
   const handleAddTransaction = async () => {
-    if (selectedLocation) {
+    if (selectedLocation && bookLocation) {
       const transaction = {
         origin: {
-          latitude: location?.latitude,
-          longitude: location?.longitude,
-          address: location?.address,
+          latitude: bookLocation?.latitude,
+          longitude: bookLocation?.longitude,
+          address: bookLocation?.address,
         },
         destination: {
           latitude: selectedLocation?.latitude,
