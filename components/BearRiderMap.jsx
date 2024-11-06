@@ -32,6 +32,7 @@ const BearRiderMap = ({
     bookLocation,
     bookLocationRef,
     setBookLocation,
+    viewRiderState,
   } = useSmokeContext();
   const { onlineUsers } = useAddOnline();
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -303,7 +304,7 @@ const BearRiderMap = ({
             />
           </>
         )}
-        {singleData && !IS_RIDER && (
+        {singleData && !IS_RIDER && viewRiderState && (
           <>
             {/* Drop Off Location */}
             <Marker

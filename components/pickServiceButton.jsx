@@ -10,7 +10,7 @@ const PickServiceButton = ({
   setViewTransactionModal,
   setPahatodModal,
 }) => {
-  const { setBookLocation } = useSmokeContext();
+  const { setBookLocation, viewRiderState } = useSmokeContext();
 
   return (
     <View
@@ -26,7 +26,7 @@ const PickServiceButton = ({
         borderTopRightRadius: 50,
       }}
     >
-      {singleData && (
+      {singleData && viewRiderState && (
         <View
           style={{
             flexDirection: "row",

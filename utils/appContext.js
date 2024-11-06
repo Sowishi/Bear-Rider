@@ -22,6 +22,7 @@ export const MyProvider = ({ children }) => {
     sender: "",
   });
   const [bookLocation, setBookLocation] = useState();
+  const [viewRiderState, setViewRiderState] = useState(false);
 
   const [messageUserInfo, setMessageUserInfo] = useState();
   const bookLocationRef = useRef();
@@ -64,6 +65,8 @@ export const MyProvider = ({ children }) => {
         bookLocation,
         setBookLocation,
         bookLocationRef,
+        viewRiderState,
+        setViewRiderState,
       }}
     >
       {children}

@@ -97,8 +97,13 @@ const PahatodCustomerView = ({
 
   const [confirmModal, setConfirmModal] = useState(false);
 
-  const { setMessageInfo, currentUser, setBookLocation, bookLocationRef } =
-    useSmokeContext();
+  const {
+    setMessageInfo,
+    currentUser,
+    setBookLocation,
+    bookLocationRef,
+    setViewRiderState,
+  } = useSmokeContext();
 
   return (
     <>
@@ -717,6 +722,7 @@ const PahatodCustomerView = ({
                     setFindingRider(false);
                     setPahatodModal(false);
                     setSelectedLocation(null);
+                    setViewRiderState(true);
                   }}
                   text="Rider State"
                   bgColor={"#B80B00"}
