@@ -27,6 +27,7 @@ export const MyProvider = ({ children }) => {
   const [messageUserInfo, setMessageUserInfo] = useState();
   const [showSelectedLocation, setShowSelectedLocation] = useState(false);
   const bookLocationRef = useRef();
+  const [showBook, setShowBook] = useState(true);
 
   return (
     <MyContext.Provider
@@ -72,6 +73,8 @@ export const MyProvider = ({ children }) => {
         setShowRiderBubble,
         showSelectedLocation,
         setShowSelectedLocation,
+        showBook,
+        setShowBook,
       }}
     >
       {children}

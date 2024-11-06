@@ -103,6 +103,7 @@ const PahatodCustomerView = ({
     setBookLocation,
     bookLocationRef,
     setViewRiderState,
+    setShowBook,
   } = useSmokeContext();
 
   return (
@@ -723,6 +724,7 @@ const PahatodCustomerView = ({
                     setPahatodModal(false);
                     setSelectedLocation(null);
                     setViewRiderState(true);
+                    setShowBook(false);
                   }}
                   text="Rider State"
                   bgColor={"#B80B00"}
