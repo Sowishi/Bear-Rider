@@ -335,6 +335,7 @@ const Home = ({ route, navigation }) => {
           deliveryNotes={deliveryNotes}
           setDeliveryNotes={setDeliveryNotes}
           serviceType={serviceType}
+          setViewTransactionModal={setViewTransactionModal}
         />
       </BottomModal>
 
@@ -364,6 +365,7 @@ const Home = ({ route, navigation }) => {
             viewOnly={true}
             navigataion={navigation}
             setSelectedTransaction={setSelectedTransaction}
+            setViewTransactionModal={setViewTransactionModal}
           />
         )}
       </BottomModal>

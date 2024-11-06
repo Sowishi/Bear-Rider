@@ -38,6 +38,7 @@ const OrderNotes = ({
   baseFare,
   setPahatodModal,
   setSelectedTransaction,
+  setViewTransactionModal,
 }) => {
   const [note, setNote] = useState("");
   const [qrModal, setQrModal] = useState(false);
@@ -45,7 +46,14 @@ const OrderNotes = ({
   const [purchaseCost, setPurchaseCost] = useState(0);
   const [openCamera, setOpenCamera] = useState(false);
   const [permission, requestPermission] = useCameraPermissions();
-  const { proof, setProof, currentUser } = useSmokeContext();
+  const {
+    proof,
+    setProof,
+    currentUser,
+    setBookLocation,
+    setViewRiderState,
+    setShowRiderBubble,
+  } = useSmokeContext();
   const textInputRef = useRef();
 
   const { confirmOrderDetails, markNearby, markTransit } = useCrudTransaction();
@@ -186,6 +194,27 @@ const OrderNotes = ({
           </Text>
           <QRCode logo={logo} size={300} value={currentUser.id} />
         </View>
+        <TouchableOpacity
+          style={{
+            marginTop: 30,
+            backgroundColor: "#4CAF50",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderRadius: 5,
+          }}
+          onPress={() => {
+            setTransactionRemarksModal(false);
+            setPahatodModal(false);
+            setTransactionDetailsModal(false);
+            setSelectedTransaction(null);
+            setBookLocation(null);
+            setViewRiderState(false);
+            setViewTransactionModal(false);
+            setShowRiderBubble(false);
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 18 }}>Payment Done</Text>
+        </TouchableOpacity>
       </BottomModal>
 
       <ScrollView

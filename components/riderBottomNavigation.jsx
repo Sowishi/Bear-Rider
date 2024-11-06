@@ -23,6 +23,7 @@ const RiderBottomNavigation = ({
     setConversationModal,
     setWalletModal,
     setBookLocation,
+    showRiderBubble,
   } = useSmokeContext();
   const { addNotification } = useCrudNotification();
 
@@ -51,7 +52,7 @@ const RiderBottomNavigation = ({
     >
       {isOnline ? (
         <>
-          {singleData && (
+          {singleData && showRiderBubble && (
             <View
               style={{
                 marginVertical: 10,

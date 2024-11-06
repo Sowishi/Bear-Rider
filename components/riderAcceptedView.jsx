@@ -24,7 +24,8 @@ const RiderAcceptedView = ({
   setViewTransactionModal,
   setMessageModal,
 }) => {
-  const { currentUser, setViewDirection, setMessageInfo } = useSmokeContext();
+  const { currentUser, setViewDirection, setMessageInfo, setShowRiderBubble } =
+    useSmokeContext();
   const { acceptTransaction } = useCrudTransaction();
   const { addNotification } = useCrudNotification();
 
@@ -208,6 +209,7 @@ const RiderAcceptedView = ({
             event={() => {
               setViewTransactionModal(false);
               setViewDirection(true);
+              setShowRiderBubble(true);
             }}
             style={{ marginTop: 10 }}
             width={150}
