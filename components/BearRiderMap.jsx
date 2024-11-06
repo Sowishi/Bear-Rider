@@ -305,6 +305,7 @@ const BearRiderMap = ({
         )}
         {singleData && !IS_RIDER && (
           <>
+            {/* Drop Off Location */}
             <Marker
               onPress={() =>
                 jumpToMarker({
@@ -316,11 +317,41 @@ const BearRiderMap = ({
                 latitude: singleData.destination?.latitude,
                 longitude: singleData.destination?.longitude,
               }}
-              title="Destination / Drop Off"
-              description="Customer Destination"
-              pinColor={"#003082"}
+              title="Shop Location / Drop Off Location"
+              pinColor="#003082"
+            />
+            {/* Customer Locatioin */}
+            <Marker
+              children={<MarkerUserImage />}
+              onPress={() =>
+                jumpToMarker({
+                  latitude: singleData.origin?.latitude,
+                  longitude: singleData.origin?.longitude,
+                })
+              }
+              coordinate={{
+                latitude: singleData.origin?.latitude,
+                longitude: singleData.origin?.longitude,
+              }}
+              title={singleData?.currentUser.firstName}
+              description="Customer Location"
+            />
+            <Marker
+              children={<MarkerRiderImage />}
+              onPress={() =>
+                jumpToMarker({
+                  latitude: singleData.riderLocation?.latitude,
+                  longitude: singleData.riderLocation?.longitude,
+                })
+              }
+              coordinate={{
+                latitude: singleData.riderLocation?.latitude,
+                longitude: singleData.riderLocation?.longitude,
+              }}
+              title={"Rider Location"}
             />
 
+            {/* Customer  to Destination  or Shop to location */}
             <MapViewDirections
               strokeWidth={4}
               strokeColor="#B80B00"
@@ -335,38 +366,20 @@ const BearRiderMap = ({
               apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
             />
 
-            {singleData.riderLocation && (
-              <>
-                <MapViewDirections
-                  strokeWidth={4}
-                  strokeColor="#003082"
-                  origin={{
-                    latitude: location?.latitude,
-                    longitude: location?.longitude,
-                  }}
-                  destination={{
-                    latitude: singleData.riderLocation?.latitude,
-                    longitude: singleData.riderLocation?.longitude,
-                  }}
-                  apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-                />
-                <Marker
-                  children={<MarkerRiderImage />}
-                  onPress={() =>
-                    jumpToMarker({
-                      latitude: singleData.riderLocation?.latitude,
-                      longitude: singleData.riderLocation?.longitude,
-                    })
-                  }
-                  coordinate={{
-                    latitude: singleData.riderLocation?.latitude,
-                    longitude: singleData.riderLocation?.longitude,
-                  }}
-                  title={singleData?.rider.firstName}
-                  description="Customer Location"
-                />
-              </>
-            )}
+            {/* Ridet to Customer Destintation */}
+            <MapViewDirections
+              strokeWidth={4}
+              strokeColor="#FFC30E"
+              origin={{
+                latitude: singleData.riderLocation?.latitude,
+                longitude: singleData.riderLocation?.longitude,
+              }}
+              destination={{
+                latitude: singleData.origin?.latitude,
+                longitude: singleData.origin?.longitude,
+              }}
+              apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+            />
           </>
         )}
       </MapView>
