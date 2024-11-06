@@ -488,12 +488,7 @@ const OrderNotes = ({
             <View style={{ marginVertical: 10 }}>
               {singleData.serviceType != "Padara" && (
                 <>
-                  <Text
-                    style={{
-                      color: "black",
-                      fontSize: 15,
-                    }}
-                  >
+                  <Text style={{ color: "black", fontSize: 15 }}>
                     Base Fare:
                     <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                       {" "}
@@ -501,49 +496,107 @@ const OrderNotes = ({
                     </Text>
                   </Text>
                   <Text
-                    style={{
-                      color: "black",
-                      fontSize: 15,
-                    }}
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
                   >
-                    Fare per Kilometer
+                    This is the minimum cost for initiating the delivery
+                    service.
+                  </Text>
+
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    Fare per Kilometer:
                     <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                       {" "}
                       ₱{deliveryFee - baseFare}
                     </Text>
                   </Text>
+                  <Text
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
+                  >
+                    This amount is calculated based on the distance to the
+                    destination.
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: "black",
+                      fontSize: 15,
+                      fontWeight: "bold",
+                      marginTop: 10,
+                    }}
+                  >
+                    Total Fare:
+                    <Text style={{ color: "#FFC30E" }}> ₱{deliveryFee}</Text>
+                  </Text>
+                  <Text style={{ color: "gray", fontSize: 12 }}>
+                    The final amount, including the base fare and the distance
+                    charge.
+                  </Text>
                 </>
               )}
 
-              <Text
-                style={{
-                  color: "black",
-                  fontSize: 15,
-                }}
-              >
-                {singleData?.serviceType == "Padara" ? "Delivery Fee" : "Fare"}
-                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-                  {" "}
-                  ₱{deliveryFee ? deliveryFee : "----"}
-                </Text>
-              </Text>
               {singleData?.serviceType == "Padara" && (
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                  }}
-                >
-                  Purchase Cost:
-                  <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-                    ₱
-                    {singleData?.status == "Transit" ||
-                    singleData?.status == "Nearby"
-                      ? singleData?.purchaseCost
-                      : purchaseCost}
+                <>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    Base Delivery Fee:
+                    <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                      {" "}
+                      ₱{baseFare}
+                    </Text>
                   </Text>
-                </Text>
+                  <Text
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
+                  >
+                    The initial fee to begin the delivery service.
+                  </Text>
+
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    Charge per Kilometer:
+                    <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                      {" "}
+                      ₱{deliveryFee - baseFare}
+                    </Text>
+                  </Text>
+                  <Text
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
+                  >
+                    This fee is applied for each kilometer of distance.
+                  </Text>
+
+                  <Text
+                    style={{
+                      color: "black",
+                      fontSize: 15,
+                    }}
+                  >
+                    Total Delivery Fee:
+                    <Text style={{ color: "#FFC30E" }}> ₱{deliveryFee}</Text>
+                  </Text>
+                  <Text
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
+                  >
+                    The combined total of the base fare and distance-based
+                    charge.
+                  </Text>
+
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    Purchase Cost:
+                    <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                      ₱
+                      {singleData?.status == "Transit" ||
+                      singleData?.status == "Nearby"
+                        ? singleData?.purchaseCost
+                        : purchaseCost}
+                    </Text>
+                  </Text>
+                  <Text
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
+                  >
+                    This covers the cost of items purchased for delivery. The
+                    cost may vary based on the customer order/s
+                  </Text>
+                </>
               )}
+
               <Text style={{ marginVertical: 10 }}>
                 Total{" "}
                 <Text style={{ fontSize: 25 }}>
