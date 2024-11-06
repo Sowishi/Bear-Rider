@@ -138,6 +138,17 @@ const RiderAcceptedView = ({
           </Text>
         </Text>
       </View>
+      {singleData.status !== "Accepted" && (
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Button
+            event={() => setTransactionDetailsModal(true)}
+            style={{ marginTop: 10 }}
+            width={150}
+            text="Detaissls"
+            bgColor={"#003082"}
+          />
+        </View>
+      )}
 
       {/* Message and call buttons     */}
       {singleData.status !== undefined && (

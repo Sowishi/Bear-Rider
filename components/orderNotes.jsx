@@ -310,16 +310,18 @@ const OrderNotes = ({
                 ? "Store to Shop"
                 : "Drop off Locataion"}
             </Text>
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 20,
-                marginVertical: 10,
-                fontWeight: "bold",
-              }}
-            >
-              {singleData.storeName}
-            </Text>
+            {singleData.serviceType == "Padara" && (
+              <Text
+                style={{
+                  textAlign: "center",
+                  fontSize: 20,
+                  marginVertical: 10,
+                  fontWeight: "bold",
+                }}
+              >
+                {singleData.storeName}
+              </Text>
+            )}
             <View
               style={{
                 padding: 10,
@@ -510,17 +512,20 @@ const OrderNotes = ({
             </>
           )}
 
-        {IS_RIDER && singleData?.serviceType == "Padara" && (
-          <CameraButton
-            removeEvent={setProof}
-            event={() => setOpenCamera(true)}
-            type={"proofOfPurchase"}
-            navigation={navigataion}
-          />
-        )}
+        {IS_RIDER &&
+          singleData?.serviceType == "Padara" &&
+          singleData.status && (
+            <CameraButton
+              removeEvent={setProof}
+              event={() => setOpenCamera(true)}
+              type={"proofOfPurchase"}
+              navigation={navigataion}
+            />
+          )}
         {IS_RIDER &&
           singleData?.status !== "Nearby" &&
-          singleData?.serviceType == "Padara" && (
+          singleData?.serviceType == "Padara" &&
+          singleData.status && (
             <>
               <Text style={{ fontSize: 15, marginTop: 20 }}>
                 Total Item Cost
@@ -694,7 +699,7 @@ const OrderNotes = ({
               flexDirection: "row",
             }}
           >
-            {singleData?.status !== "Nearby" && (
+            {singleData?.status !== "Nearby" && singleData.status && (
               <Button
                 event={handleSubmit}
                 isDisable={purchaseCost <= 0 || !proof}
