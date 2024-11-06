@@ -163,12 +163,37 @@ const PahatodCustomerView = ({
 
             {/* Current Location of customer      */}
             <>
-              <View style={{ width: "100%" }}>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  marginBottom: 5,
+                }}
+              >
                 <Text style={{ marginBottom: 5 }}>
                   {serviceType == "Pahatod"
                     ? "Pick off Location"
                     : "Drop off Location"}
                 </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    setBookLocation(location);
+                    bookLocationRef.current?.setAddressText(location.address);
+                  }}
+                  style={{
+                    backgroundColor: "#FFC30E",
+                    borderRadius: 5,
+                    marginLeft: 10,
+                    paddingVertical: 2,
+                    paddingHorizontal: 5,
+                  }}
+                >
+                  <Text style={{ color: "white", fontWeight: "bold" }}>
+                    Use My Location
+                  </Text>
+                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -309,6 +334,7 @@ const PahatodCustomerView = ({
                 event={() => {
                   setPahatodModal(false);
                   setSelectedLocation(null);
+                  setBookLocation(null);
                 }}
                 width={selectedLocation ? 150 : 250}
                 style={{ marginTop: 20 }}
