@@ -18,7 +18,7 @@ import haversineDistance from "../utils/calculateDistance";
 import { useSmokeContext } from "../utils/appContext";
 import calculateArrivalTime from "../utils/calculateArrivalTime";
 import cod from "../assets/cash-on-delivery.png";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Timeline from "react-native-timeline-flatlist";
 import { dialPhone } from "../utils/dialPhone";
 import ConfirmationModal from "./confirmationModal";
@@ -71,6 +71,7 @@ const PahatodCustomerView = ({
 
   useEffect(() => {
     pahatodInputRef.current?.setAddressText("Camarines Norte: ");
+    bookLocationRef.current?.setAddressText("Camarines Norte: ");
   }, []);
 
   const getTransactionStatusLabel = (status) => {
@@ -96,7 +97,8 @@ const PahatodCustomerView = ({
 
   const [confirmModal, setConfirmModal] = useState(false);
 
-  const { setMessageInfo, currentUser } = useSmokeContext();
+  const { setMessageInfo, currentUser, setBookLocation, bookLocationRef } =
+    useSmokeContext();
 
   return (
     <>
@@ -164,7 +166,7 @@ const PahatodCustomerView = ({
               <View style={{ width: "100%" }}>
                 <Text style={{ marginBottom: 5 }}>
                   {serviceType == "Pahatod"
-                    ? "Current Location"
+                    ? "Pick off Location"
                     : "Drop off Location"}
                 </Text>
               </View>
@@ -178,19 +180,50 @@ const PahatodCustomerView = ({
                   shadowRadius: 2,
                   elevation: 3,
                   paddingHorizontal: 10,
-                  backgroundColor: "#D3D3D3",
+                  backgroundColor: "white",
                   borderRadius: 10,
-                  marginBottom: 20,
+                  marginBottom: 10,
                 }}
               >
-                <Image source={redMarker} />
-                <TextInput
-                  editable={false}
-                  placeholder={location?.address}
-                  style={{
-                    flex: 1,
-                    paddingVertical: 15,
-                    paddingHorizontal: 10,
+                <GooglePlacesAutocomplete
+                  ref={bookLocationRef}
+                  enablePoweredByContainer={false}
+                  renderLeftButton={() => {
+                    return <Image source={redMarker} />;
+                  }}
+                  styles={{
+                    textInputContainer: {
+                      justifyContent: "center",
+                      alignItems: "center",
+                      width: "100%",
+                      paddingVertical: 3,
+                    },
+                    textInput: { marginHorizontal: 10 },
+                  }}
+                  placeholder={
+                    serviceType == "Pahatod" ? "Pick Off" : "Shop to"
+                  }
+                  onPress={async (data, details = null) => {
+                    const lat = details?.geometry?.location.lat;
+                    const lng = details?.geometry?.location.lng;
+                    const address = await reverseGeocode(lat, lng);
+
+                    jumpToMarker({
+                      longitude: lng,
+                      latitude: lat,
+                    });
+                    setBookLocation({
+                      latitude: lat,
+                      longitude: lng,
+                      address,
+                    });
+                  }}
+                  fetchDetails={true}
+                  GooglePlacesDetailsQuery={{ fields: "geometry" }}
+                  query={{
+                    key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
+                    language: "en",
+                    components: "country:ph",
                   }}
                 />
               </View>

@@ -25,7 +25,14 @@ const BearRiderMap = ({
   mapRef,
   singleData,
 }) => {
-  const { mapView, currentUser, viewDirection } = useSmokeContext();
+  const {
+    mapView,
+    currentUser,
+    viewDirection,
+    bookLocation,
+    bookLocationRef,
+    setBookLocation,
+  } = useSmokeContext();
   const { onlineUsers } = useAddOnline();
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
@@ -131,6 +138,31 @@ const BearRiderMap = ({
             pinColor={"#B80B00"}
           />
         )}
+        {/* Book Location of the Customer */}
+        {bookLocation && (
+          <Marker
+            draggable={!singleData}
+            onDragEnd={async (event) => {
+              const { latitude, longitude } = event.nativeEvent.coordinate;
+              const address = await reverseGeocode(latitude, longitude);
+              bookLocationRef.current?.setAddressText(address);
+
+              setBookLocation({ latitude, longitude, address });
+            }}
+            onPress={() =>
+              jumpToMarker({
+                latitude: bookLocation?.latitude,
+                longitude: bookLocation?.longitude,
+              })
+            }
+            coordinate={{
+              latitude: bookLocation?.latitude,
+              longitude: bookLocation?.longitude,
+            }}
+            pinColor="yellow"
+            title="Book Location"
+          />
+        )}
         {selectedLocation && (
           <Marker
             draggable={!singleData}
@@ -155,13 +187,13 @@ const BearRiderMap = ({
             title="Selected Location"
           />
         )}
-        {location && selectedLocation && (
+        {bookLocation && selectedLocation && (
           <MapViewDirections
             strokeWidth={4}
             strokeColor="#B80B00"
             origin={{
-              latitude: location?.latitude,
-              longitude: location?.longitude,
+              latitude: bookLocation?.latitude,
+              longitude: bookLocation?.longitude,
             }}
             destination={{
               latitude: selectedLocation?.latitude,

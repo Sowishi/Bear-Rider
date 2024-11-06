@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 
 const MyContext = createContext();
 
@@ -21,8 +21,10 @@ export const MyProvider = ({ children }) => {
     receiver: "",
     sender: "",
   });
+  const [bookLocation, setBookLocation] = useState();
 
   const [messageUserInfo, setMessageUserInfo] = useState();
+  const bookLocationRef = useRef();
 
   return (
     <MyContext.Provider
@@ -59,6 +61,9 @@ export const MyProvider = ({ children }) => {
         setMessageInfo,
         messageUserInfo,
         setMessageUserInfo,
+        bookLocation,
+        setBookLocation,
+        bookLocationRef,
       }}
     >
       {children}

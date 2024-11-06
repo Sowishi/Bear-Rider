@@ -79,6 +79,7 @@ const Home = ({ route, navigation }) => {
     conversationModal,
     setConversationModal,
     setMessageUserInfo,
+    bookLocation,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -444,7 +445,7 @@ const Home = ({ route, navigation }) => {
       {/* {IS_RIDER && <PopupModal visible={false} />} */}
 
       <View style={{ flex: 1, position: "relative" }}>
-        {location && selectedLocation && !singleData && (
+        {/* {(selectedLocation || bookLocation) && (
           <View
             style={{
               position: "absolute",
@@ -467,7 +468,7 @@ const Home = ({ route, navigation }) => {
               You can drag the pin to your destined location
             </Text>
           </View>
-        )}
+        )} */}
         {/* Maps View */}
         {location && (
           <BearRiderMap
