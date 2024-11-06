@@ -131,7 +131,7 @@ const Home = ({ route, navigation }) => {
   // Calulate distance between two coords
   useEffect(() => {
     let output = 0;
-    if (selectedLocation) {
+    if (selectedLocation && bookLocation) {
       output = haversineDistance(bookLocation, selectedLocation);
     }
     setDistance(output);

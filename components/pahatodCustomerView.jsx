@@ -339,7 +339,7 @@ const PahatodCustomerView = ({
                 }}
                 width={selectedLocation ? 150 : 250}
                 style={{ marginTop: 20 }}
-                text="Close"
+                text="Closes"
                 bgColor={"#00308299"}
               />
               {selectedLocation && (
@@ -695,6 +695,7 @@ const PahatodCustomerView = ({
                   setSelectedLocation(null);
                   setSelectedTransaction(null);
                   setSingleData(null);
+                  setBookLocation(null);
                   // deleteTransaction(currentUser);
                 }}
                 text="Close"

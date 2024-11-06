@@ -66,7 +66,7 @@ export default function BearScanner({
       setPahatodModal(false);
       setTransactionDetailsModal(false);
       setSelectedTransaction(null);
-      // setBookLocation(null);
+      setBookLocation(null);
 
       Toast.show({
         type: "success",
@@ -79,7 +79,7 @@ export default function BearScanner({
       setPahatodModal(false);
       setTransactionDetailsModal(false);
       setSelectedTransaction(null);
-      // setBookLocation(null);
+      setBookLocation(null);
 
       // Handle errors such as insufficient balance
       Toast.show({

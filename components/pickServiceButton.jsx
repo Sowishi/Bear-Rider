@@ -56,7 +56,7 @@ const PickServiceButton = ({
             onPress={() => {
               setSingleData(null);
               setSelectedTransaction(null);
-              // setBookLocation(null);
+              setBookLocation(null);
             }}
             style={{
               borderWidth: 2,
