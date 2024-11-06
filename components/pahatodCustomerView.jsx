@@ -181,7 +181,7 @@ const PahatodCustomerView = ({
               >
                 <Text style={{ marginBottom: 5 }}>
                   {serviceType == "Pahatod"
-                    ? "Pick Off Location"
+                    ? "Pick Up Location"
                     : "Drop Off Location"}
                 </Text>
                 <TouchableOpacity
@@ -232,9 +232,7 @@ const PahatodCustomerView = ({
                     },
                     textInput: { marginHorizontal: 10 },
                   }}
-                  placeholder={
-                    serviceType == "Pahatod" ? "Pick Off" : "Shop to"
-                  }
+                  placeholder={serviceType == "Pahatod" ? "Pick Up" : "Shop to"}
                   onPress={async (data, details = null) => {
                     const lat = details?.geometry?.location.lat;
                     const lng = details?.geometry?.location.lng;
