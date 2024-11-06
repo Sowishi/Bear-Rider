@@ -25,6 +25,7 @@ export const MyProvider = ({ children }) => {
   const [viewRiderState, setViewRiderState] = useState(false);
   const [showRiderBubble, setShowRiderBubble] = useState(false);
   const [messageUserInfo, setMessageUserInfo] = useState();
+  const [showSelectedLocation, setShowSelectedLocation] = useState(false);
   const bookLocationRef = useRef();
 
   return (
@@ -69,6 +70,8 @@ export const MyProvider = ({ children }) => {
         setViewRiderState,
         showRiderBubble,
         setShowRiderBubble,
+        showSelectedLocation,
+        setShowSelectedLocation,
       }}
     >
       {children}

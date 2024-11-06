@@ -10,7 +10,8 @@ const PickServiceButton = ({
   setViewTransactionModal,
   setPahatodModal,
 }) => {
-  const { setBookLocation, viewRiderState } = useSmokeContext();
+  const { setBookLocation, viewRiderState, setShowSelectedLocation } =
+    useSmokeContext();
 
   return (
     <View
@@ -105,7 +106,10 @@ const PickServiceButton = ({
       >
         <Text style={{ fontSize: 20, marginBottom: 10 }}>Choose a Service</Text>
         <Button
-          event={() => setServiceModal(true)}
+          event={() => {
+            setServiceModal(true);
+            setShowSelectedLocation(true);
+          }}
           text="Book"
           bgColor={"#B80B00"}
         />

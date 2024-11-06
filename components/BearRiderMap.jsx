@@ -33,6 +33,7 @@ const BearRiderMap = ({
     bookLocationRef,
     setBookLocation,
     viewRiderState,
+    showSelectedLocation,
   } = useSmokeContext();
   const { onlineUsers } = useAddOnline();
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
@@ -164,7 +165,7 @@ const BearRiderMap = ({
             title="Book Location"
           />
         )}
-        {selectedLocation && (
+        {selectedLocation && showSelectedLocation && (
           <Marker
             draggable={!singleData}
             onDragEnd={async (event) => {
