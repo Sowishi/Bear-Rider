@@ -103,11 +103,20 @@ const OrderNotes = ({
 
   const handleSubmit = async () => {
     if (singleData?.serviceType == "Padara") {
-      const proofUrl = await handleUploadImage(proof);
+      // Initialize an array to store the uploaded proof URLs
+      const proofUrls = [];
+
+      // Loop through the proof array and upload each image
+      for (let i = 0; i < proof.length; i++) {
+        const uploadedUrl = await handleUploadImage(proof[i]);
+        proofUrls.push(uploadedUrl); // Add the uploaded URL to the array
+      }
+
+      // After uploading all images, pass the proofUrls array to the function
       confirmOrderDetails(
         singleData.id,
         purchaseCost,
-        proofUrl,
+        proofUrls,
         totalPrice,
         deliveryFee
       );
@@ -144,6 +153,7 @@ const OrderNotes = ({
   );
   const totalPrice = parseInt(deliveryFee) + parseInt(purchaseCost);
 
+  console.log(proof);
   return (
     <View
       style={{
@@ -506,20 +516,49 @@ const OrderNotes = ({
                   borderRadius: 10,
                 }}
               >
-                <Image
-                  style={{
-                    width: "100%",
-                    height: 250,
-                    borderRadius: 10,
-                  }}
-                  source={{
-                    uri:
-                      singleData?.status == "Transit" ||
-                      singleData?.status == "Nearby"
-                        ? singleData?.proofOfPurchase
-                        : proof,
-                  }}
-                />
+                {proof !== null &&
+                  proof !== undefined &&
+                  !singleData.proofOfPurchase && (
+                    <>
+                      {proof.map((item) => {
+                        return (
+                          <Image
+                            key={item}
+                            style={{
+                              width: "100%",
+                              height: 250,
+                              borderRadius: 10,
+                              marginVertical: 5,
+                            }}
+                            source={{
+                              uri: item,
+                            }}
+                          />
+                        );
+                      })}
+                    </>
+                  )}
+                {singleData.proofOfPurchase !== null &&
+                  singleData.proofOfPurchase !== undefined && (
+                    <>
+                      {singleData.proofOfPurchase.map((item) => {
+                        return (
+                          <Image
+                            key={item}
+                            style={{
+                              width: "100%",
+                              height: 250,
+                              borderRadius: 10,
+                              marginVertical: 5,
+                            }}
+                            source={{
+                              uri: item,
+                            }}
+                          />
+                        );
+                      })}
+                    </>
+                  )}
               </View>
             </>
           )}

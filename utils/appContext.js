@@ -15,7 +15,7 @@ export const MyProvider = ({ children }) => {
   const [OR, setOR] = useState();
   const [CR, setCR] = useState();
   const [clearance, setClearance] = useState();
-  const [proof, setProof] = useState();
+  const [proof, setProof] = useState([]);
   const [viewDirection, setViewDirection] = useState(false);
   const [messageInfo, setMessageInfo] = useState({
     receiver: "",

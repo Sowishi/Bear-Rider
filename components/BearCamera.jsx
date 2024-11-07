@@ -27,6 +27,7 @@ export default function BearCamera({
     setCR,
     setClearance,
     setProof,
+    proof,
   } = useSmokeContext();
 
   if (!permission) {
@@ -138,7 +139,11 @@ export default function BearCamera({
               );
 
               if (proofOfPurchase) {
-                setProof(resizedImage.uri);
+                if (proof == null) {
+                  setProof([resizedImage.uri]);
+                } else {
+                  setProof([...proof, resizedImage.uri]);
+                }
                 setOpenCamera(false);
                 return;
               }
