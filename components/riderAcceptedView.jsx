@@ -138,17 +138,19 @@ const RiderAcceptedView = ({
           </Text>
         </Text>
       </View>
-      {singleData.status !== "Accepted" && (
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Button
-            event={() => setTransactionDetailsModal(true)}
-            style={{ marginTop: 10 }}
-            width={150}
-            text="Details"
-            bgColor={"#003082"}
-          />
-        </View>
-      )}
+      {singleData.status !== "Accepted" &&
+        singleData.status !== "Transit" &&
+        singleData.status !== "Nearby" && (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Button
+              event={() => setTransactionDetailsModal(true)}
+              style={{ marginTop: 10 }}
+              width={150}
+              text="Details"
+              bgColor={"#003082"}
+            />
+          </View>
+        )}
 
       {/* Message and call buttons     */}
       {singleData.status !== undefined && (

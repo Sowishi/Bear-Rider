@@ -349,7 +349,7 @@ const Home = ({ route, navigation }) => {
       {/* Transaction Remarks Details */}
 
       <BottomModal
-        heightPx={700}
+        heightPx={600}
         modalVisible={transactionDetailsModal}
         closeModal={() => {
           setTransactionDetailsModal(false);

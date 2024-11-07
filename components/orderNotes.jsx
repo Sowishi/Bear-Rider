@@ -717,11 +717,7 @@ const OrderNotes = ({
                 isDisable={purchaseCost <= 0 || !proof}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={
-                  singleData?.status == "Transit"
-                    ? "Update"
-                    : "Confirm / In Transit"
-                }
+                text={singleData?.status == "Transit" ? "Update" : "Start Ride"}
                 bgColor={"#003082"}
               />
             )}
@@ -731,7 +727,7 @@ const OrderNotes = ({
                 event={() => markNearby(singleData.id)}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={"Nearby"}
+                text={"Confirm Pickup"}
                 bgColor={"#B80B00"}
               />
             )}
@@ -740,7 +736,7 @@ const OrderNotes = ({
                 event={() => setQrModal(true)}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={"Open QR Code"}
+                text={"Confirm Drop Off"}
                 bgColor={"#B80B00"}
               />
             )}
@@ -760,7 +756,7 @@ const OrderNotes = ({
                 event={handleSubmit}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={"Confirm / In Transit"}
+                text={"Start Ride"}
                 bgColor={"#003082"}
               />
             )}
@@ -770,7 +766,7 @@ const OrderNotes = ({
                 event={() => markNearby(singleData?.id)}
                 style={{ marginTop: 10 }}
                 width={"90%"}
-                text={"Nearby"}
+                text={"Confirm Pick Up"}
                 bgColor={"#B80B00"}
               />
             )}
@@ -779,7 +775,7 @@ const OrderNotes = ({
                 event={() => setQrModal(true)}
                 style={{ marginTop: 10 }}
                 width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={"Open QR Code"}
+                text={"Confirm Drop Off"}
                 bgColor={"#B80B00"}
               />
             )}

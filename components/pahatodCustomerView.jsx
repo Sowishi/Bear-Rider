@@ -343,7 +343,7 @@ const PahatodCustomerView = ({
                 }}
                 width={selectedLocation ? 150 : 250}
                 style={{ marginTop: 20 }}
-                text="Closes"
+                text="Close"
                 bgColor={"#00308299"}
               />
               {selectedLocation && (
