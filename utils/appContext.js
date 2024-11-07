@@ -29,6 +29,8 @@ export const MyProvider = ({ children }) => {
   const bookLocationRef = useRef();
   const [showBook, setShowBook] = useState(true);
   const [storeName, setStoreName] = useState("");
+  const [sumModal, setSumModal] = useState(false);
+  const [sumInfo, setSumInfo] = useState();
 
   return (
     <MyContext.Provider
@@ -78,6 +80,10 @@ export const MyProvider = ({ children }) => {
         setShowBook,
         storeName,
         setStoreName,
+        sumModal,
+        setSumModal,
+        setSumInfo,
+        sumInfo,
       }}
     >
       {children}

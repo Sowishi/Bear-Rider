@@ -18,6 +18,7 @@ import Loader from "./loader";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import BottomModal from "../components/bottomModal";
+import TransactionSummary from "./transactionSummary";
 
 export default function BearScanner({
   totalPrice,
@@ -39,6 +40,8 @@ export default function BearScanner({
     setBookLocation,
     setViewRiderState,
     setShowSelectedLocation,
+    setSumModal,
+    setSumInfo,
   } = useSmokeContext();
   const { completeTransaction } = useCrudTransaction();
 
@@ -52,8 +55,6 @@ export default function BearScanner({
   }, []);
 
   const handleBarCodeScanned = async (data) => {
-    console.log(data);
-
     try {
       // Attempt to make payment
       const paymentResult = await handleMakePayment(
@@ -82,6 +83,11 @@ export default function BearScanner({
       setBookLocation(null);
       setViewRiderState(false);
       setShowSelectedLocation(false);
+      setSumModal(true);
+      setSumInfo({
+        totalPrice,
+        user,
+      });
 
       Toast.show({
         type: "success",

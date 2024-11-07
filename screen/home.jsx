@@ -34,6 +34,7 @@ import Wallet from "./wallet";
 import Message from "../components/message";
 import ConversationList from "../components/conversation";
 import PopupModal from "../components/popupModal";
+import TransactionSummary from "../components/transactionSummary";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -86,6 +87,8 @@ const Home = ({ route, navigation }) => {
     setViewRiderState,
     setShowBook,
     storeName,
+    setSumModal,
+    sumModal,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -307,6 +310,15 @@ const Home = ({ route, navigation }) => {
     >
       <StatusBar backgroundColor={"white"} style="dark" />
 
+      {/* Sum Modal */}
+
+      <BottomModal
+        heightPx={700}
+        modalVisible={sumModal}
+        closeModal={() => setSumModal(false)}
+      >
+        <TransactionSummary />
+      </BottomModal>
       {/* Pick a service Modal */}
 
       <BottomModal
