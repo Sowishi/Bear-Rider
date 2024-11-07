@@ -34,7 +34,7 @@ const TransactionSummary = () => {
                 color: "gray",
               }}
             >
-              Juan Dela Cruz
+              {sumInfo.user.firstName + " " + sumInfo.user.lastName}
             </Text>
           </View>
           <View style={styles.details}>

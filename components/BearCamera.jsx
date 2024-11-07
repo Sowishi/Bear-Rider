@@ -139,7 +139,7 @@ export default function BearCamera({
               );
 
               if (proofOfPurchase) {
-                if (proof == null) {
+                if (proof == null || proof == undefined) {
                   setProof([resizedImage.uri]);
                 } else {
                   setProof([...proof, resizedImage.uri]);

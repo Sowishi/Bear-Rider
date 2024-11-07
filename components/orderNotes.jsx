@@ -187,7 +187,11 @@ const OrderNotes = ({
               setTransactionDetailsModal={setTransactionDetailsModal}
               setTransactionRemarksModal={setTransactionRemarksModal}
               setScan={setScan}
-              totalPrice={singleData?.totalPrice}
+              totalPrice={
+                singleData?.serviceType == "Padara"
+                  ? singleData?.deliveryFee
+                  : singleData?.totalPrice
+              }
             />
           </View>
         </BottomModal>
@@ -725,6 +729,24 @@ const OrderNotes = ({
                 </>
               )}
 
+              {singleData?.serviceType == "Padara" && (
+                <>
+                  <Text style={{ marginVertical: 10 }}>
+                    Wallet Payment:{" "}
+                    <Text style={{ fontSize: 18 }}>₱{deliveryFee}</Text>
+                  </Text>
+                  <Text style={{ marginVertical: 10 }}>
+                    Cash Payment:{" "}
+                    <Text style={{ fontSize: 18 }}>
+                      ₱{" "}
+                      {singleData?.status == "Transit" ||
+                      singleData?.status == "Nearby"
+                        ? singleData?.purchaseCost
+                        : purchaseCost}
+                    </Text>
+                  </Text>
+                </>
+              )}
               <Text style={{ marginVertical: 10 }}>
                 Total{" "}
                 <Text style={{ fontSize: 25 }}>
