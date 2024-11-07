@@ -22,6 +22,7 @@ import { useEffect, useRef, useState } from "react";
 import Timeline from "react-native-timeline-flatlist";
 import { dialPhone } from "../utils/dialPhone";
 import ConfirmationModal from "./confirmationModal";
+import ConfirmDelivery from "./confirmDelivery";
 
 const PahatodCustomerView = ({
   findingRider,
@@ -96,6 +97,7 @@ const PahatodCustomerView = ({
   };
 
   const [confirmModal, setConfirmModal] = useState(false);
+  const [confirmDelivery, setConfirmDelivery] = useState(false);
 
   const {
     setMessageInfo,
@@ -124,6 +126,25 @@ const PahatodCustomerView = ({
         }}
         open={confirmModal}
         handleClose={() => setConfirmModal(false)}
+      />
+
+      <ConfirmDelivery
+        text={
+          serviceType == "Padara"
+            ? "Delivery fee will be deducted from your system wallet. Please pay for goods in cash upon delivery"
+            : "Would you like to proceed?"
+        }
+        handleConfirm={() => {
+          if (serviceType == "Pahatod") {
+            handleAddTransaction();
+            setConfirmDelivery(false);
+          } else {
+            setTransactionRemarksModal(true);
+            setConfirmDelivery(false);
+          }
+        }}
+        open={confirmDelivery}
+        handleClose={() => setConfirmDelivery(false)}
       />
 
       <View
@@ -348,13 +369,7 @@ const PahatodCustomerView = ({
               />
               {selectedLocation && (
                 <Button
-                  event={() => {
-                    if (serviceType == "Pahatod") {
-                      handleAddTransaction();
-                    } else {
-                      setTransactionRemarksModal(true);
-                    }
-                  }}
+                  event={() => setConfirmDelivery(true)}
                   width={150}
                   style={{ marginTop: 20 }}
                   text="Continue"

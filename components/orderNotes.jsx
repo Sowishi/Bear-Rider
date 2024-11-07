@@ -274,6 +274,7 @@ const OrderNotes = ({
             Transaction Details
           </Text>
         )}
+
         {/* Add Order Notes Button */}
         {!viewOnly && (
           <View
