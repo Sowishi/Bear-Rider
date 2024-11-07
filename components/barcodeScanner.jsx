@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import LottieView from "lottie-react-native";
 import Scanner from "../assets/scanner.json";
@@ -8,6 +15,9 @@ import useCrudWallet from "../hooks/useCrudWallet";
 import Toast from "react-native-toast-message";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import Loader from "./loader";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import BottomModal from "../components/bottomModal";
 
 export default function BearScanner({
   totalPrice,
@@ -21,7 +31,8 @@ export default function BearScanner({
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [user, setUser] = useState();
   const { handleMakePayment } = useCrudWallet();
   const {
     currentUser,
@@ -40,11 +51,8 @@ export default function BearScanner({
     getBarCodeScannerPermissions();
   }, []);
 
-  const handleBarCodeScanned = async ({ type, data }) => {
-    if (scanned) return; // Prevent multiple scans
-
-    setScanned(true);
-    setLoading(true);
+  const handleBarCodeScanned = async (data) => {
+    console.log(data);
 
     try {
       // Attempt to make payment
@@ -103,6 +111,36 @@ export default function BearScanner({
     }
   };
 
+  const handleConfirmation = async ({ data }) => {
+    if (scanned) return; // Prevent multiple scans
+
+    setScanned(true);
+    setLoading(true);
+
+    try {
+      // Get the document reference from the Firestore collection
+      const userRef = doc(db, "users", data); // 'users' is the collection, and data is the user ID
+
+      // Fetch the document snapshot
+      const userSnapshot = await getDoc(userRef);
+
+      if (userSnapshot.exists()) {
+        // Data exists for the user, you can access it here
+        const userData = userSnapshot.data();
+        console.log("User data:", userData);
+        setUser(userData);
+        setConfirmModal(true);
+        // You can now use this data in your app as needed
+      } else {
+        console.log("No user data found!");
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    } finally {
+      setLoading(false); // Stop loading after the operation
+    }
+  };
+
   if (hasPermission === null) {
     return <Text>Requesting for camera permission</Text>;
   }
@@ -113,9 +151,75 @@ export default function BearScanner({
   return (
     <View style={styles.container}>
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarCodeScanned={scanned ? undefined : handleConfirmation}
         style={StyleSheet.absoluteFillObject}
       />
+      <BottomModal
+        modalVisible={confirmModal}
+        closeModal={() => setConfirmModal(false)}
+      >
+        {user && (
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "start",
+              width: "100%",
+            }}
+          >
+            <View
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Image
+                width={150}
+                height={150}
+                source={{ uri: user.selfieUrl }}
+                style={styles.userImage}
+              />
+              <Text style={styles.userName}>
+                {user.firstName + " " + user.lastName}
+              </Text>
+            </View>
+
+            <View style={styles.userInfo}>
+              <Text style={styles.userText}>
+                Email: <Text style={styles.infoText}>{user.email}</Text>
+              </Text>
+              <Text style={styles.userText}>
+                Phone: <Text style={styles.infoText}>{user.phoneNumber}</Text>
+              </Text>
+              <Text style={styles.userText}>
+                Rider Status:{" "}
+                <Text style={styles.infoText}>{user.riderStatus}</Text>
+              </Text>
+            </View>
+
+            <Text style={styles.totalPrice}>
+              Total Price: <Text style={styles.priceText}>{totalPrice}</Text>
+            </Text>
+
+            {/* Pay Now Button */}
+            <TouchableOpacity
+              style={styles.payButton}
+              onPress={() => handleBarCodeScanned(user.id)}
+            >
+              <Text style={styles.payButtonText}>Pay Now</Text>
+            </TouchableOpacity>
+
+            {/* Cancel Button */}
+            <TouchableOpacity
+              style={styles.cancelButton}
+              onPress={() => setConfirmModal(false)}
+            >
+              <Text style={styles.cancelButtonText}>Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </BottomModal>
+
       {loading && <Loader />}
       <View
         style={{
@@ -158,5 +262,91 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     position: "relative",
+  },
+  modalContent: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  userImage: {
+    borderRadius: 75,
+    borderWidth: 2,
+    borderColor: "#ddd",
+    marginBottom: 15,
+  },
+  userName: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 10,
+  },
+  userInfo: {
+    marginBottom: 15,
+    width: "100%",
+    paddingHorizontal: 20,
+    alignItems: "flex-start",
+  },
+  userText: {
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 5,
+  },
+  infoText: {
+    fontWeight: "500",
+    color: "#333",
+  },
+  totalPrice: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#1d72b8",
+    marginTop: 10,
+  },
+  priceText: {
+    color: "#e94e77",
+    fontSize: 18,
+  },
+  payButton: {
+    marginTop: 20,
+    backgroundColor: "#4CAF50",
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  payButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+  },
+  cancelButton: {
+    marginTop: 15,
+    backgroundColor: "#f44336", // Red color for cancel button
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 3,
+  },
+  cancelButtonText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
   },
 });
