@@ -19,6 +19,7 @@ import BearHome from "./screen/bear-home";
 import BearMap from "./screen/bear-maps";
 import Message from "./components/message";
 import ConversationList from "./components/conversation";
+import HistoryContent from "./components/historyContent";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -97,7 +98,7 @@ export default function App() {
     return (
       <Tab.Navigator tabBarPosition="bottom">
         <Tab.Screen name="Home" component={BearHome} />
-        <Tab.Screen name="Messagae" component={ConversationList} />
+        <Tab.Screen name="Message" component={ConversationList} />
 
         <Tab.Screen name="Wallet" component={Wallet} />
       </Tab.Navigator>

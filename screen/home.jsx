@@ -45,7 +45,7 @@ const Home = ({ route, navigation }) => {
   const [deliveryNotes, setDeliveryNotes] = useState([]);
 
   //Boolean State
-  const [isOnline, setIsOnline] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
   const [findingRider, setFindingRider] = useState(false);
   const [mapLoading, setMapLoading] = useState(false);
 
@@ -148,11 +148,11 @@ const Home = ({ route, navigation }) => {
   // Calulate distance between two coords
   useEffect(() => {
     let output = 0;
-    if (selectedLocation && bookLocation) {
-      output = haversineDistance(bookLocation, selectedLocation);
+    if (destination && bookLocation) {
+      output = haversineDistance(bookLocation, destination);
     }
     setDistance(output);
-  }, [bookLocation, selectedLocation]);
+  }, [bookLocation, destination]);
 
   // When app is back in home screen cancel the transaction
   useEffect(() => {

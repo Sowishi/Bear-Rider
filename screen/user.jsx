@@ -150,64 +150,7 @@ const User = ({ navigation }) => {
               <Text style={{ fontSize: 20, marginRight: 5 }}>History</Text>
               <MaterialIcons name="history" size={24} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.closeDrawer();
-                setWalletModal(true);
-              }}
-              style={{
-                marginVertical: 15,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
 
-                elevation: 5,
-                borderRadius: 10,
-                backgroundColor: "white",
-                padding: 10,
-                paddingHorizontal: 20,
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 20, marginRight: 10 }}>Wallet</Text>
-              <SimpleLineIcons name="wallet" size={21} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.closeDrawer();
-                setConversationModal(true);
-              }}
-              style={{
-                marginVertical: 15,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-                borderRadius: 10,
-                backgroundColor: "white",
-                padding: 10,
-                paddingHorizontal: 20,
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <Text style={{ fontSize: 20, marginRight: 10 }}>
-                Conversation
-              </Text>
-              <AntDesign name="message1" size={24} color="black" />
-            </TouchableOpacity>
             {/* <View
               style={{
                 marginVertical: 15,

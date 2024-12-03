@@ -43,7 +43,7 @@ const MapHeader = ({
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "flex-start",
+              justifyContent: "space-between",
               alignItems: "center",
               width: "100%",
               paddingHorizontal: 5,
@@ -69,6 +69,27 @@ const MapHeader = ({
               }}
             >
               <AntDesign name="arrowleft" size={24} color="black" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.openDrawer();
+              }}
+              style={{
+                backgroundColor: "white",
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                padding: 10,
+                borderRadius: 100,
+              }}
+            >
+              <AntDesign name="menufold" size={24} color="black" />
             </TouchableOpacity>
           </View>
         </View>
