@@ -109,6 +109,7 @@ const PahatodCustomerView = ({
     setViewRiderState,
     setShowBook,
     bookLocation,
+    destination,
   } = useSmokeContext();
 
   return (
@@ -296,8 +297,8 @@ const PahatodCustomerView = ({
                         : "Shop To Location"}
                     </Text>
                     <Text style={{ fontStyle: "italic", fontSize: 13 }}>
-                      {selectedLocation?.address
-                        ? selectedLocation?.address
+                      {destination?.address
+                        ? destination?.address
                         : "Please select location"}
                     </Text>
                   </View>
@@ -317,7 +318,7 @@ const PahatodCustomerView = ({
                 marginLeft: 20,
               }}
             >
-              {selectedLocation && (
+              {destination && (
                 <Button
                   event={() => setConfirmDelivery(true)}
                   width={150}

@@ -91,6 +91,7 @@ const Home = ({ route, navigation }) => {
     storeName,
     setSumModal,
     sumModal,
+    destination,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -258,7 +259,7 @@ const Home = ({ route, navigation }) => {
   };
 
   const handleAddTransaction = async () => {
-    if (selectedLocation && bookLocation) {
+    if (bookLocation && destination) {
       const transaction = {
         origin: {
           latitude: bookLocation?.latitude,
@@ -266,9 +267,9 @@ const Home = ({ route, navigation }) => {
           address: bookLocation?.address,
         },
         destination: {
-          latitude: selectedLocation?.latitude,
-          longitude: selectedLocation?.longitude,
-          address: selectedLocation?.address,
+          latitude: destination?.latitude,
+          longitude: destination?.longitude,
+          address: destination?.address,
         },
         currentUser: currentUser,
         distance,

@@ -22,6 +22,7 @@ export const MyProvider = ({ children }) => {
     sender: "",
   });
   const [bookLocation, setBookLocation] = useState();
+  const [destination, setDestination] = useState();
   const [viewRiderState, setViewRiderState] = useState(false);
   const [showRiderBubble, setShowRiderBubble] = useState(false);
   const [messageUserInfo, setMessageUserInfo] = useState();
@@ -84,6 +85,8 @@ export const MyProvider = ({ children }) => {
         setSumModal,
         setSumInfo,
         sumInfo,
+        destination,
+        setDestination,
       }}
     >
       {children}

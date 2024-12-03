@@ -22,6 +22,7 @@ const BearMaps = ({ navigation, route }) => {
     bookLocationRef,
     setViewRiderState,
     setShowBook,
+    setDestination,
   } = useSmokeContext();
   const [region, setRegion] = useState({
     latitude: 14.0996,
@@ -221,7 +222,7 @@ const BearMaps = ({ navigation, route }) => {
                   setBookLocation({ ...selectedLocation, address });
                 }
                 if (type == "pointB") {
-                  setLocation({ ...selectedLocation, address });
+                  setDestination({ ...selectedLocation, address });
                 }
                 navigation.goBack();
               }}
