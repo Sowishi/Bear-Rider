@@ -38,8 +38,6 @@ const BearRiderMap = ({
   const { onlineUsers } = useAddOnline();
   const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-  const [mapLoading, setMapLoading] = useState(true);
-
   const MarkerUserImage = () => {
     return <FontAwesome name="user" size={30} color="#B80B00" />;
   };
@@ -73,36 +71,11 @@ const BearRiderMap = ({
       return null;
     }
   };
-  console.log(onlineUsers);
 
   return (
     <>
-      {mapLoading && (
-        <View
-          style={{
-            backgroundColor: "white",
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            height: screenHeight,
-            width: screenWidth,
-            zIndex: 9999,
-          }}
-        >
-          <LottieView
-            autoPlay
-            style={{ width: 200, height: 200 }}
-            source={require("../assets/maps.json")}
-          />
-        </View>
-      )}
-
       <MapView
         customMapStyle={IS_RIDER ? riderMapStyle : ""}
-        onMapLoaded={() => {
-          setMapLoading(false);
-        }}
         mapType={mapView}
         showsBuildings
         showsUserLocation

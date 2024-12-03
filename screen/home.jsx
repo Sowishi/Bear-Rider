@@ -35,6 +35,7 @@ import ConversationList from "../components/conversation";
 import PopupModal from "../components/popupModal";
 import TransactionSummary from "../components/transactionSummary";
 import { StatusBar } from "expo-status-bar";
+import LottieView from "lottie-react-native";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -46,6 +47,7 @@ const Home = ({ route, navigation }) => {
   //Boolean State
   const [isOnline, setIsOnline] = useState(false);
   const [findingRider, setFindingRider] = useState(false);
+  const [mapLoading, setMapLoading] = useState(false);
 
   // Modal State
   const [serviceModal, setServiceModal] = useState(false);
@@ -110,6 +112,7 @@ const Home = ({ route, navigation }) => {
 
   // Request Permission and Get location
   useEffect(() => {
+    setMapLoading(true);
     googlePlacesRef.current?.setAddressText("Daet Camarines Norte");
     handleLocationRequestAndPermission();
 
@@ -118,6 +121,10 @@ const Home = ({ route, navigation }) => {
         navigation.navigate("RiderPending");
       }
     }
+
+    setTimeout(() => {
+      setMapLoading(false);
+    }, 3000);
   }, []);
 
   // Handle Disable Back Button
@@ -303,6 +310,26 @@ const Home = ({ route, navigation }) => {
   return (
     <>
       <StatusBar style="dark" translucent />
+      {mapLoading && (
+        <View
+          style={{
+            backgroundColor: "#00000099",
+            flex: 1,
+            height: "100%",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            zIndex: 9999,
+          }}
+        >
+          <LottieView
+            autoPlay
+            style={{ width: 300, height: 300 }}
+            source={require("../assets/detect.json")}
+          />
+        </View>
+      )}
       <View
         style={{
           flex: 1,
