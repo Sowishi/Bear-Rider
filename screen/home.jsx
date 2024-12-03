@@ -654,6 +654,7 @@ const Home = ({ route, navigation }) => {
 
           {pahatodModal && (
             <PahatodCustomerView
+              navigation={navigation}
               serviceType={serviceType}
               location={location}
               setSelectedLocation={setSelectedLocation}

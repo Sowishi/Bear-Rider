@@ -1,6 +1,7 @@
 import { Entypo, FontAwesome, FontAwesome5 } from "@expo/vector-icons";
 import { TextInput, View, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const MapHeader = ({
   IS_RIDER,
@@ -17,6 +18,7 @@ const MapHeader = ({
       1000
     );
   };
+
   return (
     <>
       <View
@@ -40,75 +42,34 @@ const MapHeader = ({
         >
           <View
             style={{
-              backgroundColor: "white",
-              padding: 2,
-              borderRadius: 10,
-            }}
-          >
-            <Entypo
-              name="menu"
-              size={30}
-              color={IS_RIDER ? "#003082" : "#B80B00"}
-              onPress={() => {
-                navigation.openDrawer();
-              }}
-            />
-          </View>
-          <View
-            style={{
-              flex: 1,
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
               width: "100%",
-              justifyContent: "center",
-              alignItems: "flex-start",
-              marginHorizontal: 10,
+              paddingHorizontal: 5,
             }}
           >
             <TouchableOpacity
               onPress={() => {
-                jumpToMarker({
-                  latitude: location?.latitude,
-                  longitude: location?.longitude,
-                });
+                navigation.goBack();
+              }}
+              style={{
+                backgroundColor: "white",
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                padding: 10,
+                borderRadius: 100,
               }}
             >
-              <Text style={{ fontSize: 12, fontWeight: "bold" }}>
-                Current Location
-              </Text>
-              <TextInput
-                editable={false}
-                value={location?.address}
-                style={{
-                  backgroundColor: "white",
-                  paddingVertical: 5,
-                  borderRadius: 10,
-                  paddingHorizontal: 5,
-                }}
-              />
+              <AntDesign name="arrowleft" size={24} color="black" />
             </TouchableOpacity>
-          </View>
-
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 4,
-              borderRadius: 10,
-            }}
-          >
-            {!IS_RIDER ? (
-              <FontAwesome
-                onPress={() => setNoficationModal(true)}
-                name="bell"
-                size={25}
-                color={"#B80B00"}
-              />
-            ) : (
-              <FontAwesome5
-                onPress={() => setIsOnline(!isOnline)}
-                name="power-off"
-                size={24}
-                color="#003082"
-              />
-            )}
           </View>
         </View>
 

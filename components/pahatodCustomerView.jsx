@@ -47,6 +47,7 @@ const PahatodCustomerView = ({
   baseFare,
   setMessageModal,
   IS_RIDER,
+  navigation,
 }) => {
   const reverseGeocode = async (latitude, longitude) => {
     try {
@@ -181,7 +182,6 @@ const PahatodCustomerView = ({
                 fontSize: 25,
                 color: "black",
                 fontWeight: "bold",
-                marginBottom: 15,
               }}
             >
               {serviceType == "Pahatod"
@@ -189,7 +189,7 @@ const PahatodCustomerView = ({
                 : "Delivery Service"}
             </Text>
 
-            {/* Current Location of customer      */}
+            {/* Pick up/ Delivered to of customer      */}
             <>
               <View
                 style={{
@@ -197,7 +197,6 @@ const PahatodCustomerView = ({
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "flex-start",
-                  marginBottom: 5,
                 }}
               >
                 <Text style={{ marginBottom: 5 }}>
@@ -205,146 +204,52 @@ const PahatodCustomerView = ({
                     ? "Pick Up Location"
                     : "Drop Off Location"}
                 </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    setBookLocation(location);
-                    bookLocationRef.current?.setAddressText(location.address);
-                  }}
-                  style={{
-                    backgroundColor: "#FFC30E",
-                    borderRadius: 5,
-                    marginLeft: 10,
-                    paddingVertical: 2,
-                    paddingHorizontal: 5,
-                  }}
-                >
-                  <Text style={{ color: "white", fontWeight: "bold" }}>
-                    Use My Location
-                  </Text>
-                </TouchableOpacity>
               </View>
-              <View
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("bearMap");
+                }}
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.8,
-                  shadowRadius: 2,
-                  elevation: 3,
-                  paddingHorizontal: 10,
-                  backgroundColor: "white",
-                  borderRadius: 10,
-                  marginBottom: 10,
+                  width: "100%",
+                  backgroundColor: "#232323",
+                  paddingVertical: 15,
+                  borderRadius: 20,
                 }}
               >
-                <GooglePlacesAutocomplete
-                  ref={bookLocationRef}
-                  enablePoweredByContainer={false}
-                  renderLeftButton={() => {
-                    return <Image source={redMarker} />;
-                  }}
-                  styles={{
-                    textInputContainer: {
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
-                      paddingVertical: 3,
-                    },
-                    textInput: { marginHorizontal: 10 },
-                  }}
-                  placeholder={serviceType == "Pahatod" ? "Pick Up" : "Shop to"}
-                  onPress={async (data, details = null) => {
-                    const lat = details?.geometry?.location.lat;
-                    const lng = details?.geometry?.location.lng;
-                    const address = await reverseGeocode(lat, lng);
-
-                    jumpToMarker({
-                      longitude: lng,
-                      latitude: lat,
-                    });
-                    setBookLocation({
-                      latitude: lat,
-                      longitude: lng,
-                      address,
-                    });
-                  }}
-                  fetchDetails={true}
-                  GooglePlacesDetailsQuery={{ fields: "geometry" }}
-                  query={{
-                    key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
-                    language: "en",
-                    components: "country:ph",
-                  }}
-                />
-              </View>
+                <Text style={{ color: "white", textAlign: "center" }}>
+                  Choose This Destination
+                </Text>
+              </TouchableOpacity>
             </>
 
-            {/* Drop of or shop to location */}
+            {/* Destination/Delivery Location of customer      */}
             <>
-              <View style={{ width: "100%" }}>
-                <Text style={{ marginBottom: 5 }}>
-                  {serviceType == "Pahatod"
-                    ? "Drop Off Location"
-                    : "Shop to location"}
-                </Text>
-              </View>
               <View
                 style={{
+                  width: "100%",
                   flexDirection: "row",
                   alignItems: "center",
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.8,
-                  shadowRadius: 2,
-                  elevation: 3,
-                  paddingHorizontal: 10,
-                  backgroundColor: "white",
-                  borderRadius: 10,
+                  justifyContent: "flex-start",
                 }}
               >
-                <GooglePlacesAutocomplete
-                  ref={pahatodInputRef}
-                  enablePoweredByContainer={false}
-                  renderLeftButton={() => {
-                    return <Image source={blueMarker} />;
-                  }}
-                  styles={{
-                    textInputContainer: {
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
-                      paddingVertical: 3,
-                    },
-                    textInput: { marginHorizontal: 10 },
-                  }}
-                  placeholder={
-                    serviceType == "Pahatod" ? "Drop Off" : "Shop to"
-                  }
-                  onPress={async (data, details = null) => {
-                    const lat = details?.geometry?.location.lat;
-                    const lng = details?.geometry?.location.lng;
-                    const address = await reverseGeocode(lat, lng);
-
-                    jumpToMarker({
-                      longitude: lng,
-                      latitude: lat,
-                    });
-                    setSelectedLocation({
-                      latitude: lat,
-                      longitude: lng,
-                      address,
-                    });
-                  }}
-                  fetchDetails={true}
-                  GooglePlacesDetailsQuery={{ fields: "geometry" }}
-                  query={{
-                    key: "AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI",
-                    language: "en",
-                    components: "country:ph",
-                  }}
-                />
+                <Text style={{ marginBottom: 5 }}>
+                  {serviceType == "Pahatod"
+                    ? "Pick Up Location"
+                    : "Drop Off Location"}
+                </Text>
               </View>
+              <TouchableOpacity
+                style={{
+                  width: "100%",
+                  backgroundColor: "#232323",
+                  paddingVertical: 15,
+                  borderRadius: 20,
+                }}
+              >
+                <Text style={{ color: "white", textAlign: "center" }}>
+                  Choose This Destination
+                </Text>
+              </TouchableOpacity>
             </>
 
             {/* Find a rider button */}

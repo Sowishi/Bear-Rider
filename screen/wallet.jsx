@@ -20,7 +20,14 @@ const Wallet = () => {
   console.log(transactionHistory);
 
   return (
-    <View style={{ flex: 1, width: "100%" }}>
+    <View
+      style={{
+        flex: 1,
+        width: "100%",
+        paddingVertical: 50,
+        paddingHorizontal: 30,
+      }}
+    >
       <View style={{ flex: 1 }}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
           Wallet Balance:{" "}

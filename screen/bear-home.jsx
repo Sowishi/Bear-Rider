@@ -52,7 +52,7 @@ const BearHome = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("bearMap");
+                navigation.navigate("drawer");
               }}
               style={{
                 backgroundColor: "white",

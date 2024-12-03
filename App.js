@@ -17,6 +17,8 @@ import Wallet from "./screen/wallet";
 import "react-native-get-random-values";
 import BearHome from "./screen/bear-home";
 import BearMap from "./screen/bear-maps";
+import Message from "./components/message";
+import ConversationList from "./components/conversation";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -95,8 +97,9 @@ export default function App() {
     return (
       <Tab.Navigator tabBarPosition="bottom">
         <Tab.Screen name="Home" component={BearHome} />
-        <Tab.Screen name="Test" component={DrawerScreen} />
-        <Tab.Screen name="Notification" component={Notification} />
+        <Tab.Screen name="Messagae" component={ConversationList} />
+
+        <Tab.Screen name="Wallet" component={Wallet} />
       </Tab.Navigator>
     );
   }
