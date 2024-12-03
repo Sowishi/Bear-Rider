@@ -16,7 +16,7 @@ import RiderPending from "./screen/riderPending";
 import Wallet from "./screen/wallet";
 import "react-native-get-random-values";
 import BearHome from "./screen/bear-home";
-
+import BearMap from "./screen/bear-maps";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -108,6 +108,7 @@ export default function App() {
           <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Register} />
+            <Stack.Screen name="bearMap" component={BearMap} />
 
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="main" component={MainScreen} />
