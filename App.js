@@ -95,7 +95,7 @@ export default function App() {
     return (
       <Tab.Navigator tabBarPosition="bottom">
         <Tab.Screen name="Home" component={BearHome} />
-        <Tab.Screen name="User" component={User} />
+        <Tab.Screen name="Test" component={DrawerScreen} />
         <Tab.Screen name="Notification" component={Notification} />
       </Tab.Navigator>
     );

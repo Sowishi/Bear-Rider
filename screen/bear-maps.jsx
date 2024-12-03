@@ -1,6 +1,6 @@
 import LottieView from "lottie-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Button } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import maps from "../assets/maps.json";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -8,9 +8,11 @@ import * as Location from "expo-location";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { TouchableOpacity } from "react-native";
+import RBSheet from "react-native-raw-bottom-sheet";
 
 const BearMaps = ({ navigation }) => {
   const mapRef = useRef();
+  const refRBSheet = useRef();
 
   const [region, setRegion] = useState({
     latitude: 14.0996,
@@ -106,7 +108,7 @@ const BearMaps = ({ navigation }) => {
         style={{
           position: "absolute",
           bottom: 0,
-          height: 250,
+          height: 280,
           backgroundColor: "white",
           width: "100%",
           borderTopLeftRadius: 50,
@@ -118,7 +120,6 @@ const BearMaps = ({ navigation }) => {
             flexDirection: "row",
             justifyContent: "center",
             alignItems: "center",
-            borderWidth: 1,
             width: "100%",
           }}
         >
@@ -152,9 +153,98 @@ const BearMaps = ({ navigation }) => {
                 <Text style={{ fontSize: 13, marginLeft: 5 }}>{address}</Text>
               </View>
             </View>
+            <View
+              style={{
+                width: 300,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                marginTop: 10,
+              }}
+            >
+              <Entypo name="location-pin" size={24} color="black" />
+              <View>
+                <Text
+                  style={{ fontSize: 15, marginLeft: 5, fontWeight: "bold" }}
+                >
+                  Current Location
+                </Text>
+                <Text style={{ fontSize: 13, marginLeft: 5 }}>{address}</Text>
+              </View>
+            </View>
+
+            <TouchableOpacity
+              onPress={() => refRBSheet.current.open()}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: 10,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <View>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                    Saved Places
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  backgroundColor: "#FFF5F6",
+                  padding: 5,
+                  borderRadius: 100,
+                }}
+              >
+                <AntDesign name="arrowright" size={24} color="black" />
+              </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                width: "100%",
+                backgroundColor: "#232323",
+                paddingVertical: 15,
+                marginTop: 20,
+                borderRadius: 20,
+              }}
+            >
+              <Text style={{ color: "white", textAlign: "center" }}>
+                Choose This Destination
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
+      <RBSheet
+        height={500}
+        ref={refRBSheet}
+        useNativeDriver={false}
+        draggable
+        customStyles={{
+          wrapper: {
+            backgroundColor: "transparent",
+          },
+          draggableIcon: {
+            backgroundColor: "#000",
+          },
+        }}
+        customModalProps={{
+          animationType: "slide",
+          statusBarTranslucent: true,
+        }}
+        customAvoidingViewProps={{
+          enabled: false,
+        }}
+      >
+        <Text>fkjfkd</Text>
+      </RBSheet>
     </View>
   );
 };
@@ -169,7 +259,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     marginLeft: -50,
-    marginTop: -48,
+    marginTop: -80,
   },
 });
 
