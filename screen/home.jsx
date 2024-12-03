@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import {
   View,
   BackHandler,
@@ -35,6 +34,7 @@ import Message from "../components/message";
 import ConversationList from "../components/conversation";
 import PopupModal from "../components/popupModal";
 import TransactionSummary from "../components/transactionSummary";
+import { StatusBar } from "expo-status-bar";
 
 const Home = ({ route, navigation }) => {
   //Other State
@@ -301,172 +301,172 @@ const Home = ({ route, navigation }) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        marginTop: Constants.statusBarHeight,
-        backgroundColor: "#FAF5FC",
-      }}
-    >
-      <StatusBar backgroundColor={"white"} style="dark" />
-
-      {/* Sum Modal */}
-
-      <BottomModal
-        heightPx={700}
-        modalVisible={sumModal}
-        closeModal={() => setSumModal(false)}
-      >
-        <TransactionSummary />
-      </BottomModal>
-      {/* Pick a service Modal */}
-
-      <BottomModal
-        heightPx={270}
-        modalVisible={serviceModal}
-        closeModal={() => setServiceModal(false)}
-      >
-        <PickServiceContent
-          setFindingRider={setFindingRider}
-          setSingleData={setSingleData}
-          setSelectedTransaction={setSelectedTransaction}
-          setServiceType={setServiceType}
-          setPahatodModal={setPahatodModal}
-          setServiceModal={setServiceModal}
-        />
-      </BottomModal>
-
-      {/* Transaction Remarks Modal */}
-
-      <BottomModal
-        heightPx={500}
-        modalVisible={transactionRemarksModal}
-        closeModal={() => {
-          setTransactionRemarksModal(false);
-          setProof(null);
+    <>
+      <StatusBar style="dark" translucent />
+      <View
+        style={{
+          flex: 1,
+          marginTop: Constants.statusBarHeight,
+          backgroundColor: "#FAF5FC",
         }}
       >
-        <OrderNotes
-          chargePerKilometer={chargePerKilometer}
-          baseFare={baseFare}
-          handleAddTransaction={handleAddTransaction}
-          setTransactionRemarksModal={setTransactionRemarksModal}
-          deliveryNotes={deliveryNotes}
-          setDeliveryNotes={setDeliveryNotes}
-          serviceType={serviceType}
-          setViewTransactionModal={setViewTransactionModal}
-        />
-      </BottomModal>
+        {/* Sum Modal */}
 
-      {/* Transaction Remarks Details */}
+        <BottomModal
+          heightPx={700}
+          modalVisible={sumModal}
+          closeModal={() => setSumModal(false)}
+        >
+          <TransactionSummary />
+        </BottomModal>
+        {/* Pick a service Modal */}
 
-      <BottomModal
-        heightPx={600}
-        modalVisible={transactionDetailsModal}
-        closeModal={() => {
-          setTransactionDetailsModal(false);
-          setProof(null);
-        }}
-      >
-        {singleData && (
+        <BottomModal
+          heightPx={270}
+          modalVisible={serviceModal}
+          closeModal={() => setServiceModal(false)}
+        >
+          <PickServiceContent
+            setFindingRider={setFindingRider}
+            setSingleData={setSingleData}
+            setSelectedTransaction={setSelectedTransaction}
+            setServiceType={setServiceType}
+            setPahatodModal={setPahatodModal}
+            setServiceModal={setServiceModal}
+          />
+        </BottomModal>
+
+        {/* Transaction Remarks Modal */}
+
+        <BottomModal
+          heightPx={500}
+          modalVisible={transactionRemarksModal}
+          closeModal={() => {
+            setTransactionRemarksModal(false);
+            setProof(null);
+          }}
+        >
           <OrderNotes
             chargePerKilometer={chargePerKilometer}
             baseFare={baseFare}
-            singleData={singleData}
-            IS_RIDER={IS_RIDER}
             handleAddTransaction={handleAddTransaction}
-            setTransactionDetailsModal={setTransactionDetailsModal}
             setTransactionRemarksModal={setTransactionRemarksModal}
-            setPahatodModal={setPahatodModal}
-            deliveryNotes={singleData.deliveryNotes}
+            deliveryNotes={deliveryNotes}
             setDeliveryNotes={setDeliveryNotes}
             serviceType={serviceType}
-            viewOnly={true}
-            navigataion={navigation}
-            setSelectedTransaction={setSelectedTransaction}
             setViewTransactionModal={setViewTransactionModal}
           />
-        )}
-      </BottomModal>
+        </BottomModal>
 
-      {/* Transaction Modal */}
-      <ScreenModal
-        modalVisible={transactionModal}
-        closeModal={() => setTransactionModal(false)}
-      >
-        <TransactionContent
-          setViewTransactionModal={setViewTransactionModal}
-          transactions={transactions}
-          setSelectedTransaction={setSelectedTransaction}
-          setTransactionModal={setTransactionModal}
-        />
-      </ScreenModal>
+        {/* Transaction Remarks Details */}
 
-      {/* History Modal */}
-      <ScreenModal
-        modalVisible={historyModal}
-        closeModal={() => setHistoryModal(false)}
-      >
-        <HistoryContent
-          setSelectedLocation={setSelectedLocation}
-          setFindingRider={setFindingRider}
-          setPahatodModal={setPahatodModal}
-          setHistoryModal={setHistoryModal}
-          IS_RIDER={IS_RIDER}
-          transactions={transactions}
-          setSelectedTransaction={setSelectedTransaction}
-          setTransactionModal={setTransactionModal}
-          setViewTransactionModal={setViewTransactionModal}
-        />
-      </ScreenModal>
+        <BottomModal
+          heightPx={600}
+          modalVisible={transactionDetailsModal}
+          closeModal={() => {
+            setTransactionDetailsModal(false);
+            setProof(null);
+          }}
+        >
+          {singleData && (
+            <OrderNotes
+              chargePerKilometer={chargePerKilometer}
+              baseFare={baseFare}
+              singleData={singleData}
+              IS_RIDER={IS_RIDER}
+              handleAddTransaction={handleAddTransaction}
+              setTransactionDetailsModal={setTransactionDetailsModal}
+              setTransactionRemarksModal={setTransactionRemarksModal}
+              setPahatodModal={setPahatodModal}
+              deliveryNotes={singleData.deliveryNotes}
+              setDeliveryNotes={setDeliveryNotes}
+              serviceType={serviceType}
+              viewOnly={true}
+              navigataion={navigation}
+              setSelectedTransaction={setSelectedTransaction}
+              setViewTransactionModal={setViewTransactionModal}
+            />
+          )}
+        </BottomModal>
 
-      {/* Notification Modal */}
-      <ScreenModal
-        modalVisible={notificationModal}
-        closeModal={() => setNotificationModal(false)}
-      >
-        <NotificationContent />
-      </ScreenModal>
+        {/* Transaction Modal */}
+        <ScreenModal
+          modalVisible={transactionModal}
+          closeModal={() => setTransactionModal(false)}
+        >
+          <TransactionContent
+            setViewTransactionModal={setViewTransactionModal}
+            transactions={transactions}
+            setSelectedTransaction={setSelectedTransaction}
+            setTransactionModal={setTransactionModal}
+          />
+        </ScreenModal>
 
-      {/* Wallet Modal */}
-      <ScreenModal
-        modalVisible={walletModal}
-        closeModal={() => setWalletModal(false)}
-      >
-        <Wallet />
-      </ScreenModal>
+        {/* History Modal */}
+        <ScreenModal
+          modalVisible={historyModal}
+          closeModal={() => setHistoryModal(false)}
+        >
+          <HistoryContent
+            setSelectedLocation={setSelectedLocation}
+            setFindingRider={setFindingRider}
+            setPahatodModal={setPahatodModal}
+            setHistoryModal={setHistoryModal}
+            IS_RIDER={IS_RIDER}
+            transactions={transactions}
+            setSelectedTransaction={setSelectedTransaction}
+            setTransactionModal={setTransactionModal}
+            setViewTransactionModal={setViewTransactionModal}
+          />
+        </ScreenModal>
 
-      {/* Message Modal */}
-      <ScreenModal
-        modalVisible={messageModal}
-        closeModal={() => {
-          setMessageModal(false);
-          setMessageUserInfo(null);
-        }}
-      >
-        <Message
-          IS_RIDER={IS_RIDER}
-          singleData={singleData}
-          currentUser={currentUser}
-        />
-      </ScreenModal>
+        {/* Notification Modal */}
+        <ScreenModal
+          modalVisible={notificationModal}
+          closeModal={() => setNotificationModal(false)}
+        >
+          <NotificationContent />
+        </ScreenModal>
 
-      {/* Conversation Modal */}
-      <ScreenModal
-        modalVisible={conversationModal}
-        closeModal={() => setConversationModal(false)}
-      >
-        <ConversationList
-          IS_RIDER={IS_RIDER}
-          setMessageModal={setMessageModal}
-          currentUser={currentUser}
-        />
-      </ScreenModal>
+        {/* Wallet Modal */}
+        <ScreenModal
+          modalVisible={walletModal}
+          closeModal={() => setWalletModal(false)}
+        >
+          <Wallet />
+        </ScreenModal>
 
-      {/* {IS_RIDER && <PopupModal visible={false} />} */}
+        {/* Message Modal */}
+        <ScreenModal
+          modalVisible={messageModal}
+          closeModal={() => {
+            setMessageModal(false);
+            setMessageUserInfo(null);
+          }}
+        >
+          <Message
+            IS_RIDER={IS_RIDER}
+            singleData={singleData}
+            currentUser={currentUser}
+          />
+        </ScreenModal>
 
-      <View style={{ flex: 1, position: "relative" }}>
-        {/* {(selectedLocation || bookLocation) && (
+        {/* Conversation Modal */}
+        <ScreenModal
+          modalVisible={conversationModal}
+          closeModal={() => setConversationModal(false)}
+        >
+          <ConversationList
+            IS_RIDER={IS_RIDER}
+            setMessageModal={setMessageModal}
+            currentUser={currentUser}
+          />
+        </ScreenModal>
+
+        {/* {IS_RIDER && <PopupModal visible={false} />} */}
+
+        <View style={{ flex: 1, position: "relative" }}>
+          {/* {(selectedLocation || bookLocation) && (
           <View
             style={{
               position: "absolute",
@@ -490,197 +490,198 @@ const Home = ({ route, navigation }) => {
             </Text>
           </View>
         )} */}
-        {/* Maps View */}
-        {location && (
-          <BearRiderMap
-            mapRef={mapRef}
-            location={location}
-            selectedLocation={selectedLocation}
-            setSelectedLocation={setSelectedLocation}
-            selectedTransaction={selectedTransaction}
-            isOnline={isOnline}
-            IS_RIDER={IS_RIDER}
-            singleData={singleData}
-            pahatodInputRef={pahatodInputRef}
-          />
-        )}
-
-        {/* App Header */}
-
-        {location && (
-          <MapHeader
-            IS_RIDER={IS_RIDER}
-            location={location}
-            mapRef={mapRef}
-            navigation={navigation}
-            isOnline={isOnline}
-            setIsOnline={setIsOnline}
-            setNoficationModal={setNotificationModal}
-          />
-        )}
-
-        {/* Pick a service Button Customer*/}
-        {!pahatodModal && !IS_RIDER && showBook && (
-          <PickServiceButton
-            setPahatodModal={setPahatodModal}
-            singleData={singleData}
-            setSingleData={setSingleData}
-            setServiceModal={setServiceModal}
-            setSelectedTransaction={setSelectedTransaction}
-            setViewTransactionModal={setViewTransactionModal}
-          />
-        )}
-
-        {viewRiderState && (
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "100%",
-              position: "absolute",
-              bottom: 40,
-            }}
-          >
-            {/* View Transaction Button */}
-            <TouchableOpacity
-              onPress={() => {
-                setPahatodModal(true);
-                setFindingRider(true);
-              }}
-              style={{
-                width: 150,
-                height: 50,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 8, // Rounded corners, not circular
-                borderColor: "#003082",
-                borderWidth: 2,
-                backgroundColor: "#B80B00",
-                marginHorizontal: 10, // Spacing between buttons
-                shadowColor: "#000",
-                shadowOpacity: 0.2,
-                shadowOffset: { width: 0, height: 2 },
-                shadowRadius: 4,
-                elevation: 3,
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 16,
-                  fontWeight: "600",
-                }}
-              >
-                View Transaction
-              </Text>
-            </TouchableOpacity>
-
-            {/* Back Button */}
-            <TouchableOpacity
-              onPress={() => {
-                setSingleData(null);
-                setSelectedTransaction(null);
-                setBookLocation(null);
-                setShowBook(true);
-                setViewRiderState(false);
-              }}
-              style={{
-                width: 150,
-                height: 50,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: 8, // Rounded corners
-                borderColor: "#003082",
-                borderWidth: 2,
-                backgroundColor: "#003082",
-                marginHorizontal: 10, // Spacing between buttons
-                shadowColor: "#000",
-                shadowOpacity: 0.2,
-                shadowOffset: { width: 0, height: 2 },
-                shadowRadius: 4,
-                elevation: 3,
-              }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: 16,
-                  fontWeight: "600",
-                }}
-              >
-                Back
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )}
-
-        {/* Rider Accepeted View */}
-
-        {singleData && IS_RIDER && (
-          <BottomModal
-            heightPx={560}
-            modalVisible={viewTransactionModal}
-            closeModal={() => setViewTransactionModal(false)}
-          >
-            <RiderAcceptedView
-              setMessageModal={setMessageModal}
+          {/* Maps View */}
+          {location && (
+            <BearRiderMap
+              mapRef={mapRef}
               location={location}
-              setTransactionDetailsModal={setTransactionDetailsModal}
-              setViewTransactionModal={setViewTransactionModal}
+              selectedLocation={selectedLocation}
+              setSelectedLocation={setSelectedLocation}
+              selectedTransaction={selectedTransaction}
+              isOnline={isOnline}
+              IS_RIDER={IS_RIDER}
               singleData={singleData}
-              chargePerKilometer={chargePerKilometer}
-              baseFare={baseFare}
+              pahatodInputRef={pahatodInputRef}
             />
-          </BottomModal>
-        )}
-        {/* Rider bottom navigation */}
+          )}
 
-        {IS_RIDER && (
-          <RiderBottomNavigation
-            setViewTransactionModal={setViewTransactionModal}
-            location={location}
-            isOnline={isOnline}
-            singleData={singleData}
-            setTransactionModal={setTransactionModal}
-            setSingleData={setSingleData}
-            setSelectedTransaction={setSelectedTransaction}
-            acceptTransaction={acceptTransaction}
-            selectedTransaction={selectedTransaction}
-          />
-        )}
+          {/* App Header */}
 
-        {/* Pahatod UI Customer POV */}
+          {location && (
+            <MapHeader
+              IS_RIDER={IS_RIDER}
+              location={location}
+              mapRef={mapRef}
+              navigation={navigation}
+              isOnline={isOnline}
+              setIsOnline={setIsOnline}
+              setNoficationModal={setNotificationModal}
+            />
+          )}
 
-        {pahatodModal && (
-          <PahatodCustomerView
-            serviceType={serviceType}
-            location={location}
-            setSelectedLocation={setSelectedLocation}
-            setSelectedTransaction={setSelectedTransaction}
-            selectedLocation={selectedLocation}
-            findingRider={findingRider}
-            setFindingRider={setFindingRider}
-            pahatodInputRef={pahatodInputRef}
-            handleAddTransaction={handleAddTransaction}
-            setPahatodModal={setPahatodModal}
-            mapRef={mapRef}
-            singleData={singleData}
-            distance={distance}
-            chargePerKilometer={chargePerKilometer}
-            setSingleData={setSingleData}
-            deleteTransaction={deleteTransaction}
-            completeTransaction={completeTransaction}
-            currentUser={currentUser}
-            setTransactionRemarksModal={setTransactionRemarksModal}
-            setTransactionDetailsModal={setTransactionDetailsModal}
-            setMessageModal={setMessageModal}
-            baseFare={baseFare}
-            IS_RIDER={IS_RIDER}
-          />
-        )}
+          {/* Pick a service Button Customer*/}
+          {!pahatodModal && !IS_RIDER && showBook && (
+            <PickServiceButton
+              setPahatodModal={setPahatodModal}
+              singleData={singleData}
+              setSingleData={setSingleData}
+              setServiceModal={setServiceModal}
+              setSelectedTransaction={setSelectedTransaction}
+              setViewTransactionModal={setViewTransactionModal}
+            />
+          )}
+
+          {viewRiderState && (
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "100%",
+                position: "absolute",
+                bottom: 40,
+              }}
+            >
+              {/* View Transaction Button */}
+              <TouchableOpacity
+                onPress={() => {
+                  setPahatodModal(true);
+                  setFindingRider(true);
+                }}
+                style={{
+                  width: 150,
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 8, // Rounded corners, not circular
+                  borderColor: "#003082",
+                  borderWidth: 2,
+                  backgroundColor: "#B80B00",
+                  marginHorizontal: 10, // Spacing between buttons
+                  shadowColor: "#000",
+                  shadowOpacity: 0.2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowRadius: 4,
+                  elevation: 3,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 16,
+                    fontWeight: "600",
+                  }}
+                >
+                  View Transaction
+                </Text>
+              </TouchableOpacity>
+
+              {/* Back Button */}
+              <TouchableOpacity
+                onPress={() => {
+                  setSingleData(null);
+                  setSelectedTransaction(null);
+                  setBookLocation(null);
+                  setShowBook(true);
+                  setViewRiderState(false);
+                }}
+                style={{
+                  width: 150,
+                  height: 50,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: 8, // Rounded corners
+                  borderColor: "#003082",
+                  borderWidth: 2,
+                  backgroundColor: "#003082",
+                  marginHorizontal: 10, // Spacing between buttons
+                  shadowColor: "#000",
+                  shadowOpacity: 0.2,
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowRadius: 4,
+                  elevation: 3,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: 16,
+                    fontWeight: "600",
+                  }}
+                >
+                  Back
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
+          {/* Rider Accepeted View */}
+
+          {singleData && IS_RIDER && (
+            <BottomModal
+              heightPx={560}
+              modalVisible={viewTransactionModal}
+              closeModal={() => setViewTransactionModal(false)}
+            >
+              <RiderAcceptedView
+                setMessageModal={setMessageModal}
+                location={location}
+                setTransactionDetailsModal={setTransactionDetailsModal}
+                setViewTransactionModal={setViewTransactionModal}
+                singleData={singleData}
+                chargePerKilometer={chargePerKilometer}
+                baseFare={baseFare}
+              />
+            </BottomModal>
+          )}
+          {/* Rider bottom navigation */}
+
+          {IS_RIDER && (
+            <RiderBottomNavigation
+              setViewTransactionModal={setViewTransactionModal}
+              location={location}
+              isOnline={isOnline}
+              singleData={singleData}
+              setTransactionModal={setTransactionModal}
+              setSingleData={setSingleData}
+              setSelectedTransaction={setSelectedTransaction}
+              acceptTransaction={acceptTransaction}
+              selectedTransaction={selectedTransaction}
+            />
+          )}
+
+          {/* Pahatod UI Customer POV */}
+
+          {pahatodModal && (
+            <PahatodCustomerView
+              serviceType={serviceType}
+              location={location}
+              setSelectedLocation={setSelectedLocation}
+              setSelectedTransaction={setSelectedTransaction}
+              selectedLocation={selectedLocation}
+              findingRider={findingRider}
+              setFindingRider={setFindingRider}
+              pahatodInputRef={pahatodInputRef}
+              handleAddTransaction={handleAddTransaction}
+              setPahatodModal={setPahatodModal}
+              mapRef={mapRef}
+              singleData={singleData}
+              distance={distance}
+              chargePerKilometer={chargePerKilometer}
+              setSingleData={setSingleData}
+              deleteTransaction={deleteTransaction}
+              completeTransaction={completeTransaction}
+              currentUser={currentUser}
+              setTransactionRemarksModal={setTransactionRemarksModal}
+              setTransactionDetailsModal={setTransactionDetailsModal}
+              setMessageModal={setMessageModal}
+              baseFare={baseFare}
+              IS_RIDER={IS_RIDER}
+            />
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start --tunnel",
+    "start-clear": "expo start --tunnel -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -33,6 +34,7 @@
     "react": "18.2.0",
     "react-native": "0.74.5",
     "react-native-gesture-handler": "~2.16.1",
+    "react-native-get-random-values": "^1.11.0",
     "react-native-google-places-autocomplete": "^2.5.6",
     "react-native-maps": "1.14.0",
     "react-native-maps-directions": "^1.9.0",
@@ -45,7 +47,8 @@
     "react-native-svg": "^15.2.0",
     "react-native-tab-view": "^3.5.2",
     "react-native-timeline-flatlist": "^0.8.0",
-    "react-native-toast-message": "^2.1.6"
+    "react-native-toast-message": "^2.1.6",
+    "react-native-typewriter": "^0.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"

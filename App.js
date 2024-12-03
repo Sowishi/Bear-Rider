@@ -14,18 +14,20 @@ import Rider from "./screen/rider";
 import Camera from "./screen/camera";
 import RiderPending from "./screen/riderPending";
 import Wallet from "./screen/wallet";
+import "react-native-get-random-values";
+import BearHome from "./screen/bear-home";
 
 export default function App() {
   const Stack = createStackNavigator();
-  const Tab = createDrawerNavigator();
-
-  function MainScreen() {
+  const Drawer = createDrawerNavigator();
+  const Tab = createMaterialTopTabNavigator();
+  function DrawerScreen() {
     return (
-      <Tab.Navigator
+      <Drawer.Navigator
         drawerContent={(props) => <User {...props} />}
         screenOptions={{ headerShown: false }}
       >
-        <Tab.Screen
+        <Drawer.Screen
           options={{
             tabBarIcon: () => <Entypo name="home" size={18} color="#001F47" />,
             tabBarShowLabel: false,
@@ -33,7 +35,7 @@ export default function App() {
           name="Home"
           component={Home}
         />
-        <Tab.Screen
+        <Drawer.Screen
           options={{
             tabBarIcon: () => <Entypo name="user" size={18} color="#001F47" />,
             tabBarShowLabel: false,
@@ -41,7 +43,7 @@ export default function App() {
           name="User"
           component={User}
         />
-        <Tab.Screen
+        <Drawer.Screen
           options={{
             tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
             tabBarShowLabel: false,
@@ -49,7 +51,7 @@ export default function App() {
           name="Notification"
           component={Notification}
         />
-        <Tab.Screen
+        <Drawer.Screen
           options={{
             tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
             tabBarShowLabel: false,
@@ -59,7 +61,7 @@ export default function App() {
           name="Rider"
           component={Rider}
         />
-        <Tab.Screen
+        <Drawer.Screen
           options={{
             tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
             tabBarShowLabel: false,
@@ -69,7 +71,7 @@ export default function App() {
           name="Wallet"
           component={Wallet}
         />
-        <Tab.Screen
+        <Drawer.Screen
           options={{
             tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
             tabBarShowLabel: false,
@@ -77,7 +79,7 @@ export default function App() {
           name="Camera"
           component={Camera}
         />
-        <Tab.Screen
+        <Drawer.Screen
           options={{
             tabBarIcon: () => <Entypo name="bell" size={18} color="#001F47" />,
             tabBarShowLabel: false,
@@ -85,6 +87,16 @@ export default function App() {
           name="RiderPending"
           component={RiderPending}
         />
+      </Drawer.Navigator>
+    );
+  }
+
+  function MainScreen() {
+    return (
+      <Tab.Navigator tabBarPosition="bottom">
+        <Tab.Screen name="Home" component={BearHome} />
+        <Tab.Screen name="User" component={User} />
+        <Tab.Screen name="Notification" component={Notification} />
       </Tab.Navigator>
     );
   }
@@ -97,6 +109,7 @@ export default function App() {
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Register} />
 
+            <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="main" component={MainScreen} />
           </Stack.Navigator>
         </NavigationContainer>

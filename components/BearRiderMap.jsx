@@ -73,6 +73,7 @@ const BearRiderMap = ({
       return null;
     }
   };
+  console.log(onlineUsers);
 
   return (
     <>

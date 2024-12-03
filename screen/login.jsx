@@ -1,11 +1,4 @@
-import {
-  Image,
-  ScrollView,
-  StatusBar,
-  Text,
-  View,
-  TextInput,
-} from "react-native";
+import { Image, ScrollView, Text, View, TextInput } from "react-native";
 import Button from "../components/button";
 import { useEffect, useState } from "react";
 import { auth, database, db } from "../firebase";
@@ -20,6 +13,7 @@ import bear1 from "../assets/bear1.png";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useGetUsers from "../hooks/useGetUsers";
 import Toast from "react-native-toast-message";
+import { StatusBar } from "expo-status-bar";
 
 const Login = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -62,7 +56,7 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar backgroundColor={"#FDC210"} style="light" />
+      <StatusBar translucent style="dark" />
       <View
         style={{
           flex: 1,
