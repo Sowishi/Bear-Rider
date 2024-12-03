@@ -23,6 +23,7 @@ import Timeline from "react-native-timeline-flatlist";
 import { dialPhone } from "../utils/dialPhone";
 import ConfirmationModal from "./confirmationModal";
 import ConfirmDelivery from "./confirmDelivery";
+import Entypo from "@expo/vector-icons/Entypo";
 
 const PahatodCustomerView = ({
   findingRider,
@@ -107,6 +108,7 @@ const PahatodCustomerView = ({
     bookLocationRef,
     setViewRiderState,
     setShowBook,
+    bookLocation,
   } = useSmokeContext();
 
   return (
@@ -177,78 +179,132 @@ const PahatodCustomerView = ({
         {!findingRider && (
           <>
             {/* Header Title */}
-            <Text
+            <View
               style={{
-                fontSize: 25,
-                color: "black",
-                fontWeight: "bold",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                marginBottom: 20,
+                width: 300,
               }}
             >
-              {serviceType == "Pahatod"
-                ? "Transportation Service"
-                : "Delivery Service"}
-            </Text>
-
-            {/* Pick up/ Delivered to of customer      */}
-            <>
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                }}
-              >
-                <Text style={{ marginBottom: 5 }}>
-                  {serviceType == "Pahatod"
-                    ? "Pick Up Location"
-                    : "Drop Off Location"}
-                </Text>
-              </View>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("bearMap");
+                  setPahatodModal(false);
+                  setSelectedLocation(null);
+                  setBookLocation(null);
                 }}
                 style={{
-                  width: "100%",
-                  backgroundColor: "#232323",
-                  paddingVertical: 15,
-                  borderRadius: 20,
+                  backgroundColor: "white",
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 2,
+                  },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+
+                  elevation: 5,
+                  padding: 10,
+                  borderRadius: 100,
+                  marginRight: 10,
+                  marginBottom: 10,
                 }}
               >
-                <Text style={{ color: "white", textAlign: "center" }}>
-                  Choose This Destination
-                </Text>
+                <AntDesign name="arrowleft" size={24} color="black" />
               </TouchableOpacity>
-            </>
+              <Text
+                style={{
+                  fontSize: 23,
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+              >
+                {serviceType == "Pahatod"
+                  ? "Transportation Service"
+                  : "Delivery Service"}
+              </Text>
+            </View>
+
+            {/* Pick up/ Delivered to of customer      */}
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("bearMap", { type: "pointA" });
+              }}
+              style={{
+                padding: 15,
+                marginTop: 15,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                }}
+              >
+                <Entypo name="location-pin" size={24} color="red" />
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                    {serviceType == "Pahatod"
+                      ? "Pick Up Location"
+                      : "Drop Off Location"}
+                  </Text>
+                  <Text style={{ fontStyle: "italic", fontSize: 13 }}>
+                    {bookLocation?.address
+                      ? bookLocation?.address
+                      : "Please select location"}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <AntDesign name="arrowright" size={24} color="black" />
+              </View>
+            </TouchableOpacity>
 
             {/* Destination/Delivery Location of customer      */}
             <>
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "flex-start",
-                }}
-              >
-                <Text style={{ marginBottom: 5 }}>
-                  {serviceType == "Pahatod"
-                    ? "Pick Up Location"
-                    : "Drop Off Location"}
-                </Text>
-              </View>
               <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("bearMap", { type: "pointB" });
+                }}
                 style={{
+                  padding: 15,
+                  marginTop: 15,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                   width: "100%",
-                  backgroundColor: "#232323",
-                  paddingVertical: 15,
-                  borderRadius: 20,
                 }}
               >
-                <Text style={{ color: "white", textAlign: "center" }}>
-                  Choose This Destination
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                  }}
+                >
+                  <Entypo name="location-pin" size={24} color="blue" />
+                  <View style={{ marginLeft: 10 }}>
+                    <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                      {serviceType == "Pahatod"
+                        ? "Drop Off Location"
+                        : "Shop To Location"}
+                    </Text>
+                    <Text style={{ fontStyle: "italic", fontSize: 13 }}>
+                      {selectedLocation?.address
+                        ? selectedLocation?.address
+                        : "Please select location"}
+                    </Text>
+                  </View>
+                </View>
+                <View>
+                  <AntDesign name="arrowright" size={24} color="black" />
+                </View>
               </TouchableOpacity>
             </>
 
@@ -261,17 +317,6 @@ const PahatodCustomerView = ({
                 marginLeft: 20,
               }}
             >
-              <Button
-                event={() => {
-                  setPahatodModal(false);
-                  setSelectedLocation(null);
-                  setBookLocation(null);
-                }}
-                width={selectedLocation ? 150 : 250}
-                style={{ marginTop: 20 }}
-                text="Close"
-                bgColor={"#00308299"}
-              />
               {selectedLocation && (
                 <Button
                   event={() => setConfirmDelivery(true)}

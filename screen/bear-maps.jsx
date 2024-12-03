@@ -1,6 +1,6 @@
 import LottieView from "lottie-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, Button } from "react-native";
+import { View, StyleSheet, Text, Button, Alert } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import maps from "../assets/maps.json";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -9,11 +9,20 @@ import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { TouchableOpacity } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { useSmokeContext } from "../utils/appContext";
 
-const BearMaps = ({ navigation }) => {
+const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
   const refRBSheet = useRef();
-
+  const { type } = route.params;
+  const {
+    setMessageInfo,
+    currentUser,
+    setBookLocation,
+    bookLocationRef,
+    setViewRiderState,
+    setShowBook,
+  } = useSmokeContext();
   const [region, setRegion] = useState({
     latitude: 14.0996,
     longitude: 122.955,
@@ -207,6 +216,15 @@ const BearMaps = ({ navigation }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
+              onPress={() => {
+                if (type == "pointA") {
+                  setBookLocation({ ...selectedLocation, address });
+                }
+                if (type == "pointB") {
+                  setLocation({ ...selectedLocation, address });
+                }
+                navigation.goBack();
+              }}
               style={{
                 width: "100%",
                 backgroundColor: "#232323",
@@ -216,7 +234,7 @@ const BearMaps = ({ navigation }) => {
               }}
             >
               <Text style={{ color: "white", textAlign: "center" }}>
-                Choose This Destination
+                {selectedLocation ? "Choose this destination" : "loading..."}
               </Text>
             </TouchableOpacity>
           </View>
