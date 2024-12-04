@@ -89,7 +89,6 @@ const BearHome = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar translucent style="light" />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         refreshControl={

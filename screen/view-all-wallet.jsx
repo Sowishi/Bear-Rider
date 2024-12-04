@@ -10,9 +10,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
 import useCrudWallet from "../hooks/useCrudWallet";
 import { useSmokeContext } from "../utils/appContext";
-import AntDesign from "@expo/vector-icons/AntDesign";
 
-const Wallet = ({ navigation }) => {
+const ViewAllWallet = ({ navigation }) => {
   const { data, getWallet, getTransactionHistory, transactionHistory } =
     useCrudWallet();
   const { currentUser } = useSmokeContext();
@@ -41,71 +40,18 @@ const Wallet = ({ navigation }) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingVertical: 50,
-        paddingHorizontal: 30,
-        backgroundColor: "white",
-      }}
-    >
-      <View style={{ flex: 1 }}>
-        <Text style={{ textAlign: "center", fontSize: 20 }}>
-          Wallet Balance:{" "}
-          <Text style={{ fontWeight: "bold", color: "#B80B00" }}>
-            ₱{data?.balance?.toLocaleString() || 0}
-          </Text>
-        </Text>
-        <LinearGradient
-          end={{ y: 0.5, x: 0.2 }}
-          style={{
-            height: 200,
-            borderRadius: 20,
-            marginTop: 20,
-            justifyContent: "space-between",
-            padding: 20,
-          }}
-          colors={["#BA1100", "#F7AF0C"]}
-        >
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 20 }}>
-            Bear Rider Wallet
-          </Text>
-          <Text style={{ color: "white", fontWeight: "bold", fontSize: 15 }}>
-            {data?.id || "N/A"}
-          </Text>
-        </LinearGradient>
-      </View>
-
+    <View style={{ flex: 1, paddingVertical: 50, paddingHorizontal: 30 }}>
       <ScrollView
-        style={{ flex: 1, marginTop: 20 }}
+        style={{ flex: 1 }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 10,
-          }}
-        >
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-            Transaction History
-          </Text>
-          <TouchableOpacity
-            onPress={viewAllTransactions}
-            style={{
-              backgroundColor: "#FEF3F7",
-              padding: 7,
-              borderRadius: 100,
-            }}
-          >
-            <AntDesign name="arrowright" size={24} color="black" />
-          </TouchableOpacity>
-        </View>
+        <Text style={{ fontSize: 30, fontWeight: "bold", marginBottom: 10 }}>
+          Transaction History
+        </Text>
         {transactionHistory?.length > 0 ? (
-          transactionHistory.slice(0, 3).map((item) => {
+          transactionHistory.map((item) => {
             const date = item.date
               ? moment(item.date.toDate()).format("LLL")
               : "...";
@@ -184,4 +130,4 @@ const Wallet = ({ navigation }) => {
   );
 };
 
-export default Wallet;
+export default ViewAllWallet;

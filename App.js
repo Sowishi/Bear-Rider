@@ -25,6 +25,7 @@ import NotificationContent from "./components/notificationContent";
 import BearUser from "./screen/bearUser";
 import SavedPlaces from "./screen/saved-places";
 import AddSavePlaces from "./screen/add-saved-places";
+import ViewAllWallet from "./screen/view-all-wallet";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -140,8 +141,16 @@ export default function App() {
         })}
       >
         <Tab.Screen name="Message" component={ConversationList} />
-        <Tab.Screen name="Home" component={BearHome} />
-        <Tab.Screen name="Wallet" component={Wallet} />
+        <Tab.Screen
+          name="Home"
+          options={{ statusBarStyle: "light" }}
+          component={BearHome}
+        />
+        <Tab.Screen
+          name="Wallet"
+          options={{ statusBarStyle: "dark" }}
+          component={Wallet}
+        />
       </Tab.Navigator>
     );
   }
@@ -189,6 +198,22 @@ export default function App() {
               }}
               name="addSavedPlaces"
               component={AddSavePlaces}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: true,
+                title: "",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#AA2D31",
+                },
+              }}
+              name="viewAllWallet"
+              component={ViewAllWallet}
             />
           </Stack.Navigator>
         </NavigationContainer>

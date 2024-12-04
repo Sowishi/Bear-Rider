@@ -12,6 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import EmptyList from "../components/emptyList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSmokeContext } from "../utils/appContext";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 const SavedPlaces = ({ navigation, route }) => {
   const [savedPlaces, setSavedPlaces] = useState([]);
@@ -85,7 +86,7 @@ const SavedPlaces = ({ navigation, route }) => {
             navigation.pop(2);
           }
         }}
-        style={{ width: 200 }}
+        style={{ width: 250 }}
       >
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.name}</Text>
         <Text style={{ fontSize: 14, color: "#555" }}>
@@ -97,11 +98,11 @@ const SavedPlaces = ({ navigation, route }) => {
           onPress={() => deletePlace(item.id)}
           style={{
             backgroundColor: "#D9534F",
-            padding: 10,
+            padding: 7,
             borderRadius: 5,
           }}
         >
-          <Text style={{ color: "white", fontSize: 12 }}>Delete</Text>
+          <AntDesign name="delete" size={15} color="white" />
         </TouchableOpacity>
       )}
     </View>

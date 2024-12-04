@@ -121,7 +121,9 @@ const AddSavedPlaces = ({ navigation }) => {
             <View style={{ marginLeft: 10, width: 200 }}>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>Location</Text>
               <Text style={{ fontStyle: "italic", fontSize: 12 }}>
-                {addSaveLocation?.address}
+                {addSaveLocation?.address
+                  ? addSaveLocation?.address
+                  : "Please select location"}
               </Text>
             </View>
           </View>
