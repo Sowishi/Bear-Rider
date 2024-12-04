@@ -171,28 +171,30 @@ const BearMaps = ({ navigation, route }) => {
               style={{ marginRight: 5 }}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("savedPlaces", { mode: "selecting", type })
-            }
-            style={{
-              backgroundColor: "white",
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
+          {(type == "pointA" || type == "pointB") && (
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("savedPlaces", { mode: "selecting", type })
+              }
+              style={{
+                backgroundColor: "white",
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
 
-              elevation: 5,
-              padding: 10,
-              borderRadius: 100,
-              marginLeft: 13,
-            }}
-          >
-            <FontAwesome6 name="map-location" size={24} color="black" />
-          </TouchableOpacity>
+                elevation: 5,
+                padding: 10,
+                borderRadius: 100,
+                marginLeft: 13,
+              }}
+            >
+              <FontAwesome6 name="map-location" size={24} color="black" />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
       <View
