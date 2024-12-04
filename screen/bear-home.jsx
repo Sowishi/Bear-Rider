@@ -73,6 +73,20 @@ const BearHome = ({ navigation }) => {
     setRefreshing(false);
   };
 
+  function greetUser() {
+    const currentHour = new Date().getHours();
+
+    if (currentHour >= 5 && currentHour < 12) {
+      return "Good Morning!";
+    } else if (currentHour >= 12 && currentHour < 17) {
+      return "Good Afternoon!";
+    } else if (currentHour >= 17 && currentHour < 21) {
+      return "Good Evening!";
+    } else {
+      return "Good Midnight!"; // For late-night hours
+    }
+  }
+
   return (
     <>
       <StatusBar translucent style="light" />
@@ -93,7 +107,7 @@ const BearHome = ({ navigation }) => {
             }}
           >
             <LinearGradient
-              colors={["rgba(0, 0, 0, 0.6)", "rgba(0, 0, 0, 0.4)"]}
+              colors={["rgba(0, 0, 0, 0.8)", "rgba(0, 0, 0, 0.4)"]}
               style={{
                 position: "absolute",
                 top: 0,
@@ -112,8 +126,11 @@ const BearHome = ({ navigation }) => {
                 paddingHorizontal: 10,
               }}
             >
-              <Text style={{ fontSize: 30, color: "white", fontWeight: "bol" }}>
-                Bear Rider Express
+              <Text
+                style={{ fontSize: 30, color: "white", fontWeight: "bold" }}
+              >
+                {greetUser()}
+                {" " + currentUser?.firstName}
               </Text>
               <Text style={{ color: "white", marginTop: 10 }}>
                 "Bear Rider Express: Your Trusted Partner for Delivery and
@@ -199,7 +216,7 @@ const BearHome = ({ navigation }) => {
                 <View
                   style={{
                     backgroundColor: "black",
-                    borderRadius: "100%",
+                    borderRadius: 100,
                     width: 30,
                     height: 30,
                     justifyContent: "center",

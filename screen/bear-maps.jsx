@@ -316,10 +316,16 @@ const BearMaps = ({ navigation, route }) => {
             <TouchableOpacity
               onPress={() => {
                 if (type == "currentLocation") {
-                  setUserLocation({
-                    ...selectedLocation,
-                    address,
-                  });
+                  if (selected == "searchLocation") {
+                    setUserLocation({
+                      ...searchLocation,
+                    });
+                  } else {
+                    setUserLocation({
+                      ...selectedLocation,
+                      address,
+                    });
+                  }
                 }
 
                 if (type == "pointA") {
