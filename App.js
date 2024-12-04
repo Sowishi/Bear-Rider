@@ -20,6 +20,7 @@ import BearMap from "./screen/bear-maps";
 import Message from "./components/message";
 import ConversationList from "./components/conversation";
 import HistoryContent from "./components/historyContent";
+import SearchLocation from "./screen/serachLocation";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -113,6 +114,7 @@ export default function App() {
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="bearMap" component={BearMap} />
+            <Stack.Screen name="searchLocation" component={SearchLocation} />
 
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="main" component={MainScreen} />

@@ -12,6 +12,8 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { useSmokeContext } from "../utils/appContext";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { set } from "firebase/database";
+import SearchLocation from "./serachLocation";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
@@ -25,7 +27,7 @@ const BearMaps = ({ navigation, route }) => {
     longitudeDelta: 0.001,
   });
 
-  const [selected, setSelected] = useState("currentLocation");
+  const [selected, setSelected] = useState("");
 
   const [selectedLocation, setSelectedLocation] = useState({
     latitude: region.latitude,
@@ -33,19 +35,9 @@ const BearMaps = ({ navigation, route }) => {
   });
 
   const [address, setAddress] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
 
   const handleRegionChangeComplete = (newRegion) => {
-    const tolerance = 0.00001; // Adjust tolerance as needed
-
-    const isMatched =
-      Math.abs(newRegion.latitude - userLocation.latitude) < tolerance &&
-      Math.abs(newRegion.longitude - userLocation.longitude) < tolerance;
-
-    if (isMatched) {
-      setSelected("currentLocation");
-    } else {
-      setSelected("selectedLocation");
-    }
     setRegion(newRegion);
     setSelectedLocation({
       latitude: newRegion.latitude,
@@ -70,8 +62,9 @@ const BearMaps = ({ navigation, route }) => {
   };
 
   const jumpToMarker = (coords) => {
+    console.log(coords);
     mapRef.current?.animateToRegion(
-      { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
+      { ...coords, latitudeDelta: 0.01, longitudeDelta: 0.001 },
       1000
     );
   };
@@ -79,6 +72,10 @@ const BearMaps = ({ navigation, route }) => {
   useEffect(() => {
     reverseGeocode(region.latitude, region.longitude);
   }, [region]);
+
+  useEffect(() => {
+    jumpToMarker(searchLocation);
+  }, [searchLocation]);
 
   return (
     <View style={styles.container}>
@@ -127,7 +124,8 @@ const BearMaps = ({ navigation, route }) => {
           >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
-          <View
+          <TouchableOpacity
+            onPress={() => refRBSheet.current.open()}
             style={{
               backgroundColor: "white",
               shadowColor: "#000",
@@ -157,7 +155,7 @@ const BearMaps = ({ navigation, route }) => {
             >
               Search Location
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
       <View
@@ -222,6 +220,50 @@ const BearMaps = ({ navigation, route }) => {
                 </View>
               </View>
             </TouchableOpacity>
+            {searchLocation && (
+              <TouchableOpacity
+                onPress={() => setSelected("searchLocation")}
+                style={{
+                  width: "100%",
+                  backgroundColor:
+                    selected == "searchLocation" ? "#EEFAFA" : "white",
+                  marginVertical: 5,
+                  paddingHorizontal: 10,
+                  paddingVertical: 10,
+                  borderRadius: 10,
+                }}
+              >
+                <View
+                  style={{
+                    width: 300,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <FontAwesome5
+                    name="search-location"
+                    size={17}
+                    color="black"
+                    style={{ marginRight: 5 }}
+                  />
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        marginLeft: 5,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Searched Location
+                    </Text>
+                    <Text style={{ fontSize: 11, marginLeft: 5 }}>
+                      {searchLocation.address}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               onPress={() => {
                 setSelected("currentLocation");
@@ -260,45 +302,38 @@ const BearMaps = ({ navigation, route }) => {
             </TouchableOpacity>
 
             <TouchableOpacity
-              onPress={() => refRBSheet.current.open()}
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginTop: 10,
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                }}
-              >
-                <View>
-                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                    Saved Places
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  backgroundColor: "#FFF5F6",
-                  padding: 5,
-                  borderRadius: 100,
-                }}
-              >
-                <AntDesign name="arrowright" size={24} color="black" />
-              </View>
-            </TouchableOpacity>
-
-            <TouchableOpacity
               onPress={() => {
                 if (type == "pointA") {
-                  setBookLocation({ ...selectedLocation, address });
+                  if (selected == "currentLocation") {
+                    setBookLocation({ ...userLocation, address });
+                  }
+                  if (selected == "searchLocation") {
+                    setBookLocation({
+                      ...searchLocation,
+                    });
+                  }
+                  if (selected == "selectedLocation") {
+                    setBookLocation({
+                      ...selectedLocation,
+                      address,
+                    });
+                  }
                 }
                 if (type == "pointB") {
-                  setDestination({ ...selectedLocation, address });
+                  if (selected == "currentLocation") {
+                    setDestination({ ...userLocation, address });
+                  }
+                  if (selected == "searchLocation") {
+                    setDestination({
+                      ...searchLocation,
+                    });
+                  }
+                  if (selected == "selectedLocation") {
+                    setDestination({
+                      ...selectedLocation,
+                      address,
+                    });
+                  }
                 }
                 navigation.goBack();
               }}
@@ -311,14 +346,14 @@ const BearMaps = ({ navigation, route }) => {
               }}
             >
               <Text style={{ color: "white", textAlign: "center" }}>
-                {selectedLocation ? "Choose this destination" : "loading..."}
+                {selectedLocation ? "Choose this location" : "loading..."}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
       <RBSheet
-        height={500}
+        height={600}
         ref={refRBSheet}
         useNativeDriver={false}
         draggable
@@ -338,7 +373,10 @@ const BearMaps = ({ navigation, route }) => {
           enabled: false,
         }}
       >
-        <Text>fkjfkd</Text>
+        <SearchLocation
+          setSearchLocation={setSearchLocation}
+          refRBSheet={refRBSheet}
+        />
       </RBSheet>
     </View>
   );
@@ -354,7 +392,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     marginLeft: -50,
-    marginTop: -120,
+    marginTop: -80,
   },
 });
 
