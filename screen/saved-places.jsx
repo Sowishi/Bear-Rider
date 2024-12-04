@@ -11,11 +11,14 @@ import React, { useState, useEffect, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
 import EmptyList from "../components/emptyList";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSmokeContext } from "../utils/appContext";
 
-const SavedPlaces = ({ navigation }) => {
+const SavedPlaces = ({ navigation, route }) => {
   const [savedPlaces, setSavedPlaces] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  const { mode = "defaultmode", type } = route.params || {};
+  const { setBookLocation, setDestination } = useSmokeContext();
   // Fetch saved places from AsyncStorage
   const fetchSavedPlaces = async () => {
     try {
@@ -71,22 +74,36 @@ const SavedPlaces = ({ navigation }) => {
         elevation: 2,
       }}
     >
-      <View style={{ width: 200 }}>
+      <TouchableOpacity
+        onPress={() => {
+          if (type == "pointA") {
+            setBookLocation(item.location);
+            navigation.pop(2);
+          }
+          if (type == "pointB") {
+            setDestination(item.location);
+            navigation.pop(2);
+          }
+        }}
+        style={{ width: 200 }}
+      >
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.name}</Text>
         <Text style={{ fontSize: 14, color: "#555" }}>
           {item.location.address}
         </Text>
-      </View>
-      <TouchableOpacity
-        onPress={() => deletePlace(item.id)}
-        style={{
-          backgroundColor: "#D9534F",
-          padding: 10,
-          borderRadius: 5,
-        }}
-      >
-        <Text style={{ color: "white", fontSize: 12 }}>Delete</Text>
       </TouchableOpacity>
+      {mode !== "selecting" && (
+        <TouchableOpacity
+          onPress={() => deletePlace(item.id)}
+          style={{
+            backgroundColor: "#D9534F",
+            padding: 10,
+            borderRadius: 5,
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 12 }}>Delete</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 
@@ -122,28 +139,30 @@ const SavedPlaces = ({ navigation }) => {
           </ScrollView>
         )}
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("addSavedPlaces");
-        }}
-        style={{
-          backgroundColor: "#AA2D31",
-          paddingVertical: 10,
-          borderRadius: 10,
-          marginTop: 10,
-        }}
-      >
-        <Text
+      {mode !== "selecting" && (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("addSavedPlaces");
+          }}
           style={{
-            textAlign: "center",
-            color: "white",
-            fontSize: 20,
-            fontWeight: "bold",
+            backgroundColor: "#AA2D31",
+            paddingVertical: 10,
+            borderRadius: 10,
+            marginTop: 10,
           }}
         >
-          Add a new place
-        </Text>
-      </TouchableOpacity>
+          <Text
+            style={{
+              textAlign: "center",
+              color: "white",
+              fontSize: 20,
+              fontWeight: "bold",
+            }}
+          >
+            Add a new place
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };

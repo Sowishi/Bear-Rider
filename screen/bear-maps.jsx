@@ -15,6 +15,7 @@ import { set } from "firebase/database";
 import SearchLocation from "./serachLocation";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { retroMapStyle } from "../utils/retroMapStyle";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 
 const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
@@ -169,6 +170,28 @@ const BearMaps = ({ navigation, route }) => {
               color="black"
               style={{ marginRight: 5 }}
             />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("savedPlaces", { mode: "selecting", type })
+            }
+            style={{
+              backgroundColor: "white",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+              padding: 10,
+              borderRadius: 100,
+              marginLeft: 13,
+            }}
+          >
+            <FontAwesome6 name="map-location" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </View>

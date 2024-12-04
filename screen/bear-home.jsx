@@ -276,10 +276,6 @@ const BearHome = ({ navigation }) => {
                 <AntDesign name="arrowright" size={24} color="black" />
               </View>
             </TouchableOpacity>
-
-            <View
-              style={{ borderWidth: 1, paddingHorizontal: 20, marginTop: 10 }}
-            ></View>
           </View>
         </View>
       </ScrollView>
