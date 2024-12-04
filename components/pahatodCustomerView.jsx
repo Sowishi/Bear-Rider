@@ -246,6 +246,7 @@ const PahatodCustomerView = ({
                   flexDirection: "row",
                   justifyContent: "flex-start",
                   alignItems: "center",
+                  width: 200,
                 }}
               >
                 <Entypo name="location-pin" size={24} color="red" />
@@ -262,7 +263,13 @@ const PahatodCustomerView = ({
                   </Text>
                 </View>
               </View>
-              <View>
+              <View
+                style={{
+                  backgroundColor: "#FFF5F6",
+                  padding: 10,
+                  borderRadius: 100,
+                }}
+              >
                 <AntDesign name="arrowright" size={24} color="black" />
               </View>
             </TouchableOpacity>
@@ -287,6 +294,8 @@ const PahatodCustomerView = ({
                     flexDirection: "row",
                     justifyContent: "flex-start",
                     alignItems: "center",
+                    width: 200,
+                    overflow: "hidden",
                   }}
                 >
                   <Entypo name="location-pin" size={24} color="black" />
@@ -303,7 +312,13 @@ const PahatodCustomerView = ({
                     </Text>
                   </View>
                 </View>
-                <View>
+                <View
+                  style={{
+                    backgroundColor: "#FFF5F6",
+                    padding: 10,
+                    borderRadius: 100,
+                  }}
+                >
                   <AntDesign name="arrowright" size={24} color="black" />
                 </View>
               </TouchableOpacity>

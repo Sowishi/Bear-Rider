@@ -133,7 +133,7 @@ const Rider = ({ navigation }) => {
     return (
       <View style={{ flex: 1, backgroundColor: "white" }}>
         {loading && <Loader title="Uploading you documents, please wait..." />}
-        <StatusBar backgroundColor={"white"} style="dark" />
+        <StatusBar translucent style="dark" />
 
         <ScrollView
           style={{
@@ -499,7 +499,7 @@ const Rider = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       {loading && <Loader title="Uploading you documents, please wait..." />}
-      <StatusBar backgroundColor={"white"} style="dark" />
+      <StatusBar translucent style="dark" />
 
       <View
         style={{ flex: 0.2, justifyContent: "center", alignItems: "center" }}

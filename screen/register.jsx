@@ -114,7 +114,7 @@ const Register = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar backgroundColor={"white"} style="dark" />
+      <StatusBar translucent style="dark" />
       <View
         style={{ flex: 0.5, justifyContent: "center", alignItems: "center" }}
       >

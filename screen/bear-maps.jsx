@@ -10,6 +10,8 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { TouchableOpacity } from "react-native";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useSmokeContext } from "../utils/appContext";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { set } from "firebase/database";
 
 const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
@@ -23,6 +25,8 @@ const BearMaps = ({ navigation, route }) => {
     longitudeDelta: 0.001,
   });
 
+  const [selected, setSelected] = useState("currentLocation");
+
   const [selectedLocation, setSelectedLocation] = useState({
     latitude: region.latitude,
     longitude: region.longitude,
@@ -31,6 +35,17 @@ const BearMaps = ({ navigation, route }) => {
   const [address, setAddress] = useState("");
 
   const handleRegionChangeComplete = (newRegion) => {
+    const tolerance = 0.00001; // Adjust tolerance as needed
+
+    const isMatched =
+      Math.abs(newRegion.latitude - userLocation.latitude) < tolerance &&
+      Math.abs(newRegion.longitude - userLocation.longitude) < tolerance;
+
+    if (isMatched) {
+      setSelected("currentLocation");
+    } else {
+      setSelected("selectedLocation");
+    }
     setRegion(newRegion);
     setSelectedLocation({
       latitude: newRegion.latitude,
@@ -52,6 +67,13 @@ const BearMaps = ({ navigation, route }) => {
       console.error(error);
       return null;
     }
+  };
+
+  const jumpToMarker = (coords) => {
+    mapRef.current?.animateToRegion(
+      { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
+      1000
+    );
   };
 
   useEffect(() => {
@@ -110,7 +132,7 @@ const BearMaps = ({ navigation, route }) => {
         style={{
           position: "absolute",
           bottom: 0,
-          height: 280,
+          minHeight: 280,
           backgroundColor: "white",
           width: "100%",
           borderTopLeftRadius: 50,
@@ -137,43 +159,73 @@ const BearMaps = ({ navigation, route }) => {
                 style={{ height: 5, width: 100, backgroundColor: "gray" }}
               ></View>
             </View>
-            <View
+            <TouchableOpacity
+              onPress={() => setSelected("selectedLocation")}
               style={{
-                width: 300,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "flex-start",
+                width: "100%",
+                backgroundColor:
+                  selected == "selectedLocation" ? "#EEFAFA" : "white",
+                marginVertical: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                borderRadius: 10,
               }}
             >
-              <Entypo name="location-pin" size={24} color="red" />
-              <View>
-                <Text
-                  style={{ fontSize: 15, marginLeft: 5, fontWeight: "bold" }}
-                >
-                  Selected Location
-                </Text>
-                <Text style={{ fontSize: 13, marginLeft: 5 }}>{address}</Text>
+              <View
+                style={{
+                  width: 300,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <Entypo name="location-pin" size={20} color="red" />
+                <View>
+                  <Text
+                    style={{ fontSize: 13, marginLeft: 5, fontWeight: "bold" }}
+                  >
+                    Selected Location
+                  </Text>
+                  <Text style={{ fontSize: 11, marginLeft: 5 }}>{address}</Text>
+                </View>
               </View>
-            </View>
-            <View
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setSelected("currentLocation");
+                jumpToMarker(userLocation);
+              }}
               style={{
-                width: 300,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                marginTop: 10,
+                width: "100%",
+                backgroundColor:
+                  selected == "currentLocation" ? "#EEFAFA" : "white",
+                marginVertical: 5,
+                paddingHorizontal: 10,
+                paddingVertical: 10,
+                borderRadius: 10,
               }}
             >
-              <Entypo name="location-pin" size={24} color="black" />
-              <View>
-                <Text
-                  style={{ fontSize: 15, marginLeft: 5, fontWeight: "bold" }}
-                >
-                  Current Location
-                </Text>
-                <Text style={{ fontSize: 13, marginLeft: 5 }}>{address}</Text>
+              <View
+                style={{
+                  width: 300,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <MaterialIcons name="my-location" size={20} color="black" />
+                <View>
+                  <Text
+                    style={{ fontSize: 13, marginLeft: 5, fontWeight: "bold" }}
+                  >
+                    Current Location
+                  </Text>
+                  <Text style={{ fontSize: 11, marginLeft: 5 }}>
+                    {userLocation.address}
+                  </Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
 
             <TouchableOpacity
               onPress={() => refRBSheet.current.open()}
@@ -270,7 +322,7 @@ const styles = StyleSheet.create({
     top: "50%",
     left: "50%",
     marginLeft: -50,
-    marginTop: -80,
+    marginTop: -120,
   },
 });
 
