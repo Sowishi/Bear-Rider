@@ -21,6 +21,8 @@ import Message from "./components/message";
 import ConversationList from "./components/conversation";
 import HistoryContent from "./components/historyContent";
 import SearchLocation from "./screen/serachLocation";
+import NotificationContent from "./components/notificationContent";
+import BearUser from "./screen/bearUser";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -97,11 +99,49 @@ export default function App() {
 
   function MainScreen() {
     return (
-      <Tab.Navigator tabBarPosition="bottom">
-        <Tab.Screen name="Home" component={BearHome} />
-        <Tab.Screen name="Message" component={ConversationList} />
+      <Tab.Navigator
+        initialRouteName="Home"
+        tabBarPosition="bottom"
+        screenOptions={({ route }) => ({
+          tabBarIndicatorStyle: {
+            backgroundColor: "yellow",
+          },
+          tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
 
+            if (route.name === "Home") {
+              iconName = "home";
+            } else if (route.name === "Message") {
+              iconName = "chat";
+            } else if (route.name === "Wallet") {
+              iconName = "wallet";
+            } else if (route.name === "Notification") {
+              iconName = "bell";
+            } else if (route.name === "User") {
+              iconName = "user";
+            }
+
+            return (
+              <Entypo name={iconName} size={focused ? 25 : 20} color={color} />
+            );
+          },
+          tabBarShowLabel: false, // Hide tab labels
+          tabBarActiveTintColor: "white", // Active tab color
+          tabBarInactiveTintColor: "gray", // Inactive tab color
+          tabBarStyle: {
+            marginBottom: 20,
+            marginHorizontal: 10,
+            borderRadius: 10,
+            paddingVertical: 5,
+            backgroundColor: "#7C0000",
+          },
+        })}
+      >
+        <Tab.Screen name="Notification" component={NotificationContent} />
+        <Tab.Screen name="Message" component={ConversationList} />
+        <Tab.Screen name="Home" component={BearHome} />
         <Tab.Screen name="Wallet" component={Wallet} />
+        <Tab.Screen name="User" component={BearUser} />
       </Tab.Navigator>
     );
   }

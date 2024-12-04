@@ -15,7 +15,7 @@ const NotificationContent = () => {
     }
   });
   return (
-    <>
+    <View style={{ flex: 1, paddingVertical: 70 }}>
       <Text style={{ fontWeight: "bold", fontSize: 20, textAlign: "center" }}>
         Notification
       </Text>
@@ -59,7 +59,7 @@ const NotificationContent = () => {
         })}
         {filterData.length <= 0 && <EmptyList title={"No Notification yet"} />}
       </ScrollView>
-    </>
+    </View>
   );
 };
 
