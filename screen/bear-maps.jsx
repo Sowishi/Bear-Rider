@@ -15,20 +15,12 @@ const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
   const refRBSheet = useRef();
   const { type } = route.params;
-  const {
-    setMessageInfo,
-    currentUser,
-    setBookLocation,
-    bookLocationRef,
-    setViewRiderState,
-    setShowBook,
-    setDestination,
-  } = useSmokeContext();
+  const { setBookLocation, setDestination, userLocation } = useSmokeContext();
   const [region, setRegion] = useState({
-    latitude: 14.0996,
-    longitude: 122.955,
-    latitudeDelta: 0.3,
-    longitudeDelta: 0.5,
+    latitude: userLocation.latitude,
+    longitude: userLocation.longitude,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.001,
   });
 
   const [selectedLocation, setSelectedLocation] = useState({

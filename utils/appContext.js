@@ -21,8 +21,7 @@ export const MyProvider = ({ children }) => {
     receiver: "",
     sender: "",
   });
-  const [bookLocation, setBookLocation] = useState();
-  const [destination, setDestination] = useState();
+
   const [viewRiderState, setViewRiderState] = useState(false);
   const [showRiderBubble, setShowRiderBubble] = useState(false);
   const [messageUserInfo, setMessageUserInfo] = useState();
@@ -32,6 +31,10 @@ export const MyProvider = ({ children }) => {
   const [storeName, setStoreName] = useState("");
   const [sumModal, setSumModal] = useState(false);
   const [sumInfo, setSumInfo] = useState();
+
+  const [bookLocation, setBookLocation] = useState();
+  const [destination, setDestination] = useState();
+  const [userLocation, setUserLocation] = useState();
 
   return (
     <MyContext.Provider
@@ -87,6 +90,8 @@ export const MyProvider = ({ children }) => {
         sumInfo,
         destination,
         setDestination,
+        userLocation,
+        setUserLocation,
       }}
     >
       {children}

@@ -92,6 +92,7 @@ const Home = ({ route, navigation }) => {
     setSumModal,
     sumModal,
     destination,
+    setUserLocation,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -256,6 +257,7 @@ const Home = ({ route, navigation }) => {
     const address = await reverseGeocode(lat, long);
 
     setLocation({ latitude: lat, longitude: long, address });
+    setUserLocation({ latitude: lat, longitude: long, address });
   };
 
   const handleAddTransaction = async () => {

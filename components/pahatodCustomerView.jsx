@@ -289,7 +289,7 @@ const PahatodCustomerView = ({
                     alignItems: "center",
                   }}
                 >
-                  <Entypo name="location-pin" size={24} color="blue" />
+                  <Entypo name="location-pin" size={24} color="black" />
                   <View style={{ marginLeft: 10 }}>
                     <Text style={{ fontWeight: "bold", fontSize: 16 }}>
                       {serviceType == "Pahatod"
@@ -319,13 +319,22 @@ const PahatodCustomerView = ({
               }}
             >
               {destination && (
-                <Button
-                  event={() => setConfirmDelivery(true)}
-                  width={150}
-                  style={{ marginTop: 20 }}
-                  text="Continue"
-                  bgColor={"#B80B00"}
-                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setConfirmDelivery(true);
+                  }}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#232323",
+                    paddingVertical: 15,
+                    marginTop: 20,
+                    borderRadius: 20,
+                  }}
+                >
+                  <Text style={{ color: "white", textAlign: "center" }}>
+                    Continue
+                  </Text>
+                </TouchableOpacity>
               )}
             </View>
           </>
