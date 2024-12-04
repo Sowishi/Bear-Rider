@@ -4,10 +4,10 @@ import { StatusBar } from "expo-status-bar";
 import EmptyList from "../components/emptyList";
 import { TouchableOpacity } from "react-native";
 
-const SavedPlaces = () => {
+const SavedPlaces = ({ navigation }) => {
   return (
     <View style={{ flex: 1, padding: 20 }}>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
 
       <Text style={{ fontSize: 30, fontWeight: "bold" }}>Saved Places</Text>
       <Text>Start adding your saved places to access them faster.</Text>
@@ -22,6 +22,9 @@ const SavedPlaces = () => {
         <EmptyList title={"There's no saved places yet"} />
       </View>
       <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("addSavedPlaces");
+        }}
         style={{
           backgroundColor: "#AA2D31",
           paddingVertical: 10,
