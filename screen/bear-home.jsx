@@ -16,6 +16,9 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import BearTypes from "../components/bearType";
 import { useSmokeContext } from "../utils/appContext";
 import * as Location from "expo-location";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Octicons from "@expo/vector-icons/Octicons";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const BearHome = ({ navigation }) => {
   const { setUserLocation, currentUser, userLocation } = useSmokeContext();
@@ -125,7 +128,7 @@ const BearHome = ({ navigation }) => {
                   justifyContent: "center",
                   paddingHorizontal: 10,
                   paddingVertical: 5,
-                  borderRadius: 10,
+                  borderRadius: 5,
                   marginTop: 10,
                 }}
               >
@@ -160,11 +163,16 @@ const BearHome = ({ navigation }) => {
                   paddingHorizontal: 10,
                   paddingVertical: 13,
                   marginHorizontal: 20,
-                  borderRadius: 10,
+                  borderRadius: 5,
                   marginTop: -30,
                 }}
               >
-                <Entypo name="location-pin" size={24} color="red" />
+                <FontAwesome
+                  name="dot-circle-o"
+                  size={24}
+                  color="red"
+                  style={{ marginRight: 5 }}
+                />
                 <BearTypes />
               </View>
             </View>
@@ -188,10 +196,21 @@ const BearHome = ({ navigation }) => {
                   width: 240,
                 }}
               >
-                <AntDesign name="pushpin" size={24} color="black" />
+                <View
+                  style={{
+                    backgroundColor: "black",
+                    borderRadius: "100%",
+                    width: 30,
+                    height: 30,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Entypo name="location-pin" size={20} color="white" />
+                </View>
                 <View style={{ marginLeft: 10 }}>
                   <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                    Current Location
+                    Pin Location
                   </Text>
                   <Text style={{ fontStyle: "italic", fontSize: 12 }}>
                     {userLocation ? userLocation.address : "fetching"}
