@@ -4,13 +4,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
-const SearchLocation = ({
-  navigation,
-  refRBSheet,
-  handleRegionChangeComplete,
-  setSelectedLocation,
-  setSearchLocation,
-}) => {
+const SearchLocation = ({ refRBSheet, setSearchLocation, setSelected }) => {
   const searchRef = useRef();
 
   useEffect(() => {
@@ -46,6 +40,7 @@ const SearchLocation = ({
               longitude: lng,
               address: data.description,
             });
+            setSelected("searchLocation");
             refRBSheet.current.close();
           }
         }}

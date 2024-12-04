@@ -14,6 +14,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { set } from "firebase/database";
 import SearchLocation from "./serachLocation";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { retroMapStyle } from "../utils/retroMapStyle";
 
 const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
@@ -80,6 +81,7 @@ const BearMaps = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <MapView
+        customMapStyle={retroMapStyle}
         ref={mapRef}
         style={StyleSheet.absoluteFillObject}
         initialRegion={region}
@@ -155,6 +157,12 @@ const BearMaps = ({ navigation, route }) => {
             >
               Search Location
             </Text>
+            <FontAwesome5
+              name="search-location"
+              size={17}
+              color="black"
+              style={{ marginRight: 5 }}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -222,7 +230,10 @@ const BearMaps = ({ navigation, route }) => {
             </TouchableOpacity>
             {searchLocation && (
               <TouchableOpacity
-                onPress={() => setSelected("searchLocation")}
+                onPress={() => {
+                  setSelected("searchLocation");
+                  jumpToMarker(searchLocation);
+                }}
                 style={{
                   width: "100%",
                   backgroundColor:
@@ -339,13 +350,21 @@ const BearMaps = ({ navigation, route }) => {
               }}
               style={{
                 width: "100%",
-                backgroundColor: "#232323",
+                backgroundColor: selected.length >= 1 ? "#B80B00" : "#B80B0099",
                 paddingVertical: 15,
                 marginTop: 20,
                 borderRadius: 20,
               }}
+              disabled={selected.length <= 0}
             >
-              <Text style={{ color: "white", textAlign: "center" }}>
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: 18,
+                }}
+              >
                 {selectedLocation ? "Choose this location" : "loading..."}
               </Text>
             </TouchableOpacity>
@@ -374,6 +393,7 @@ const BearMaps = ({ navigation, route }) => {
         }}
       >
         <SearchLocation
+          setSelected={setSelected}
           setSearchLocation={setSearchLocation}
           refRBSheet={refRBSheet}
         />

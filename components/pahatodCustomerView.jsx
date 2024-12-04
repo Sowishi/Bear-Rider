@@ -7,10 +7,9 @@ import {
   ScrollView,
 } from "react-native";
 import Button from "./button";
-import { AntDesign, FontAwesome } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import * as Location from "expo-location";
 import LottieView from "lottie-react-native";
 import Toast from "react-native-toast-message";
@@ -50,28 +49,6 @@ const PahatodCustomerView = ({
   IS_RIDER,
   navigation,
 }) => {
-  const reverseGeocode = async (latitude, longitude) => {
-    try {
-      const geocode = await Location.reverseGeocodeAsync({
-        latitude,
-        longitude,
-      });
-      if (geocode.length > 0) {
-        const address = `${geocode[0].street}, ${geocode[0].city}, ${geocode[0].region}, ${geocode[0].postalCode}, ${geocode[0].country}`;
-        return address;
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
-  };
-  const jumpToMarker = (coords) => {
-    mapRef.current?.animateToRegion(
-      { ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 },
-      1000
-    );
-  };
-
   useEffect(() => {
     pahatodInputRef.current?.setAddressText("Camarines Norte: ");
     bookLocationRef.current?.setAddressText("Camarines Norte: ");
@@ -340,13 +317,20 @@ const PahatodCustomerView = ({
                   }}
                   style={{
                     width: "100%",
-                    backgroundColor: "#232323",
+                    backgroundColor: "#B80B00",
                     paddingVertical: 15,
                     marginTop: 20,
                     borderRadius: 20,
                   }}
                 >
-                  <Text style={{ color: "white", textAlign: "center" }}>
+                  <Text
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: 18,
+                    }}
+                  >
                     Continue
                   </Text>
                 </TouchableOpacity>

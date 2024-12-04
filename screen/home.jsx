@@ -328,8 +328,8 @@ const Home = ({ route, navigation }) => {
         >
           <LottieView
             autoPlay
-            style={{ width: 300, height: 300 }}
-            source={require("../assets/detect.json")}
+            style={{ width: 200, height: 200 }}
+            source={require("../assets/maps.json")}
           />
         </View>
       )}
