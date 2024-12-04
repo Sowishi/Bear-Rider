@@ -1,6 +1,6 @@
 import LottieView from "lottie-react-native";
 import React, { useEffect, useRef, useState } from "react";
-import { View, StyleSheet, Text, Button, Alert } from "react-native";
+import { View, StyleSheet, Text, Button, Alert, Image } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import maps from "../assets/maps.json";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -103,6 +103,7 @@ const BearMaps = ({ navigation, route }) => {
             alignItems: "center",
             width: "100%",
             paddingHorizontal: 20,
+            flexDirection: "row",
           }}
         >
           <TouchableOpacity
@@ -126,6 +127,37 @@ const BearMaps = ({ navigation, route }) => {
           >
             <AntDesign name="arrowleft" size={24} color="black" />
           </TouchableOpacity>
+          <View
+            style={{
+              backgroundColor: "white",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.25,
+              shadowRadius: 3.84,
+
+              elevation: 5,
+              padding: 10,
+              borderRadius: 100,
+              marginLeft: 10,
+              flex: 1,
+              paddingVertical: 13,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                textAlign: "left",
+                fontWeight: "bold",
+                paddingHorizontal: 10,
+              }}
+            >
+              Search Location
+            </Text>
+          </View>
         </View>
       </View>
       <View
