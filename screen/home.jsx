@@ -92,7 +92,7 @@ const Home = ({ route, navigation }) => {
     setSumModal,
     sumModal,
     destination,
-    setUserLocation,
+    userLocation,
   } = useSmokeContext();
   const {
     addTransaction,
@@ -111,23 +111,6 @@ const Home = ({ route, navigation }) => {
   const chargePerKilometer = 10;
   const baseFare = 30;
   const IS_RIDER = currentUser?.role;
-
-  // Request Permission and Get location
-  useEffect(() => {
-    setMapLoading(true);
-    googlePlacesRef.current?.setAddressText("Daet Camarines Norte");
-    handleLocationRequestAndPermission();
-
-    if (currentUser.role == "Rider") {
-      if (currentUser.riderStatus == "Pending") {
-        navigation.navigate("RiderPending");
-      }
-    }
-
-    setTimeout(() => {
-      setMapLoading(false);
-    }, 3000);
-  }, []);
 
   // Handle Disable Back Button
   useEffect(() => {
@@ -242,24 +225,6 @@ const Home = ({ route, navigation }) => {
     setAppState(nextAppState); // Update the current state
   };
 
-  const handleLocationRequestAndPermission = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== "granted") {
-      setErrorMsg("Permission to access location was denied");
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-
-    const lat = location?.coords.latitude;
-    const long = location?.coords.longitude;
-
-    const address = await reverseGeocode(lat, long);
-
-    setLocation({ latitude: lat, longitude: long, address });
-    setUserLocation({ latitude: lat, longitude: long, address });
-  };
-
   const handleAddTransaction = async () => {
     if (bookLocation && destination) {
       const transaction = {
@@ -290,23 +255,6 @@ const Home = ({ route, navigation }) => {
         type: "info",
         text1: "Please select drop off location",
       });
-    }
-  };
-
-  //Components
-  const reverseGeocode = async (latitude, longitude) => {
-    try {
-      const geocode = await Location.reverseGeocodeAsync({
-        latitude,
-        longitude,
-      });
-      if (geocode.length > 0) {
-        const address = `${geocode[0].street}, ${geocode[0].city}, ${geocode[0].region}, ${geocode[0].postalCode}, ${geocode[0].country}`;
-        return address;
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
     }
   };
 
@@ -496,59 +444,29 @@ const Home = ({ route, navigation }) => {
         {/* {IS_RIDER && <PopupModal visible={false} />} */}
 
         <View style={{ flex: 1, position: "relative" }}>
-          {/* {(selectedLocation || bookLocation) && (
-          <View
-            style={{
-              position: "absolute",
-              width: "100%",
-              top: 100,
-              left: 0,
-              zIndex: 5,
-              backgroundColor: "#00308299",
-              paddingVertical: 5,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: "center",
-                fontSize: 15,
-                fontStyle: "italic",
-                color: "white",
-              }}
-            >
-              You can drag the pin to your destined location
-            </Text>
-          </View>
-        )} */}
-          {/* Maps View */}
-          {location && (
-            <BearRiderMap
-              mapRef={mapRef}
-              location={location}
-              selectedLocation={selectedLocation}
-              setSelectedLocation={setSelectedLocation}
-              selectedTransaction={selectedTransaction}
-              isOnline={isOnline}
-              IS_RIDER={IS_RIDER}
-              singleData={singleData}
-              pahatodInputRef={pahatodInputRef}
-            />
-          )}
+          <BearRiderMap
+            mapRef={mapRef}
+            location={userLocation}
+            selectedLocation={selectedLocation}
+            setSelectedLocation={setSelectedLocation}
+            selectedTransaction={selectedTransaction}
+            isOnline={isOnline}
+            IS_RIDER={IS_RIDER}
+            singleData={singleData}
+            pahatodInputRef={pahatodInputRef}
+          />
 
           {/* App Header */}
 
-          {location && (
-            <MapHeader
-              IS_RIDER={IS_RIDER}
-              location={location}
-              mapRef={mapRef}
-              navigation={navigation}
-              isOnline={isOnline}
-              setIsOnline={setIsOnline}
-              setNoficationModal={setNotificationModal}
-            />
-          )}
-
+          <MapHeader
+            IS_RIDER={IS_RIDER}
+            location={userLocation}
+            mapRef={mapRef}
+            navigation={navigation}
+            isOnline={isOnline}
+            setIsOnline={setIsOnline}
+            setNoficationModal={setNotificationModal}
+          />
           {/* Pick a service Button Customer*/}
           {!pahatodModal && !IS_RIDER && showBook && (
             <PickServiceButton

@@ -20,7 +20,8 @@ const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
   const refRBSheet = useRef();
   const { type } = route.params;
-  const { setBookLocation, setDestination, userLocation } = useSmokeContext();
+  const { setBookLocation, setDestination, userLocation, setUserLocation } =
+    useSmokeContext();
   const [region, setRegion] = useState({
     latitude: userLocation.latitude,
     longitude: userLocation.longitude,
@@ -314,6 +315,13 @@ const BearMaps = ({ navigation, route }) => {
 
             <TouchableOpacity
               onPress={() => {
+                if (type == "currentLocation") {
+                  setUserLocation({
+                    ...selectedLocation,
+                    address,
+                  });
+                }
+
                 if (type == "pointA") {
                   if (selected == "currentLocation") {
                     setBookLocation({ ...userLocation, address });

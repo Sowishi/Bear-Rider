@@ -4,7 +4,7 @@ import TypeWriter from "react-native-typewriter";
 
 const BearTypes = () => {
   const phrases = [
-    "Transportation?",
+    "Where to?",
     "Delivery?",
     "We got you!",
     "Bear Rider Express.",
@@ -37,7 +37,7 @@ const BearTypes = () => {
       typing={isTyping}
       maxDelay={100}
       minDelay={50}
-      style={{ fontSize: 30, color: "white", fontWeight: "bold" }}
+      style={{ fontSize: 23, color: "black" }}
     >
       {text}
     </TypeWriter>

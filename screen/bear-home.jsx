@@ -1,242 +1,211 @@
-import { View, Text, ImageBackground } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import TypeWriter from "react-native-typewriter";
-import { LinearGradient } from "expo-linear-gradient"; // Import LinearGradient
-import bg1 from "../assets/bg1.jpg";
+import { LinearGradient } from "expo-linear-gradient";
+import bg1 from "../assets/bear1.png";
 import Entypo from "@expo/vector-icons/Entypo";
 import { TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import BearTypes from "../components/bearType";
+import { useSmokeContext } from "../utils/appContext";
+import * as Location from "expo-location";
 
 const BearHome = ({ navigation }) => {
+  const { setUserLocation, currentUser, userLocation } = useSmokeContext();
+  const [refreshing, setRefreshing] = useState(false); // State for refreshing
+
+  useEffect(() => {
+    handleLocationRequestAndPermission();
+
+    if (currentUser.role === "Rider" && currentUser.riderStatus === "Pending") {
+      navigation.navigate("RiderPending");
+    }
+  }, []);
+
+  const handleLocationRequestAndPermission = async () => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.error("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      const lat = location?.coords.latitude;
+      const long = location?.coords.longitude;
+      const address = await reverseGeocode(lat, long);
+
+      setUserLocation({ latitude: lat, longitude: long, address });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const reverseGeocode = async (latitude, longitude) => {
+    try {
+      const geocode = await Location.reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+      if (geocode.length > 0) {
+        const address = `${geocode[0].street}, ${geocode[0].city}, ${geocode[0].region}, ${geocode[0].postalCode}, ${geocode[0].country}`;
+        return address;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await handleLocationRequestAndPermission(); // Re-fetch location
+    setRefreshing(false);
+  };
+
   return (
     <>
       <StatusBar translucent style="light" />
-
-      <View style={{ flex: 1 }}>
-        <ImageBackground
-          source={bg1}
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {/* Linear Gradient Overlay */}
-          <LinearGradient
-            colors={["rgba(0, 0, 0, 0.3)", "rgba(0, 0, 0, 0.2)"]} // Dark gradient overlay
-            style={{
-              position: "absolute", // Ensure gradient is on top of the image
-              top: 0,
-              bottom: 0,
-              left: 0,
-              right: 0,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          />
-
-          <View
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={{ flex: 1 }}>
+          <ImageBackground
+            source={bg1}
             style={{
               flex: 1,
               justifyContent: "center",
-              alignItems: "flex-start",
-              paddingHorizontal: 10,
+              alignItems: "center",
+              backgroundPostion: "center",
             }}
           >
-            <BearTypes />
-            <Text style={{ color: "white", marginTop: 10 }}>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-              Necessitatibus, quaerat!
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("drawer");
-              }}
+            <LinearGradient
+              colors={["rgba(0, 0, 0, 0.6)", "rgba(0, 0, 0, 0.4)"]}
               style={{
-                backgroundColor: "white",
-                flexDirection: "row",
-                alignItems: "center",
+                position: "absolute",
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
                 justifyContent: "center",
+                alignItems: "center",
+              }}
+            />
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "flex-start",
                 paddingHorizontal: 10,
-                paddingVertical: 5,
-                borderRadius: 10,
-                marginTop: 10,
               }}
             >
-              <Text
+              <Text style={{ fontSize: 30, color: "white", fontWeight: "bol" }}>
+                Bear Rider Express
+              </Text>
+              <Text style={{ color: "white", marginTop: 10 }}>
+                "Bear Rider Express: Your Trusted Partner for Delivery and
+                Transportation in Daet, Camarines Norte!"
+              </Text>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("drawer")}
                 style={{
-                  color: "#AA2D31",
-                  fontSize: 23,
-                  fontWeight: "bold",
-                  marginRight: 5,
+                  backgroundColor: "white",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  borderRadius: 10,
+                  marginTop: 10,
                 }}
               >
-                Map
-              </Text>
-              <Entypo name="map" size={24} color="#AA2D31" />
-            </TouchableOpacity>
-          </View>
-        </ImageBackground>
-
-        <View style={{ flex: 1.5, backgroundColor: "white" }}>
-          <View>
-            <View
-              style={{
-                backgroundColor: "white",
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                paddingHorizontal: 10,
-                paddingVertical: 13,
-                marginHorizontal: 20,
-                borderRadius: 10,
-                marginTop: -30,
-              }}
-            >
-              <Entypo name="location-pin" size={24} color="red" />
-              <Text style={{ fontSize: 23 }}>Where To?</Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={{
-              padding: 15,
-              marginTop: 15,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <AntDesign name="pushpin" size={24} color="black" />
-              <View style={{ marginLeft: 10 }}>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                  Current Location
+                <Text
+                  style={{
+                    color: "#AA2D31",
+                    fontSize: 23,
+                    fontWeight: "bold",
+                    marginRight: 5,
+                  }}
+                >
+                  Map
                 </Text>
-                <Text style={{ fontStyle: "italic", fontSize: 13 }}>
-                  Moreno Integarated School
-                </Text>
-              </View>
+                <Entypo name="map" size={24} color="#AA2D31" />
+              </TouchableOpacity>
             </View>
+          </ImageBackground>
+
+          <View style={{ flex: 1.5, backgroundColor: "white" }}>
             <View>
-              <AntDesign name="arrowright" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              padding: 15,
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-              }}
-            >
-              <View style={{ marginLeft: 10 }}>
-                <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                  Ride/Deliver to saved places
-                </Text>
+              <View
+                style={{
+                  backgroundColor: "white",
+                  shadowColor: "#000",
+                  shadowOffset: { width: 0, height: 2 },
+                  shadowOpacity: 0.25,
+                  shadowRadius: 3.84,
+                  elevation: 5,
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  paddingHorizontal: 10,
+                  paddingVertical: 13,
+                  marginHorizontal: 20,
+                  borderRadius: 10,
+                  marginTop: -30,
+                }}
+              >
+                <Entypo name="location-pin" size={24} color="red" />
+                <BearTypes />
               </View>
             </View>
-            <View
+            <TouchableOpacity
               style={{
-                backgroundColor: "#FFF5F6",
-                padding: 5,
-                borderRadius: 100,
-              }}
-            >
-              <AntDesign name="arrowright" size={24} color="black" />
-            </View>
-          </TouchableOpacity>
-          <View
-            style={{
-              flexDirection: "row", // Arrange children in a row
-              flexWrap: "wrap", // Allow items to wrap if necessary
-              justifyContent: "space-between",
-              alignItems: "center", // Distribute columns evenly
-              padding: 10,
-            }}
-          >
-            <View
-              style={{
-                width: "30%",
-                borderRadius: 5,
-                backgroundColor: "#FFF5F6",
-                padding: 5,
-                margin: 5,
+                padding: 15,
+                marginTop: 15,
+                flexDirection: "row",
+                justifyContent: "space-between",
                 alignItems: "center",
-                justifyContent: "center",
               }}
+              onPress={() =>
+                navigation.navigate("bearMap", { type: "currentLocation" })
+              }
             >
-              <Entypo name="home" size={24} color="#A22B2F" />
-              <Text>Home</Text>
-            </View>
-            <View
-              style={{
-                width: "30%",
-                borderRadius: 5,
-                backgroundColor: "#FFF5F6",
-                padding: 5,
-                margin: 5,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Entypo name="home" size={24} color="#A22B2F" />
-              <Text>Home</Text>
-            </View>
-            <View
-              style={{
-                width: "30%",
-                borderRadius: 5,
-                backgroundColor: "#FFF5F6",
-                padding: 5,
-                margin: 5,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Entypo name="home" size={24} color="#A22B2F" />
-              <Text>Home</Text>
-            </View>
-            <View
-              style={{
-                width: "30%",
-                borderRadius: 5,
-                backgroundColor: "#FFF5F6",
-                padding: 5,
-                margin: 5,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Entypo name="home" size={24} color="#A22B2F" />
-              <Text>Home</Text>
-            </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  width: 240,
+                }}
+              >
+                <AntDesign name="pushpin" size={24} color="black" />
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                    Current Location
+                  </Text>
+                  <Text style={{ fontStyle: "italic", fontSize: 12 }}>
+                    {userLocation ? userLocation.address : "fetching"}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <AntDesign name="arrowright" size={24} color="black" />
+              </View>
+            </TouchableOpacity>
+            {/* Additional UI */}
           </View>
         </View>
-      </View>
+      </ScrollView>
     </>
   );
 };
