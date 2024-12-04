@@ -25,7 +25,7 @@ const BearMaps = ({ navigation, route }) => {
     latitude: userLocation.latitude,
     longitude: userLocation.longitude,
     latitudeDelta: 0.01,
-    longitudeDelta: 0.001,
+    longitudeDelta: 0.03,
   });
 
   const [selected, setSelected] = useState("");
@@ -65,7 +65,7 @@ const BearMaps = ({ navigation, route }) => {
   const jumpToMarker = (coords) => {
     console.log(coords);
     mapRef.current?.animateToRegion(
-      { ...coords, latitudeDelta: 0.01, longitudeDelta: 0.001 },
+      { ...coords, latitudeDelta: 0.01, longitudeDelta: 0.03 },
       1000
     );
   };

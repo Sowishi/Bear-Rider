@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -27,6 +27,7 @@ const SearchLocation = ({ refRBSheet, setSearchLocation, setSelected }) => {
       </View>
 
       <GooglePlacesAutocomplete
+        keepResultsAfterBlur={false}
         ref={searchRef}
         placeholder="Search Location"
         enablePoweredByContainer={true}
@@ -53,6 +54,20 @@ const SearchLocation = ({ refRBSheet, setSearchLocation, setSelected }) => {
           fields: ["geometry"],
         }}
       />
+      <View
+        style={{
+          bottom: 0,
+          width: "100%",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 0,
+        }}
+      >
+        <Image
+          style={{ width: 200, height: 200 }}
+          source={require("../assets/bear3.png")}
+        />
+      </View>
     </View>
   );
 };
