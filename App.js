@@ -132,18 +132,16 @@ export default function App() {
           tabBarInactiveTintColor: "gray", // Inactive tab color
           tabBarStyle: {
             marginBottom: 20,
-            marginHorizontal: 10,
+            marginHorizontal: 30,
             borderRadius: 10,
             paddingVertical: 5,
             backgroundColor: "#7C0000",
           },
         })}
       >
-        <Tab.Screen name="Notification" component={NotificationContent} />
         <Tab.Screen name="Message" component={ConversationList} />
         <Tab.Screen name="Home" component={BearHome} />
         <Tab.Screen name="Wallet" component={Wallet} />
-        <Tab.Screen name="User" component={BearUser} />
       </Tab.Navigator>
     );
   }

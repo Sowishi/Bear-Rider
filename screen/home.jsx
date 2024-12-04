@@ -114,6 +114,12 @@ const Home = ({ route, navigation }) => {
 
   // Handle Disable Back Button
   useEffect(() => {
+    setMapLoading(true);
+
+    setTimeout(() => {
+      setMapLoading(false);
+    }, 3000);
+
     const backAction = () => {
       // Returning true prevents the default back button behavior
       return true;

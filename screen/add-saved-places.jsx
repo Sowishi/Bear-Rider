@@ -1,13 +1,50 @@
 import { View, Text, Image, TextInput } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import EmptyList from "../components/emptyList";
 import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSmokeContext } from "../utils/appContext";
 
 const AddSavedPlaces = ({ navigation }) => {
+  const { addSaveLocation } = useSmokeContext();
+  const [locationName, setLocationName] = useState("");
+
+  // Save the location to AsyncStorage
+  const savePlace = async () => {
+    if (!locationName) {
+      alert("Please enter a location name!");
+      return;
+    }
+
+    try {
+      // Retrieve existing saved places
+      const existingPlaces = await AsyncStorage.getItem("savedPlaces");
+      const places = existingPlaces ? JSON.parse(existingPlaces) : [];
+
+      // Add the new location
+      const newPlace = {
+        id: Date.now(), // Unique ID for the place
+        name: locationName,
+        location: addSaveLocation,
+      };
+
+      const updatedPlaces = [...places, newPlace];
+
+      // Save the updated list back to AsyncStorage
+      await AsyncStorage.setItem("savedPlaces", JSON.stringify(updatedPlaces));
+
+      alert("Place saved successfully!");
+      setLocationName(""); // Clear input
+      navigation.goBack();
+    } catch (error) {
+      console.error("Error saving place:", error);
+      alert("Failed to save the place.");
+    }
+  };
+
   return (
     <View style={{ flex: 1, padding: 20 }}>
       <StatusBar style="light" />
@@ -39,7 +76,8 @@ const AddSavedPlaces = ({ navigation }) => {
         >
           <Ionicons name="location" size={24} color="#999999" />
           <TextInput
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={(text) => setLocationName(text)}
+            value={locationName}
             placeholder="Location Name"
             style={{
               flex: 1,
@@ -57,7 +95,7 @@ const AddSavedPlaces = ({ navigation }) => {
             alignItems: "center",
           }}
           onPress={() =>
-            navigation.navigate("bearMap", { type: "currentLocation" })
+            navigation.navigate("bearMap", { type: "savedLocation" })
           }
         >
           <View
@@ -80,10 +118,10 @@ const AddSavedPlaces = ({ navigation }) => {
             >
               <Entypo name="location-pin" size={20} color="white" />
             </View>
-            <View style={{ marginLeft: 10 }}>
+            <View style={{ marginLeft: 10, width: 200 }}>
               <Text style={{ fontWeight: "bold", fontSize: 16 }}>Location</Text>
               <Text style={{ fontStyle: "italic", fontSize: 12 }}>
-                loading...
+                {addSaveLocation?.address}
               </Text>
             </View>
           </View>
@@ -93,7 +131,7 @@ const AddSavedPlaces = ({ navigation }) => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={savePlace}
         style={{
           backgroundColor: "#AA2D31",
           paddingVertical: 10,
@@ -108,7 +146,7 @@ const AddSavedPlaces = ({ navigation }) => {
             fontWeight: "bold",
           }}
         >
-          Saved Place
+          Save Place
         </Text>
       </TouchableOpacity>
     </View>
