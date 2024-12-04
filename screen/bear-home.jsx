@@ -117,53 +117,82 @@ const BearHome = ({ navigation }) => {
                 alignItems: "center",
               }}
             />
+
             <View
               style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "flex-start",
                 paddingHorizontal: 10,
+                width: "100%",
               }}
             >
-              <Text
-                style={{ fontSize: 30, color: "white", fontWeight: "bold" }}
-              >
-                {greetUser()}
-                {" " + currentUser?.firstName}
-              </Text>
-              <Text style={{ color: "white", marginTop: 10 }}>
-                "Bear Rider Express: Your Trusted Partner for Delivery and
-                Transportation in Daet, Camarines Norte!"
-              </Text>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("drawer")}
+              <View
                 style={{
-                  backgroundColor: "white",
-                  flexDirection: "row",
-                  alignItems: "center",
+                  width: "100%",
                   justifyContent: "center",
+                  alignItems: "flex-end",
+                  padding: 10,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("bearUser");
+                  }}
+                  style={{
+                    backgroundColor: "white",
+                    padding: 5,
+                    borderRadius: 100,
+                  }}
+                >
+                  <AntDesign name="user" size={24} color="black" />
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  flex: 1,
                   paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  borderRadius: 5,
-                  marginTop: 10,
                 }}
               >
                 <Text
+                  style={{ fontSize: 30, color: "white", fontWeight: "bold" }}
+                >
+                  {greetUser()}
+                  {" " + currentUser?.firstName}
+                </Text>
+                <Text style={{ color: "white", marginTop: 10 }}>
+                  "Bear Rider Express: Your Trusted Partner for Delivery and
+                  Transportation in Daet, Camarines Norte!"
+                </Text>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("drawer")}
                   style={{
-                    color: "#AA2D31",
-                    fontSize: 23,
-                    fontWeight: "bold",
-                    marginRight: 5,
+                    backgroundColor: "white",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingHorizontal: 10,
+                    paddingVertical: 5,
+                    borderRadius: 5,
+                    marginTop: 10,
                   }}
                 >
-                  Map
-                </Text>
-                <Entypo name="map" size={24} color="#AA2D31" />
-              </TouchableOpacity>
+                  <Text
+                    style={{
+                      color: "#AA2D31",
+                      fontSize: 23,
+                      fontWeight: "bold",
+                      marginRight: 5,
+                    }}
+                  >
+                    Map
+                  </Text>
+                  <Entypo name="map" size={24} color="#AA2D31" />
+                </TouchableOpacity>
+              </View>
             </View>
           </ImageBackground>
 
-          <View style={{ flex: 1, backgroundColor: "white" }}>
+          <View style={{ flex: 1.5, backgroundColor: "white" }}>
             <View>
               <View
                 style={{

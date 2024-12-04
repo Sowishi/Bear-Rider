@@ -14,27 +14,6 @@ import useGetUsers from "../hooks/useGetUsers";
 import { useSmokeContext } from "../utils/appContext";
 import EmptyList from "./emptyList";
 
-const conversationsData = [
-  {
-    id: "1",
-    participants: ["Alice", "Bob"],
-    lastMessage: "Hey, are we still on for tomorrow?",
-    timestamp: "10:15 AM",
-  },
-  {
-    id: "2",
-    participants: ["Charlie", "David"],
-    lastMessage: "Got it, thanks!",
-    timestamp: "9:45 AM",
-  },
-  {
-    id: "3",
-    participants: ["Eve", "Frank"],
-    lastMessage: "Can you send me the report?",
-    timestamp: "Yesterday",
-  },
-];
-
 const ConversationList = ({ currentUser, setMessageModal, IS_RIDER }) => {
   const { conversations: conversationsData } = useCrudConversation(currentUser);
   const { data: users } = useGetUsers();

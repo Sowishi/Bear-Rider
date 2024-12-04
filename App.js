@@ -215,6 +215,22 @@ export default function App() {
               name="viewAllWallet"
               component={ViewAllWallet}
             />
+            <Stack.Screen
+              options={{
+                headerShown: true,
+                title: "",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#AA2D31",
+                },
+              }}
+              name="bearUser"
+              component={BearUser}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </MyProvider>

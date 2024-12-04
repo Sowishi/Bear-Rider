@@ -310,31 +310,30 @@ const PahatodCustomerView = ({
                 marginLeft: 20,
               }}
             >
-              {destination && (
-                <TouchableOpacity
-                  onPress={() => {
-                    setConfirmDelivery(true);
-                  }}
+              <TouchableOpacity
+                onPress={() => {
+                  setConfirmDelivery(true);
+                }}
+                disabled={!destination}
+                style={{
+                  width: "100%",
+                  backgroundColor: destination ? "#B80B00" : "#B80B0099",
+                  paddingVertical: 15,
+                  marginTop: 20,
+                  borderRadius: 20,
+                }}
+              >
+                <Text
                   style={{
-                    width: "100%",
-                    backgroundColor: "#B80B00",
-                    paddingVertical: 15,
-                    marginTop: 20,
-                    borderRadius: 20,
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: 18,
                   }}
                 >
-                  <Text
-                    style={{
-                      color: "white",
-                      textAlign: "center",
-                      fontWeight: "bold",
-                      fontSize: 18,
-                    }}
-                  >
-                    Continue
-                  </Text>
-                </TouchableOpacity>
-              )}
+                  Continue
+                </Text>
+              </TouchableOpacity>
             </View>
           </>
         )}
