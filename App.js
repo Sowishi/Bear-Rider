@@ -23,6 +23,7 @@ import HistoryContent from "./components/historyContent";
 import SearchLocation from "./screen/serachLocation";
 import NotificationContent from "./components/notificationContent";
 import BearUser from "./screen/bearUser";
+import SavedPlaces from "./screen/saved-places";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -158,6 +159,22 @@ export default function App() {
 
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="main" component={MainScreen} />
+            <Stack.Screen
+              options={{
+                headerShown: true,
+                title: "",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#AA2D31",
+                },
+              }}
+              name="savedPlaces"
+              component={SavedPlaces}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </MyProvider>
