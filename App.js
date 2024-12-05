@@ -265,6 +265,22 @@ export default function App() {
               name="Wallet"
               component={Wallet}
             />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="Notification"
+              component={NotificationContent}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </MyProvider>

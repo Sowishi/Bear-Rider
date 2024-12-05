@@ -4,6 +4,7 @@ import useCrudNotification from "../hooks/useCrudNotification";
 import moment from "moment";
 import { useSmokeContext } from "../utils/appContext";
 import EmptyList from "./emptyList";
+import { StatusBar } from "expo-status-bar";
 
 const NotificationContent = () => {
   const { data } = useCrudNotification();
@@ -16,6 +17,7 @@ const NotificationContent = () => {
   });
   return (
     <View style={{ flex: 1, paddingVertical: 70 }}>
+      <StatusBar backgroundColor="#B80B00" style="light" />
       <Text style={{ fontWeight: "bold", fontSize: 20, textAlign: "center" }}>
         Notification
       </Text>

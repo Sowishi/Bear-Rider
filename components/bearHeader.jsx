@@ -2,6 +2,7 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useSmokeContext } from "../utils/appContext";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const BearHeader = ({ navigation }) => {
   const { currentUser } = useSmokeContext();
@@ -13,8 +14,8 @@ const BearHeader = ({ navigation }) => {
         alignItems: "center",
         flexDirection: "row",
         padding: 5,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+
+        paddingHorizontal: 15,
       }}
     >
       <TouchableOpacity
@@ -45,14 +46,16 @@ const BearHeader = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("bearUser");
+          navigation.navigate("Notification");
         }}
         style={{
-          backgroundColor: "white",
-          padding: 5,
+          backgroundColor: "#FEF3F7",
+          padding: 7,
           borderRadius: 100,
         }}
-      ></TouchableOpacity>
+      >
+        <FontAwesome name="bell" size={20} color="black" />
+      </TouchableOpacity>
     </View>
   );
 };
