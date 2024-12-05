@@ -14,7 +14,7 @@ import moment from "moment";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import { useSmokeContext } from "../utils/appContext";
 import { StatusBar } from "expo-status-bar";
-
+import EmptyList from "../components/emptyList";
 const BearTransaction = ({ navigation }) => {
   const { data: transactions } = useCrudTransaction();
   const [refreshing, setRefreshing] = useState(false);
@@ -116,7 +116,7 @@ const BearTransaction = ({ navigation }) => {
             );
           })
         ) : (
-          <Text style={styles.emptyText}>No transactions available.</Text>
+          <EmptyList title="No transactions available." />
         )}
       </ScrollView>
     </View>

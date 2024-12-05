@@ -14,6 +14,7 @@ const BearHeader = ({ navigation }) => {
         alignItems: "center",
         flexDirection: "row",
         padding: 5,
+        backgroundColor: "#B80B00",
 
         paddingHorizontal: 15,
       }}
@@ -23,7 +24,6 @@ const BearHeader = ({ navigation }) => {
           navigation.navigate("bearUser");
         }}
         style={{
-          backgroundColor: "white",
           padding: 5,
           borderRadius: 100,
         }}
@@ -40,10 +40,17 @@ const BearHeader = ({ navigation }) => {
             source={{ uri: currentUser?.profilePic }}
           />
           <View>
-            <Text style={{ marginLeft: 10, fontWeight: "bold", fontSize: 18 }}>
+            <Text
+              style={{
+                marginLeft: 10,
+                fontWeight: "bold",
+                fontSize: 18,
+                color: "white",
+              }}
+            >
               {currentUser?.firstName + " " + currentUser?.lastName}
             </Text>
-            <Text style={{ marginLeft: 10, fontSize: 12 }}>
+            <Text style={{ marginLeft: 10, fontSize: 12, color: "white" }}>
               {currentUser?.role ? currentUser.role : "Customer"}
             </Text>
           </View>

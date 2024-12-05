@@ -30,9 +30,6 @@ const NotificationContent = () => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#B80B00" style="light" />
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Notification</Text>
-      </View>
 
       <ScrollView
         contentContainerStyle={styles.scrollContainer}

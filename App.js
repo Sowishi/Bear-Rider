@@ -179,7 +179,7 @@ export default function App() {
             <Stack.Screen
               options={{
                 headerShown: true,
-                title: "",
+                title: "Saved Places",
                 headerBackTitleStyle: {
                   color: "white",
                   backgroundColor: "white",
@@ -195,7 +195,7 @@ export default function App() {
             <Stack.Screen
               options={{
                 headerShown: true,
-                title: "",
+                title: "Add Place",
                 headerBackTitleStyle: {
                   color: "white",
                   backgroundColor: "white",
@@ -211,7 +211,7 @@ export default function App() {
             <Stack.Screen
               options={{
                 headerShown: true,
-                title: "",
+                title: "All Transaction",
                 headerBackTitleStyle: {
                   color: "white",
                   backgroundColor: "white",
@@ -241,7 +241,7 @@ export default function App() {
             />
             <Stack.Screen
               options={{
-                title: "",
+                title: "Become a Rider",
                 headerShown: true,
                 headerBackTitleStyle: {
                   color: "white",
@@ -257,7 +257,7 @@ export default function App() {
             />
             <Stack.Screen
               options={{
-                title: "",
+                title: "Wallet",
                 headerShown: true,
                 headerBackTitleStyle: {
                   color: "white",
@@ -273,7 +273,7 @@ export default function App() {
             />
             <Stack.Screen
               options={{
-                title: "",
+                title: "Notification",
                 headerShown: true,
                 headerBackTitleStyle: {
                   color: "white",

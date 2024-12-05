@@ -88,6 +88,7 @@ const BearHome = ({ navigation }) => {
 
   return (
     <>
+      <StatusBar backgroundColor="#B80B00" style="light" />
       <ScrollView
         style={{ marginTop: Constants.statusBarHeight }}
         contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
