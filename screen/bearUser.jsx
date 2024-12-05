@@ -121,7 +121,7 @@ const BearUser = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            Linking.openURL("https://bearrideexpress.web.app/about");
+            Linking.openURL("https://bearrideexpress.web.app");
           }}
           style={{
             flexDirection: "row",

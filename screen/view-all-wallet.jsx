@@ -11,7 +11,7 @@ import moment from "moment";
 import useCrudWallet from "../hooks/useCrudWallet";
 import { useSmokeContext } from "../utils/appContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-
+import EmptyList from "../components/emptyList";
 const ViewAllWallet = ({ navigation }) => {
   const { data, getWallet, getTransactionHistory, transactionHistory } =
     useCrudWallet();
@@ -209,9 +209,7 @@ const ViewAllWallet = ({ navigation }) => {
             );
           })
         ) : (
-          <Text style={{ textAlign: "center", marginTop: 50 }}>
-            No Transactions Yet.
-          </Text>
+          <EmptyList title="No Transaction Yet." />
         )}
       </ScrollView>
     </View>

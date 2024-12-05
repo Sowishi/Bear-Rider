@@ -16,8 +16,6 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import BearTypes from "../components/bearType";
 import { useSmokeContext } from "../utils/appContext";
 import * as Location from "expo-location";
-import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import Octicons from "@expo/vector-icons/Octicons";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const BearHome = ({ navigation }) => {

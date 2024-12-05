@@ -26,6 +26,7 @@ import BearUser from "./screen/bearUser";
 import SavedPlaces from "./screen/saved-places";
 import AddSavePlaces from "./screen/add-saved-places";
 import ViewAllWallet from "./screen/view-all-wallet";
+import BearTransaction from "./screen/bearTransaction";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -114,8 +115,8 @@ export default function App() {
 
             if (route.name === "Home") {
               iconName = "home";
-            } else if (route.name === "Message") {
-              iconName = "chat";
+            } else if (route.name === "Transaction") {
+              iconName = "grid";
             } else if (route.name === "Wallet") {
               iconName = "wallet";
             } else if (route.name === "Notification") {
@@ -140,7 +141,7 @@ export default function App() {
           },
         })}
       >
-        <Tab.Screen name="Message" component={ConversationList} />
+        <Tab.Screen name="Transaction" component={BearTransaction} />
         <Tab.Screen
           name="Home"
           options={{ statusBarStyle: "light" }}
