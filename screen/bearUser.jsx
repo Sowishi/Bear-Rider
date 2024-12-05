@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Linking,
 } from "react-native";
 import React, { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -82,6 +83,60 @@ const BearUser = ({ navigation }) => {
           icon={<MaterialIcons name="phone" size={20} color="black" />}
           value={currentUser.phoneNumber}
         />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("savedPlaces");
+          }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            paddingHorizontal: 13,
+          }}
+        >
+          <UserInfoRow
+            icon={<MaterialIcons name="location-pin" size={20} color="black" />}
+            value={"Saved Places"}
+          />
+          <AntDesign name="arrowright" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Wallet");
+          }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            paddingHorizontal: 13,
+          }}
+        >
+          <UserInfoRow
+            icon={<MaterialIcons name="wallet" size={20} color="black" />}
+            value={"Wallet"}
+          />
+          <AntDesign name="arrowright" size={24} color="black" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            Linking.openURL("https://bearrideexpress.web.app/about");
+          }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+            paddingHorizontal: 13,
+          }}
+        >
+          <UserInfoRow
+            icon={<MaterialIcons name="web" size={20} color="black" />}
+            value={"About Bear Rider"}
+          />
+          <AntDesign name="arrowright" size={24} color="black" />
+        </TouchableOpacity>
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.riderButton}

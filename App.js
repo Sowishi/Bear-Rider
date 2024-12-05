@@ -248,6 +248,22 @@ export default function App() {
               name="Rider"
               component={Rider}
             />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#AA2D31",
+                },
+              }}
+              name="Wallet"
+              component={Wallet}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </MyProvider>
