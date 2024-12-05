@@ -27,12 +27,6 @@ const DisclosurePage = ({ setDisclosure, disclosure, accept, setAccept }) => {
           <View style={{ flexDirection: "row" }}>
             <Button
               width={100}
-              event={() => setDisclosure("become")}
-              text={"Back"}
-              bgColor={"#B80B00"}
-            />
-            <Button
-              width={100}
               event={() => setDisclosure("terms")}
               text={"Next"}
               bgColor={"#003082"}

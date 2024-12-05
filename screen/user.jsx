@@ -175,46 +175,6 @@ const User = ({ navigation }) => {
               <Text style={{ fontSize: 20, marginRight: 10 }}>Feedback</Text>
               <MaterialIcons name="feedback" size={24} color="black" />
             </View> */}
-            <View
-              style={{
-                marginVertical: 15,
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 2,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-
-                elevation: 5,
-                borderRadius: 10,
-                backgroundColor: "white",
-                padding: 10,
-                paddingHorizontal: 20,
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text
-                onPress={async () => {
-                  await AsyncStorage.removeItem("user");
-                  navigation.navigate("login");
-                }}
-                style={{ fontSize: 20, marginRight: 10, fontWeight: "bold" }}
-              >
-                Logout
-              </Text>
-            </View>
-            {currentUser.role !== "Rider" && (
-              <View style={{ justifyContent: "center", alignItems: "center" }}>
-                <Button
-                  event={() => navigation.navigate("Rider")}
-                  text="Become a rider"
-                  bgColor={"#B80B00"}
-                />
-              </View>
-            )}
           </View>
         </>
       )}

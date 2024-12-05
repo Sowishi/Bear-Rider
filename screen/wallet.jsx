@@ -49,7 +49,7 @@ const Wallet = ({ navigation }) => {
         backgroundColor: "white",
       }}
     >
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingTop: 30 }}>
         <Text style={{ textAlign: "center", fontSize: 20 }}>
           Wallet Balance:{" "}
           <Text style={{ fontWeight: "bold", color: "#B80B00" }}>

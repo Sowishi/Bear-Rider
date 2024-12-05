@@ -164,6 +164,8 @@ export default function App() {
             <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="bearMap" component={BearMap} />
             <Stack.Screen name="searchLocation" component={SearchLocation} />
+            <Stack.Screen name="Camera" component={Camera} />
+            <Stack.Screen name="RiderPending" component={RiderPending} />
 
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="main" component={MainScreen} />
@@ -217,7 +219,6 @@ export default function App() {
             />
             <Stack.Screen
               options={{
-                headerShown: true,
                 title: "",
                 headerBackTitleStyle: {
                   color: "white",
@@ -230,6 +231,22 @@ export default function App() {
               }}
               name="bearUser"
               component={BearUser}
+            />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#AA2D31",
+                },
+              }}
+              name="Rider"
+              component={Rider}
             />
           </Stack.Navigator>
         </NavigationContainer>
