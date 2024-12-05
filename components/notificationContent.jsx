@@ -1,68 +1,136 @@
-import { Image, ScrollView, Text, View } from "react-native";
-import cod from "../assets/cash-on-delivery.png";
+import {
+  Image,
+  ScrollView,
+  Text,
+  View,
+  StyleSheet,
+  RefreshControl,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
 import useCrudNotification from "../hooks/useCrudNotification";
 import moment from "moment";
 import { useSmokeContext } from "../utils/appContext";
 import EmptyList from "./emptyList";
-import { StatusBar } from "expo-status-bar";
+import React, { useState } from "react";
 
 const NotificationContent = () => {
-  const { data } = useCrudNotification();
+  const { data } = useCrudNotification(); // Assuming refetch is available
   const { currentUser } = useSmokeContext();
+  const [refreshing, setRefreshing] = useState(false);
 
-  const filterData = data.filter((user) => {
-    if (user.transaction.currentUser.id == currentUser.id) {
-      return user;
-    }
-  });
+  const filterData = data.filter(
+    (user) => user.transaction.currentUser.id === currentUser.id
+  );
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    setRefreshing(false);
+  };
+
   return (
-    <View style={{ flex: 1, paddingVertical: 70 }}>
+    <View style={styles.container}>
       <StatusBar backgroundColor="#B80B00" style="light" />
-      <Text style={{ fontWeight: "bold", fontSize: 20, textAlign: "center" }}>
-        Notification
-      </Text>
-      <ScrollView style={{ marginTop: 20, flex: 1, width: "100%" }}>
-        {filterData?.map((item) => {
-          const timeStamp = item.createdAt.toDate();
-          const date = moment(timeStamp).fromNow();
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Notification</Text>
+      </View>
 
-          return (
-            <View
-              key={item.id}
-              style={{
-                width: "100%",
-                flexDirection: "row",
-                marginVertical: 10,
-              }}
-            >
-              <Image
-                source={{ uri: item.currentUser.selfieUrl }}
-                style={{ width: 50, height: 50, borderRadius: 100 }}
-              />
-              <View
-                style={{
-                  flex: 1,
-                  paddingLeft: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <View>
-                  <Text style={{ fontWeight: "bold", fontSize: 12 }}>
-                    {item.currentUser.fullName}
-                  </Text>
-                  <Text style={{ fontSize: 12 }}>Just accepted your ride.</Text>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {filterData.length > 0 ? (
+          filterData.map((item) => {
+            const timeStamp = item.createdAt.toDate();
+            const date = moment(timeStamp).fromNow();
+
+            return (
+              <View key={item.id} style={styles.notificationCard}>
+                <Image
+                  source={{ uri: item.currentUser.selfieUrl }}
+                  style={styles.userImage}
+                />
+                <View style={styles.notificationContent}>
+                  <View>
+                    <Text style={styles.userName}>
+                      {item.currentUser.firstName +
+                        " " +
+                        item.currentUser.lastName}
+                    </Text>
+                    <Text style={styles.notificationText}>
+                      Just accepted your ride.
+                    </Text>
+                  </View>
+                  <Text style={styles.notificationTime}>{date}</Text>
                 </View>
-                <Text style={{ fontSize: 10 }}>{date}</Text>
               </View>
-            </View>
-          );
-        })}
-        {filterData.length <= 0 && <EmptyList title={"No Notification yet"} />}
+            );
+          })
+        ) : (
+          <EmptyList title={"No Notification yet"} />
+        )}
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 40,
+    backgroundColor: "white",
+    paddingHorizontal: 20,
+  },
+  header: {
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  headerText: {
+    fontSize: 25,
+    fontWeight: "bold",
+    color: "#B80B00",
+  },
+  scrollContainer: {
+    paddingBottom: 20,
+  },
+  notificationCard: {
+    flexDirection: "row",
+    backgroundColor: "#f9f9f9",
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  userImage: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  notificationContent: {
+    flex: 1,
+    marginLeft: 10,
+    justifyContent: "space-between",
+  },
+  userName: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: "#333",
+  },
+  notificationText: {
+    fontSize: 12,
+    color: "#555",
+    marginTop: 3,
+  },
+  notificationTime: {
+    fontSize: 10,
+    color: "#777",
+    alignSelf: "flex-end",
+  },
+});
 
 export default NotificationContent;

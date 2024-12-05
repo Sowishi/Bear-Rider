@@ -164,7 +164,7 @@ const BearHome = ({ navigation }) => {
                       marginRight: 5,
                     }}
                   >
-                    Map
+                    Book Now
                   </Text>
                   <Entypo name="map" size={24} color="#AA2D31" />
                 </TouchableOpacity>
