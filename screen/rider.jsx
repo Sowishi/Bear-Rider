@@ -120,12 +120,15 @@ const Rider = ({ navigation }) => {
 
   if (disclosure) {
     return (
-      <DisclosurePage
-        accept={accept}
-        setAccept={setAccept}
-        disclosure={disclosure}
-        setDisclosure={setDisclosure}
-      />
+      <>
+        <StatusBar backgroundColor="#B80B00" style="light" />
+        <DisclosurePage
+          accept={accept}
+          setAccept={setAccept}
+          disclosure={disclosure}
+          setDisclosure={setDisclosure}
+        />
+      </>
     );
   }
 
@@ -133,7 +136,7 @@ const Rider = ({ navigation }) => {
     return (
       <View style={{ flex: 1, backgroundColor: "white" }}>
         {loading && <Loader title="Uploading you documents, please wait..." />}
-        <StatusBar translucent style="dark" />
+        <StatusBar backgroundColor="#B80B00" style="light" />
 
         <ScrollView
           style={{
@@ -499,7 +502,7 @@ const Rider = ({ navigation }) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       {loading && <Loader title="Uploading you documents, please wait..." />}
-      <StatusBar translucent style="dark" />
+      <StatusBar backgroundColor="#B80B00" style="light" />
 
       <View
         style={{ flex: 0.2, justifyContent: "center", alignItems: "center" }}

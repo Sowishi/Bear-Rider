@@ -12,6 +12,7 @@ import useCrudWallet from "../hooks/useCrudWallet";
 import { useSmokeContext } from "../utils/appContext";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import EmptyList from "../components/emptyList";
+import { StatusBar } from "expo-status-bar";
 const ViewAllWallet = ({ navigation }) => {
   const { data, getWallet, getTransactionHistory, transactionHistory } =
     useCrudWallet();
@@ -71,6 +72,8 @@ const ViewAllWallet = ({ navigation }) => {
         backgroundColor: "white",
       }}
     >
+      <StatusBar backgroundColor="#B80B00" style="light" />
+
       <ScrollView
         style={{ flex: 1 }}
         refreshControl={

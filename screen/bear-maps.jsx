@@ -16,6 +16,7 @@ import SearchLocation from "./serachLocation";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { retroMapStyle } from "../utils/retroMapStyle";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { StatusBar } from "expo-status-bar";
 
 const BearMaps = ({ navigation, route }) => {
   const mapRef = useRef();
@@ -87,6 +88,8 @@ const BearMaps = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar translucent style="dark" />
+
       <MapView
         customMapStyle={retroMapStyle}
         ref={mapRef}

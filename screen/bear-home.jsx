@@ -4,10 +4,9 @@ import {
   ImageBackground,
   ScrollView,
   RefreshControl,
+  Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import TypeWriter from "react-native-typewriter";
 import { LinearGradient } from "expo-linear-gradient";
 import bg1 from "../assets/bear1.png";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -17,7 +16,8 @@ import BearTypes from "../components/bearType";
 import { useSmokeContext } from "../utils/appContext";
 import * as Location from "expo-location";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-
+import Constants from "expo-constants";
+import BearHeader from "../components/bearHeader";
 const BearHome = ({ navigation }) => {
   const { setUserLocation, currentUser, userLocation } = useSmokeContext();
   const [refreshing, setRefreshing] = useState(false); // State for refreshing
@@ -88,11 +88,13 @@ const BearHome = ({ navigation }) => {
   return (
     <>
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
+        style={{ marginTop: Constants.statusBarHeight }}
+        contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
+        <BearHeader navigation={navigation} />
         <View style={{ flex: 1 }}>
           <ImageBackground
             source={bg1}
@@ -122,27 +124,6 @@ const BearHome = ({ navigation }) => {
                 width: "100%",
               }}
             >
-              <View
-                style={{
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "flex-end",
-                  padding: 10,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("bearUser");
-                  }}
-                  style={{
-                    backgroundColor: "white",
-                    padding: 5,
-                    borderRadius: 100,
-                  }}
-                >
-                  <AntDesign name="user" size={24} color="black" />
-                </TouchableOpacity>
-              </View>
               <View
                 style={{
                   justifyContent: "center",
@@ -190,7 +171,7 @@ const BearHome = ({ navigation }) => {
             </View>
           </ImageBackground>
 
-          <View style={{ flex: 1.5, backgroundColor: "white" }}>
+          <View style={{ flex: 1, backgroundColor: "white" }}>
             <View>
               <View
                 style={{

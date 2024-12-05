@@ -13,6 +13,7 @@ import LottieView from "lottie-react-native";
 import { riderMapStyle } from "../utils/riderMapStyle";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { StatusBar } from "expo-status-bar";
 
 const BearRiderMap = ({
   location,
@@ -74,6 +75,8 @@ const BearRiderMap = ({
 
   return (
     <>
+      <StatusBar style="dark" translucent />
+
       <MapView
         customMapStyle={IS_RIDER ? riderMapStyle : ""}
         mapType={mapView}

@@ -13,6 +13,7 @@ import Constants from "expo-constants";
 import moment from "moment";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import { useSmokeContext } from "../utils/appContext";
+import { StatusBar } from "expo-status-bar";
 
 const BearTransaction = ({ navigation }) => {
   const { data: transactions } = useCrudTransaction();
@@ -49,6 +50,7 @@ const BearTransaction = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="white" />
       <View style={styles.header}>
         <Text style={styles.headerText}>Transactions</Text>
       </View>

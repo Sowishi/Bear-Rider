@@ -266,7 +266,6 @@ const Home = ({ route, navigation }) => {
 
   return (
     <>
-      <StatusBar style="dark" translucent />
       {mapLoading && (
         <View
           style={{
@@ -294,6 +293,8 @@ const Home = ({ route, navigation }) => {
           backgroundColor: "#FAF5FC",
         }}
       >
+        <StatusBar style="dark" translucent />
+
         {/* Sum Modal */}
 
         <BottomModal

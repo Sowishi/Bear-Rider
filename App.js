@@ -180,7 +180,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#AA2D31",
+                  backgroundColor: "#B80B00",
                 },
               }}
               name="savedPlaces"
@@ -196,7 +196,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#AA2D31",
+                  backgroundColor: "#B80B00",
                 },
               }}
               name="addSavedPlaces"
@@ -212,7 +212,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#AA2D31",
+                  backgroundColor: "#B80B00",
                 },
               }}
               name="viewAllWallet"
@@ -227,7 +227,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#AA2D31",
+                  backgroundColor: "#B80B00",
                 },
               }}
               name="bearUser"
@@ -243,7 +243,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#AA2D31",
+                  backgroundColor: "#B80B00",
                 },
               }}
               name="Rider"
@@ -259,7 +259,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#AA2D31",
+                  backgroundColor: "#B80B00",
                 },
               }}
               name="Wallet"
