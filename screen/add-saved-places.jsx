@@ -9,7 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSmokeContext } from "../utils/appContext";
 
 const AddSavedPlaces = ({ navigation }) => {
-  const { addSaveLocation } = useSmokeContext();
+  const { addSaveLocation, currentUser } = useSmokeContext();
   const [locationName, setLocationName] = useState("");
 
   // Save the location to AsyncStorage
@@ -29,6 +29,7 @@ const AddSavedPlaces = ({ navigation }) => {
         id: Date.now(), // Unique ID for the place
         name: locationName,
         location: addSaveLocation,
+        owner: currentUser.id, // Store the owner's name or ID
       };
 
       const updatedPlaces = [...places, newPlace];
@@ -46,7 +47,7 @@ const AddSavedPlaces = ({ navigation }) => {
   };
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
       <StatusBar style="light" />
 
       <Text style={{ fontSize: 30, fontWeight: "bold" }}>Add Places</Text>

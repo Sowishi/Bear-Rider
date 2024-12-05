@@ -17,15 +17,20 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 const SavedPlaces = ({ navigation, route }) => {
   const [savedPlaces, setSavedPlaces] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-
   const { mode = "defaultmode", type } = route.params || {};
-  const { setBookLocation, setDestination } = useSmokeContext();
+  const { setBookLocation, setDestination, currentUser } = useSmokeContext();
+
   // Fetch saved places from AsyncStorage
   const fetchSavedPlaces = async () => {
     try {
       const places = await AsyncStorage.getItem("savedPlaces");
       if (places !== null) {
-        setSavedPlaces(JSON.parse(places));
+        const allPlaces = JSON.parse(places);
+        // Filter places that belong to the current user
+        const userPlaces = allPlaces.filter(
+          (place) => place.owner === currentUser.id
+        );
+        setSavedPlaces(userPlaces);
       } else {
         setSavedPlaces([]);
       }
@@ -77,11 +82,11 @@ const SavedPlaces = ({ navigation, route }) => {
     >
       <TouchableOpacity
         onPress={() => {
-          if (type == "pointA") {
+          if (type === "pointA") {
             setBookLocation(item.location);
             navigation.pop(2);
           }
-          if (type == "pointB") {
+          if (type === "pointB") {
             setDestination(item.location);
             navigation.pop(2);
           }
@@ -109,7 +114,7 @@ const SavedPlaces = ({ navigation, route }) => {
   );
 
   return (
-    <View style={{ flex: 1, padding: 20 }}>
+    <View style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
       <StatusBar style="light" />
 
       <Text style={{ fontSize: 30, fontWeight: "bold" }}>Saved Places</Text>
