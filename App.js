@@ -107,7 +107,7 @@ export default function App() {
         tabBarPosition="bottom"
         screenOptions={({ route }) => ({
           tabBarIndicatorStyle: {
-            backgroundColor: "yellow",
+            backgroundColor: "white",
           },
           tabBarIcon: ({ focused, color, size }) => {
             let iconName;

@@ -120,14 +120,12 @@ const Wallet = ({ navigation }) => {
                   marginVertical: 10,
                   padding: 15,
                   borderRadius: 10,
-                  backgroundColor: item.type === "plus" ? "#e8f7e2" : "#fce7e6",
-                  borderLeftWidth: 5,
-                  borderLeftColor: item.type === "plus" ? "#4CAF50" : "#F44336",
-                  shadowColor: "#000",
+                  backgroundColor: "white",
+                  shadowColor: item.type === "plus" ? "#4CAF50" : "#F44336",
                   shadowOffset: { width: 0, height: 3 },
                   shadowOpacity: 0.27,
                   shadowRadius: 4.65,
-                  elevation: 6,
+                  elevation: 3,
                 }}
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
