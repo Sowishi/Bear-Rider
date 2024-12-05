@@ -34,7 +34,7 @@ const BearTransaction = ({ navigation }) => {
 
   const filteredTransactions = transactions
     .filter((item) => {
-      if (item.currentUser.id === currentUser.id) {
+      if (item.currentUser.id === currentUser?.id) {
         if (filter === "All") return true;
         if (filter === "Transportation" && item.serviceType === "Pahatod")
           return true;
@@ -100,7 +100,7 @@ const BearTransaction = ({ navigation }) => {
                 key={transaction.id}
                 style={styles.transactionCard}
                 onPress={() =>
-                  console.log(`Viewing transaction: ${transaction.id}`)
+                  navigation.navigate("ViewTransaction", { transaction })
                 }
               >
                 <Text style={styles.transactionTitle}>
@@ -111,9 +111,6 @@ const BearTransaction = ({ navigation }) => {
                 <Text style={styles.transactionDate}>Date: {date}</Text>
                 <Text style={styles.transactionDetails}>
                   Status: {transaction.status || "Pending"}
-                </Text>
-                <Text style={styles.transactionDetails}>
-                  Total Price: ${transaction.totalPrice}
                 </Text>
               </TouchableOpacity>
             );
@@ -186,15 +183,16 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   transactionCard: {
-    backgroundColor: "#f9f9f9",
     padding: 20,
     borderRadius: 10,
     marginBottom: 15,
-    shadowColor: "#000",
+
+    backgroundColor: "white",
+    shadowColor: "red",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
-    elevation: 2,
+    elevation: 5,
   },
   transactionTitle: {
     fontSize: 18,

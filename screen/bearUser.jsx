@@ -21,7 +21,7 @@ const BearUser = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
 
-  const { currentUser } = useSmokeContext();
+  const { currentUser, setCurrentUser } = useSmokeContext();
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -32,6 +32,7 @@ const BearUser = ({ navigation }) => {
 
   const handleLogout = async () => {
     await AsyncStorage.removeItem("user");
+    setCurrentUser(null);
     navigation.navigate("login");
   };
 
@@ -66,22 +67,22 @@ const BearUser = ({ navigation }) => {
       >
         <View style={styles.profilePicContainer}>
           <Image
-            source={{ uri: currentUser.profilePic }}
+            source={{ uri: currentUser?.profilePic }}
             style={styles.profilePic}
           />
         </View>
         <UserInfoRow
           icon={<AntDesign name="user" size={20} color="black" />}
-          value={currentUser.firstName + " " + currentUser.lastName}
+          value={currentUser?.firstName + " " + currentUser?.lastName}
         />
 
         <UserInfoRow
           icon={<MaterialIcons name="email" size={20} color="black" />}
-          value={currentUser.email}
+          value={currentUser?.email}
         />
         <UserInfoRow
           icon={<MaterialIcons name="phone" size={20} color="black" />}
-          value={currentUser.phoneNumber}
+          value={currentUser?.phoneNumber}
         />
         <TouchableOpacity
           onPress={() => {

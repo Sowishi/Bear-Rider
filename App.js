@@ -5,7 +5,7 @@ import Login from "./screen/login";
 import Home from "./screen/home";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Entypo } from "@expo/vector-icons";
-import { MyProvider } from "./utils/appContext";
+import { MyProvider, useSmokeContext } from "./utils/appContext";
 import User from "./screen/user";
 import Notification from "./screen/notification";
 import Register from "./screen/register";
@@ -17,9 +17,7 @@ import Wallet from "./screen/wallet";
 import "react-native-get-random-values";
 import BearHome from "./screen/bear-home";
 import BearMap from "./screen/bear-maps";
-import Message from "./components/message";
-import ConversationList from "./components/conversation";
-import HistoryContent from "./components/historyContent";
+
 import SearchLocation from "./screen/serachLocation";
 import NotificationContent from "./components/notificationContent";
 import BearUser from "./screen/bearUser";
@@ -27,10 +25,12 @@ import SavedPlaces from "./screen/saved-places";
 import AddSavePlaces from "./screen/add-saved-places";
 import ViewAllWallet from "./screen/view-all-wallet";
 import BearTransaction from "./screen/bearTransaction";
+import ViewTransaction from "./screen/viewTransacation";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
   const Tab = createMaterialTopTabNavigator();
+
   function DrawerScreen() {
     return (
       <Drawer.Navigator
@@ -156,132 +156,161 @@ export default function App() {
     );
   }
 
+  function StackScreen() {
+    const { currentUser } = useSmokeContext();
+
+    return (
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {currentUser == null && (
+          <>
+            <Stack.Screen name="login" component={Login} />
+            <Stack.Screen name="register" component={Register} />
+          </>
+        )}
+        <Stack.Screen name="main" component={MainScreen} />
+
+        <Stack.Screen name="bearMap" component={BearMap} />
+        <Stack.Screen name="searchLocation" component={SearchLocation} />
+        <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="RiderPending" component={RiderPending} />
+
+        <Stack.Screen name="drawer" component={DrawerScreen} />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: "",
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="savedPlaces"
+          component={SavedPlaces}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: "",
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="addSavedPlaces"
+          component={AddSavePlaces}
+        />
+        <Stack.Screen
+          options={{
+            headerShown: true,
+            title: "",
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="viewAllWallet"
+          component={ViewAllWallet}
+        />
+        <Stack.Screen
+          options={{
+            title: "",
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="bearUser"
+          component={BearUser}
+        />
+        <Stack.Screen
+          options={{
+            title: "",
+            headerShown: true,
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="Rider"
+          component={Rider}
+        />
+        <Stack.Screen
+          options={{
+            title: "",
+            headerShown: true,
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="Wallet"
+          component={Wallet}
+        />
+        <Stack.Screen
+          options={{
+            title: "",
+            headerShown: true,
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="Notification"
+          component={NotificationContent}
+        />
+        <Stack.Screen
+          options={{
+            title: "",
+            headerShown: true,
+            headerBackTitleStyle: {
+              color: "white",
+              backgroundColor: "white",
+            },
+            headerTintColor: "white",
+            headerStyle: {
+              backgroundColor: "#B80B00",
+            },
+          }}
+          name="ViewTransaction"
+          component={ViewTransaction}
+        />
+      </Stack.Navigator>
+    );
+  }
+
   return (
     <>
       <MyProvider>
         <NavigationContainer>
-          <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="login" component={Login} />
-            <Stack.Screen name="register" component={Register} />
-            <Stack.Screen name="bearMap" component={BearMap} />
-            <Stack.Screen name="searchLocation" component={SearchLocation} />
-            <Stack.Screen name="Camera" component={Camera} />
-            <Stack.Screen name="RiderPending" component={RiderPending} />
-
-            <Stack.Screen name="drawer" component={DrawerScreen} />
-            <Stack.Screen name="main" component={MainScreen} />
-            <Stack.Screen
-              options={{
-                headerShown: true,
-                title: "",
-                headerBackTitleStyle: {
-                  color: "white",
-                  backgroundColor: "white",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#B80B00",
-                },
-              }}
-              name="savedPlaces"
-              component={SavedPlaces}
-            />
-            <Stack.Screen
-              options={{
-                headerShown: true,
-                title: "",
-                headerBackTitleStyle: {
-                  color: "white",
-                  backgroundColor: "white",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#B80B00",
-                },
-              }}
-              name="addSavedPlaces"
-              component={AddSavePlaces}
-            />
-            <Stack.Screen
-              options={{
-                headerShown: true,
-                title: "",
-                headerBackTitleStyle: {
-                  color: "white",
-                  backgroundColor: "white",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#B80B00",
-                },
-              }}
-              name="viewAllWallet"
-              component={ViewAllWallet}
-            />
-            <Stack.Screen
-              options={{
-                title: "",
-                headerBackTitleStyle: {
-                  color: "white",
-                  backgroundColor: "white",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#B80B00",
-                },
-              }}
-              name="bearUser"
-              component={BearUser}
-            />
-            <Stack.Screen
-              options={{
-                title: "",
-                headerShown: true,
-                headerBackTitleStyle: {
-                  color: "white",
-                  backgroundColor: "white",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#B80B00",
-                },
-              }}
-              name="Rider"
-              component={Rider}
-            />
-            <Stack.Screen
-              options={{
-                title: "",
-                headerShown: true,
-                headerBackTitleStyle: {
-                  color: "white",
-                  backgroundColor: "white",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#B80B00",
-                },
-              }}
-              name="Wallet"
-              component={Wallet}
-            />
-            <Stack.Screen
-              options={{
-                title: "",
-                headerShown: true,
-                headerBackTitleStyle: {
-                  color: "white",
-                  backgroundColor: "white",
-                },
-                headerTintColor: "white",
-                headerStyle: {
-                  backgroundColor: "#B80B00",
-                },
-              }}
-              name="Notification"
-              component={NotificationContent}
-            />
-          </Stack.Navigator>
+          <StackScreen />
         </NavigationContainer>
       </MyProvider>
 

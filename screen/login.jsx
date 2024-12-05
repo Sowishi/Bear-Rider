@@ -158,9 +158,6 @@ const Login = ({ navigation }) => {
               Signup
             </Text>{" "}
           </Text>
-          <Text style={{ fontSize: 13, color: "#626B7B", fontWeight: "bold" }}>
-            Forgot Password?
-          </Text>
         </View>
         <View
           style={{

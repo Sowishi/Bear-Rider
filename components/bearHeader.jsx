@@ -37,7 +37,7 @@ const BearHeader = ({ navigation }) => {
         >
           <Image
             style={{ width: 45, height: 45 }}
-            source={{ uri: currentUser.profilePic }}
+            source={{ uri: currentUser?.profilePic }}
           />
           <View>
             <Text style={{ marginLeft: 10, fontWeight: "bold", fontSize: 18 }}>
