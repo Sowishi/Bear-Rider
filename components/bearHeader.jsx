@@ -39,9 +39,14 @@ const BearHeader = ({ navigation }) => {
             style={{ width: 45, height: 45 }}
             source={{ uri: currentUser.profilePic }}
           />
-          <Text style={{ marginLeft: 10, fontWeight: "bold", fontSize: 18 }}>
-            {currentUser?.firstName + " " + currentUser?.lastName}
-          </Text>
+          <View>
+            <Text style={{ marginLeft: 10, fontWeight: "bold", fontSize: 18 }}>
+              {currentUser?.firstName + " " + currentUser?.lastName}
+            </Text>
+            <Text style={{ marginLeft: 10, fontSize: 12 }}>
+              {currentUser?.role ? currentUser.role : "Customer"}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
       <TouchableOpacity
