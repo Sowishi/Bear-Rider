@@ -9,10 +9,11 @@ import {
 } from "react-native";
 import React, { useState, useEffect, useCallback } from "react";
 import { StatusBar } from "expo-status-bar";
-import EmptyList from "../components/emptyList";
+import MapView, { Marker } from "react-native-maps";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSmokeContext } from "../utils/appContext";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import EmptyList from "../components/emptyList";
 
 const SavedPlaces = ({ navigation, route }) => {
   const [savedPlaces, setSavedPlaces] = useState([]);
@@ -80,6 +81,39 @@ const SavedPlaces = ({ navigation, route }) => {
         elevation: 2,
       }}
     >
+      {/* Map View */}
+      <MapView
+        scrollEnabled={false} // Disable scrolling
+        zoomEnabled={false} // Disable zooming
+        rotateEnabled={false} // Disable rotating
+        pitchEnabled={false} // Disable pitch (tilting)
+        liteMode={true} // Enables lightweight mode and removes Google logo
+        showsUserLocation={false} // Hide user location button
+        showsCompass={false} // Hide compass button
+        showsTraffic={false} // Hide traffic button
+        showsMyLocationButton={false} // Hide the "my location" button
+        style={{
+          width: 100,
+          height: 100,
+          borderRadius: 10,
+          marginRight: 10,
+        }}
+        initialRegion={{
+          latitude: item.location.latitude,
+          longitude: item.location.longitude,
+          latitudeDelta: 0.01,
+          longitudeDelta: 0.01,
+        }}
+      >
+        <Marker
+          coordinate={{
+            latitude: item.location.latitude,
+            longitude: item.location.longitude,
+          }}
+        />
+      </MapView>
+
+      {/* Place Details */}
       <TouchableOpacity
         onPress={() => {
           if (type === "pointA") {
@@ -91,13 +125,14 @@ const SavedPlaces = ({ navigation, route }) => {
             navigation.pop(2);
           }
         }}
-        style={{ width: 250 }}
+        style={{ flex: 1 }}
       >
         <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.name}</Text>
         <Text style={{ fontSize: 14, color: "#555" }}>
           {item.location.address}
         </Text>
       </TouchableOpacity>
+
       {mode !== "selecting" && (
         <TouchableOpacity
           onPress={() => deletePlace(item.id)}
