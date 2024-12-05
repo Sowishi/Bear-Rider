@@ -72,8 +72,10 @@ const ViewAllWallet = ({ navigation }) => {
         backgroundColor: "white",
       }}
     >
-      <StatusBar backgroundColor="#B80B00" style="light" />
-
+      <StatusBar
+        backgroundColor={!currentUser.role ? "#B80B00" : "#003082"}
+        style="light"
+      />
       <ScrollView
         style={{ flex: 1 }}
         refreshControl={

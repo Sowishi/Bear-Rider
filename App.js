@@ -188,7 +188,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="savedPlaces"
@@ -204,7 +204,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="addSavedPlaces"
@@ -220,7 +220,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="viewAllWallet"
@@ -235,7 +235,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="bearUser"
@@ -251,7 +251,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="Rider"
@@ -267,7 +267,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="Wallet"
@@ -283,7 +283,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="Notification"
@@ -299,7 +299,7 @@ export default function App() {
                 },
                 headerTintColor: "white",
                 headerStyle: {
-                  backgroundColor: "#B80B00",
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
               }}
               name="ViewTransaction"
