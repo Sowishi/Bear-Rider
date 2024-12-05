@@ -167,141 +167,144 @@ export default function App() {
             <Stack.Screen name="register" component={Register} />
           </>
         )}
-        <Stack.Screen name="main" component={MainScreen} />
+        {currentUser && (
+          <>
+            <Stack.Screen name="main" component={MainScreen} />
+            <Stack.Screen name="bearMap" component={BearMap} />
+            <Stack.Screen name="searchLocation" component={SearchLocation} />
+            <Stack.Screen name="Camera" component={Camera} />
+            <Stack.Screen name="RiderPending" component={RiderPending} />
 
-        <Stack.Screen name="bearMap" component={BearMap} />
-        <Stack.Screen name="searchLocation" component={SearchLocation} />
-        <Stack.Screen name="Camera" component={Camera} />
-        <Stack.Screen name="RiderPending" component={RiderPending} />
-
-        <Stack.Screen name="drawer" component={DrawerScreen} />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            title: "",
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="savedPlaces"
-          component={SavedPlaces}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            title: "",
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="addSavedPlaces"
-          component={AddSavePlaces}
-        />
-        <Stack.Screen
-          options={{
-            headerShown: true,
-            title: "",
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="viewAllWallet"
-          component={ViewAllWallet}
-        />
-        <Stack.Screen
-          options={{
-            title: "",
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="bearUser"
-          component={BearUser}
-        />
-        <Stack.Screen
-          options={{
-            title: "",
-            headerShown: true,
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="Rider"
-          component={Rider}
-        />
-        <Stack.Screen
-          options={{
-            title: "",
-            headerShown: true,
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="Wallet"
-          component={Wallet}
-        />
-        <Stack.Screen
-          options={{
-            title: "",
-            headerShown: true,
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="Notification"
-          component={NotificationContent}
-        />
-        <Stack.Screen
-          options={{
-            title: "",
-            headerShown: true,
-            headerBackTitleStyle: {
-              color: "white",
-              backgroundColor: "white",
-            },
-            headerTintColor: "white",
-            headerStyle: {
-              backgroundColor: "#B80B00",
-            },
-          }}
-          name="ViewTransaction"
-          component={ViewTransaction}
-        />
+            <Stack.Screen name="drawer" component={DrawerScreen} />
+            <Stack.Screen
+              options={{
+                headerShown: true,
+                title: "",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="savedPlaces"
+              component={SavedPlaces}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: true,
+                title: "",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="addSavedPlaces"
+              component={AddSavePlaces}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: true,
+                title: "",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="viewAllWallet"
+              component={ViewAllWallet}
+            />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="bearUser"
+              component={BearUser}
+            />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="Rider"
+              component={Rider}
+            />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="Wallet"
+              component={Wallet}
+            />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="Notification"
+              component={NotificationContent}
+            />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: "#B80B00",
+                },
+              }}
+              name="ViewTransaction"
+              component={ViewTransaction}
+            />
+          </>
+        )}
       </Stack.Navigator>
     );
   }
