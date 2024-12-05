@@ -117,70 +117,7 @@ const BearRiderMap = ({
             pinColor={"#B80B00"}
           />
         )}
-        {/* Book Location of the Customer */}
-        {bookLocation && (
-          <Marker
-            draggable={!singleData}
-            onDragEnd={async (event) => {
-              const { latitude, longitude } = event.nativeEvent.coordinate;
-              const address = await reverseGeocode(latitude, longitude);
-              bookLocationRef.current?.setAddressText(address);
 
-              setBookLocation({ latitude, longitude, address });
-            }}
-            onPress={() =>
-              jumpToMarker({
-                latitude: bookLocation?.latitude,
-                longitude: bookLocation?.longitude,
-              })
-            }
-            coordinate={{
-              latitude: bookLocation?.latitude,
-              longitude: bookLocation?.longitude,
-            }}
-            pinColor="yellow"
-            title="Book Location"
-          />
-        )}
-        {selectedLocation && showSelectedLocation && (
-          <Marker
-            draggable={!singleData}
-            onDragEnd={async (event) => {
-              const { latitude, longitude } = event.nativeEvent.coordinate;
-              const address = await reverseGeocode(latitude, longitude);
-              pahatodInputRef.current?.setAddressText(address);
-
-              setSelectedLocation({ latitude, longitude, address });
-            }}
-            onPress={() =>
-              jumpToMarker({
-                latitude: selectedLocation?.latitude,
-                longitude: selectedLocation?.longitude,
-              })
-            }
-            coordinate={{
-              latitude: selectedLocation?.latitude,
-              longitude: selectedLocation?.longitude,
-            }}
-            pinColor="#003082"
-            title="Selected Location"
-          />
-        )}
-        {bookLocation && selectedLocation && (
-          <MapViewDirections
-            strokeWidth={4}
-            strokeColor="#B80B00"
-            origin={{
-              latitude: bookLocation?.latitude,
-              longitude: bookLocation?.longitude,
-            }}
-            destination={{
-              latitude: selectedLocation?.latitude,
-              longitude: selectedLocation?.longitude,
-            }}
-            apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-          />
-        )}
         {/* Online Users */}
         {onlineUsers.length >= 1 &&
           !selectedTransaction &&

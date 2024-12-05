@@ -88,7 +88,10 @@ const BearHome = ({ navigation }) => {
 
   return (
     <>
-      <StatusBar backgroundColor="#B80B00" style="light" />
+      <StatusBar
+        backgroundColor={!currentUser.role ? "#B80B00" : "#003082"}
+        style="light"
+      />
       <ScrollView
         style={{ marginTop: Constants.statusBarHeight }}
         contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
@@ -165,7 +168,7 @@ const BearHome = ({ navigation }) => {
                       marginRight: 5,
                     }}
                   >
-                    Book Now
+                    {currentUser.role ? "Ride Now" : "Book Now"}
                   </Text>
                   <Entypo name="map" size={24} color="#AA2D31" />
                 </TouchableOpacity>

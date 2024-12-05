@@ -14,7 +14,7 @@ const BearHeader = ({ navigation }) => {
         alignItems: "center",
         flexDirection: "row",
         padding: 5,
-        backgroundColor: "#B80B00",
+        backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
 
         paddingHorizontal: 15,
       }}

@@ -102,6 +102,8 @@ export default function App() {
   }
 
   function MainScreen() {
+    const { currentUser } = useSmokeContext();
+
     return (
       <Tab.Navigator
         initialRouteName="Home"
@@ -137,7 +139,7 @@ export default function App() {
             marginHorizontal: 30,
             borderRadius: 10,
             paddingVertical: 5,
-            backgroundColor: "#7C0000",
+            backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
           },
         })}
       >
