@@ -81,57 +81,63 @@ const SavedPlaces = ({ navigation, route }) => {
         elevation: 2,
       }}
     >
-      {/* Map View */}
-      <MapView
-        scrollEnabled={false} // Disable scrolling
-        zoomEnabled={false} // Disable zooming
-        rotateEnabled={false} // Disable rotating
-        pitchEnabled={false} // Disable pitch (tilting)
-        liteMode={true} // Enables lightweight mode and removes Google logo
-        showsUserLocation={false} // Hide user location button
-        showsCompass={false} // Hide compass button
-        showsTraffic={false} // Hide traffic button
-        showsMyLocationButton={false} // Hide the "my location" button
-        style={{
-          width: 100,
-          height: 100,
-          borderRadius: 10,
-          marginRight: 10,
-        }}
-        initialRegion={{
-          latitude: item.location.latitude,
-          longitude: item.location.longitude,
-          latitudeDelta: 0.01,
-          longitudeDelta: 0.01,
-        }}
-      >
-        <Marker
-          coordinate={{
-            latitude: item.location.latitude,
-            longitude: item.location.longitude,
-          }}
-        />
-      </MapView>
+      {item.location && (
+        <>
+          {/* Map View */}
+          <MapView
+            scrollEnabled={false} // Disable scrolling
+            zoomEnabled={false} // Disable zooming
+            rotateEnabled={false} // Disable rotating
+            pitchEnabled={false} // Disable pitch (tilting)
+            liteMode={true} // Enables lightweight mode and removes Google logo
+            showsUserLocation={false} // Hide user location button
+            showsCompass={false} // Hide compass button
+            showsTraffic={false} // Hide traffic button
+            showsMyLocationButton={false} // Hide the "my location" button
+            style={{
+              width: 100,
+              height: 100,
+              borderRadius: 10,
+              marginRight: 10,
+            }}
+            initialRegion={{
+              latitude: item.location.latitude,
+              longitude: item.location.longitude,
+              latitudeDelta: 0.01,
+              longitudeDelta: 0.01,
+            }}
+          >
+            <Marker
+              coordinate={{
+                latitude: item.location.latitude,
+                longitude: item.location.longitude,
+              }}
+            />
+          </MapView>
 
-      {/* Place Details */}
-      <TouchableOpacity
-        onPress={() => {
-          if (type === "pointA") {
-            setBookLocation(item.location);
-            navigation.pop(2);
-          }
-          if (type === "pointB") {
-            setDestination(item.location);
-            navigation.pop(2);
-          }
-        }}
-        style={{ flex: 1 }}
-      >
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>{item.name}</Text>
-        <Text style={{ fontSize: 14, color: "#555" }}>
-          {item.location.address}
-        </Text>
-      </TouchableOpacity>
+          {/* Place Details */}
+          <TouchableOpacity
+            onPress={() => {
+              if (type === "pointA") {
+                setBookLocation(item.location);
+                navigation.pop(2);
+              }
+              if (type === "pointB") {
+                setDestination(item.location);
+                navigation.pop(2);
+              }
+            }}
+            style={{ flex: 1 }}
+          >
+            <Text style={{ fontSize: 16, fontWeight: "bold" }}>
+              {item.name}
+            </Text>
+            <Text style={{ fontSize: 14, color: "#555" }}>
+              {item.location.address}
+            </Text>
+          </TouchableOpacity>
+        </>
+      )}
 
       {mode !== "selecting" && (
         <TouchableOpacity

@@ -12,7 +12,9 @@ const BearHeader = ({ navigation }) => {
         justifyContent: "space-between",
         alignItems: "center",
         flexDirection: "row",
-        padding: 10,
+        padding: 5,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
       }}
     >
       <TouchableOpacity

@@ -18,6 +18,7 @@ import * as Location from "expo-location";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Constants from "expo-constants";
 import BearHeader from "../components/bearHeader";
+import { StatusBar } from "expo-status-bar";
 const BearHome = ({ navigation }) => {
   const { setUserLocation, currentUser, userLocation } = useSmokeContext();
   const [refreshing, setRefreshing] = useState(false); // State for refreshing

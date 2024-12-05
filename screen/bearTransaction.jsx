@@ -20,7 +20,7 @@ const BearTransaction = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const { currentUser } = useSmokeContext();
   const [filter, setFilter] = useState("All");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrder, setSortOrder] = useState("desc");
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -43,8 +43,8 @@ const BearTransaction = ({ navigation }) => {
       return false;
     })
     .sort((a, b) => {
-      const dateA = new Date(a.createdAt.toDate());
-      const dateB = new Date(b.createdAt.toDate());
+      const dateA = a.createdAt ? new Date(a.createdAt.toDate()) : null;
+      const dateB = b.createdAt ? new Date(b.createdAt.toDate()) : null;
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
 
@@ -92,7 +92,9 @@ const BearTransaction = ({ navigation }) => {
       >
         {filteredTransactions.length > 0 ? (
           filteredTransactions.map((transaction) => {
-            const date = moment(transaction.createdAt.toDate()).format("LLL");
+            const date = transaction.createdAt
+              ? moment(transaction.createdAt.toDate()).format("LLL")
+              : "Invalid Date";
             return (
               <TouchableOpacity
                 key={transaction.id}
