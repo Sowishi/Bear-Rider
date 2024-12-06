@@ -25,7 +25,6 @@ import ConfirmDelivery from "./confirmDelivery";
 import Entypo from "@expo/vector-icons/Entypo";
 
 const PahatodCustomerView = ({
-  findingRider,
   setFindingRider,
   location,
   pahatodInputRef,
@@ -53,6 +52,8 @@ const PahatodCustomerView = ({
     pahatodInputRef.current?.setAddressText("Camarines Norte: ");
     bookLocationRef.current?.setAddressText("Camarines Norte: ");
   }, []);
+
+  const { findingRider } = useSmokeContext();
 
   const getTransactionStatusLabel = (status) => {
     if (status == "Accepted") {

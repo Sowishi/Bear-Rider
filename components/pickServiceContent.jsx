@@ -2,6 +2,7 @@ import { Image, Text, View } from "react-native";
 import Button from "./button";
 import { TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { useSmokeContext } from "../utils/appContext";
 
 const PickServiceContent = ({
   setPahatodModal,
@@ -9,8 +10,8 @@ const PickServiceContent = ({
   setServiceType,
   setSelectedTransaction,
   setSingleData,
-  setFindingRider,
 }) => {
+  const { setFindingRider } = useSmokeContext();
   return (
     <View
       style={{ justifyContent: "center", alignItems: "center", width: "100%" }}

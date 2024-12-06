@@ -63,7 +63,6 @@ const Home = ({ route, navigation }) => {
   //Location State
   const [location, setLocation] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   //Refs
   const mapRef = useRef();
@@ -93,6 +92,8 @@ const Home = ({ route, navigation }) => {
     sumModal,
     destination,
     userLocation,
+    selectedTransaction,
+    setSelectedTransaction,
   } = useSmokeContext();
   const {
     addTransaction,

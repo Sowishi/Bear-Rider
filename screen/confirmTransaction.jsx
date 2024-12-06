@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,15 +12,66 @@ import CheckBox from "expo-checkbox"; // For Expo-compatible checkbox
 import { useSmokeContext } from "../utils/appContext";
 import MapViewDirections from "react-native-maps-directions";
 import { Entypo } from "@expo/vector-icons"; // Import Entypo from @expo/vector-icons
+import useCrudTransaction from "../hooks/useCrudTransaction";
+import Toast from "react-native-toast-message";
+import haversineDistance from "../utils/calculateDistance";
 
-const ConfirmTransaction = ({ route }) => {
+const ConfirmTransaction = ({ route, navigation }) => {
   const { serviceType } = route.params || "No Service Type";
-  const { bookLocation, destination } = useSmokeContext();
-
+  const {
+    bookLocation,
+    destination,
+    currentUser,
+    setFindingRider,
+    setSelectedTransaction,
+  } = useSmokeContext();
+  const { addTransaction } = useCrudTransaction();
+  const chargePerKilometer = 10;
+  const baseFare = 30;
   // State for the note input and insurance
   const [note, setNote] = useState("");
   const [insuranceChecked, setInsuranceChecked] = useState(false);
+  const [distance, setDistance] = useState();
 
+  useEffect(() => {
+    let output = 0;
+    if (destination && bookLocation) {
+      output = haversineDistance(bookLocation, destination);
+    }
+    setDistance(output);
+  }, [bookLocation, destination]);
+
+  const handleAddTransaction = async () => {
+    if (bookLocation && destination) {
+      const transaction = {
+        origin: {
+          latitude: bookLocation?.latitude,
+          longitude: bookLocation?.longitude,
+          address: bookLocation?.address,
+        },
+        destination: {
+          latitude: destination?.latitude,
+          longitude: destination?.longitude,
+          address: destination?.address,
+        },
+        currentUser,
+        distance,
+        serviceType,
+        totalPrice: distance * chargePerKilometer + baseFare,
+        remarks: note,
+        insured: insuranceChecked,
+      };
+      setFindingRider(true);
+      const output = await addTransaction(transaction);
+      setSelectedTransaction(output);
+      navigation.goBack();
+    } else {
+      Toast.show({
+        type: "info",
+        text1: "Please select drop off location",
+      });
+    }
+  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* MapView */}
@@ -115,7 +166,7 @@ const ConfirmTransaction = ({ route }) => {
 
         {/* Confirm Button */}
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={handleAddTransaction}
           style={{
             width: "100%",
             backgroundColor: "#B80B00",
