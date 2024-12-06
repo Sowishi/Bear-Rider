@@ -91,7 +91,7 @@ const BearTransaction = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {false ? (
+        {filteredTransactions.length >= 1 ? (
           filteredTransactions.map((transaction) => {
             const date = transaction.createdAt
               ? moment(transaction.createdAt.toDate()).format("LLL")

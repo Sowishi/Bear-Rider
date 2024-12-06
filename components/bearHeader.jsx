@@ -3,72 +3,77 @@ import React from "react";
 import { TouchableOpacity } from "react-native";
 import { useSmokeContext } from "../utils/appContext";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { LinearGradient } from "expo-linear-gradient";
 
 const BearHeader = ({ navigation }) => {
   const { currentUser } = useSmokeContext();
   return (
-    <View
+    <LinearGradient
+      colors={["#ff0000", "#8b0000"]} // Adjust colors for your desired red gradient
       style={{
         width: "100%",
-        justifyContent: "space-between",
-        alignItems: "center",
-        flexDirection: "row",
         padding: 5,
-        backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
-
         paddingHorizontal: 15,
       }}
     >
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("bearUser");
-        }}
+      <View
         style={{
-          padding: 5,
-          borderRadius: 100,
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexDirection: "row",
         }}
       >
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("bearUser");
+          }}
           style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-start",
+            padding: 5,
+            borderRadius: 100,
           }}
         >
-          <Image
-            style={{ width: 45, height: 45 }}
-            source={{ uri: currentUser?.profilePic }}
-          />
-          <View>
-            <Text
-              style={{
-                marginLeft: 10,
-                fontWeight: "bold",
-                fontSize: 18,
-                color: "white",
-              }}
-            >
-              {currentUser?.firstName + " " + currentUser?.lastName}
-            </Text>
-            <Text style={{ marginLeft: 10, fontSize: 12, color: "white" }}>
-              {currentUser?.role ? currentUser.role : "Customer"}
-            </Text>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+            }}
+          >
+            <Image
+              style={{ width: 45, height: 45 }}
+              source={{ uri: currentUser?.profilePic }}
+            />
+            <View>
+              <Text
+                style={{
+                  marginLeft: 10,
+                  fontWeight: "bold",
+                  fontSize: 18,
+                  color: "white",
+                }}
+              >
+                {currentUser?.firstName + " " + currentUser?.lastName}
+              </Text>
+              <Text style={{ marginLeft: 10, fontSize: 12, color: "white" }}>
+                {currentUser?.role ? currentUser.role : "Customer"}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("Notification");
-        }}
-        style={{
-          backgroundColor: "#FEF3F7",
-          padding: 7,
-          borderRadius: 100,
-        }}
-      >
-        <FontAwesome name="bell" size={20} color="black" />
-      </TouchableOpacity>
-    </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Notification");
+          }}
+          style={{
+            backgroundColor: "#FEF3F7",
+            padding: 7,
+            borderRadius: 100,
+          }}
+        >
+          <FontAwesome name="bell" size={20} color="black" />
+        </TouchableOpacity>
+      </View>
+    </LinearGradient>
   );
 };
 

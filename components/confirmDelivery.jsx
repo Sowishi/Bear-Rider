@@ -3,16 +3,22 @@ import {
   Modal,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
-const ConfirmDelivery = ({ open, handleClose, handleConfirm, text }) => {
+const ConfirmDelivery = ({
+  open,
+  handleClose,
+  handleConfirm,
+  text,
+  imageUrl,
+}) => {
   const [cancellationReason, setCancellationReason] = useState("");
 
   const handleCancel = () => {
-    // Optionally log or handle the cancellation reason here
     setCancellationReason(""); // Clear the input field
     handleClose(); // Close the modal
   };
@@ -27,27 +33,47 @@ const ConfirmDelivery = ({ open, handleClose, handleConfirm, text }) => {
       >
         <View style={styles.modalBackground}>
           <View style={styles.modalView}>
+            {/* Image at the Top */}
+            <Image
+              source={require("../assets/screenAssest/Onboarding.png")}
+              style={styles.modalImage}
+            />
+
+            {/* Modal Title */}
             <Text style={styles.modalTitle}>Confirm Action</Text>
+
+            {/* Modal Text */}
             <Text style={styles.modalText}>{text}</Text>
 
-            <View style={styles.buttonContainer}>
-              {/* Confirm Button */}
+            {/* Buttons in Flex Row */}
+            <View style={styles.buttonRow}>
+              {/* Cancel Button */}
               <TouchableOpacity
-                style={styles.confirmButton}
+                style={styles.buttonContainer}
+                onPress={handleCancel}
+              >
+                <LinearGradient
+                  colors={["#B80B00", "#FF4D4D"]}
+                  style={styles.gradientButton}
+                >
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+
+              {/* Continue Button */}
+              <TouchableOpacity
+                style={styles.buttonContainer}
                 onPress={() => {
                   handleConfirm();
                   setCancellationReason(""); // Clear input if confirmed
                 }}
               >
-                <Text style={styles.buttonText}>Continue</Text>
-              </TouchableOpacity>
-
-              {/* Cancel Button */}
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={handleCancel}
-              >
-                <Text style={styles.buttonText}>Cancel</Text>
+                <LinearGradient
+                  colors={["#003082", "#0050A0"]}
+                  style={styles.gradientButton}
+                >
+                  <Text style={styles.buttonText}>Continue</Text>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
           </View>
@@ -70,59 +96,49 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
-    width: "80%",
+    width: "85%",
     backgroundColor: "white",
-    borderRadius: 10,
+    borderRadius: 20,
     padding: 20,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
     elevation: 5,
   },
+  modalImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 40,
+    marginBottom: 15,
+  },
   modalTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
+    color: "#003082",
     marginBottom: 10,
   },
   modalText: {
     fontSize: 16,
-    color: "black",
+    color: "#333333",
     textAlign: "center",
     marginBottom: 20,
   },
-  buttonContainer: {
+  buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
-    marginBottom: 15,
+    marginTop: 15,
   },
-  confirmButton: {
-    backgroundColor: "#28A745",
-    padding: 10,
-    borderRadius: 10,
+  buttonContainer: {
     flex: 1,
-    marginRight: 5,
-    alignItems: "center",
+    marginHorizontal: 5,
   },
-  cancelButton: {
-    backgroundColor: "#B80B00",
-    padding: 10,
-    borderRadius: 10,
-    flex: 1,
-    marginLeft: 5,
+  gradientButton: {
+    padding: 12,
+    borderRadius: 15,
     alignItems: "center",
-  },
-  textInput: {
-    width: "100%",
-    backgroundColor: "#f2f2f2",
-    borderRadius: 5,
-    padding: 10,
-    fontSize: 14,
-    color: "black",
   },
   buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
     color: "white",
   },
 });

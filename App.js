@@ -33,6 +33,7 @@ import {
   TransitionSpecs,
   CardStyleInterpolators,
 } from "@react-navigation/stack";
+import ConfirmTransaction from "./screen/confirmTransaction";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -349,6 +350,22 @@ export default function App() {
               }}
               name="ViewTransaction"
               component={ViewTransaction}
+            />
+            <Stack.Screen
+              options={{
+                title: "",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="ConfirmTransaction"
+              component={ConfirmTransaction}
             />
           </>
         )}

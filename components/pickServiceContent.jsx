@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import Button from "./button";
 import { TouchableOpacity } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -59,32 +59,45 @@ const PickServiceContent = ({
           Pick a service
         </Text>
       </View>
-      <Button
-        width={300}
-        text="Transportation Services"
-        bgColor={"#B80B00"}
-        event={() => {
-          setPahatodModal(true);
-          setServiceModal(false);
-          setServiceType("Pahatod");
-          setSelectedTransaction(null);
-          setSingleData(null);
-          setFindingRider(false);
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center",
+          width: "100%",
         }}
-      />
-      <Button
-        width={300}
-        text="Delivery Services"
-        bgColor={"#B80B00"}
-        event={() => {
-          setPahatodModal(true);
-          setServiceModal(false);
-          setServiceType("Padara");
-          setSelectedTransaction(null);
-          setSingleData(null);
-          setFindingRider(false);
-        }}
-      />
+      >
+        <TouchableOpacity
+          onPress={() => {
+            setPahatodModal(true);
+            setServiceModal(false);
+            setServiceType("Pahatod");
+            setSelectedTransaction(null);
+            setSingleData(null);
+            setFindingRider(false);
+          }}
+        >
+          <Image source={require("../assets/transpo.png")} />
+          <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+            Transportation
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setPahatodModal(true);
+            setServiceModal(false);
+            setServiceType("Padara");
+            setSelectedTransaction(null);
+            setSingleData(null);
+            setFindingRider(false);
+          }}
+        >
+          <Image source={require("../assets/delivery.png")} />
+          <Text style={{ textAlign: "center", fontWeight: "bold" }}>
+            Delivery
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

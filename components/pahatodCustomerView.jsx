@@ -110,11 +110,7 @@ const PahatodCustomerView = ({
       />
 
       <ConfirmDelivery
-        text={
-          serviceType == "Padara"
-            ? "Delivery fee will be deducted from your system wallet. Please pay for goods in cash upon delivery"
-            : "Would you like to proceed?"
-        }
+        text={"Would you like to proceed?"}
         handleConfirm={() => {
           if (serviceType == "Pahatod") {
             handleAddTransaction();
