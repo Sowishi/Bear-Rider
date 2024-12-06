@@ -153,7 +153,6 @@ const OrderNotes = ({
   );
   const totalPrice = parseInt(deliveryFee) + parseInt(purchaseCost);
 
-  console.log(proof);
   return (
     <View
       style={{

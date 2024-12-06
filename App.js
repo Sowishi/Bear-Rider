@@ -34,6 +34,7 @@ import {
   CardStyleInterpolators,
 } from "@react-navigation/stack";
 import ConfirmTransaction from "./screen/confirmTransaction";
+import LiveTransaction from "./screen/liveTransaction";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -199,6 +200,7 @@ export default function App() {
             <Stack.Screen name="RiderPending" component={RiderPending} />
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="viewBearAsset" component={ViewBearAsset} />
+            <Stack.Screen name="LiveTransaction" component={LiveTransaction} />
 
             <Stack.Screen
               options={{

@@ -90,6 +90,10 @@ const PahatodCustomerView = ({
     destination,
   } = useSmokeContext();
 
+  if (findingRider) {
+    navigation.navigate("LiveTransaction");
+  }
+
   return (
     <>
       <ConfirmationModal

@@ -136,15 +136,6 @@ const Home = ({ route, navigation }) => {
     return () => backHandler.remove();
   }, []);
 
-  // Calulate distance between two coords
-  useEffect(() => {
-    let output = 0;
-    if (destination && bookLocation) {
-      output = haversineDistance(bookLocation, destination);
-    }
-    setDistance(output);
-  }, [bookLocation, destination]);
-
   // When app is back in home screen cancel the transaction
   useEffect(() => {
     const subscription = AppState.addEventListener(
@@ -213,7 +204,6 @@ const Home = ({ route, navigation }) => {
       }
     });
 
-    console.log(transactions);
     setTransactionCount(filter.length);
   }, [transactions]);
 
@@ -223,7 +213,7 @@ const Home = ({ route, navigation }) => {
     if (appState === "active" && nextAppState.match(/inactive|background/)) {
       // deleteTransaction(currentUser);
       // setFindingRider(false);
-      deleteOnlineUser(currentUser.id);
+      // deleteOnlineUser(currentUser.id);
       if (watchInstance) {
         watchInstance.remove();
       }

@@ -71,7 +71,6 @@ const BearMaps = ({ navigation, route }) => {
   };
 
   const jumpToMarker = (coords) => {
-    console.log(coords);
     mapRef.current?.animateToRegion(
       { ...coords, latitudeDelta: 0.01, longitudeDelta: 0.03 },
       1000
