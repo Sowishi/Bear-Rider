@@ -27,6 +27,11 @@ import ViewAllWallet from "./screen/view-all-wallet";
 import BearTransaction from "./screen/bearTransaction";
 import ViewTransaction from "./screen/viewTransacation";
 import BearOnBoarding from "./screen/onboarding";
+import {
+  TransitionSpecs,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
+
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -174,7 +179,18 @@ export default function App() {
         {currentUser && (
           <>
             <Stack.Screen name="main" component={MainScreen} />
-            <Stack.Screen name="bearMap" component={BearMap} />
+            <Stack.Screen
+              name="bearMap"
+              options={{
+                animationEnabled: true,
+                transitionSpec: {
+                  open: TransitionSpecs.TransitionIOSSpec,
+                  close: TransitionSpecs.TransitionIOSSpec,
+                },
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+              }}
+              component={BearMap}
+            />
             <Stack.Screen name="searchLocation" component={SearchLocation} />
             <Stack.Screen name="Camera" component={Camera} />
             <Stack.Screen name="RiderPending" component={RiderPending} />
@@ -192,6 +208,12 @@ export default function App() {
                 headerStyle: {
                   backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
+                animationEnabled: true,
+                transitionSpec: {
+                  open: TransitionSpecs.TransitionIOSSpec,
+                  close: TransitionSpecs.TransitionIOSSpec,
+                },
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
               }}
               name="savedPlaces"
               component={SavedPlaces}
@@ -208,6 +230,12 @@ export default function App() {
                 headerStyle: {
                   backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
+                animationEnabled: true,
+                transitionSpec: {
+                  open: TransitionSpecs.TransitionIOSSpec,
+                  close: TransitionSpecs.TransitionIOSSpec,
+                },
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
               }}
               name="addSavedPlaces"
               component={AddSavePlaces}
@@ -224,6 +252,12 @@ export default function App() {
                 headerStyle: {
                   backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
+                animationEnabled: true,
+                transitionSpec: {
+                  open: TransitionSpecs.TransitionIOSSpec,
+                  close: TransitionSpecs.TransitionIOSSpec,
+                },
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
               }}
               name="viewAllWallet"
               component={ViewAllWallet}
@@ -271,6 +305,12 @@ export default function App() {
                 headerStyle: {
                   backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
                 },
+                animationEnabled: true,
+                transitionSpec: {
+                  open: TransitionSpecs.TransitionIOSSpec,
+                  close: TransitionSpecs.TransitionIOSSpec,
+                },
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
               }}
               name="Wallet"
               component={Wallet}
