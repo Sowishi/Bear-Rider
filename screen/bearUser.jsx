@@ -20,7 +20,7 @@ import { useSmokeContext } from "../utils/appContext";
 const BearUser = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [logoutModalVisible, setLogoutModalVisible] = useState(false);
-
+  const AppVersion = Constants.expoConfig?.version || "1.0.0";
   const { currentUser, setCurrentUser } = useSmokeContext();
 
   const onRefresh = () => {
@@ -138,6 +138,7 @@ const BearUser = ({ navigation }) => {
           />
           <AntDesign name="arrowright" size={24} color="black" />
         </TouchableOpacity>
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.riderButton}
@@ -148,6 +149,9 @@ const BearUser = ({ navigation }) => {
             <Text style={styles.buttonText}>Become a Rider</Text>
           </TouchableOpacity>
         </View>
+        <Text style={{ textAlign: "center", marginVertical: 5 }}>
+          Version: {AppVersion}
+        </Text>
       </ScrollView>
 
       {/* Logout Confirmation Modal */}

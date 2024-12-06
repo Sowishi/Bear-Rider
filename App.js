@@ -353,7 +353,7 @@ export default function App() {
             />
             <Stack.Screen
               options={{
-                title: "",
+                title: "Confirm Transaction",
                 headerShown: true,
                 headerBackTitleStyle: {
                   color: "white",
