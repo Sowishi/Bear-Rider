@@ -214,7 +214,7 @@ const BearHome = ({ navigation }) => {
                 alignItems: "center",
               }}
               onPress={() =>
-                navigation.navigate("bearMap", { type: "currentLocation" })
+                navigation.navigate("viewBearAsset", { type: "pinLocation" })
               }
             >
               <View

@@ -371,6 +371,8 @@ const BearMaps = ({ navigation, route }) => {
                       address,
                     });
                   }
+                  navigation.navigate("main");
+                  return;
                 }
 
                 if (type == "pointA") {

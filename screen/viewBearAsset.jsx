@@ -11,6 +11,12 @@ const ViewBearAsset = ({ route, navigation }) => {
       title: "Start saving your location to access them faster",
       goTo: "savedPlaces",
     },
+    pinLocation: {
+      image: require("../assets/screenAssest/Pin your location.png"),
+      title: "Pin your current location",
+      goTo: "bearMap",
+      parameter: "currentLocation",
+    },
   };
 
   return (
@@ -38,7 +44,9 @@ const ViewBearAsset = ({ route, navigation }) => {
 
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(data[type].goTo);
+            navigation.navigate(data[type].goTo, {
+              type: data[type].parameter,
+            });
           }}
           style={{
             width: "100%",
