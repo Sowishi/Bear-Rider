@@ -26,6 +26,7 @@ import AddSavePlaces from "./screen/add-saved-places";
 import ViewAllWallet from "./screen/view-all-wallet";
 import BearTransaction from "./screen/bearTransaction";
 import ViewTransaction from "./screen/viewTransacation";
+import BearOnBoarding from "./screen/onboarding";
 export default function App() {
   const Stack = createStackNavigator();
   const Drawer = createDrawerNavigator();
@@ -165,6 +166,7 @@ export default function App() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {currentUser == null && (
           <>
+            <Stack.Screen name="onboarding" component={BearOnBoarding} />
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Register} />
           </>

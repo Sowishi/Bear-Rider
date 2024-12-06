@@ -41,19 +41,6 @@ const Login = ({ navigation }) => {
     }
   };
 
-  const getUser = async () => {
-    const output = await AsyncStorage.getItem("user");
-    const data = await JSON.parse(output);
-    setCurrentUser(data);
-    if (data) {
-      navigation.navigate("main");
-    }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
       <StatusBar translucent style="dark" />
