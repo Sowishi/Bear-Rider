@@ -5,6 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  Image,
 } from "react-native";
 import React, { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -90,7 +91,7 @@ const BearTransaction = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {filteredTransactions.length > 0 ? (
+        {false ? (
           filteredTransactions.map((transaction) => {
             const date = transaction.createdAt
               ? moment(transaction.createdAt.toDate()).format("LLL")
@@ -116,7 +117,15 @@ const BearTransaction = ({ navigation }) => {
             );
           })
         ) : (
-          <EmptyList title="No transactions available." />
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              style={{ width: 200, height: 200 }}
+              source={require("../assets/screenAssest/No Transaction HIstory.png")}
+            />
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              There's no transaction yet
+            </Text>
+          </View>
         )}
       </ScrollView>
     </View>

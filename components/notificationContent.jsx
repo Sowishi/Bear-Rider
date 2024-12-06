@@ -65,7 +65,15 @@ const NotificationContent = () => {
             );
           })
         ) : (
-          <EmptyList title={"No Notification yet"} />
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              style={{ width: 200, height: 200 }}
+              source={require("../assets/screenAssest/No Notification.png")}
+            />
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              There's no notification yet
+            </Text>
+          </View>
         )}
       </ScrollView>
     </View>

@@ -5,6 +5,7 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import moment from "moment";
@@ -173,9 +174,15 @@ const Wallet = ({ navigation }) => {
             );
           })
         ) : (
-          <Text style={{ textAlign: "center", marginTop: 50 }}>
-            No Transactions Yet.
-          </Text>
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              style={{ width: 150, height: 150 }}
+              source={require("../assets/screenAssest/No Wallet History.png")}
+            />
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              There's no wallet history
+            </Text>
+          </View>
         )}
       </ScrollView>
     </View>

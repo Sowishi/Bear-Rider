@@ -5,6 +5,7 @@ import {
   ScrollView,
   RefreshControl,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons for icons
 import moment from "moment";
@@ -214,7 +215,15 @@ const ViewAllWallet = ({ navigation }) => {
             );
           })
         ) : (
-          <EmptyList title="No Transaction Yet." />
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Image
+              style={{ width: 150, height: 150 }}
+              source={require("../assets/screenAssest/No Wallet History.png")}
+            />
+            <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+              There's no wallet history
+            </Text>
+          </View>
         )}
       </ScrollView>
     </View>
