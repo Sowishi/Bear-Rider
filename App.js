@@ -27,6 +27,8 @@ import ViewAllWallet from "./screen/view-all-wallet";
 import BearTransaction from "./screen/bearTransaction";
 import ViewTransaction from "./screen/viewTransacation";
 import BearOnBoarding from "./screen/onboarding";
+import ViewBearAsset from "./screen/viewBearAsset";
+
 import {
   TransitionSpecs,
   CardStyleInterpolators,
@@ -194,8 +196,9 @@ export default function App() {
             <Stack.Screen name="searchLocation" component={SearchLocation} />
             <Stack.Screen name="Camera" component={Camera} />
             <Stack.Screen name="RiderPending" component={RiderPending} />
-
             <Stack.Screen name="drawer" component={DrawerScreen} />
+            <Stack.Screen name="viewBearAsset" component={ViewBearAsset} />
+
             <Stack.Screen
               options={{
                 headerShown: true,

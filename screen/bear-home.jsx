@@ -257,7 +257,9 @@ const BearHome = ({ navigation }) => {
                 justifyContent: "space-between",
                 alignItems: "center",
               }}
-              onPress={() => navigation.navigate("savedPlaces")}
+              onPress={() =>
+                navigation.navigate("viewBearAsset", { type: "saveLocation" })
+              }
             >
               <View
                 style={{
