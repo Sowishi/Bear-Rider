@@ -69,11 +69,12 @@ const useCrudTransaction = () => {
     updateDoc(docRef, { ...transaction, status: "Completed" });
   };
 
-  const getTransaction = (id) => {
+  const getTransaction = (id, setSelectedTransaction) => {
     const docRef = doc(db, "transaction", id);
     onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
-        setSingleData({ ...doc.data(), id: doc.id });
+        console.log(doc.data());
+        setSelectedTransaction({ ...doc.data(), id: doc.id });
       } else {
         console.log("No such document!");
       }

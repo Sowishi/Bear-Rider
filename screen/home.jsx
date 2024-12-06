@@ -188,13 +188,6 @@ const Home = ({ route, navigation }) => {
     };
   }, []);
 
-  //Watch to the transaction change data
-  useEffect(() => {
-    if (selectedTransaction) {
-      getTransaction(selectedTransaction.id);
-    }
-  }, [selectedTransaction]);
-
   //Set the transaction count of rider
 
   useEffect(() => {
@@ -204,6 +197,7 @@ const Home = ({ route, navigation }) => {
       }
     });
 
+    console.log(transactions);
     setTransactionCount(filter.length);
   }, [transactions]);
 
@@ -213,7 +207,7 @@ const Home = ({ route, navigation }) => {
     if (appState === "active" && nextAppState.match(/inactive|background/)) {
       // deleteTransaction(currentUser);
       // setFindingRider(false);
-      // deleteOnlineUser(currentUser.id);
+      deleteOnlineUser(currentUser.id);
       if (watchInstance) {
         watchInstance.remove();
       }
@@ -563,7 +557,7 @@ const Home = ({ route, navigation }) => {
 
           {/* Rider Accepeted View */}
 
-          {singleData && IS_RIDER && (
+          {IS_RIDER && (
             <BottomModal
               heightPx={560}
               modalVisible={viewTransactionModal}

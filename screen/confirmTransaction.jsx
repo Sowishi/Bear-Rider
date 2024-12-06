@@ -64,7 +64,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
       setFindingRider(true);
       const output = await addTransaction(transaction);
       setSelectedTransaction(output);
-      navigation.goBack();
+      navigation.navigate("LiveTransaction");
     } else {
       Toast.show({
         type: "info",
