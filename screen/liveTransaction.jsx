@@ -62,29 +62,110 @@ const LiveTransaction = ({ navigation }) => {
       time: "1",
       title: "Book the transaction",
       description: "You book the transaction",
-      circleColor: "gray",
-      lineColor: "gray",
-    },
-    {
-      time: "1",
-      title: getTransactionStatusLabel("Accepted").title,
-      description: getTransactionStatusLabel("Accepted").sub,
-      circleColor: transaction?.status == "Accepted" ? "#B80B00" : "gray",
-      lineColor: "gray",
+      circleColor: "rgba(128, 128, 128, 1)", // Fully opaque
+      lineColor: "rgba(128, 128, 128, 1)", // Fully opaque
+      titleStyle: { color: "rgba(0, 0, 0, 1)" }, // Fully opaque
+      descriptionStyle: { color: "rgba(0, 0, 0, 1)" }, // Fully opaque
     },
     {
       time: "2",
-      title: getTransactionStatusLabel("Transit").title,
-      description: getTransactionStatusLabel("Transit").sub,
-      circleColor: transaction?.status == "Transit" ? "#B80B00" : "gray",
-      lineColor: "gray",
+      title: getTransactionStatusLabel("Accepted").title,
+      description: getTransactionStatusLabel("Accepted").sub,
+      circleColor:
+        transaction?.status === "Accepted"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      lineColor:
+        transaction?.status === "Accepted"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      titleStyle: {
+        color:
+          transaction?.status === "Accepted"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+      descriptionStyle: {
+        color:
+          transaction?.status === "Accepted"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
     },
     {
       time: "3",
+      title: getTransactionStatusLabel("Transit").title,
+      description: getTransactionStatusLabel("Transit").sub,
+      circleColor:
+        transaction?.status === "Transit"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      lineColor:
+        transaction?.status === "Transit"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      titleStyle: {
+        color:
+          transaction?.status === "Transit"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+      descriptionStyle: {
+        color:
+          transaction?.status === "Transit"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+    },
+    {
+      time: "4",
       title: getTransactionStatusLabel("Nearby").title,
       description: getTransactionStatusLabel("Nearby").sub,
-      circleColor: transaction?.status == "Nearby" ? "#B80B00" : "gray",
-      lineColor: "gray",
+      circleColor:
+        transaction?.status === "Nearby"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      lineColor:
+        transaction?.status === "Nearby"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      titleStyle: {
+        color:
+          transaction?.status === "Nearby"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+      descriptionStyle: {
+        color:
+          transaction?.status === "Nearby"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+    },
+    {
+      time: "5",
+      title: "Transaction Complete",
+      description: "The transaction is complete",
+      circleColor:
+        transaction?.status === "Nearby"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      lineColor:
+        transaction?.status === "Nearby"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      titleStyle: {
+        color:
+          transaction?.status === "Nearby"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+      descriptionStyle: {
+        color:
+          transaction?.status === "Nearby"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
     },
   ];
 
@@ -416,9 +497,7 @@ const LiveTransaction = ({ navigation }) => {
 
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("ViewBearAsset", {
-                    type: "liveTracking",
-                  });
+                  navigation.navigate("LiveTracking");
                 }}
                 style={{
                   flexDirection: "row",
@@ -441,9 +520,9 @@ const LiveTransaction = ({ navigation }) => {
 
                     <View style={{ marginLeft: 5 }}>
                       <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                        Live Tracking
+                        Direction
                       </Text>
-                      <Text>Track your rider in realtime.</Text>
+                      <Text>Track your customer's location</Text>
                     </View>
                   </View>
                 </View>
