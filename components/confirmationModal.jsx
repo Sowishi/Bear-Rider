@@ -8,9 +8,13 @@ import {
   StyleSheet,
 } from "react-native";
 
-const ConfirmationModal = ({ open, handleClose, handleConfirm }) => {
-  const [cancellationReason, setCancellationReason] = useState("");
-
+const ConfirmationModal = ({
+  open,
+  handleClose,
+  handleConfirm,
+  onChangeText,
+  setCancellationReason,
+}) => {
   const handleCancel = () => {
     // Optionally log or handle the cancellation reason here
     setCancellationReason(""); // Clear the input field
@@ -57,8 +61,7 @@ const ConfirmationModal = ({ open, handleClose, handleConfirm }) => {
             <TextInput
               style={styles.textInput}
               placeholder="Enter cancellation reason (optional)"
-              value={cancellationReason}
-              onChangeText={setCancellationReason}
+              onChangeText={onChangeText}
               multiline
             />
           </View>

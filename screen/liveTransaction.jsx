@@ -15,6 +15,8 @@ import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import Constants from "expo-constants";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Entypo } from "@expo/vector-icons";
+import ConfirmDelivery from "../components/confirmDelivery";
+import ConfirmationModal from "../components/confirmationModal";
 
 const LiveTransaction = ({ navigation }) => {
   const {
@@ -25,6 +27,8 @@ const LiveTransaction = ({ navigation }) => {
   } = useSmokeContext();
   const { getTransaction, deleteTransaction } = useCrudTransaction();
   const [transaction, setTransaction] = useState();
+  const [cancelModal, setCancelModal] = useState(false);
+  const [cancellationReason, setCancellationReason] = useState("");
 
   useEffect(() => {
     getTransaction(selectedTransaction.id, setTransaction);
@@ -192,6 +196,17 @@ const LiveTransaction = ({ navigation }) => {
         }}
       >
         <ExpoStatusBar style="light" />
+        <ConfirmationModal
+          handleConfirm={() => {
+            console.log(cancellationReason);
+          }}
+          onChangeText={(text) => setCancellationReason(text)}
+          setCancellationReason={setCancellationReason}
+          open={cancelModal}
+          handleClose={() => {
+            setCancelModal(false);
+          }}
+        />
         <View
           style={{
             backgroundColor: "#003082",
@@ -363,24 +378,12 @@ const LiveTransaction = ({ navigation }) => {
               {/* Buttons */}
               <View style={{ flexDirection: "row", marginTop: 10 }}>
                 <Button
-                  width={150}
+                  width={"100%"}
                   event={() => {
-                    setConfirmModal(true);
+                    setCancelModal(true);
                   }}
                   text="Cancel Ride"
                   bgColor={"#B80B00"}
-                />
-                <Button
-                  width={150}
-                  event={() => {
-                    setFindingRider(false);
-                    setPahatodModal(false);
-                    setSelectedLocation(null);
-                    setViewRiderState(true);
-                    setShowBook(false);
-                  }}
-                  text="Pay Now"
-                  bgColor={"#003082"}
                 />
               </View>
             </>
@@ -399,6 +402,18 @@ const LiveTransaction = ({ navigation }) => {
       }}
     >
       <ExpoStatusBar style="light" />
+
+      <ConfirmationModal
+        handleConfirm={() => {
+          console.log(cancellationReason);
+        }}
+        onChangeText={(text) => setCancellationReason(text)}
+        setCancellationReason={setCancellationReason}
+        open={cancelModal}
+        handleClose={() => {
+          setCancelModal(false);
+        }}
+      />
       <View
         style={{
           backgroundColor: "#B80B00",
@@ -571,7 +586,7 @@ const LiveTransaction = ({ navigation }) => {
               <Button
                 width={"100%"}
                 event={() => {
-                  setConfirmModal(true);
+                  setCancelModal(true);
                 }}
                 text="Cancel Ride"
                 bgColor={"#B80B00"}
