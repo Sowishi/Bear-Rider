@@ -41,6 +41,9 @@ const TransactionDetails = ({ route, navigation }) => {
     Toast.show({ type: "success", text1: "Successfully accepeted ride." });
   };
 
+  const chargePerKilometer = 10;
+  const baseFare = 30;
+
   if (transaction) {
     return (
       <ScrollView contentContainerStyle={styles.container}>
@@ -135,7 +138,58 @@ const TransactionDetails = ({ route, navigation }) => {
             />
             <Text style={styles.checkboxText}>Transaction Insured.</Text>
           </View>
-          {currentUser.role == "Rider" && (
+
+          <View style={{ marginBottom: 15 }}>
+            <Text style={{ fontSize: 20, marginBottom: 5, fontWeight: "bold" }}>
+              Price Breakdown
+            </Text>
+            {serviceType != "Padara" && (
+              <>
+                <Text style={{ color: "black", fontSize: 15 }}>
+                  Base Fare:
+                  <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                    {" "}
+                    ₱{baseFare}
+                  </Text>
+                </Text>
+                <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
+                  This is the minimum cost for initiating the transportation
+                  service.
+                </Text>
+
+                <Text style={{ color: "black", fontSize: 15 }}>
+                  Fare per Kilometer:
+                  <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                    {parseInt(transaction.totalPrice) - baseFare}
+                  </Text>
+                </Text>
+                <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
+                  This amount is calculated based on the distance to the
+                  destination.
+                </Text>
+
+                <Text
+                  style={{
+                    color: "black",
+                    fontSize: 15,
+                    fontWeight: "bold",
+                    marginTop: 10,
+                  }}
+                >
+                  Total Fare:
+                  <Text style={{ color: "#FFC30E" }}>
+                    {" "}
+                    ₱{parseInt(transaction.totalPrice)}
+                  </Text>
+                </Text>
+                <Text style={{ color: "gray", fontSize: 12 }}>
+                  The final amount, including the base fare and the distance
+                  charge.
+                </Text>
+              </>
+            )}
+          </View>
+          {currentUser.role == "Rider" && !transaction.status && (
             <View
               style={{
                 flexDirection: "row",
