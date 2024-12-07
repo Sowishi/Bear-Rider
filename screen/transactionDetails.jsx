@@ -13,21 +13,18 @@ import { useSmokeContext } from "../utils/appContext";
 import MapViewDirections from "react-native-maps-directions";
 import { Entypo } from "@expo/vector-icons"; // Import Entypo from @expo/vector-icons
 import useCrudTransaction from "../hooks/useCrudTransaction";
+import useCrudNotification from "../hooks/useCrudNotification";
+
 import Toast from "react-native-toast-message";
 import haversineDistance from "../utils/calculateDistance";
 
 const TransactionDetails = ({ route, navigation }) => {
   const { serviceType } = route.params || "No Service Type";
-  const {
-    bookLocation,
-    destination,
-    currentUser,
-    setFindingRider,
-    setSelectedTransaction,
-    selectedTransaction,
-  } = useSmokeContext();
+  const { currentUser, userLocation, selectedTransaction } = useSmokeContext();
 
-  const { getTransaction, deleteTransaction } = useCrudTransaction();
+  const { getTransaction, deleteTransaction, acceptTransaction } =
+    useCrudTransaction();
+  const { addNotification } = useCrudNotification();
   const [transaction, setTransaction] = useState();
 
   useEffect(() => {
@@ -36,6 +33,12 @@ const TransactionDetails = ({ route, navigation }) => {
 
   const [note, setNote] = useState("");
   const [insuranceChecked, setInsuranceChecked] = useState(false);
+
+  const handleAcceptTransaction = () => {
+    acceptTransaction(transaction, currentUser, userLocation);
+    addNotification(transaction, currentUser, "accept rider");
+    Toast.show({ type: "success", text1: "Successfully accepeted ride." });
+  };
 
   if (transaction) {
     return (
@@ -111,8 +114,9 @@ const TransactionDetails = ({ route, navigation }) => {
           </View>
 
           {/* Note Input */}
-          <Text style={styles.cardTitle}>Add a Note</Text>
+          <Text style={styles.cardTitle}>Remarks</Text>
           <TextInput
+            editable={false}
             style={styles.noteInput}
             placeholder="Enter any additional information"
             placeholderTextColor="#888"
@@ -124,14 +128,68 @@ const TransactionDetails = ({ route, navigation }) => {
           {/* Insurance Checkbox */}
           <View style={styles.checkboxContainer}>
             <CheckBox
-              value={transaction.insuranceChecked}
+              value={transaction.insured}
               onValueChange={setInsuranceChecked}
               color={insuranceChecked ? "#003082" : undefined}
             />
-            <Text style={styles.checkboxText}>
-              Add insurance to your transactions for extra protection and peace
-              of mind.
-            </Text>
+            <Text style={styles.checkboxText}>Transaction Insured.</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{
+                width: "50%",
+                backgroundColor: "#B80B0099",
+                paddingVertical: 15,
+                marginTop: 20,
+                borderRadius: 20,
+                marginTop: 30,
+                marginRight: 5,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: 20,
+                }}
+              >
+                Cancel
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                handleAcceptTransaction();
+              }}
+              style={{
+                width: "50%",
+                backgroundColor: "#B80B00",
+                paddingVertical: 15,
+                marginTop: 20,
+                borderRadius: 20,
+                marginTop: 30,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: 20,
+                }}
+              >
+                Accept
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -171,13 +229,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   noteInput: {
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#DEDEDE",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
     padding: 10,
     fontSize: 14,
-    color: "#333",
+    color: "black",
     minHeight: 60,
     textAlignVertical: "top",
     marginBottom: 10,

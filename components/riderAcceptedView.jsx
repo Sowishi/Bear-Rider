@@ -39,12 +39,6 @@ const RiderAcceptedView = ({
     getTransaction(selectedTransaction.id, setTransaction);
   }, []);
 
-  const handleAcceptTransaction = () => {
-    acceptTransaction(transaction, currentUser, location);
-    addNotification(transaction, currentUser, "accept rider");
-    Toast.show({ type: "success", text1: "Successfully accepeted ride." });
-  };
-
   return (
     <View
       style={{
@@ -176,7 +170,7 @@ const RiderAcceptedView = ({
                   color: "white",
                   textAlign: "center",
                   fontWeight: "bold",
-                  fontSize: 18,
+                  fontSize: 20,
                 }}
               >
                 Details
