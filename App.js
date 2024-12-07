@@ -35,6 +35,8 @@ import {
 } from "@react-navigation/stack";
 import ConfirmTransaction from "./screen/confirmTransaction";
 import LiveTransaction from "./screen/liveTransaction";
+import OrderNotes from "./components/orderNotes";
+import TransactionDetails from "./screen/transactionDetails";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -368,6 +370,22 @@ export default function App() {
               }}
               name="ConfirmTransaction"
               component={ConfirmTransaction}
+            />
+            <Stack.Screen
+              options={{
+                title: "Transaction Details",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="TransactionDetails"
+              component={TransactionDetails}
             />
           </>
         )}

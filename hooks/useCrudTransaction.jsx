@@ -73,7 +73,7 @@ const useCrudTransaction = () => {
     const docRef = doc(db, "transaction", id);
     onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
-        console.log(doc.data());
+        doc.data();
         setSelectedTransaction({ ...doc.data(), id: doc.id });
       } else {
         console.log("No such document!");

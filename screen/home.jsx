@@ -207,10 +207,10 @@ const Home = ({ route, navigation }) => {
     if (appState === "active" && nextAppState.match(/inactive|background/)) {
       // deleteTransaction(currentUser);
       // setFindingRider(false);
-      deleteOnlineUser(currentUser.id);
-      if (watchInstance) {
-        watchInstance.remove();
-      }
+      // deleteOnlineUser(currentUser.id);
+      // if (watchInstance) {
+      //   watchInstance.remove();
+      // }
     }
 
     setAppState(nextAppState); // Update the current state
@@ -571,6 +571,8 @@ const Home = ({ route, navigation }) => {
                 singleData={singleData}
                 chargePerKilometer={chargePerKilometer}
                 baseFare={baseFare}
+                selectedTransaction={selectedTransaction}
+                navigation={navigation}
               />
             </BottomModal>
           )}

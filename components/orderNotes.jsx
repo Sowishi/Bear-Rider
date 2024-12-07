@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import OrderNotesCard from "./orderNotesCard";
 import Input from "./input";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "./button";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
@@ -49,6 +49,8 @@ const OrderNotes = ({
   const [permission, requestPermission] = useCameraPermissions();
   const [showModal, setShowModal] = useState(false); // State to handle modal visibility
 
+  const { getTransaction, deleteTransaction } = useCrudTransaction();
+
   const {
     proof,
     setProof,
@@ -58,13 +60,19 @@ const OrderNotes = ({
     setShowRiderBubble,
     storeName,
     setStoreName,
+    selectedTransaction,
   } = useSmokeContext();
   const textInputRef = useRef();
 
+  const [transaction, setTransaction] = useState();
+
+  useEffect(() => {
+    getTransaction(selectedTransaction.id, setTransaction);
+  }, []);
   const { confirmOrderDetails, markNearby, markTransit } = useCrudTransaction();
 
   const handleAddNotes = () => {
-    if (note.length >= 1) {
+    if (note?.length >= 1) {
       setDeliveryNotes([
         ...deliveryNotes,
         { note, quantity: 1, id: Math.random() },
@@ -102,31 +110,31 @@ const OrderNotes = ({
   };
 
   const handleSubmit = async () => {
-    if (singleData?.serviceType == "Padara") {
+    if (transaction?.serviceType == "Padara") {
       // Initialize an array to store the uploaded proof URLs
       const proofUrls = [];
 
       // Loop through the proof array and upload each image
-      for (let i = 0; i < proof.length; i++) {
+      for (let i = 0; i < proof?.length; i++) {
         const uploadedUrl = await handleUploadImage(proof[i]);
         proofUrls.push(uploadedUrl); // Add the uploaded URL to the array
       }
 
       // After uploading all images, pass the proofUrls array to the function
       confirmOrderDetails(
-        singleData.id,
+        transaction.id,
         purchaseCost,
         proofUrls,
         totalPrice,
         deliveryFee
       );
     } else {
-      markTransit(singleData?.id);
+      markTransit(transaction?.id);
     }
   };
 
   const handleMarkNearby = async () => {
-    await markNearby(singleData.id);
+    await markNearby(transaction.id);
   };
 
   if (!permission) {
@@ -149,7 +157,7 @@ const OrderNotes = ({
   }
 
   const deliveryFee = parseInt(
-    singleData?.distance * chargePerKilometer + baseFare
+    transaction?.distance * chargePerKilometer + baseFare
   );
   const totalPrice = parseInt(deliveryFee) + parseInt(purchaseCost);
 
@@ -182,14 +190,14 @@ const OrderNotes = ({
             <BearScanner
               setSelectedTransaction={setSelectedTransaction}
               setPahatodModal={setPahatodModal}
-              singleData={singleData}
+              transaction={transaction}
               setTransactionDetailsModal={setTransactionDetailsModal}
               setTransactionRemarksModal={setTransactionRemarksModal}
               setScan={setScan}
               totalPrice={
-                singleData?.serviceType == "Padara"
-                  ? singleData?.deliveryFee
-                  : singleData?.totalPrice
+                transaction?.serviceType == "Padara"
+                  ? transaction?.deliveryFee
+                  : transaction?.totalPrice
               }
             />
           </View>
@@ -251,7 +259,7 @@ const OrderNotes = ({
           width: "100%",
         }}
       >
-        {singleData && (
+        {transaction && (
           <Text
             style={{
               fontSize: 25,
@@ -260,12 +268,12 @@ const OrderNotes = ({
               marginBottom: 15,
             }}
           >
-            {singleData?.serviceType == "Padara"
+            {transaction?.serviceType == "Padara"
               ? "Order Details"
               : "Transportation Details"}
           </Text>
         )}
-        {singleData == undefined && (
+        {transaction == undefined && (
           <Text
             style={{
               fontSize: 25,
@@ -328,15 +336,15 @@ const OrderNotes = ({
             </TouchableOpacity>
           </View>
         )}
-        {singleData && (
+        {transaction && (
           <>
             <Text style={{ fontSize: 15 }}>
               {" "}
-              {singleData?.serviceType == "Padara"
+              {transaction?.serviceType == "Padara"
                 ? "Store to Shop"
                 : "Drop off Locataion"}
             </Text>
-            {singleData.serviceType == "Padara" && (
+            {transaction.serviceType == "Padara" && (
               <Text
                 style={{
                   textAlign: "center",
@@ -345,7 +353,7 @@ const OrderNotes = ({
                   fontWeight: "bold",
                 }}
               >
-                {singleData.storeName}
+                {transaction.storeName}
               </Text>
             )}
             <View
@@ -369,7 +377,7 @@ const OrderNotes = ({
                 <Text
                   style={{ fontSize: 10, color: "#003082", marginBottom: 1 }}
                 >
-                  {singleData?.serviceType == "Padara"
+                  {transaction?.serviceType == "Padara"
                     ? "Shop to Location"
                     : "Drop off Locataion"}
                 </Text>
@@ -378,14 +386,14 @@ const OrderNotes = ({
                     style={{ width: 20, height: 20, marginRight: 5 }}
                     source={blueMarker}
                   />
-                  <Text>{singleData?.destination.address}</Text>
+                  <Text>{transaction?.destination.address}</Text>
                 </View>
               </View>
             </View>
           </>
         )}
 
-        {singleData?.serviceType == "Padara" && (
+        {transaction?.serviceType == "Padara" && (
           <>
             <Text style={{ fontSize: 15 }}>Order/s</Text>
             <View
@@ -420,7 +428,7 @@ const OrderNotes = ({
           </>
         )}
 
-        {singleData == undefined && (
+        {transaction == undefined && (
           <>
             <View style={{ width: "100%", marginTop: 10 }}>
               <Text style={{ marginBottom: 5 }}>Store Name</Text>
@@ -453,7 +461,7 @@ const OrderNotes = ({
               </View>
             </View>
             <Text style={{ fontSize: 15 }}>Order/s</Text>
-            {deliveryNotes.length >= 1 ? (
+            {deliveryNotes?.length >= 1 ? (
               <View
                 style={{
                   padding: 10,
@@ -505,8 +513,8 @@ const OrderNotes = ({
           </>
         )}
 
-        {singleData?.status !== undefined &&
-          singleData?.serviceType == "Padara" && (
+        {transaction?.status !== undefined &&
+          transaction?.serviceType == "Padara" && (
             <>
               <Text style={{ fontSize: 15, marginTop: 10, marginBottom: 5 }}>
                 Proof of Purchase / Receipt
@@ -522,7 +530,7 @@ const OrderNotes = ({
               >
                 {proof !== null &&
                   proof !== undefined &&
-                  !singleData.proofOfPurchase && (
+                  !transaction.proofOfPurchase && (
                     <>
                       {proof.map((item) => {
                         return (
@@ -542,10 +550,10 @@ const OrderNotes = ({
                       })}
                     </>
                   )}
-                {singleData.proofOfPurchase !== null &&
-                  singleData.proofOfPurchase !== undefined && (
+                {transaction.proofOfPurchase !== null &&
+                  transaction.proofOfPurchase !== undefined && (
                     <>
-                      {singleData.proofOfPurchase.map((item) => {
+                      {transaction.proofOfPurchase.map((item) => {
                         return (
                           <Image
                             key={item}
@@ -568,8 +576,8 @@ const OrderNotes = ({
           )}
 
         {IS_RIDER &&
-          singleData?.serviceType == "Padara" &&
-          singleData.status && (
+          transaction?.serviceType == "Padara" &&
+          transaction.status && (
             <CameraButton
               removeEvent={setProof}
               event={() => setOpenCamera(true)}
@@ -578,9 +586,9 @@ const OrderNotes = ({
             />
           )}
         {IS_RIDER &&
-          singleData?.status !== "Nearby" &&
-          singleData?.serviceType == "Padara" &&
-          singleData.status && (
+          transaction?.status !== "Nearby" &&
+          transaction?.serviceType == "Padara" &&
+          transaction.status && (
             <>
               <Text style={{ fontSize: 15, marginTop: 20 }}>
                 Total Item Cost
@@ -613,11 +621,11 @@ const OrderNotes = ({
             </>
           )}
 
-        {singleData && (
+        {transaction && (
           <>
             {/* Sub Total of the orders */}
             <View style={{ marginVertical: 10 }}>
-              {singleData.serviceType != "Padara" && (
+              {transaction.serviceType != "Padara" && (
                 <>
                   <Text style={{ color: "black", fontSize: 15 }}>
                     Base Fare:
@@ -665,7 +673,7 @@ const OrderNotes = ({
                 </>
               )}
 
-              {singleData?.serviceType == "Padara" && (
+              {transaction?.serviceType == "Padara" && (
                 <>
                   <Text style={{ color: "black", fontSize: 15 }}>
                     Base Delivery Fee:
@@ -713,9 +721,9 @@ const OrderNotes = ({
                     Purchase Cost:
                     <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                       ₱
-                      {singleData?.status == "Transit" ||
-                      singleData?.status == "Nearby"
-                        ? singleData?.purchaseCost
+                      {transaction?.status == "Transit" ||
+                      transaction?.status == "Nearby"
+                        ? transaction?.purchaseCost
                         : purchaseCost}
                     </Text>
                   </Text>
@@ -728,7 +736,7 @@ const OrderNotes = ({
                 </>
               )}
 
-              {singleData?.serviceType == "Padara" && (
+              {transaction?.serviceType == "Padara" && (
                 <>
                   <Text style={{ marginVertical: 10 }}>
                     Wallet Payment:{" "}
@@ -738,9 +746,9 @@ const OrderNotes = ({
                     Cash Payment:{" "}
                     <Text style={{ fontSize: 18 }}>
                       ₱{" "}
-                      {singleData?.status == "Transit" ||
-                      singleData?.status == "Nearby"
-                        ? singleData?.purchaseCost
+                      {transaction?.status == "Transit" ||
+                      transaction?.status == "Nearby"
+                        ? transaction?.purchaseCost
                         : purchaseCost}
                     </Text>
                   </Text>
@@ -750,9 +758,9 @@ const OrderNotes = ({
                 Total{" "}
                 <Text style={{ fontSize: 25 }}>
                   ₱
-                  {singleData?.status == "Transit" ||
-                  singleData?.status == "Nearby"
-                    ? parseInt(singleData.totalPrice)
+                  {transaction?.status == "Transit" ||
+                  transaction?.status == "Nearby"
+                    ? parseInt(transaction.totalPrice)
                     : totalPrice
                     ? totalPrice
                     : "---"}{" "}
@@ -764,7 +772,7 @@ const OrderNotes = ({
 
         {/* Confirm Button */}
 
-        {IS_RIDER && singleData?.serviceType == "Padara" && (
+        {IS_RIDER && transaction?.serviceType == "Padara" && (
           <View
             style={{
               justifyContent: "center",
@@ -772,31 +780,33 @@ const OrderNotes = ({
               flexDirection: "row",
             }}
           >
-            {singleData?.status !== "Nearby" && singleData.status && (
+            {transaction?.status !== "Nearby" && transaction.status && (
               <Button
                 event={handleSubmit}
                 isDisable={purchaseCost <= 0 || !proof}
                 style={{ marginTop: 10 }}
-                width={singleData?.status == "Transit" ? 130 : "90%"}
-                text={singleData?.status == "Transit" ? "Update" : "Start Ride"}
+                width={transaction?.status == "Transit" ? 130 : "90%"}
+                text={
+                  transaction?.status == "Transit" ? "Update" : "Start Ride"
+                }
                 bgColor={"#003082"}
               />
             )}
 
-            {singleData?.status == "Transit" && (
+            {transaction?.status == "Transit" && (
               <Button
-                event={() => markNearby(singleData.id)}
+                event={() => markNearby(transaction.id)}
                 style={{ marginTop: 10 }}
-                width={singleData?.status == "Transit" ? 130 : "90%"}
+                width={transaction?.status == "Transit" ? 130 : "90%"}
                 text={"Confirm Pickup"}
                 bgColor={"#B80B00"}
               />
             )}
-            {singleData?.status == "Nearby" && (
+            {transaction?.status == "Nearby" && (
               <Button
                 event={() => setQrModal(true)}
                 style={{ marginTop: 10 }}
-                width={singleData?.status == "Transit" ? 130 : "90%"}
+                width={transaction?.status == "Transit" ? 130 : "90%"}
                 text={"Confirm Drop Off"}
                 bgColor={"#B80B00"}
               />
@@ -804,7 +814,7 @@ const OrderNotes = ({
           </View>
         )}
 
-        {IS_RIDER && singleData?.serviceType == "Pahatod" && (
+        {IS_RIDER && transaction?.serviceType == "Pahatod" && (
           <View
             style={{
               justifyContent: "center",
@@ -812,30 +822,30 @@ const OrderNotes = ({
               flexDirection: "row",
             }}
           >
-            {singleData?.status == "Accepted" && (
+            {transaction?.status == "Accepted" && (
               <Button
                 event={handleSubmit}
                 style={{ marginTop: 10 }}
-                width={singleData?.status == "Transit" ? 130 : "90%"}
+                width={transaction?.status == "Transit" ? 130 : "90%"}
                 text={"Start Ride"}
                 bgColor={"#003082"}
               />
             )}
 
-            {singleData?.status == "Transit" && (
+            {transaction?.status == "Transit" && (
               <Button
-                event={() => markNearby(singleData?.id)}
+                event={() => markNearby(transaction?.id)}
                 style={{ marginTop: 10 }}
                 width={"90%"}
                 text={"Confirm Pick Up"}
                 bgColor={"#B80B00"}
               />
             )}
-            {singleData?.status == "Nearby" && (
+            {transaction?.status == "Nearby" && (
               <Button
                 event={() => setQrModal(true)}
                 style={{ marginTop: 10 }}
-                width={singleData?.status == "Transit" ? 130 : "90%"}
+                width={transaction?.status == "Transit" ? 130 : "90%"}
                 text={"Confirm Drop Off"}
                 bgColor={"#B80B00"}
               />
@@ -843,11 +853,11 @@ const OrderNotes = ({
           </View>
         )}
 
-        {singleData?.status == "Nearby" && !IS_RIDER && (
+        {transaction?.status == "Nearby" && !IS_RIDER && (
           <Button
             event={() => setShowModal(true)}
             style={{ marginTop: 10 }}
-            width={singleData?.status == "Transit" ? 130 : "90%"}
+            width={transaction?.status == "Transit" ? 130 : "90%"}
             text={"Pay"}
             bgColor={"#B80B00"}
           />
@@ -871,7 +881,7 @@ const OrderNotes = ({
             bgColor={"#003082"}
           />
           <Button
-            isDisable={deliveryNotes.length <= 0 || storeName.length <= 0}
+            isDisable={deliveryNotes?.length <= 0 || storeName?.length <= 0}
             event={handleAddTransaction}
             width={150}
             style={{ marginTop: 20 }}
