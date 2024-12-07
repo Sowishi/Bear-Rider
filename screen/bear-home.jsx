@@ -5,6 +5,7 @@ import {
   ScrollView,
   RefreshControl,
   Image,
+  Dimensions,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,10 +20,12 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import Constants from "expo-constants";
 import BearHeader from "../components/bearHeader";
 import { StatusBar } from "expo-status-bar";
+import LottieView from "lottie-react-native";
 const BearHome = ({ navigation }) => {
   const { setUserLocation, currentUser, userLocation } = useSmokeContext();
   const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleLocationRequestAndPermission();
 
@@ -32,6 +35,7 @@ const BearHome = ({ navigation }) => {
   }, []);
 
   const handleLocationRequestAndPermission = async () => {
+    setLoading(true);
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
@@ -45,8 +49,10 @@ const BearHome = ({ navigation }) => {
       const address = await reverseGeocode(lat, long);
 
       setUserLocation({ latitude: lat, longitude: long, address });
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
 
@@ -86,12 +92,39 @@ const BearHome = ({ navigation }) => {
     }
   }
 
+  const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+
   return (
     <>
       <StatusBar
         backgroundColor={!currentUser.role ? "#B80B00" : "#003082"}
         style="light"
       />
+
+      {loading && (
+        <View
+          style={{
+            backgroundColor: "#00000099",
+            flex: 1,
+            height: "100%",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            flexDirection: "col",
+            zIndex: 9999,
+          }}
+        >
+          <LottieView
+            autoPlay
+            style={{ width: 200, height: 200 }}
+            source={require("../assets/maps.json")}
+          />
+          <Text style={{ color: "white", fontSize: 15 }}>
+            Fetching user location...
+          </Text>
+        </View>
+      )}
       <ScrollView
         style={{ marginTop: Constants.statusBarHeight }}
         contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}

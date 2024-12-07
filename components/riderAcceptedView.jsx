@@ -160,6 +160,7 @@ const RiderAcceptedView = ({
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("TransactionDetails");
+                setViewTransactionModal(false);
               }}
               style={{
                 width: "100%",
