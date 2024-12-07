@@ -26,13 +26,14 @@ const ConfirmTransaction = ({ route, navigation }) => {
     setSelectedTransaction,
   } = useSmokeContext();
   const { addTransaction } = useCrudTransaction();
-  const chargePerKilometer = 10;
-  const baseFare = 30;
+
   // State for the note input and insurance
   const [note, setNote] = useState("");
   const [insuranceChecked, setInsuranceChecked] = useState(false);
   const [distance, setDistance] = useState();
-
+  const chargePerKilometer = 10;
+  const baseFare = 30;
+  const totalPrice = distance * chargePerKilometer + baseFare;
   useEffect(() => {
     let output = 0;
     if (destination && bookLocation) {
@@ -162,6 +163,57 @@ const ConfirmTransaction = ({ route, navigation }) => {
             Add insurance to your transactions for extra protection and peace of
             mind.
           </Text>
+        </View>
+
+        <View style={{ marginBottom: 15 }}>
+          <Text style={{ fontSize: 20, marginBottom: 5, fontWeight: "bold" }}>
+            Price Breakdown
+          </Text>
+          {serviceType != "Padara" && (
+            <>
+              <Text style={{ color: "black", fontSize: 15 }}>
+                Base Fare:
+                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                  {" "}
+                  ₱{baseFare}
+                </Text>
+              </Text>
+              <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
+                This is the minimum cost for initiating the transportation
+                service.
+              </Text>
+
+              <Text style={{ color: "black", fontSize: 15 }}>
+                Fare per Kilometer:
+                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                  {parseInt(totalPrice) - baseFare}
+                </Text>
+              </Text>
+              <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
+                This amount is calculated based on the distance to the
+                destination.
+              </Text>
+
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  marginTop: 10,
+                }}
+              >
+                Total Fare:
+                <Text style={{ color: "#FFC30E" }}>
+                  {" "}
+                  ₱{parseInt(totalPrice)}
+                </Text>
+              </Text>
+              <Text style={{ color: "gray", fontSize: 12 }}>
+                The final amount, including the base fare and the distance
+                charge.
+              </Text>
+            </>
+          )}
         </View>
 
         {/* Confirm Button */}
