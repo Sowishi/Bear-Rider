@@ -25,7 +25,8 @@ const LiveTransaction = ({ navigation }) => {
     userLocation: location,
     currentUser,
   } = useSmokeContext();
-  const { getTransaction, deleteTransaction } = useCrudTransaction();
+  const { getTransaction, deleteTransaction, cancelTransaction } =
+    useCrudTransaction();
   const [transaction, setTransaction] = useState();
   const [cancelModal, setCancelModal] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
@@ -87,6 +88,109 @@ const LiveTransaction = ({ navigation }) => {
     },
   ];
 
+  const handleCancelTransaction = () => {
+    cancelTransaction(transaction, cancellationReason);
+  };
+
+  if (transaction?.status == "Cancelled") {
+    return (
+      <>
+        <View
+          style={{
+            backgroundColor: "#B80B00",
+            paddingVertical: 15,
+            alignItems: "center",
+            marginTop: Constants.statusBarHeight,
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+            Transaction Cancelled
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 20,
+          }}
+        >
+          <>
+            <Text
+              style={{
+                fontSize: 25,
+                marginBottom: 10,
+                color: "black",
+                fontWeight: "bold",
+                marginBottom: 15,
+              }}
+            >
+              {transaction?.serviceType == "Pahatod"
+                ? "Transportation Service"
+                : "Delivery Service"}
+            </Text>
+            {/* <Text
+              style={{
+                textAlign: "center",
+                backgroundColor: "#B80B0099",
+                padding: 13,
+                color: "white",
+                borderRadius: 15,
+                fontSize: 13,
+                fontStyle: "italic",
+              }}
+            >
+              You can cancel the transaction if it hasn't been accepted yet.
+              Please note that a penalty may apply if the rider has already
+              accepted it and cancelling without a valid reason.
+            </Text> */}
+            <Image
+              style={{ width: 250, height: 250 }}
+              source={require("../assets/screenAssest/Onboarding.png")}
+            />
+
+            <Text
+              style={{
+                color: "black",
+                fontSize: 20,
+                marginBottom: 5,
+                textAlign: "center",
+              }}
+            >
+              {transaction.cancellationReason}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("main");
+              }}
+              style={{
+                width: "100%",
+                backgroundColor: "#B80B00",
+                paddingVertical: 15,
+                marginTop: 20,
+                borderRadius: 20,
+                marginTop: 30,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                  fontSize: 18,
+                }}
+              >
+                Go to Home
+              </Text>
+            </TouchableOpacity>
+          </>
+        </View>
+      </>
+    );
+  }
+
+  // Waiting forr a rider
   if (transaction?.status == undefined && currentUser.role !== "Rider") {
     return (
       <>
@@ -198,7 +302,7 @@ const LiveTransaction = ({ navigation }) => {
         <ExpoStatusBar style="light" />
         <ConfirmationModal
           handleConfirm={() => {
-            console.log(cancellationReason);
+            handleCancelTransaction();
           }}
           onChangeText={(text) => setCancellationReason(text)}
           setCancellationReason={setCancellationReason}
@@ -405,7 +509,7 @@ const LiveTransaction = ({ navigation }) => {
 
       <ConfirmationModal
         handleConfirm={() => {
-          console.log(cancellationReason);
+          handleCancelTransaction();
         }}
         onChangeText={(text) => setCancellationReason(text)}
         setCancellationReason={setCancellationReason}

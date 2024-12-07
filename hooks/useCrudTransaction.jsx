@@ -69,6 +69,15 @@ const useCrudTransaction = () => {
     updateDoc(docRef, { ...transaction, status: "Completed" });
   };
 
+  const cancelTransaction = (transaction, cancellationReason) => {
+    const docRef = doc(db, "transaction", transaction.id);
+    updateDoc(docRef, {
+      ...transaction,
+      status: "Cancelled",
+      cancellationReason,
+    });
+  };
+
   const getTransaction = (id, setSelectedTransaction) => {
     const docRef = doc(db, "transaction", id);
     onSnapshot(docRef, (doc) => {
@@ -111,6 +120,7 @@ const useCrudTransaction = () => {
       status: "Transit",
     });
   };
+
   return {
     addTransaction,
     deleteTransaction,
@@ -123,6 +133,7 @@ const useCrudTransaction = () => {
     confirmOrderDetails,
     markNearby,
     markTransit,
+    cancelTransaction,
   };
 };
 
