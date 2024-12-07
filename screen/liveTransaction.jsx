@@ -329,7 +329,7 @@ const LiveTransaction = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("TransactionDetails");
+                  navigation.navigate("RiderTransactionDetails");
                 }}
                 style={{
                   flexDirection: "row",

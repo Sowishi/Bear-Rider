@@ -387,6 +387,22 @@ export default function App() {
               name="TransactionDetails"
               component={TransactionDetails}
             />
+            <Stack.Screen
+              options={{
+                title: "Transaction Details",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="RiderTransactionDetails"
+              component={TransactionDetails}
+            />
           </>
         )}
       </Stack.Navigator>
