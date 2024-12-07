@@ -17,6 +17,11 @@ const ViewBearAsset = ({ route, navigation }) => {
       goTo: "bearMap",
       parameter: "currentLocation",
     },
+    liveTracking: {
+      image: require("../assets/screenAssest/Live Tracking.png"),
+      title: "Start tracking your rider realtime",
+      goTo: "LiveTracking",
+    },
   };
 
   return (

@@ -37,6 +37,7 @@ import ConfirmTransaction from "./screen/confirmTransaction";
 import LiveTransaction from "./screen/liveTransaction";
 import OrderNotes from "./components/orderNotes";
 import TransactionDetails from "./screen/transactionDetails";
+import LiveTracking from "./screen/liveTracking";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -197,6 +198,19 @@ export default function App() {
               }}
               component={BearMap}
             />
+            <Stack.Screen
+              name="LiveTracking"
+              options={{
+                animationEnabled: true,
+                transitionSpec: {
+                  open: TransitionSpecs.TransitionIOSSpec,
+                  close: TransitionSpecs.TransitionIOSSpec,
+                },
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+              }}
+              component={LiveTracking}
+            />
+
             <Stack.Screen name="searchLocation" component={SearchLocation} />
             <Stack.Screen name="Camera" component={Camera} />
             <Stack.Screen name="RiderPending" component={RiderPending} />

@@ -262,7 +262,8 @@ const LiveTransaction = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                navigation.goBack();
+                deleteTransaction(transaction);
+                navigation.navigate("main");
               }}
               style={{
                 width: "100%",
@@ -290,7 +291,7 @@ const LiveTransaction = ({ navigation }) => {
     );
   }
 
-  if (isRider) {
+  if (isRider && transaction) {
     return (
       <View
         style={{
@@ -415,7 +416,9 @@ const LiveTransaction = ({ navigation }) => {
 
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Wallet");
+                  navigation.navigate("ViewBearAsset", {
+                    type: "liveTracking",
+                  });
                 }}
                 style={{
                   flexDirection: "row",
@@ -496,211 +499,215 @@ const LiveTransaction = ({ navigation }) => {
       </View>
     );
   }
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: "white",
-        marginTop: Constants.statusBarHeight,
-      }}
-    >
-      <ExpoStatusBar style="light" />
-
-      <ConfirmationModal
-        handleConfirm={() => {
-          handleCancelTransaction();
-        }}
-        onChangeText={(text) => setCancellationReason(text)}
-        setCancellationReason={setCancellationReason}
-        open={cancelModal}
-        handleClose={() => {
-          setCancelModal(false);
-        }}
-      />
+  if (transaction) {
+    return (
       <View
         style={{
-          backgroundColor: "#B80B00",
-          paddingVertical: 15,
-          alignItems: "center",
+          flex: 1,
+          backgroundColor: "white",
+          marginTop: Constants.statusBarHeight,
         }}
       >
-        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-          Transaction Details
-        </Text>
-      </View>
+        <ExpoStatusBar style="light" />
 
-      {/* Scrollable Content */}
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: "flex-start",
-          alignItems: "center",
-          paddingHorizontal: 20,
-          paddingBottom: 50,
-          paddingTop: 20,
-        }}
-      >
-        {transaction && transaction?.status !== undefined && (
-          <>
-            <View>
-              <Text
-                style={{
-                  fontSize: 30,
-                  color: "black",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {getTransactionStatusLabel(transaction.status)?.title}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 15,
-                  marginBottom: 10,
-                  color: "red",
-                  fontStyle: "italic",
-                  marginBottom: 15,
-                  textAlign: "center",
-                }}
-              >
-                {getTransactionStatusLabel(transaction.status)?.sub}
-              </Text>
-            </View>
-            <View
-              style={{
-                width: "100%",
-                flexDirection: "col",
-                justifyContent: "center",
-                alignItems: "center",
-                marginVertical: 20,
-              }}
-            >
-              <Image
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 100,
-                }}
-                source={{
-                  uri: transaction?.rider?.selfieUrl,
-                }}
-              />
+        <ConfirmationModal
+          handleConfirm={() => {
+            handleCancelTransaction();
+          }}
+          onChangeText={(text) => setCancellationReason(text)}
+          setCancellationReason={setCancellationReason}
+          open={cancelModal}
+          handleClose={() => {
+            setCancelModal(false);
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: "#B80B00",
+            paddingVertical: 15,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+            Transaction Details
+          </Text>
+        </View>
+
+        {/* Scrollable Content */}
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "flex-start",
+            alignItems: "center",
+            paddingHorizontal: 20,
+            paddingBottom: 50,
+            paddingTop: 20,
+          }}
+        >
+          {transaction && transaction?.status !== undefined && (
+            <>
               <View>
-                <Text style={{ fontSize: 20 }}>
-                  {transaction?.rider?.firstName} {transaction.rider?.lastName}
+                <Text
+                  style={{
+                    fontSize: 30,
+                    color: "black",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {getTransactionStatusLabel(transaction.status)?.title}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    marginBottom: 10,
+                    color: "red",
+                    fontStyle: "italic",
+                    marginBottom: 15,
+                    textAlign: "center",
+                  }}
+                >
+                  {getTransactionStatusLabel(transaction.status)?.sub}
                 </Text>
               </View>
-            </View>
-            <Text
-              style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
-            >
-              Transaction Timeline
-            </Text>
-            <Timeline
-              style={{ width: "100%" }}
-              data={data}
-              separator={true}
-              circleSize={20}
-              circleColor="rgb(45,156,219)"
-              lineColor="rgb(45,156,219)"
-              timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
-              timeStyle={{
-                textAlign: "center",
-                backgroundColor: "#ff9797",
-                color: "white",
-                padding: 5,
-                borderRadius: 13,
-                overflow: "hidden",
-              }}
-              descriptionStyle={{ color: "gray" }}
-              options={{
-                style: { paddingTop: 5 },
-              }}
-            />
-
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Wallet");
-              }}
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                paddingHorizontal: 13,
-                marginTop: 20,
-              }}
-            >
-              <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <Entypo name="location-pin" size={24} color="red" />
-
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                      Live Tracking
-                    </Text>
-                    <Text>Track your rider in realtime.</Text>
-                  </View>
-                </View>
-              </View>
-              <AntDesign name="arrowright" size={24} color="black" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("TransactionDetails");
-              }}
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "100%",
-                paddingHorizontal: 13,
-                marginVertical: 20,
-              }}
-            >
-              <View style={{ flex: 1 }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-start",
-                  }}
-                >
-                  <AntDesign name="exception1" size={20} color="black" />
-
-                  <View style={{ marginLeft: 8 }}>
-                    <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                      Transaction Details
-                    </Text>
-                    <Text>View your transaction details</Text>
-                  </View>
-                </View>
-              </View>
-              <AntDesign name="arrowright" size={24} color="black" />
-            </TouchableOpacity>
-            {/* Buttons */}
-            <View style={{ flexDirection: "row", marginTop: 10 }}>
-              <Button
-                width={"100%"}
-                event={() => {
-                  setCancelModal(true);
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "col",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginVertical: 20,
                 }}
-                text="Cancel Ride"
-                bgColor={"#B80B00"}
+              >
+                <Image
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 100,
+                  }}
+                  source={{
+                    uri: transaction?.rider?.selfieUrl,
+                  }}
+                />
+                <View>
+                  <Text style={{ fontSize: 20 }}>
+                    {transaction?.rider?.firstName}{" "}
+                    {transaction.rider?.lastName}
+                  </Text>
+                </View>
+              </View>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
+              >
+                Transaction Timeline
+              </Text>
+              <Timeline
+                style={{ width: "100%" }}
+                data={data}
+                separator={true}
+                circleSize={20}
+                circleColor="rgb(45,156,219)"
+                lineColor="rgb(45,156,219)"
+                timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
+                timeStyle={{
+                  textAlign: "center",
+                  backgroundColor: "#ff9797",
+                  color: "white",
+                  padding: 5,
+                  borderRadius: 13,
+                  overflow: "hidden",
+                }}
+                descriptionStyle={{ color: "gray" }}
+                options={{
+                  style: { paddingTop: 5 },
+                }}
               />
-            </View>
-          </>
-        )}
-      </ScrollView>
-    </View>
-  );
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("viewBearAsset", {
+                    type: "liveTracking",
+                  });
+                }}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  paddingHorizontal: 13,
+                  marginTop: 20,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Entypo name="location-pin" size={24} color="red" />
+
+                    <View style={{ marginLeft: 5 }}>
+                      <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                        Live Tracking
+                      </Text>
+                      <Text>Track your rider in realtime.</Text>
+                    </View>
+                  </View>
+                </View>
+                <AntDesign name="arrowright" size={24} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("TransactionDetails");
+                }}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  paddingHorizontal: 13,
+                  marginVertical: 20,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <AntDesign name="exception1" size={20} color="black" />
+
+                    <View style={{ marginLeft: 8 }}>
+                      <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                        Transaction Details
+                      </Text>
+                      <Text>View your transaction details</Text>
+                    </View>
+                  </View>
+                </View>
+                <AntDesign name="arrowright" size={24} color="black" />
+              </TouchableOpacity>
+              {/* Buttons */}
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                <Button
+                  width={"100%"}
+                  event={() => {
+                    setCancelModal(true);
+                  }}
+                  text="Cancel Ride"
+                  bgColor={"#B80B00"}
+                />
+              </View>
+            </>
+          )}
+        </ScrollView>
+      </View>
+    );
+  }
 };
 
 export default LiveTransaction;
