@@ -21,6 +21,7 @@ const LiveTransaction = ({ navigation }) => {
     setFindingRider,
     selectedTransaction,
     userLocation: location,
+    currentUser,
   } = useSmokeContext();
   const { getTransaction, deleteTransaction } = useCrudTransaction();
   const [transaction, setTransaction] = useState();
@@ -28,6 +29,8 @@ const LiveTransaction = ({ navigation }) => {
   useEffect(() => {
     getTransaction(selectedTransaction.id, setTransaction);
   }, []);
+
+  const isRider = currentUser.role == "Rider";
 
   const getTransactionStatusLabel = (status) => {
     if (status == "Accepted") {
@@ -80,7 +83,7 @@ const LiveTransaction = ({ navigation }) => {
     },
   ];
 
-  if (transaction?.status == undefined) {
+  if (transaction?.status == undefined && currentUser.role !== "Rider") {
     return (
       <>
         <View
@@ -151,8 +154,7 @@ const LiveTransaction = ({ navigation }) => {
             </Text>
             <TouchableOpacity
               onPress={() => {
-                deleteTransaction(transaction);
-                navigation.navigate("main");
+                navigation.goBack();
               }}
               style={{
                 width: "100%",
@@ -177,6 +179,214 @@ const LiveTransaction = ({ navigation }) => {
           </>
         </View>
       </>
+    );
+  }
+
+  if (isRider) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+          marginTop: Constants.statusBarHeight,
+        }}
+      >
+        <ExpoStatusBar style="light" />
+        <View
+          style={{
+            backgroundColor: "#003082",
+            paddingVertical: 15,
+            alignItems: "center",
+          }}
+        >
+          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+            Transaction Details
+          </Text>
+        </View>
+
+        {/* Scrollable Content */}
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "flex-start",
+            alignItems: "center",
+            paddingHorizontal: 20,
+            paddingBottom: 50,
+            paddingTop: 20,
+          }}
+        >
+          {transaction && transaction?.status !== undefined && (
+            <>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 30,
+                    color: "black",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  {getTransactionStatusLabel(transaction.status)?.title}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 15,
+                    marginBottom: 10,
+                    color: "red",
+                    fontStyle: "italic",
+                    marginBottom: 15,
+                    textAlign: "center",
+                  }}
+                >
+                  {getTransactionStatusLabel(transaction.status)?.sub}
+                </Text>
+              </View>
+              <View
+                style={{
+                  width: "100%",
+                  flexDirection: "col",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginVertical: 20,
+                }}
+              >
+                <Image
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 100,
+                  }}
+                  source={{
+                    uri: transaction?.currentUser?.profilePic,
+                  }}
+                />
+                <View>
+                  <Text style={{ fontSize: 20 }}>
+                    {transaction?.currentUser?.firstName}{" "}
+                    {transaction.currentUser?.lastName}
+                  </Text>
+                </View>
+              </View>
+              <Text
+                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
+              >
+                Transaction Timeline
+              </Text>
+              <Timeline
+                style={{ width: "100%" }}
+                data={data}
+                separator={true}
+                circleSize={20}
+                circleColor="rgb(45,156,219)"
+                lineColor="rgb(45,156,219)"
+                timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
+                timeStyle={{
+                  textAlign: "center",
+                  backgroundColor: "#ff9797",
+                  color: "white",
+                  padding: 5,
+                  borderRadius: 13,
+                  overflow: "hidden",
+                }}
+                descriptionStyle={{ color: "gray" }}
+                options={{
+                  style: { paddingTop: 5 },
+                }}
+              />
+
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Wallet");
+                }}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  paddingHorizontal: 13,
+                  marginTop: 20,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <Entypo name="location-pin" size={24} color="red" />
+
+                    <View style={{ marginLeft: 5 }}>
+                      <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                        Live Tracking
+                      </Text>
+                      <Text>Track your rider in realtime.</Text>
+                    </View>
+                  </View>
+                </View>
+                <AntDesign name="arrowright" size={24} color="black" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("TransactionDetails");
+                }}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  paddingHorizontal: 13,
+                  marginVertical: 20,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <AntDesign name="exception1" size={20} color="black" />
+
+                    <View style={{ marginLeft: 8 }}>
+                      <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                        Transaction Details
+                      </Text>
+                      <Text>View your transaction details</Text>
+                    </View>
+                  </View>
+                </View>
+                <AntDesign name="arrowright" size={24} color="black" />
+              </TouchableOpacity>
+              {/* Buttons */}
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                <Button
+                  width={150}
+                  event={() => {
+                    setConfirmModal(true);
+                  }}
+                  text="Cancel Ride"
+                  bgColor={"#B80B00"}
+                />
+                <Button
+                  width={150}
+                  event={() => {
+                    setFindingRider(false);
+                    setPahatodModal(false);
+                    setSelectedLocation(null);
+                    setViewRiderState(true);
+                    setShowBook(false);
+                  }}
+                  text="Pay Now"
+                  bgColor={"#003082"}
+                />
+              </View>
+            </>
+          )}
+        </ScrollView>
+      </View>
     );
   }
 
@@ -253,7 +463,9 @@ const LiveTransaction = ({ navigation }) => {
                   height: 80,
                   borderRadius: 100,
                 }}
-                source={{ uri: transaction?.rider?.selfieUrl }}
+                source={{
+                  uri: transaction?.rider?.selfieUrl,
+                }}
               />
               <View>
                 <Text style={{ fontSize: 20 }}>
@@ -357,24 +569,12 @@ const LiveTransaction = ({ navigation }) => {
             {/* Buttons */}
             <View style={{ flexDirection: "row", marginTop: 10 }}>
               <Button
-                width={150}
+                width={"100%"}
                 event={() => {
                   setConfirmModal(true);
                 }}
                 text="Cancel Ride"
                 bgColor={"#B80B00"}
-              />
-              <Button
-                width={150}
-                event={() => {
-                  setFindingRider(false);
-                  setPahatodModal(false);
-                  setSelectedLocation(null);
-                  setViewRiderState(true);
-                  setShowBook(false);
-                }}
-                text="Pay Now"
-                bgColor={"#003082"}
               />
             </View>
           </>

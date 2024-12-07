@@ -37,6 +37,7 @@ const TransactionDetails = ({ route, navigation }) => {
   const handleAcceptTransaction = () => {
     acceptTransaction(transaction, currentUser, userLocation);
     addNotification(transaction, currentUser, "accept rider");
+    navigation.navigate("LiveTransaction");
     Toast.show({ type: "success", text1: "Successfully accepeted ride." });
   };
 
@@ -134,63 +135,65 @@ const TransactionDetails = ({ route, navigation }) => {
             />
             <Text style={styles.checkboxText}>Transaction Insured.</Text>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
+          {currentUser.role == "Rider" && (
+            <View
               style={{
-                width: "50%",
-                backgroundColor: "#B80B0099",
-                paddingVertical: 15,
-                marginTop: 20,
-                borderRadius: 20,
-                marginTop: 30,
-                marginRight: 5,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              <Text
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.goBack();
+                }}
                 style={{
-                  color: "white",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: 20,
+                  width: "50%",
+                  backgroundColor: "#B80B0099",
+                  paddingVertical: 15,
+                  marginTop: 20,
+                  borderRadius: 20,
+                  marginTop: 30,
+                  marginRight: 5,
                 }}
               >
-                Cancel
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                handleAcceptTransaction();
-              }}
-              style={{
-                width: "50%",
-                backgroundColor: "#B80B00",
-                paddingVertical: 15,
-                marginTop: 20,
-                borderRadius: 20,
-                marginTop: 30,
-              }}
-            >
-              <Text
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                  }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  handleAcceptTransaction();
+                }}
                 style={{
-                  color: "white",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  fontSize: 20,
+                  width: "50%",
+                  backgroundColor: "#B80B00",
+                  paddingVertical: 15,
+                  marginTop: 20,
+                  borderRadius: 20,
+                  marginTop: 30,
                 }}
               >
-                Accept
-              </Text>
-            </TouchableOpacity>
-          </View>
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: 20,
+                  }}
+                >
+                  Accept
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </ScrollView>
     );
