@@ -1,4 +1,11 @@
-import { TouchableOpacity, View, Text, Image, ScrollView } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import Button from "../components/button";
 import redMarker from "../assets/red-marker.png";
 import blueMarker from "../assets/blue-marker.png";
@@ -336,16 +343,31 @@ const LiveTransaction = ({ navigation }) => {
               source={require("../assets/screenAssest/Onboarding.png")}
             />
 
-            <Text
-              style={{
-                color: "black",
-                fontSize: 20,
-                marginBottom: 5,
-                textAlign: "center",
-              }}
-            >
-              {transaction.cancellationReason}
-            </Text>
+            <View>
+              <Text style={{ opacity: 0.5, fontSize: 15, marginBottom: 5 }}>
+                Reason of cancellation:
+              </Text>
+              <TextInput
+                editable={false}
+                style={{
+                  backgroundColor: "#D6D6D6",
+                  borderWidth: 1,
+                  borderColor: "#ccc",
+                  borderRadius: 5,
+                  padding: 10,
+                  fontSize: 14,
+                  color: "#333",
+                  minHeight: 60,
+                  textAlignVertical: "top",
+                  marginBottom: 10,
+                }}
+                placeholder="Enter any additional information"
+                placeholderTextColor="#888"
+                value={transaction.cancellationReason}
+                multiline
+              />
+            </View>
+
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate("main");
