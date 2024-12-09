@@ -330,21 +330,7 @@ const LiveTransaction = ({ navigation }) => {
                 ? "Transportation Service"
                 : "Delivery Service"}
             </Text>
-            {/* <Text
-              style={{
-                textAlign: "center",
-                backgroundColor: "#B80B0099",
-                padding: 13,
-                color: "white",
-                borderRadius: 15,
-                fontSize: 13,
-                fontStyle: "italic",
-              }}
-            >
-              You can cancel the transaction if it hasn't been accepted yet.
-              Please note that a penalty may apply if the rider has already
-              accepted it and cancelling without a valid reason.
-            </Text> */}
+
             <Image
               style={{ width: 250, height: 250 }}
               source={require("../assets/screenAssest/Onboarding.png")}
@@ -515,7 +501,7 @@ const LiveTransaction = ({ navigation }) => {
         />
         <View
           style={{
-            backgroundColor: "#B80B00",
+            backgroundColor: isRider ? "#003082" : "#B80B00",
             paddingVertical: 15,
             alignItems: "center",
           }}
@@ -571,22 +557,45 @@ const LiveTransaction = ({ navigation }) => {
                   marginVertical: 20,
                 }}
               >
-                <Image
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 100,
-                  }}
-                  source={{
-                    uri: transaction?.rider?.selfieUrl,
-                  }}
-                />
-                <View>
-                  <Text style={{ fontSize: 20 }}>
-                    {transaction?.rider?.firstName}{" "}
-                    {transaction.rider?.lastName}
-                  </Text>
-                </View>
+                {isRider ? (
+                  <>
+                    <Image
+                      style={{
+                        width: 80,
+                        height: 80,
+                        borderRadius: 100,
+                      }}
+                      source={{
+                        uri: transaction?.currentUser?.profilePic,
+                      }}
+                    />
+                    <View>
+                      <Text style={{ fontSize: 20 }}>
+                        {transaction?.currentUser?.firstName}{" "}
+                        {transaction.currentUser?.lastName}
+                      </Text>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      style={{
+                        width: 80,
+                        height: 80,
+                        borderRadius: 100,
+                      }}
+                      source={{
+                        uri: transaction?.rider?.selfieUrl,
+                      }}
+                    />
+                    <View>
+                      <Text style={{ fontSize: 20 }}>
+                        {transaction?.rider?.firstName}{" "}
+                        {transaction.rider?.lastName}
+                      </Text>
+                    </View>
+                  </>
+                )}
               </View>
               <Text
                 style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
