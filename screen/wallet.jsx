@@ -92,7 +92,7 @@ const Wallet = ({ navigation }) => {
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>
-            Transaction History
+            Wallet History
           </Text>
           <TouchableOpacity
             onPress={viewAllTransactions}

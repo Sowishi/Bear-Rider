@@ -53,7 +53,7 @@ const BearTransaction = ({ navigation }) => {
     <View style={styles.container}>
       <StatusBar backgroundColor="white" />
       <View style={styles.header}>
-        <Text style={styles.headerText}>Transactions</Text>
+        <Text style={styles.headerText}>Transactions History</Text>
       </View>
 
       <View style={styles.filterContainer}>

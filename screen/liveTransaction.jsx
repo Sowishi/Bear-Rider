@@ -27,6 +27,7 @@ import ConfirmationModal from "../components/confirmationModal";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import PayModalContent from "../components/payModalContent";
 import TransactionSummary from "../components/transactionSummary";
+import PopupModal from "../components/popupModal";
 
 const LiveTransaction = ({ navigation }) => {
   const {
@@ -830,7 +831,7 @@ const LiveTransaction = ({ navigation }) => {
           )}
         </ScrollView>
 
-        <ConfirmationModal
+        <PopupModal
           open={modalCash}
           handleClose={() => {
             setModalCash(false);
@@ -841,7 +842,7 @@ const LiveTransaction = ({ navigation }) => {
             isRider={currentUser.role == "Rider"}
             price={transaction.totalPrice}
           />
-        </ConfirmationModal>
+        </PopupModal>
       </View>
     );
   }
