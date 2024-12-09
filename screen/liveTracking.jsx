@@ -86,28 +86,83 @@ const LiveTracking = ({ navigation, route }) => {
       />
     );
   };
-  const getTransactionStatusLabel = (status) => {
-    if (status == "Accepted") {
-      return {
-        title: "Processing",
-        sub: "your rider is processing your order",
-      };
-    }
-    if (status == "Transit") {
-      return {
-        title: "In Transit",
-        sub: "your rider is on the way",
-      };
-    }
-    if (status == "Nearby") {
-      return {
-        title: "Rider is Near",
-        sub: "Waiting for you",
-      };
-    }
-  };
 
   const isRider = currentUser?.role === "Rider";
+
+  const getTransactionStatusLabel = (status) => {
+    if (status === "Accepted") {
+      return isRider
+        ? {
+            title: "Transaction Accepted",
+            sub: "You have accepted the transaction",
+          }
+        : {
+            title: "Processing",
+            sub: "Your rider is processing your transaction",
+          };
+    }
+    if (status === "Transit") {
+      return isRider
+        ? {
+            title: "In Transit",
+            sub: "You are on your way to the customer",
+          }
+        : {
+            title: "In Transit",
+            sub: "Your rider is on the way",
+          };
+    }
+    if (status === "Nearby") {
+      return isRider
+        ? {
+            title: "Near Destination",
+            sub: "You are close to the customer's location",
+          }
+        : {
+            title: "Rider is Near",
+            sub: "Waiting for you",
+          };
+    }
+    if (status === "Pickup") {
+      return isRider
+        ? {
+            title: "Pickup Confirmed",
+            sub: "You have picked up the order",
+          }
+        : {
+            title: "Confirmed Pickup",
+            sub: "You are now with your rider",
+          };
+    }
+    if (status === "DropOff") {
+      return isRider
+        ? {
+            title: "Drop-Off Complete",
+            sub: "You have drop off the customer",
+          }
+        : {
+            title: "Confirmed Drop-Off",
+            sub: "Your are now in your destination",
+          };
+    }
+    if (status === "Complete") {
+      return isRider
+        ? {
+            title: "Transaction Complete",
+            sub: "You have successfully completed the delivery",
+          }
+        : {
+            title: "Transaction Complete",
+            sub: "The transaction is complete",
+          };
+    }
+
+    // Default case for unmatched or undefined statuses
+    return {
+      title: "Unknown Status",
+      sub: "Status is undefined or invalid",
+    };
+  };
 
   if (currentUser && transaction && matchedRider) {
     return (

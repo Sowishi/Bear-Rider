@@ -693,16 +693,30 @@ const LiveTransaction = ({ navigation }) => {
                 <AntDesign name="arrowright" size={24} color="black" />
               </TouchableOpacity>
               {/* Buttons */}
-              <View style={{ flexDirection: "row", marginTop: 10 }}>
-                <Button
-                  width={"100%"}
-                  event={() => {
-                    setCancelModal(true);
-                  }}
-                  text="Cancel Ride"
-                  bgColor={"#B80B00"}
-                />
-              </View>
+              {transaction.status !== "DropOff" && (
+                <View style={{ flexDirection: "row", marginTop: 10 }}>
+                  <Button
+                    width={"100%"}
+                    event={() => {
+                      setCancelModal(true);
+                    }}
+                    text="Cancel Ride"
+                    bgColor={"#B80B00"}
+                  />
+                </View>
+              )}
+              {transaction.status == "DropOff" && (
+                <View style={{ flexDirection: "row", marginTop: 10 }}>
+                  <Button
+                    width={"100%"}
+                    event={() => {
+                      setCancelModal(true);
+                    }}
+                    text="Pay Now"
+                    bgColor={"#B80B00"}
+                  />
+                </View>
+              )}
             </>
           )}
         </ScrollView>
