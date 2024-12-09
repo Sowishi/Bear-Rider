@@ -1,146 +1,268 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { FontAwesome, MaterialIcons } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Constants from "expo-constants";
+import { StatusBar } from "expo-status-bar";
 import moment from "moment";
-import { useSmokeContext } from "../utils/appContext";
+const TransactionSummary = ({ data, navigation }) => {
+  const {
+    id,
+    createdAt,
+    currentUser,
+    destination,
+    distance,
+    paymentMethod,
+    rider,
+    serviceType,
+    status,
+    totalPrice,
+    insured,
+  } = data;
 
-const TransactionSummary = () => {
-  const { sumInfo } = useSmokeContext();
+  const chargePerKilometer = 10;
+  const baseFare = 30;
   return (
-    <View style={{ width: "100%", flex: 1, paddingVertical: 20 }}>
-      {sumInfo && (
-        <>
-          <View
+    <View
+      style={{
+        flex: 1,
+        marginTop: Constants.statusBarHeight,
+        padding: 20,
+        backgroundColor: "#fefefe",
+      }}
+    >
+      <StatusBar style="dark" backgroundColor="#fefefe" />
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("main");
+          }}
+        >
+          <AntDesign name="close" size={24} color="black" />
+        </TouchableOpacity>
+        {/* <AntDesign name="download" size={24} color="black" /> */}
+      </View>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <AntDesign name="checkcircle" size={24} color="#00C473" />
+          <Text
             style={{
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
+              color: "#00C473",
+              fontWeight: "bold",
+              marginTop: 10,
+              fontSize: 15,
             }}
           >
-            <Text style={styles.title}>Payment Sent</Text>
-            <AntDesign
-              style={{ marginLeft: 5 }}
-              name="creditcard"
-              size={24}
-              color="green"
+            Payment Successful
+          </Text>
+          <Text style={{ fontSize: 35, marginTop: 5, fontWeight: "bold" }}>
+            ₱
+            {parseInt(totalPrice).toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          marginTop: 30,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "white",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.23,
+          shadowRadius: 2.62,
+
+          elevation: 4,
+          borderRadius: 10,
+          width: "100%",
+        }}
+      >
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <View style={{ marginTop: -20, padding: 5 }}>
+            <Image
+              style={{ width: 50, height: 50, borderRadius: 100 }}
+              source={require("../assets/bear.png")}
             />
           </View>
-          <View>
-            <Text
-              style={{
-                textAlign: "center",
-                marginVertical: 10,
-                fontSize: 20,
-                color: "gray",
-              }}
-            >
-              {sumInfo.user.firstName + " " + sumInfo.user.lastName}
-            </Text>
+
+          <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+            {serviceType == "Pahatod"
+              ? "Transportation Service"
+              : "Delivery Service"}
+          </Text>
+          <View style={{ padding: 20, width: "100%" }}>
+            {serviceType != "Padara" && (
+              <>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Base Fare
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    ₱{baseFare}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Fare per Kilometer
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    ₱ {parseInt(totalPrice) - baseFare}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Tip
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>₱0</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Total
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    ₱{parseInt(totalPrice)}
+                  </Text>
+                </View>
+              </>
+            )}
           </View>
-          <View style={styles.details}>
-            <Text style={styles.label}>Amount Paid:</Text>
-            <Text style={styles.value}>₱{sumInfo.totalPrice}</Text>
-          </View>
-          <View style={styles.details}>
-            <Text style={styles.label}>Payment Method:</Text>
-            <Text style={styles.value}>Bear Rider Wallet</Text>
-          </View>
-          <View style={styles.details}>
-            <Text style={styles.label}>Transaction Date:</Text>
-            <Text style={styles.value}>{moment(new Date()).format("LLL")}</Text>
-          </View>
-          <View style={[styles.statusContainer, styles.success]}>
-            <Text style={styles.status}>Success</Text>
-          </View>
-          <View style={styles.disclosureContainer}>
-            <Text style={styles.disclosureText}>
-              * This payment is processed securely. All transactions are final
-              and cannot be refunded once completed. For any issues, please
-              contact customer support.
-            </Text>
-          </View>
-        </>
-      )}
+        </View>
+      </View>
+      <View style={{ marginTop: 10 }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+          Transaction Details
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
+          <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+            Payment Method
+          </Text>
+          <Text style={{ color: "black", fontSize: 15 }}>{paymentMethod}</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
+          <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+            Status
+          </Text>
+          <Text style={{ color: "black", fontSize: 15 }}>{status}</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
+          <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+            Insured
+          </Text>
+          <Text style={{ color: "black", fontSize: 15 }}>
+            {insured ? "Yes" : "No"}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
+          <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+            Date
+          </Text>
+          <Text style={{ color: "black", fontSize: 15 }}>
+            {moment(new Date()).format("LLL")}
+          </Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
+          <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+            Rider Name
+          </Text>
+          <Text style={{ color: "black", fontSize: 15 }}>
+            {rider.firstName + " " + rider.lastName}
+          </Text>
+        </View>
+      </View>
+
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("main");
+        }}
+        style={{
+          width: "100%",
+          backgroundColor: "#B80B00",
+          paddingVertical: 15,
+          marginTop: 20,
+          borderRadius: 20,
+          marginTop: 30,
+        }}
+      >
+        <Text
+          style={{
+            color: "white",
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 18,
+          }}
+        >
+          Done
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    marginBottom: 20,
-    elevation: 3,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  title: {
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 10,
-  },
-  details: {
-    marginVertical: 10,
-  },
-  label: {
-    fontSize: 14,
-    color: "#888",
-  },
-  value: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
-  },
-  statusContainer: {
-    marginVertical: 10,
-    padding: 8,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  success: {
-    backgroundColor: "#e0f8e0",
-    borderColor: "#4caf50",
-  },
-  failed: {
-    backgroundColor: "#f8d7da",
-    borderColor: "#dc3545",
-  },
-  status: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  button: {
-    backgroundColor: "#007BFF",
-    paddingVertical: 12,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  disclosureContainer: {
-    marginTop: 15,
-    padding: 10,
-    borderRadius: 5,
-    backgroundColor: "#f8f9fa",
-  },
-  disclosureText: {
-    fontSize: 12,
-    color: "#555",
-    textAlign: "center",
-  },
-});
 
 export default TransactionSummary;

@@ -197,7 +197,6 @@ const Home = ({ route, navigation }) => {
       }
     });
 
-    console.log(transactions);
     setTransactionCount(filter.length);
   }, [transactions]);
 

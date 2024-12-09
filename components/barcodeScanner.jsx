@@ -133,7 +133,6 @@ export default function BearScanner({
       if (userSnapshot.exists()) {
         // Data exists for the user, you can access it here
         const userData = userSnapshot.data();
-        console.log("User data:", userData);
         setUser(userData);
         setConfirmModal(true);
         // You can now use this data in your app as needed

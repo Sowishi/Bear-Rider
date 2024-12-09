@@ -25,6 +25,8 @@ import { Entypo } from "@expo/vector-icons";
 import ConfirmDelivery from "../components/confirmDelivery";
 import ConfirmationModal from "../components/confirmationModal";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import PayModalContent from "../components/payModalContent";
+import TransactionSummary from "../components/transactionSummary";
 
 const LiveTransaction = ({ navigation }) => {
   const {
@@ -33,11 +35,16 @@ const LiveTransaction = ({ navigation }) => {
     userLocation: location,
     currentUser,
   } = useSmokeContext();
-  const { getTransaction, deleteTransaction, cancelTransaction } =
-    useCrudTransaction();
+  const {
+    getTransaction,
+    deleteTransaction,
+    cancelTransaction,
+    completeTransaction,
+  } = useCrudTransaction();
   const [transaction, setTransaction] = useState();
   const [cancelModal, setCancelModal] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
+  const [modalCash, setModalCash] = useState(false);
 
   useEffect(() => {
     getTransaction(selectedTransaction.id, setTransaction);
@@ -101,11 +108,11 @@ const LiveTransaction = ({ navigation }) => {
             sub: "Your are now in your destination",
           };
     }
-    if (status === "Complete") {
+    if (status === "Completed") {
       return isRider
         ? {
             title: "Transaction Complete",
-            sub: "You have successfully completed the delivery",
+            sub: "You have successfully completed the transaction",
           }
         : {
             title: "Transaction Complete",
@@ -268,22 +275,22 @@ const LiveTransaction = ({ navigation }) => {
       },
     },
     {
-      time: "6",
+      time: "7",
       title: "Transaction Complete",
       description: isRider
         ? "The transaction is complete"
         : "The transaction is complete",
       circleColor:
-        transaction?.status === "Complete"
+        transaction?.status === "Completed"
           ? "rgba(184, 11, 0, 1)"
           : "rgba(128, 128, 128, 0.5)",
       lineColor:
-        transaction?.status === "Complete"
+        transaction?.status === "Completed"
           ? "rgba(184, 11, 0, 1)"
           : "rgba(128, 128, 128, 0.5)",
       titleStyle: {
         color:
-          transaction?.status === "Complete"
+          transaction?.status === "Completed"
             ? "rgba(0, 0, 0, 1)"
             : "rgba(0, 0, 0, 0.5)",
       },
@@ -299,6 +306,20 @@ const LiveTransaction = ({ navigation }) => {
   const handleCancelTransaction = () => {
     cancelTransaction(transaction, cancellationReason);
   };
+
+  const handleCompletePayment = () => {
+    if (transaction.paymentMethod == "Cash") {
+      completeTransaction(transaction);
+    }
+  };
+
+  if (transaction?.status == "Completed") {
+    return (
+      <>
+        <TransactionSummary navigation={navigation} data={transaction} />
+      </>
+    );
+  }
 
   if (transaction?.status == "Cancelled") {
     return (
@@ -775,21 +796,52 @@ const LiveTransaction = ({ navigation }) => {
                   />
                 </View>
               )}
-              {transaction.status == "DropOff" && (
-                <View style={{ flexDirection: "row", marginTop: 10 }}>
-                  <Button
-                    width={"100%"}
-                    event={() => {
-                      setCancelModal(true);
-                    }}
-                    text="Pay Now"
-                    bgColor={"#B80B00"}
-                  />
-                </View>
-              )}
+              {transaction.status == "DropOff" &&
+                currentUser.role !== "Rider" && (
+                  <View style={{ flexDirection: "row", marginTop: 10 }}>
+                    <Button
+                      width={"100%"}
+                      event={() => {
+                        if (transaction.paymentMethod == "Cash") {
+                          setModalCash(true);
+                        }
+                      }}
+                      text="Pay Now"
+                      bgColor={"#B80B00"}
+                    />
+                  </View>
+                )}
+              {transaction.status == "DropOff" &&
+                currentUser.role == "Rider" && (
+                  <View style={{ flexDirection: "row", marginTop: 10 }}>
+                    <Button
+                      width={"100%"}
+                      event={() => {
+                        if (transaction.paymentMethod == "Cash") {
+                          setModalCash(true);
+                        }
+                      }}
+                      text="Received Payment"
+                      bgColor={"#B80B00"}
+                    />
+                  </View>
+                )}
             </>
           )}
         </ScrollView>
+
+        <ConfirmationModal
+          open={modalCash}
+          handleClose={() => {
+            setModalCash(false);
+          }}
+        >
+          <PayModalContent
+            handleConfirm={handleCompletePayment}
+            isRider={currentUser.role == "Rider"}
+            price={transaction.totalPrice}
+          />
+        </ConfirmationModal>
       </View>
     );
   }

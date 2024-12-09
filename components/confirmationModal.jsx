@@ -14,6 +14,7 @@ const ConfirmationModal = ({
   handleConfirm,
   onChangeText,
   setCancellationReason,
+  children,
 }) => {
   const handleCancel = () => {
     // Optionally log or handle the cancellation reason here
@@ -30,41 +31,7 @@ const ConfirmationModal = ({
         onRequestClose={handleClose}
       >
         <View style={styles.modalBackground}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalTitle}>Confirm Action</Text>
-            <Text style={styles.modalText}>
-              Are you sure you want to proceed?
-            </Text>
-
-            <View style={styles.buttonContainer}>
-              {/* Confirm Button */}
-              <TouchableOpacity
-                style={styles.confirmButton}
-                onPress={() => {
-                  handleConfirm();
-                  setCancellationReason(""); // Clear input if confirmed
-                }}
-              >
-                <Text style={styles.buttonText}>Yes</Text>
-              </TouchableOpacity>
-
-              {/* Cancel Button */}
-              <TouchableOpacity
-                style={styles.cancelButton}
-                onPress={handleCancel}
-              >
-                <Text style={styles.buttonText}>No</Text>
-              </TouchableOpacity>
-            </View>
-
-            {/* Text Input for Cancellation Reason */}
-            <TextInput
-              style={styles.textInput}
-              placeholder="Enter cancellation reason (optional)"
-              onChangeText={onChangeText}
-              multiline
-            />
-          </View>
+          <View style={styles.modalView}>{children}</View>
         </View>
       </Modal>
     </View>

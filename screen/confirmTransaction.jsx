@@ -44,7 +44,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
   }, [bookLocation, destination]);
 
   const handleAddTransaction = async () => {
-    if (bookLocation && destination && paymentMethod.length >= 1) {
+    if (bookLocation && destination && paymentMethod) {
       const transaction = {
         origin: {
           latitude: bookLocation?.latitude,
@@ -71,7 +71,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
     } else {
       Toast.show({
         type: "info",
-        text1: "Please fill up all the information",
+        text1: "Please select payment method",
       });
     }
   };
@@ -245,7 +245,9 @@ const ConfirmTransaction = ({ route, navigation }) => {
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                   Payment Method
                 </Text>
-                <Text style={{ opacity: 0.5 }}>{paymentMethod}</Text>
+                <Text style={{ opacity: 0.5 }}>
+                  {paymentMethod || "Select Payment Method"}
+                </Text>
               </View>
             </View>
           </View>

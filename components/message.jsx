@@ -95,8 +95,6 @@ const Message = ({ recipientName, singleData, IS_RIDER, navigation }) => {
     );
   };
 
-  console.log(messageUserInfo);
-
   return (
     <View
       style={{ flex: 1, width: "100%", marginTop: Constants.statusBarHeight }}
