@@ -41,6 +41,8 @@ import LiveTracking from "./screen/liveTracking";
 import Message from "./components/message";
 import SelectPaymentMethod from "./screen/selectPaymentMethod";
 import Paymongo from "./screen/paymongo";
+import { useEffect } from "react";
+import { Linking } from "react-native";
 
 export default function App() {
   const Stack = createStackNavigator();

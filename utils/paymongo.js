@@ -39,7 +39,10 @@ const createCheckout = (transaction) => {
           show_line_items: true,
 
           statement_descriptor: "Bear Rider Express",
-          success_url: "https://example.com/success",
+        },
+        redirect: {
+          success: "yourapp://payment-success",
+          failed: "yourapp://payment-failed",
         },
       },
     }),

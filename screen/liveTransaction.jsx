@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Linking,
 } from "react-native";
 import Button from "../components/button";
 import redMarker from "../assets/red-marker.png";
@@ -812,6 +813,21 @@ const LiveTransaction = ({ navigation }) => {
                     />
                   </View>
                 )}
+              <View style={{ flexDirection: "row", marginTop: 10 }}>
+                <Button
+                  width={"100%"}
+                  event={() => {
+                    if (transaction.paymentMethod == "Cash") {
+                      setModalCash(true);
+                    }
+                    if (transaction.paymentMethod == "Gcash") {
+                      createCheckout(transaction);
+                    }
+                  }}
+                  text="Pay Now"
+                  bgColor={"#B80B00"}
+                />
+              </View>
               {transaction.status == "DropOff" &&
                 currentUser.role == "Rider" && (
                   <View style={{ flexDirection: "row", marginTop: 10 }}>
