@@ -120,6 +120,18 @@ const useCrudTransaction = () => {
       status: "Transit",
     });
   };
+  const confirmPickup = async (id) => {
+    const docRef = doc(db, "transaction", id);
+    await updateDoc(docRef, {
+      status: "Pickup",
+    });
+  };
+  const confirmDropOff = async (id) => {
+    const docRef = doc(db, "transaction", id);
+    await updateDoc(docRef, {
+      status: "DropOff",
+    });
+  };
 
   return {
     addTransaction,
@@ -134,6 +146,8 @@ const useCrudTransaction = () => {
     markNearby,
     markTransit,
     cancelTransaction,
+    confirmPickup,
+    confirmDropOff,
   };
 };
 

@@ -38,34 +38,91 @@ const LiveTransaction = ({ navigation }) => {
   const isRider = currentUser.role == "Rider";
 
   const getTransactionStatusLabel = (status) => {
-    if (status == "Accepted") {
-      return {
-        title: "Processing",
-        sub: "your rider is processing your order",
-      };
+    if (status === "Accepted") {
+      return isRider
+        ? {
+            title: "Transaction Accepted",
+            sub: "You have accepted the transaction",
+          }
+        : {
+            title: "Processing",
+            sub: "Your rider is processing your transaction",
+          };
     }
-    if (status == "Transit") {
-      return {
-        title: "In Transit",
-        sub: "your rider is on the way",
-      };
+    if (status === "Transit") {
+      return isRider
+        ? {
+            title: "In Transit",
+            sub: "You are on your way to the customer",
+          }
+        : {
+            title: "In Transit",
+            sub: "Your rider is on the way",
+          };
     }
-    if (status == "Nearby") {
-      return {
-        title: "Rider is Near",
-        sub: "Waiting for you",
-      };
+    if (status === "Nearby") {
+      return isRider
+        ? {
+            title: "Near Destination",
+            sub: "You are close to the customer's location",
+          }
+        : {
+            title: "Rider is Near",
+            sub: "Waiting for you",
+          };
     }
+    if (status === "Pickup") {
+      return isRider
+        ? {
+            title: "Pickup Confirmed",
+            sub: "You have picked up the order",
+          }
+        : {
+            title: "Confirmed Pickup",
+            sub: "You are now with your rider",
+          };
+    }
+    if (status === "DropOff") {
+      return isRider
+        ? {
+            title: "Drop-Off Complete",
+            sub: "You have drop off the customer",
+          }
+        : {
+            title: "Confirmed Drop-Off",
+            sub: "Your are now in your destination",
+          };
+    }
+    if (status === "Complete") {
+      return isRider
+        ? {
+            title: "Transaction Complete",
+            sub: "You have successfully completed the delivery",
+          }
+        : {
+            title: "Transaction Complete",
+            sub: "The transaction is complete",
+          };
+    }
+
+    // Default case for unmatched or undefined statuses
+    return {
+      title: "Unknown Status",
+      sub: "Status is undefined or invalid",
+    };
   };
+
   const data = [
     {
       time: "1",
-      title: "Book the transaction",
-      description: "You book the transaction",
-      circleColor: "rgba(128, 128, 128, 1)", // Fully opaque
-      lineColor: "rgba(128, 128, 128, 1)", // Fully opaque
-      titleStyle: { color: "rgba(0, 0, 0, 1)" }, // Fully opaque
-      descriptionStyle: { color: "rgba(0, 0, 0, 1)" }, // Fully opaque
+      title: isRider ? "Accept the transaction" : "Book the transaction",
+      description: isRider
+        ? "You accept the transaction"
+        : "You book the transaction",
+      circleColor: "rgba(128, 128, 128, 0.5)",
+      lineColor: "rgba(128, 128, 128, 0.5)",
+      titleStyle: { color: "rgba(0, 0, 0, 0.5)" },
+      descriptionStyle: { color: "rgba(0, 0, 0, 0.5)" },
     },
     {
       time: "2",
@@ -94,8 +151,10 @@ const LiveTransaction = ({ navigation }) => {
     },
     {
       time: "3",
-      title: getTransactionStatusLabel("Transit").title,
-      description: getTransactionStatusLabel("Transit").sub,
+      title: isRider
+        ? getTransactionStatusLabel("Transit").title
+        : getTransactionStatusLabel("Transit").title,
+      description: isRider ? "You are on your way" : "The rider is on the way",
       circleColor:
         transaction?.status === "Transit"
           ? "rgba(184, 11, 0, 1)"
@@ -119,8 +178,12 @@ const LiveTransaction = ({ navigation }) => {
     },
     {
       time: "4",
-      title: getTransactionStatusLabel("Nearby").title,
-      description: getTransactionStatusLabel("Nearby").sub,
+      title: isRider
+        ? getTransactionStatusLabel("Nearby").title
+        : "Rider is nearby",
+      description: isRider
+        ? "You are near the customer location"
+        : "The rider is near your location",
       circleColor:
         transaction?.status === "Nearby"
           ? "rgba(184, 11, 0, 1)"
@@ -144,25 +207,81 @@ const LiveTransaction = ({ navigation }) => {
     },
     {
       time: "5",
-      title: "Transaction Complete",
-      description: "The transaction is complete",
+      title: "Confirmed Pickup",
+      description: isRider
+        ? "You have pick up the customer"
+        : "You are now with your rider",
       circleColor:
-        transaction?.status === "Nearby"
+        transaction?.status === "Pickup"
           ? "rgba(184, 11, 0, 1)"
           : "rgba(128, 128, 128, 0.5)",
       lineColor:
-        transaction?.status === "Nearby"
+        transaction?.status === "Pickup"
           ? "rgba(184, 11, 0, 1)"
           : "rgba(128, 128, 128, 0.5)",
       titleStyle: {
         color:
-          transaction?.status === "Nearby"
+          transaction?.status === "Pickup"
             ? "rgba(0, 0, 0, 1)"
             : "rgba(0, 0, 0, 0.5)",
       },
       descriptionStyle: {
         color:
-          transaction?.status === "Nearby"
+          transaction?.status === "Pickup"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+    },
+    {
+      time: "6",
+      title: "Confirmed Drop Off",
+      description: isRider
+        ? "You have drop off the customer"
+        : "You are now in your destination",
+      circleColor:
+        transaction?.status === "DropOff"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      lineColor:
+        transaction?.status === "DropOff"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      titleStyle: {
+        color:
+          transaction?.status === "DropOff"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+      descriptionStyle: {
+        color:
+          transaction?.status === "DropOff"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+    },
+    {
+      time: "6",
+      title: "Transaction Complete",
+      description: isRider
+        ? "The transaction is complete"
+        : "The transaction is complete",
+      circleColor:
+        transaction?.status === "Complete"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      lineColor:
+        transaction?.status === "Complete"
+          ? "rgba(184, 11, 0, 1)"
+          : "rgba(128, 128, 128, 0.5)",
+      titleStyle: {
+        color:
+          transaction?.status === "Complete"
+            ? "rgba(0, 0, 0, 1)"
+            : "rgba(0, 0, 0, 0.5)",
+      },
+      descriptionStyle: {
+        color:
+          transaction?.status === "Complete"
             ? "rgba(0, 0, 0, 1)"
             : "rgba(0, 0, 0, 0.5)",
       },
@@ -372,212 +491,6 @@ const LiveTransaction = ({ navigation }) => {
     );
   }
 
-  if (isRider && transaction) {
-    return (
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "white",
-          marginTop: Constants.statusBarHeight,
-        }}
-      >
-        <ExpoStatusBar style="light" />
-        <ConfirmationModal
-          handleConfirm={() => {
-            handleCancelTransaction();
-          }}
-          onChangeText={(text) => setCancellationReason(text)}
-          setCancellationReason={setCancellationReason}
-          open={cancelModal}
-          handleClose={() => {
-            setCancelModal(false);
-          }}
-        />
-        <View
-          style={{
-            backgroundColor: "#003082",
-            paddingVertical: 15,
-            alignItems: "center",
-          }}
-        >
-          <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-            Transaction Details
-          </Text>
-        </View>
-
-        {/* Scrollable Content */}
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "flex-start",
-            alignItems: "center",
-            paddingHorizontal: 20,
-            paddingBottom: 50,
-            paddingTop: 20,
-          }}
-        >
-          {transaction && transaction?.status !== undefined && (
-            <>
-              <View>
-                <Text
-                  style={{
-                    fontSize: 30,
-                    color: "black",
-                    fontWeight: "bold",
-                    textAlign: "center",
-                  }}
-                >
-                  {getTransactionStatusLabel(transaction.status)?.title}
-                </Text>
-                <Text
-                  style={{
-                    fontSize: 15,
-                    marginBottom: 10,
-                    color: "red",
-                    fontStyle: "italic",
-                    marginBottom: 15,
-                    textAlign: "center",
-                  }}
-                >
-                  {getTransactionStatusLabel(transaction.status)?.sub}
-                </Text>
-              </View>
-              <View
-                style={{
-                  width: "100%",
-                  flexDirection: "col",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginVertical: 20,
-                }}
-              >
-                <Image
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 100,
-                  }}
-                  source={{
-                    uri: transaction?.currentUser?.profilePic,
-                  }}
-                />
-                <View>
-                  <Text style={{ fontSize: 20 }}>
-                    {transaction?.currentUser?.firstName}{" "}
-                    {transaction.currentUser?.lastName}
-                  </Text>
-                </View>
-              </View>
-              <Text
-                style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
-              >
-                Transaction Timeline
-              </Text>
-              <Timeline
-                style={{ width: "100%" }}
-                data={data}
-                separator={true}
-                circleSize={20}
-                circleColor="rgb(45,156,219)"
-                lineColor="rgb(45,156,219)"
-                timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
-                timeStyle={{
-                  textAlign: "center",
-                  backgroundColor: "#ff9797",
-                  color: "white",
-                  padding: 5,
-                  borderRadius: 13,
-                  overflow: "hidden",
-                }}
-                descriptionStyle={{ color: "gray" }}
-                options={{
-                  style: { paddingTop: 5 },
-                }}
-              />
-
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("LiveTracking");
-                }}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  paddingHorizontal: 13,
-                  marginTop: 20,
-                }}
-              >
-                <View style={{ flex: 1 }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <Entypo name="location-pin" size={24} color="red" />
-
-                    <View style={{ marginLeft: 5 }}>
-                      <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                        Direction
-                      </Text>
-                      <Text>Track your customer's location</Text>
-                    </View>
-                  </View>
-                </View>
-                <AntDesign name="arrowright" size={24} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("RiderTransactionDetails");
-                }}
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  width: "100%",
-                  paddingHorizontal: 13,
-                  marginVertical: 20,
-                }}
-              >
-                <View style={{ flex: 1 }}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <AntDesign name="exception1" size={20} color="black" />
-
-                    <View style={{ marginLeft: 8 }}>
-                      <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                        Transaction Details
-                      </Text>
-                      <Text>View your transaction details</Text>
-                    </View>
-                  </View>
-                </View>
-                <AntDesign name="arrowright" size={24} color="black" />
-              </TouchableOpacity>
-              {/* Buttons */}
-              <View style={{ flexDirection: "row", marginTop: 10 }}>
-                <Button
-                  width={"100%"}
-                  event={() => {
-                    setCancelModal(true);
-                  }}
-                  text="Cancel Ride"
-                  bgColor={"#B80B00"}
-                />
-              </View>
-            </>
-          )}
-        </ScrollView>
-      </View>
-    );
-  }
   if (transaction) {
     return (
       <View

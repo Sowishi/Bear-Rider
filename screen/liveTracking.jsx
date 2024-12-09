@@ -25,7 +25,13 @@ import { FontAwesome } from "@expo/vector-icons";
 const LiveTracking = ({ navigation, route }) => {
   const mapRef = useRef();
   const { selectedTransaction, userLocation, currentUser } = useSmokeContext();
-  const { getTransaction } = useCrudTransaction();
+  const {
+    getTransaction,
+    markTransit,
+    markNearby,
+    confirmPickup,
+    confirmDropOff,
+  } = useCrudTransaction();
   const [transaction, setTransaction] = useState();
   const [region, setRegion] = useState({
     latitude: userLocation?.latitude,
@@ -80,6 +86,28 @@ const LiveTracking = ({ navigation, route }) => {
       />
     );
   };
+  const getTransactionStatusLabel = (status) => {
+    if (status == "Accepted") {
+      return {
+        title: "Processing",
+        sub: "your rider is processing your order",
+      };
+    }
+    if (status == "Transit") {
+      return {
+        title: "In Transit",
+        sub: "your rider is on the way",
+      };
+    }
+    if (status == "Nearby") {
+      return {
+        title: "Rider is Near",
+        sub: "Waiting for you",
+      };
+    }
+  };
+
+  const isRider = currentUser?.role === "Rider";
 
   if (currentUser && transaction && matchedRider) {
     return (
@@ -154,40 +182,44 @@ const LiveTracking = ({ navigation, route }) => {
             ></Marker>
 
             {/* Rider to Customer */}
-            <MapViewDirections
-              strokeWidth={4}
-              strokeColor="#FFC30E"
-              origin={{
-                latitude: matchedUser?.latitude,
-                longitude: matchedUser?.longitude,
-              }}
-              destination={{
-                latitude: matchedRider?.latitude,
-                longitude: matchedRider?.longitude,
-              }}
-              apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-            />
+            {matchedRider && matchedUser && (
+              <MapViewDirections
+                strokeWidth={4}
+                strokeColor="#FFC30E"
+                origin={{
+                  latitude: matchedUser?.latitude,
+                  longitude: matchedUser?.longitude,
+                }}
+                destination={{
+                  latitude: matchedRider?.latitude,
+                  longitude: matchedRider?.longitude,
+                }}
+                apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+              />
+            )}
 
-            <MapViewDirections
-              strokeWidth={4}
-              strokeColor="#003082"
-              origin={
-                currentUser.role == "Rider"
-                  ? {
-                      latitude: matchedRider?.latitude,
-                      longitude: matchedRider?.longitude,
-                    }
-                  : {
-                      latitude: matchedUser?.latitude,
-                      longitude: matchedUser?.longitude,
-                    }
-              }
-              destination={{
-                latitude: transaction.destination?.latitude,
-                longitude: transaction.destination?.longitude,
-              }}
-              apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-            />
+            {matchedRider && matchedUser && (
+              <MapViewDirections
+                strokeWidth={4}
+                strokeColor="#003082"
+                origin={
+                  isRider
+                    ? {
+                        latitude: matchedRider?.latitude,
+                        longitude: matchedRider?.longitude,
+                      }
+                    : {
+                        latitude: matchedUser?.latitude,
+                        longitude: matchedUser?.longitude,
+                      }
+                }
+                destination={{
+                  latitude: transaction.destination?.latitude,
+                  longitude: transaction.destination?.longitude,
+                }}
+                apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+              />
+            )}
           </>
         </MapView>
 
@@ -294,6 +326,116 @@ const LiveTracking = ({ navigation, route }) => {
                   style={{ height: 5, width: 100, backgroundColor: "gray" }}
                 ></View>
               </View>
+
+              {!isRider && (
+                <Text
+                  style={{
+                    textAlign: "center",
+                    fontSize: 18,
+                    marginBottom: 10,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {getTransactionStatusLabel(transaction.status).sub}
+                </Text>
+              )}
+              {isRider && transaction.status == "Accepted" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    markTransit(transaction.id);
+                  }}
+                  style={{
+                    backgroundColor: "#AA2D31",
+                    paddingVertical: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    START RIDE
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {isRider && transaction.status === "Transit" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    markNearby(transaction.id);
+                  }}
+                  style={{
+                    backgroundColor: "#AA2D31",
+                    paddingVertical: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    MARK NEARBY
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {isRider && transaction.status === "Nearby" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    confirmPickup(transaction.id);
+                  }}
+                  style={{
+                    backgroundColor: "#AA2D31",
+                    paddingVertical: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Confirmed Pickup
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {isRider && transaction.status === "Pickup" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    confirmDropOff(transaction.id);
+                  }}
+                  style={{
+                    backgroundColor: "#AA2D31",
+                    paddingVertical: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Confirmed Drop Off
+                  </Text>
+                </TouchableOpacity>
+              )}
+
               <TouchableOpacity
                 onPress={() => setSelected("selectedLocation")}
                 style={{
@@ -313,7 +455,7 @@ const LiveTracking = ({ navigation, route }) => {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <Entypo name="location-pin" size={20} color="red" />
+                  <Entypo name="message" size={20} color="black" />
                   <View>
                     <Text
                       style={{
@@ -322,7 +464,7 @@ const LiveTracking = ({ navigation, route }) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Selected Location
+                      Message
                     </Text>
                   </View>
                 </View>
@@ -348,7 +490,7 @@ const LiveTracking = ({ navigation, route }) => {
                     justifyContent: "flex-start",
                   }}
                 >
-                  <MaterialIcons name="my-location" size={20} color="black" />
+                  <MaterialIcons name="phone" size={20} color="black" />
                   <View>
                     <Text
                       style={{
@@ -357,21 +499,10 @@ const LiveTracking = ({ navigation, route }) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Current Location
+                      Call
                     </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    color: "white",
-                    textAlign: "center",
-                    fontWeight: "bold",
-                    fontSize: 18,
-                  }}
-                ></Text>
               </TouchableOpacity>
             </View>
           </View>
