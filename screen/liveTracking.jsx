@@ -68,6 +68,16 @@ const LiveTracking = ({ navigation, route }) => {
     );
   };
 
+  const MarkerUser = () => {
+    return (
+      <Image
+        source={require("../assets/user.png")}
+        autoPlay
+        style={{ width: 50, height: 50 }}
+      />
+    );
+  };
+
   if (currentUser && transaction && matchedUser) {
     return (
       <View style={styles.container}>
@@ -80,22 +90,45 @@ const LiveTracking = ({ navigation, route }) => {
           initialRegion={region}
         >
           <>
+            {/* Customer Location */}
             <Marker
+              children={<MarkerUser />}
               onPress={() =>
                 jumpToMarker({
-                  latitude: userLocation?.latitude,
-                  longitude: userLocation?.longitude,
+                  latitude: transaction.origin?.latitude,
+                  longitude: transaction.origin?.longitude,
                 })
               }
               coordinate={{
-                latitude: userLocation?.latitude,
-                longitude: userLocation?.longitude,
+                latitude: transaction.origin?.latitude,
+                longitude: transaction.origin?.longitude,
               }}
-              title="Current Location"
-              description="This is where you are"
+              title="Customer Location"
+              description={
+                transaction?.currentUser?.firstName +
+                " " +
+                transaction?.currentUser?.lastName
+              }
               pinColor={"#B80B00"}
             />
 
+            {/* Customer Destination */}
+            <Marker
+              onPress={() =>
+                jumpToMarker({
+                  latitude: transaction.destination?.latitude,
+                  longitude: transaction.destination?.longitude,
+                })
+              }
+              coordinate={{
+                latitude: transaction.destination?.latitude,
+                longitude: transaction.destination?.longitude,
+              }}
+              title="Destination"
+              pinColor={"#003082"}
+            />
+
+            {/* Rider Location */}
             <Marker
               children={<MarkerRider />}
               onPress={() =>
@@ -126,6 +159,19 @@ const LiveTracking = ({ navigation, route }) => {
               destination={{
                 latitude: matchedUser?.latitude,
                 longitude: matchedUser?.longitude,
+              }}
+              apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+            />
+            <MapViewDirections
+              strokeWidth={4}
+              strokeColor="#003082"
+              origin={{
+                latitude: transaction.origin?.latitude,
+                longitude: transaction.origin?.longitude,
+              }}
+              destination={{
+                latitude: transaction.destination?.latitude,
+                longitude: transaction.destination?.longitude,
               }}
               apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
             />
@@ -202,6 +248,119 @@ const LiveTracking = ({ navigation, route }) => {
                 style={{ marginRight: 5 }}
               />
             </TouchableOpacity>
+          </View>
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            minHeight: 200,
+            backgroundColor: "white",
+            width: "100%",
+            borderTopLeftRadius: 50,
+            borderTopRightRadius: 50,
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <View style={{ padding: 20 }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginBottom: 20,
+                }}
+              >
+                <View
+                  style={{ height: 5, width: 100, backgroundColor: "gray" }}
+                ></View>
+              </View>
+              <TouchableOpacity
+                onPress={() => setSelected("selectedLocation")}
+                style={{
+                  width: "100%",
+
+                  marginVertical: 5,
+                  paddingHorizontal: 10,
+                  paddingVertical: 10,
+                  borderRadius: 10,
+                }}
+              >
+                <View
+                  style={{
+                    width: 300,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <Entypo name="location-pin" size={20} color="red" />
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        marginLeft: 5,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Selected Location
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setSelected("currentLocation");
+                  jumpToMarker(userLocation);
+                }}
+                style={{
+                  width: "100%",
+                  paddingHorizontal: 10,
+                  paddingVertical: 10,
+                  borderRadius: 10,
+                }}
+              >
+                <View
+                  style={{
+                    width: 300,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <MaterialIcons name="my-location" size={20} color="black" />
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 13,
+                        marginLeft: 5,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Current Location
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    color: "white",
+                    textAlign: "center",
+                    fontWeight: "bold",
+                    fontSize: 18,
+                  }}
+                ></Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
