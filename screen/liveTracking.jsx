@@ -45,15 +45,18 @@ const LiveTracking = ({ navigation, route }) => {
   };
 
   const { onlineUsers } = useAddOnline();
-  const matchedUser = onlineUsers.find(
+  const matchedRider = onlineUsers.find(
     (user) => user.currentUser.id === transaction.rider.id
+  );
+  const matchedUser = onlineUsers.find(
+    (user) => user.currentUser.id === transaction.currentUser.id
   );
 
   useEffect(() => {
-    if (matchedUser) {
+    if (matchedRider) {
       jumpToMarker({
-        latitude: matchedUser.latitude,
-        longitude: matchedUser.longitude,
+        latitude: matchedRider.latitude,
+        longitude: matchedRider.longitude,
       });
     }
   }, []);
@@ -78,7 +81,7 @@ const LiveTracking = ({ navigation, route }) => {
     );
   };
 
-  if (currentUser && transaction && matchedUser) {
+  if (currentUser && transaction && matchedRider) {
     return (
       <View style={styles.container}>
         <StatusBar translucent style="dark" />
@@ -95,13 +98,13 @@ const LiveTracking = ({ navigation, route }) => {
               children={<MarkerUser />}
               onPress={() =>
                 jumpToMarker({
-                  latitude: transaction.origin?.latitude,
-                  longitude: transaction.origin?.longitude,
+                  latitude: matchedUser?.latitude,
+                  longitude: matchedUser?.longitude,
                 })
               }
               coordinate={{
-                latitude: transaction.origin?.latitude,
-                longitude: transaction.origin?.longitude,
+                latitude: matchedUser?.latitude,
+                longitude: matchedUser?.longitude,
               }}
               title="Customer Location"
               description={
@@ -133,13 +136,13 @@ const LiveTracking = ({ navigation, route }) => {
               children={<MarkerRider />}
               onPress={() =>
                 jumpToMarker({
-                  latitude: matchedUser?.latitude,
-                  longitude: matchedUser?.longitude,
+                  latitude: matchedRider?.latitude,
+                  longitude: matchedRider?.longitude,
                 })
               }
               coordinate={{
-                latitude: matchedUser?.latitude, // Fallback to 0 if undefined
-                longitude: matchedUser?.longitude, // Fallback to 0 if undefined
+                latitude: matchedRider?.latitude, // Fallback to 0 if undefined
+                longitude: matchedRider?.longitude, // Fallback to 0 if undefined
               }}
               title="Rider"
               description={
@@ -149,26 +152,36 @@ const LiveTracking = ({ navigation, route }) => {
               }
               pinColor={"#B80B00"}
             ></Marker>
+
+            {/* Rider to Customer */}
             <MapViewDirections
               strokeWidth={4}
               strokeColor="#FFC30E"
               origin={{
-                latitude: userLocation?.latitude,
-                longitude: userLocation?.longitude,
-              }}
-              destination={{
                 latitude: matchedUser?.latitude,
                 longitude: matchedUser?.longitude,
               }}
+              destination={{
+                latitude: matchedRider?.latitude,
+                longitude: matchedRider?.longitude,
+              }}
               apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
             />
+
             <MapViewDirections
               strokeWidth={4}
               strokeColor="#003082"
-              origin={{
-                latitude: transaction.origin?.latitude,
-                longitude: transaction.origin?.longitude,
-              }}
+              origin={
+                currentUser.role == "Rider"
+                  ? {
+                      latitude: matchedRider?.latitude,
+                      longitude: matchedRider?.longitude,
+                    }
+                  : {
+                      latitude: matchedUser?.latitude,
+                      longitude: matchedUser?.longitude,
+                    }
+              }
               destination={{
                 latitude: transaction.destination?.latitude,
                 longitude: transaction.destination?.longitude,
