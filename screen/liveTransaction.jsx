@@ -24,6 +24,7 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { Entypo } from "@expo/vector-icons";
 import ConfirmDelivery from "../components/confirmDelivery";
 import ConfirmationModal from "../components/confirmationModal";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const LiveTransaction = ({ navigation }) => {
   const {
@@ -669,13 +670,23 @@ const LiveTransaction = ({ navigation }) => {
                       justifyContent: "flex-start",
                     }}
                   >
-                    <Entypo name="location-pin" size={24} color="red" />
+                    <View
+                      style={{
+                        width: 13,
+                        height: 13,
+                        backgroundColor: "red",
+                        borderRadius: 100,
+                        marginRight: 5,
+                      }}
+                    ></View>
 
                     <View style={{ marginLeft: 5 }}>
                       <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                         Live Tracking
                       </Text>
-                      <Text>Track your rider in realtime.</Text>
+                      <Text style={{ opacity: 0.5 }}>
+                        Track your rider in realtime
+                      </Text>
                     </View>
                   </View>
                 </View>
@@ -708,12 +719,52 @@ const LiveTransaction = ({ navigation }) => {
                       <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                         Transaction Details
                       </Text>
-                      <Text>View your transaction details</Text>
+                      <Text style={{ opacity: 0.5 }}>
+                        View your transaction details
+                      </Text>
                     </View>
                   </View>
                 </View>
                 <AntDesign name="arrowright" size={24} color="black" />
               </TouchableOpacity>
+              {!isRider && (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("viewBearAsset", {
+                      type: "paymentMethod",
+                    });
+                  }}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    paddingHorizontal: 13,
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <MaterialIcons name="payment" size={24} color="black" />
+
+                      <View style={{ marginLeft: 8 }}>
+                        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                          Payment Method
+                        </Text>
+                        <Text style={{ opacity: 0.5 }}>
+                          Select a payment method
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <AntDesign name="arrowright" size={24} color="black" />
+                </TouchableOpacity>
+              )}
               {/* Buttons */}
               {transaction.status !== "DropOff" && (
                 <View style={{ flexDirection: "row", marginTop: 10 }}>

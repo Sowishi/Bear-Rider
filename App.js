@@ -39,6 +39,7 @@ import OrderNotes from "./components/orderNotes";
 import TransactionDetails from "./screen/transactionDetails";
 import LiveTracking from "./screen/liveTracking";
 import Message from "./components/message";
+import SelectPaymentMethod from "./screen/selectPaymentMethod";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -433,6 +434,22 @@ export default function App() {
               }}
               name="Message"
               component={Message}
+            />
+            <Stack.Screen
+              options={{
+                title: "Select Payment Method",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="SelectPaymentMethod"
+              component={SelectPaymentMethod}
             />
           </>
         )}

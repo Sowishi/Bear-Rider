@@ -22,6 +22,11 @@ const ViewBearAsset = ({ route, navigation }) => {
       title: "Start tracking realtime",
       goTo: "LiveTracking",
     },
+    paymentMethod: {
+      image: require("../assets/screenAssest/Add Payment.png"),
+      title: "Add your payment method",
+      goTo: "SelectPaymentMethod",
+    },
   };
 
   return (
