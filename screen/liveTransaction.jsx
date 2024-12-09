@@ -727,44 +727,41 @@ const LiveTransaction = ({ navigation }) => {
                 </View>
                 <AntDesign name="arrowright" size={24} color="black" />
               </TouchableOpacity>
-              {!isRider && (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("viewBearAsset", {
-                      type: "paymentMethod",
-                    });
-                  }}
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    paddingHorizontal: 13,
-                  }}
-                >
-                  <View style={{ flex: 1 }}>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "flex-start",
-                      }}
-                    >
-                      <MaterialIcons name="payment" size={24} color="black" />
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("viewBearAsset", {
+                    type: "paymentMethod",
+                  });
+                }}
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "100%",
+                  paddingHorizontal: 13,
+                }}
+              >
+                <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                    }}
+                  >
+                    <MaterialIcons name="payment" size={24} color="black" />
 
-                      <View style={{ marginLeft: 8 }}>
-                        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                          Payment Method
-                        </Text>
-                        <Text style={{ opacity: 0.5 }}>
-                          Select a payment method
-                        </Text>
-                      </View>
+                    <View style={{ marginLeft: 8 }}>
+                      <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                        Payment Method
+                      </Text>
+                      <Text style={{ opacity: 0.5 }}>
+                        {transaction.paymentMethod}
+                      </Text>
                     </View>
                   </View>
-                  <AntDesign name="arrowright" size={24} color="black" />
-                </TouchableOpacity>
-              )}
+                </View>
+              </TouchableOpacity>
               {/* Buttons */}
               {transaction.status !== "DropOff" && (
                 <View style={{ flexDirection: "row", marginTop: 10 }}>

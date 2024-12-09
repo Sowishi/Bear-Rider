@@ -323,6 +323,44 @@ const BearHome = ({ navigation }) => {
                 <AntDesign name="arrowright" size={24} color="black" />
               </View>
             </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                padding: 15,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+              onPress={() => navigation.navigate("LiveTransaction")}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  width: 240,
+                }}
+              >
+                <Entypo name="location-pin" size={24} color="red" />
+
+                <View style={{ marginLeft: 10 }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
+                    Saved Places
+                  </Text>
+                  <Text style={{ fontStyle: "italic", fontSize: 12 }}>
+                    Saved your places for easy access
+                  </Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  backgroundColor: "#FEF3F7",
+                  padding: 7,
+                  borderRadius: 100,
+                }}
+              >
+                <AntDesign name="arrowright" size={24} color="black" />
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

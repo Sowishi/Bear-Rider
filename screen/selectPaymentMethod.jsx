@@ -1,8 +1,9 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import React, { useState } from "react";
+import { useSmokeContext } from "../utils/appContext";
 
-const SelectPaymentMethod = () => {
-  const [selectedMethod, setSelectedMethod] = useState(null);
+const SelectPaymentMethod = ({ navigation }) => {
+  const { paymentMethod, setPaymentMethod } = useSmokeContext();
 
   const paymentMethods = [
     { name: "Cash", logo: require("../assets/bear.png") },
@@ -18,15 +19,15 @@ const SelectPaymentMethod = () => {
           key={method.name}
           style={[
             styles.button,
-            selectedMethod === method.name && styles.selectedButton,
+            paymentMethod === method.name && styles.selectedButton,
           ]}
-          onPress={() => setSelectedMethod(method.name)}
+          onPress={() => setPaymentMethod(method.name)}
         >
           <Image source={method.logo} style={styles.logo} />
           <Text
             style={[
               styles.buttonText,
-              selectedMethod === method.name && styles.selectedButtonText,
+              paymentMethod === method.name && styles.selectedButtonText,
             ]}
           >
             {method.name}
@@ -36,9 +37,7 @@ const SelectPaymentMethod = () => {
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate(data[type].goTo, {
-            type: data[type].parameter,
-          });
+          navigation.pop(2);
         }}
         style={{
           width: "100%",
@@ -57,7 +56,7 @@ const SelectPaymentMethod = () => {
             fontSize: 18,
           }}
         >
-          Select {selectedMethod}
+          Select {paymentMethod}
         </Text>
       </TouchableOpacity>
     </View>
@@ -83,9 +82,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
-    borderWidth: 2,
     borderColor: "#B80B00",
     marginVertical: 8,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+
+    elevation: 2,
   },
   selectedButton: {
     backgroundColor: "#003082",

@@ -11,7 +11,7 @@ import MapView, { Marker } from "react-native-maps";
 import CheckBox from "expo-checkbox"; // For Expo-compatible checkbox
 import { useSmokeContext } from "../utils/appContext";
 import MapViewDirections from "react-native-maps-directions";
-import { Entypo } from "@expo/vector-icons"; // Import Entypo from @expo/vector-icons
+import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons"; // Import Entypo from @expo/vector-icons
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import Toast from "react-native-toast-message";
 import haversineDistance from "../utils/calculateDistance";
@@ -24,6 +24,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
     currentUser,
     setFindingRider,
     setSelectedTransaction,
+    paymentMethod,
   } = useSmokeContext();
   const { addTransaction } = useCrudTransaction();
 
@@ -43,7 +44,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
   }, [bookLocation, destination]);
 
   const handleAddTransaction = async () => {
-    if (bookLocation && destination) {
+    if (bookLocation && destination && paymentMethod.length >= 1) {
       const transaction = {
         origin: {
           latitude: bookLocation?.latitude,
@@ -61,6 +62,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
         totalPrice: distance * chargePerKilometer + baseFare,
         remarks: note,
         insured: insuranceChecked,
+        paymentMethod,
       };
       setFindingRider(true);
       const output = await addTransaction(transaction);
@@ -69,7 +71,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
     } else {
       Toast.show({
         type: "info",
-        text1: "Please select drop off location",
+        text1: "Please fill up all the information",
       });
     }
   };
@@ -215,6 +217,40 @@ const ConfirmTransaction = ({ route, navigation }) => {
             </>
           )}
         </View>
+
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("viewBearAsset", {
+              type: "paymentMethod",
+            });
+          }}
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <MaterialIcons name="payment" size={24} color="black" />
+
+              <View style={{ marginLeft: 8 }}>
+                <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                  Payment Method
+                </Text>
+                <Text style={{ opacity: 0.5 }}>{paymentMethod}</Text>
+              </View>
+            </View>
+          </View>
+          <AntDesign name="arrowright" size={24} color="black" />
+        </TouchableOpacity>
 
         {/* Confirm Button */}
         <TouchableOpacity

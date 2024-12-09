@@ -386,18 +386,6 @@ const LiveTracking = ({ navigation, route }) => {
                 ></View>
               </View>
 
-              {!isRider && (
-                <Text
-                  style={{
-                    textAlign: "center",
-                    fontSize: 18,
-                    marginBottom: 10,
-                    fontWeight: "bold",
-                  }}
-                >
-                  {getTransactionStatusLabel(transaction.status).sub}
-                </Text>
-              )}
               {isRider && transaction.status == "Accepted" && (
                 <TouchableOpacity
                   onPress={() => {
@@ -446,7 +434,7 @@ const LiveTracking = ({ navigation, route }) => {
                   </Text>
                 </TouchableOpacity>
               )}
-              {isRider && transaction.status === "Nearby" && (
+              {!isRider && transaction.status === "Nearby" && (
                 <TouchableOpacity
                   onPress={() => {
                     confirmPickup(transaction.id);
@@ -470,7 +458,7 @@ const LiveTracking = ({ navigation, route }) => {
                   </Text>
                 </TouchableOpacity>
               )}
-              {isRider && transaction.status === "Pickup" && (
+              {!isRider && transaction.status === "Pickup" && (
                 <TouchableOpacity
                   onPress={() => {
                     confirmDropOff(transaction.id);
@@ -491,6 +479,30 @@ const LiveTracking = ({ navigation, route }) => {
                     }}
                   >
                     Confirmed Drop Off
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {transaction.status === "DropOff" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.pop(2);
+                  }}
+                  style={{
+                    backgroundColor: "#AA2D31",
+                    paddingVertical: 10,
+                    borderRadius: 10,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 20,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {isRider ? "Received Payment" : "Pay Now"}
                   </Text>
                 </TouchableOpacity>
               )}
