@@ -17,7 +17,7 @@ const createCheckout = (transaction) => {
               " " +
               transaction?.currentUser.lastName,
             email: transaction?.currentUser.email,
-            phone: transaction?.currentUser.phone,
+            phone: transaction?.currentUser.phoneNumber,
           },
           description: transaction?.id,
           line_items: [

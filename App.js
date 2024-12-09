@@ -222,6 +222,7 @@ export default function App() {
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="viewBearAsset" component={ViewBearAsset} />
             <Stack.Screen name="LiveTransaction" component={LiveTransaction} />
+            <Stack.Screen name="Paymongo" component={Paymongo} />
 
             <Stack.Screen
               options={{
