@@ -21,6 +21,7 @@ import useCrudTransaction from "../hooks/useCrudTransaction";
 import useAddOnline from "../hooks/useAddOnline";
 import MapViewDirections from "react-native-maps-directions";
 import { FontAwesome } from "@expo/vector-icons";
+import { dialPhone } from "../utils/dialPhone";
 
 const LiveTracking = ({ navigation, route }) => {
   const mapRef = useRef();
@@ -538,8 +539,11 @@ const LiveTracking = ({ navigation, route }) => {
 
               <TouchableOpacity
                 onPress={() => {
-                  setSelected("currentLocation");
-                  jumpToMarker(userLocation);
+                  dialPhone(
+                    isRider
+                      ? transaction.currentUser.phone
+                      : transaction.rider.phone
+                  );
                 }}
                 style={{
                   width: "100%",
