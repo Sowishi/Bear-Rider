@@ -24,7 +24,8 @@ import { FontAwesome } from "@expo/vector-icons";
 
 const LiveTracking = ({ navigation, route }) => {
   const mapRef = useRef();
-  const { selectedTransaction, userLocation, currentUser } = useSmokeContext();
+  const { selectedTransaction, userLocation, currentUser, setMessageInfo } =
+    useSmokeContext();
   const {
     getTransaction,
     markTransit,
@@ -169,114 +170,116 @@ const LiveTracking = ({ navigation, route }) => {
       <View style={styles.container}>
         <StatusBar translucent style="dark" />
 
-        <MapView
-          customMapStyle={retroMapStyle}
-          ref={mapRef}
-          style={StyleSheet.absoluteFillObject}
-          initialRegion={region}
-        >
-          <>
-            {/* Customer Location */}
-            <Marker
-              children={<MarkerUser />}
-              onPress={() =>
-                jumpToMarker({
-                  latitude: matchedUser?.latitude,
-                  longitude: matchedUser?.longitude,
-                })
-              }
-              coordinate={{
-                latitude: matchedUser?.latitude,
-                longitude: matchedUser?.longitude,
-              }}
-              title="Customer Location"
-              description={
-                transaction?.currentUser?.firstName +
-                " " +
-                transaction?.currentUser?.lastName
-              }
-              pinColor={"#B80B00"}
-            />
-
-            {/* Customer Destination */}
-            <Marker
-              onPress={() =>
-                jumpToMarker({
-                  latitude: transaction.destination?.latitude,
-                  longitude: transaction.destination?.longitude,
-                })
-              }
-              coordinate={{
-                latitude: transaction.destination?.latitude,
-                longitude: transaction.destination?.longitude,
-              }}
-              title="Destination"
-              pinColor={"#003082"}
-            />
-
-            {/* Rider Location */}
-            <Marker
-              children={<MarkerRider />}
-              onPress={() =>
-                jumpToMarker({
-                  latitude: matchedRider?.latitude,
-                  longitude: matchedRider?.longitude,
-                })
-              }
-              coordinate={{
-                latitude: matchedRider?.latitude, // Fallback to 0 if undefined
-                longitude: matchedRider?.longitude, // Fallback to 0 if undefined
-              }}
-              title="Rider"
-              description={
-                transaction?.rider?.firstName +
-                " " +
-                transaction?.rider?.lastName
-              }
-              pinColor={"#B80B00"}
-            ></Marker>
-
-            {/* Rider to Customer */}
-            {matchedRider && matchedUser && (
-              <MapViewDirections
-                strokeWidth={4}
-                strokeColor="#FFC30E"
-                origin={{
-                  latitude: matchedUser?.latitude,
-                  longitude: matchedUser?.longitude,
-                }}
-                destination={{
-                  latitude: matchedRider?.latitude,
-                  longitude: matchedRider?.longitude,
-                }}
-                apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
-              />
-            )}
-
-            {matchedRider && matchedUser && (
-              <MapViewDirections
-                strokeWidth={4}
-                strokeColor="#003082"
-                origin={
-                  isRider
-                    ? {
-                        latitude: matchedRider?.latitude,
-                        longitude: matchedRider?.longitude,
-                      }
-                    : {
-                        latitude: matchedUser?.latitude,
-                        longitude: matchedUser?.longitude,
-                      }
+        {userLocation && (
+          <MapView
+            customMapStyle={retroMapStyle}
+            ref={mapRef}
+            style={StyleSheet.absoluteFillObject}
+            initialRegion={region}
+          >
+            <>
+              {/* Customer Location */}
+              <Marker
+                children={<MarkerUser />}
+                onPress={() =>
+                  jumpToMarker({
+                    latitude: matchedUser?.latitude,
+                    longitude: matchedUser?.longitude,
+                  })
                 }
-                destination={{
+                coordinate={{
+                  latitude: matchedUser?.latitude,
+                  longitude: matchedUser?.longitude,
+                }}
+                title="Customer Location"
+                description={
+                  transaction?.currentUser?.firstName +
+                  " " +
+                  transaction?.currentUser?.lastName
+                }
+                pinColor={"#B80B00"}
+              />
+
+              {/* Customer Destination */}
+              <Marker
+                onPress={() =>
+                  jumpToMarker({
+                    latitude: transaction.destination?.latitude,
+                    longitude: transaction.destination?.longitude,
+                  })
+                }
+                coordinate={{
                   latitude: transaction.destination?.latitude,
                   longitude: transaction.destination?.longitude,
                 }}
-                apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+                title="Destination"
+                pinColor={"#003082"}
               />
-            )}
-          </>
-        </MapView>
+
+              {/* Rider Location */}
+              <Marker
+                children={<MarkerRider />}
+                onPress={() =>
+                  jumpToMarker({
+                    latitude: matchedRider?.latitude,
+                    longitude: matchedRider?.longitude,
+                  })
+                }
+                coordinate={{
+                  latitude: matchedRider?.latitude, // Fallback to 0 if undefined
+                  longitude: matchedRider?.longitude, // Fallback to 0 if undefined
+                }}
+                title="Rider"
+                description={
+                  transaction?.rider?.firstName +
+                  " " +
+                  transaction?.rider?.lastName
+                }
+                pinColor={"#B80B00"}
+              ></Marker>
+
+              {/* Rider to Customer */}
+              {matchedRider && matchedUser && (
+                <MapViewDirections
+                  strokeWidth={4}
+                  strokeColor="#FFC30E"
+                  origin={{
+                    latitude: matchedUser?.latitude,
+                    longitude: matchedUser?.longitude,
+                  }}
+                  destination={{
+                    latitude: matchedRider?.latitude,
+                    longitude: matchedRider?.longitude,
+                  }}
+                  apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+                />
+              )}
+
+              {matchedRider && matchedUser && (
+                <MapViewDirections
+                  strokeWidth={4}
+                  strokeColor="#003082"
+                  origin={
+                    isRider
+                      ? {
+                          latitude: matchedRider?.latitude,
+                          longitude: matchedRider?.longitude,
+                        }
+                      : {
+                          latitude: matchedUser?.latitude,
+                          longitude: matchedUser?.longitude,
+                        }
+                  }
+                  destination={{
+                    latitude: transaction.destination?.latitude,
+                    longitude: transaction.destination?.longitude,
+                  }}
+                  apikey={"AIzaSyDJ92GRaQrePL4SXQEXF0qNVdAsbVhseYI"}
+                />
+              )}
+            </>
+          </MapView>
+        )}
 
         <View style={{ position: "absolute", top: 50, width: "100%" }}>
           <View
@@ -492,7 +495,15 @@ const LiveTracking = ({ navigation, route }) => {
               )}
 
               <TouchableOpacity
-                onPress={() => setSelected("selectedLocation")}
+                onPress={() => {
+                  setMessageInfo({
+                    receiver: isRider
+                      ? transaction.currentUser
+                      : transaction.rider,
+                    sender: currentUser,
+                  });
+                  navigation.navigate("Message");
+                }}
                 style={{
                   width: "100%",
 

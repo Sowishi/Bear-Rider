@@ -13,11 +13,15 @@ import useCrudMessage from "../hooks/useCrudMessage";
 import moment from "moment";
 import { useSmokeContext } from "../utils/appContext";
 import useGetUsers from "../hooks/useGetUsers";
+import { AntDesign } from "@expo/vector-icons";
+import Constants from "expo-constants";
+import Feather from "@expo/vector-icons/Feather";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
-const Message = ({ recipientName, singleData, IS_RIDER }) => {
+const Message = ({ recipientName, singleData, IS_RIDER, navigation }) => {
   const { handleSendMessage, messages } = useCrudMessage();
   const { currentUser } = useSmokeContext();
-  const { messageUserInfo } = useSmokeContext();
+  const { messageUserInfo, messageInfo } = useSmokeContext();
 
   const [newMessage, setNewMessage] = useState("");
 
@@ -33,15 +37,14 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
           flexDirection: ownMessage ? "row-reverse" : "row",
           alignItems: "center",
           marginBottom: 10,
+          flex: 1,
         }}
       >
         {/* Avatar */}
         {!ownMessage && !messageUserInfo && (
           <Image
             source={{
-              uri: !IS_RIDER
-                ? singleData?.rider.selfieUrl
-                : singleData?.currentUser.profilePic,
+              uri: messageInfo.sender.profilePic,
             }}
             style={{
               width: 40,
@@ -55,7 +58,7 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
         {messageUserInfo && !ownMessage && (
           <Image
             source={{
-              uri: messageUserInfo.profilePic,
+              uri: messageInfo.sender.profilePic,
             }}
             style={{
               width: 40,
@@ -92,33 +95,63 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
     );
   };
 
+  console.log(messageUserInfo);
+
   return (
-    <View style={{ flex: 1, width: "100%" }}>
+    <View
+      style={{ flex: 1, width: "100%", marginTop: Constants.statusBarHeight }}
+    >
       {/* Header */}
+
       <View
         style={{
-          backgroundColor: "#003082",
-          padding: 15,
-          alignItems: "center",
-          marginBottom: 10,
-          borderRadius: 5,
+          marginHorizontal: 20,
+          marginTop: 25,
         }}
       >
-        {messageUserInfo ? (
-          <>
-            <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
-              {messageUserInfo.firstName + " " + messageUserInfo.lastName}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              width: "100%",
+              paddingHorizontal: 5,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                navigation.goBack();
+              }}
+              style={{
+                backgroundColor: "white",
+                shadowColor: "#000",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+
+                elevation: 5,
+                padding: 10,
+                borderRadius: 100,
+              }}
+            >
+              <AntDesign name="arrowleft" size={24} color="black" />
+            </TouchableOpacity>
+            <Text style={{ fontSize: 18, fontWeight: "bold", marginLeft: 20 }}>
+              {messageInfo.sender.firstName + " " + messageInfo.sender.lastName}
             </Text>
-          </>
-        ) : (
-          <Text style={{ color: "white", fontSize: 15, fontWeight: "bold" }}>
-            {IS_RIDER
-              ? singleData?.currentUser.firstName +
-                " " +
-                singleData?.currentUser.lastName
-              : singleData?.rider.firstName + " " + singleData?.rider.lastName}
-          </Text>
-        )}
+          </View>
+        </View>
       </View>
 
       {/* Body */}
@@ -128,7 +161,6 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
         keyExtractor={(item) => item.id}
         renderItem={renderMessage}
         contentContainerStyle={{ padding: 10 }}
-        style={{ flex: 1 }}
         inverted
       />
       {/* Footer */}
@@ -162,14 +194,13 @@ const Message = ({ recipientName, singleData, IS_RIDER }) => {
             setNewMessage("");
           }}
           style={{
-            backgroundColor: "#003082",
             padding: 10,
             borderRadius: 20,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Text style={{ color: "white", fontSize: 16 }}>Send</Text>
+          <Ionicons name="send" size={24} color="black" />
         </TouchableOpacity>
       </KeyboardAvoidingView>
     </View>

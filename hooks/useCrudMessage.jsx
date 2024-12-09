@@ -18,8 +18,8 @@ const useCrudMessage = () => {
   const [messages, setMessages] = useState([]);
   const { messageInfo, currentUser } = useSmokeContext();
 
-  const sender = messageInfo.sender;
-  const receiver = messageInfo.receiver;
+  const sender = messageInfo.sender.id;
+  const receiver = messageInfo.receiver.id;
 
   const handleSendMessage = async (content) => {
     // Step 1: Check if a conversation exists between these two users

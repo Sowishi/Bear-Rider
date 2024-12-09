@@ -38,6 +38,7 @@ import LiveTransaction from "./screen/liveTransaction";
 import OrderNotes from "./components/orderNotes";
 import TransactionDetails from "./screen/transactionDetails";
 import LiveTracking from "./screen/liveTracking";
+import Message from "./components/message";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -416,6 +417,22 @@ export default function App() {
               }}
               name="RiderTransactionDetails"
               component={TransactionDetails}
+            />
+            <Stack.Screen
+              options={{
+                title: "Transaction Details",
+                headerShown: false,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="Message"
+              component={Message}
             />
           </>
         )}
