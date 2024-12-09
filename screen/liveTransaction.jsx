@@ -28,6 +28,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import PayModalContent from "../components/payModalContent";
 import TransactionSummary from "../components/transactionSummary";
 import PopupModal from "../components/popupModal";
+import createCheckout from "../utils/paymongo";
 
 const LiveTransaction = ({ navigation }) => {
   const {
@@ -750,11 +751,7 @@ const LiveTransaction = ({ navigation }) => {
                 <AntDesign name="arrowright" size={24} color="black" />
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("viewBearAsset", {
-                    type: "paymentMethod",
-                  });
-                }}
+                disabled
                 style={{
                   flexDirection: "row",
                   justifyContent: "center",
@@ -805,6 +802,9 @@ const LiveTransaction = ({ navigation }) => {
                       event={() => {
                         if (transaction.paymentMethod == "Cash") {
                           setModalCash(true);
+                        }
+                        if (transaction.paymentMethod == "Gcash") {
+                          createCheckout(transaction);
                         }
                       }}
                       text="Pay Now"

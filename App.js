@@ -40,6 +40,7 @@ import TransactionDetails from "./screen/transactionDetails";
 import LiveTracking from "./screen/liveTracking";
 import Message from "./components/message";
 import SelectPaymentMethod from "./screen/selectPaymentMethod";
+import Paymongo from "./screen/paymongo";
 
 export default function App() {
   const Stack = createStackNavigator();
