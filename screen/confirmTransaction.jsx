@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import CheckBox from "expo-checkbox"; // For Expo-compatible checkbox
@@ -15,6 +16,7 @@ import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons"; // Import
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import Toast from "react-native-toast-message";
 import haversineDistance from "../utils/calculateDistance";
+import paymentMethods from "../utils/paymentMethods";
 
 const ConfirmTransaction = ({ route, navigation }) => {
   const { serviceType } = route.params || "No Service Type";
@@ -239,7 +241,27 @@ const ConfirmTransaction = ({ route, navigation }) => {
                 justifyContent: "flex-start",
               }}
             >
-              <MaterialIcons name="payment" size={24} color="black" />
+              {paymentMethod == "Cash" && (
+                <Image
+                  style={{ width: 25, height: 25 }}
+                  source={paymentMethods[0].logo}
+                />
+              )}
+              {paymentMethod == "Gcash" && (
+                <Image
+                  style={{ width: 25, height: 25 }}
+                  source={paymentMethods[1].logo}
+                />
+              )}
+              {paymentMethod == "Bear Wallet" && (
+                <Image
+                  style={{ width: 25, height: 25 }}
+                  source={paymentMethods[2].logo}
+                />
+              )}
+              {!paymentMethod && (
+                <MaterialIcons name="payment" size={24} color="black" />
+              )}
 
               <View style={{ marginLeft: 8 }}>
                 <Text style={{ fontSize: 15, fontWeight: "bold" }}>

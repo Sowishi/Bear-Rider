@@ -30,6 +30,7 @@ import PayModalContent from "../components/payModalContent";
 import TransactionSummary from "../components/transactionSummary";
 import PopupModal from "../components/popupModal";
 import createCheckout from "../utils/paymongo";
+import paymentMethods from "../utils/paymentMethods";
 
 const LiveTransaction = ({ navigation }) => {
   const {
@@ -770,8 +771,27 @@ const LiveTransaction = ({ navigation }) => {
                       justifyContent: "flex-start",
                     }}
                   >
-                    <MaterialIcons name="payment" size={24} color="black" />
-
+                    {transaction.paymentMethod == "Cash" && (
+                      <Image
+                        style={{ width: 25, height: 25 }}
+                        source={paymentMethods[0].logo}
+                      />
+                    )}
+                    {transaction.paymentMethod == "Gcash" && (
+                      <Image
+                        style={{ width: 25, height: 25 }}
+                        source={paymentMethods[1].logo}
+                      />
+                    )}
+                    {transaction.paymentMethod == "Bear Wallet" && (
+                      <Image
+                        style={{ width: 25, height: 25 }}
+                        source={paymentMethods[2].logo}
+                      />
+                    )}
+                    {!transaction.paymentMethod && (
+                      <MaterialIcons name="payment" size={24} color="black" />
+                    )}
                     <View style={{ marginLeft: 8 }}>
                       <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                         Payment Method

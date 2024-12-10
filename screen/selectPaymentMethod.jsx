@@ -1,15 +1,10 @@
 import { View, Text, TouchableOpacity, StyleSheet, Image } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { useSmokeContext } from "../utils/appContext";
+import paymentMethods from "../utils/paymentMethods";
 
 const SelectPaymentMethod = ({ navigation }) => {
   const { paymentMethod, setPaymentMethod } = useSmokeContext();
-
-  const paymentMethods = [
-    { name: "Cash", logo: require("../assets/bear.png") },
-    { name: "Gcash", logo: require("../assets/bear.png") },
-    { name: "Bear Wallet", logo: require("../assets/bear.png") },
-  ];
 
   return (
     <View style={styles.container}>
@@ -17,21 +12,19 @@ const SelectPaymentMethod = ({ navigation }) => {
       {paymentMethods.map((method) => (
         <TouchableOpacity
           key={method.name}
-          style={[
-            styles.button,
-            paymentMethod === method.name && styles.selectedButton,
-          ]}
+          style={styles.button}
           onPress={() => setPaymentMethod(method.name)}
         >
           <Image source={method.logo} style={styles.logo} />
-          <Text
-            style={[
-              styles.buttonText,
-              paymentMethod === method.name && styles.selectedButtonText,
-            ]}
-          >
-            {method.name}
-          </Text>
+          <Text style={styles.buttonText}>{method.name}</Text>
+          <View style={styles.radioButtonContainer}>
+            <View
+              style={[
+                styles.radioButton,
+                paymentMethod === method.name && styles.radioButtonSelected,
+              ]}
+            />
+          </View>
         </TouchableOpacity>
       ))}
 
@@ -39,25 +32,9 @@ const SelectPaymentMethod = ({ navigation }) => {
         onPress={() => {
           navigation.pop(2);
         }}
-        style={{
-          width: "100%",
-          backgroundColor: "#B80B00",
-          paddingVertical: 15,
-          marginTop: 20,
-          borderRadius: 20,
-          marginTop: 30,
-        }}
+        style={styles.confirmButton}
       >
-        <Text
-          style={{
-            color: "white",
-            textAlign: "center",
-            fontWeight: "bold",
-            fontSize: 18,
-          }}
-        >
-          Select {paymentMethod}
-        </Text>
+        <Text style={styles.confirmButtonText}>Select {paymentMethod}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -82,7 +59,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 15,
     borderRadius: 10,
-    borderColor: "#B80B00",
     marginVertical: 8,
     shadowColor: "#000",
     shadowOffset: {
@@ -94,28 +70,47 @@ const styles = StyleSheet.create({
 
     elevation: 2,
   },
-  selectedButton: {
-    backgroundColor: "#003082",
-  },
   buttonText: {
     fontSize: 16,
     color: "#B80B00",
     marginLeft: 10,
     fontWeight: "600",
-  },
-  selectedButtonText: {
-    color: "#fff",
+    flex: 1,
   },
   logo: {
     width: 30,
     height: 30,
   },
-  selectedText: {
-    marginTop: 20,
-    fontSize: 16,
-    fontStyle: "italic",
-    color: "#003082",
+  radioButtonContainer: {
+    width: 20,
+    height: 20,
+    borderWidth: 1,
+    borderColor: "#B80B00",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  radioButton: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: "#fff",
+  },
+  radioButtonSelected: {
+    backgroundColor: "#B80B00",
+  },
+  confirmButton: {
+    width: "100%",
+    backgroundColor: "#B80B00",
+    paddingVertical: 15,
+    borderRadius: 20,
+    marginTop: 30,
+  },
+  confirmButtonText: {
+    color: "white",
     textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 18,
   },
 });
 
