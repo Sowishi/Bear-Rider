@@ -751,6 +751,7 @@ const LiveTransaction = ({ navigation }) => {
                 </View>
                 <AntDesign name="arrowright" size={24} color="black" />
               </TouchableOpacity>
+
               <TouchableOpacity
                 disabled
                 style={{
@@ -782,18 +783,33 @@ const LiveTransaction = ({ navigation }) => {
                   </View>
                 </View>
               </TouchableOpacity>
+
               {/* Buttons */}
               {transaction.status !== "DropOff" && (
-                <View style={{ flexDirection: "row", marginTop: 10 }}>
-                  <Button
-                    width={"100%"}
-                    event={() => {
-                      setCancelModal(true);
+                <TouchableOpacity
+                  onPress={() => {
+                    setCancelModal(true);
+                  }}
+                  style={{
+                    width: "100%",
+                    backgroundColor: "#B80B00",
+                    paddingVertical: 15,
+                    marginTop: 20,
+                    borderRadius: 20,
+                    marginTop: 30,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      textAlign: "center",
+                      fontWeight: "bold",
+                      fontSize: 18,
                     }}
-                    text="Cancel Ride"
-                    bgColor={"#B80B00"}
-                  />
-                </View>
+                  >
+                    Cancel Ride
+                  </Text>
+                </TouchableOpacity>
               )}
               {transaction.status == "DropOff" &&
                 currentUser.role !== "Rider" && (
@@ -805,29 +821,15 @@ const LiveTransaction = ({ navigation }) => {
                           setModalCash(true);
                         }
                         if (transaction.paymentMethod == "Gcash") {
-                          createCheckout(transaction);
+                          navigation.navigate("Paymongo", { transaction });
                         }
                       }}
-                      text="Pay Now"
+                      text="Proceed To Payment"
                       bgColor={"#B80B00"}
                     />
                   </View>
                 )}
-              <View style={{ flexDirection: "row", marginTop: 10 }}>
-                <Button
-                  width={"100%"}
-                  event={() => {
-                    if (transaction.paymentMethod == "Cash") {
-                      setModalCash(true);
-                    }
-                    if (transaction.paymentMethod == "Gcash") {
-                      createCheckout(transaction);
-                    }
-                  }}
-                  text="Pay Now"
-                  bgColor={"#B80B00"}
-                />
-              </View>
+
               {transaction.status == "DropOff" &&
                 currentUser.role == "Rider" && (
                   <View style={{ flexDirection: "row", marginTop: 10 }}>

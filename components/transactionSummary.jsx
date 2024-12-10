@@ -235,6 +235,21 @@ const TransactionSummary = ({ data, navigation }) => {
             {rider.firstName + " " + rider.lastName}
           </Text>
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
+          <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+            Customer Name
+          </Text>
+          <Text style={{ color: "black", fontSize: 15 }}>
+            {currentUser.firstName + " " + currentUser.lastName}
+          </Text>
+        </View>
       </View>
 
       <TouchableOpacity
