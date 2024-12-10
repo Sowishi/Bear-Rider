@@ -851,7 +851,8 @@ const LiveTransaction = ({ navigation }) => {
                 )}
 
               {transaction.status == "DropOff" &&
-                currentUser.role == "Rider" && (
+                currentUser.role == "Rider" &&
+                transaction.paymentMethod !== "Gcash" && (
                   <View style={{ flexDirection: "row", marginTop: 10 }}>
                     <Button
                       width={"100%"}

@@ -250,7 +250,7 @@ const Home = ({ route, navigation }) => {
 
   return (
     <>
-      {mapLoading && (
+      {!userLocation && (
         <View
           style={{
             backgroundColor: "#00000099",

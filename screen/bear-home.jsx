@@ -101,30 +101,6 @@ const BearHome = ({ navigation }) => {
         style="light"
       />
 
-      {loading && (
-        <View
-          style={{
-            backgroundColor: "#00000099",
-            flex: 1,
-            height: "100%",
-            width: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            flexDirection: "col",
-            zIndex: 9999,
-          }}
-        >
-          <LottieView
-            autoPlay
-            style={{ width: 200, height: 200 }}
-            source={require("../assets/maps.json")}
-          />
-          <Text style={{ color: "white", fontSize: 15 }}>
-            Fetching user location...
-          </Text>
-        </View>
-      )}
       <ScrollView
         style={{ marginTop: Constants.statusBarHeight }}
         contentContainerStyle={{ flexGrow: 1, backgroundColor: "white" }}
@@ -293,44 +269,6 @@ const BearHome = ({ navigation }) => {
               onPress={() =>
                 navigation.navigate("viewBearAsset", { type: "saveLocation" })
               }
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                  width: 240,
-                }}
-              >
-                <Entypo name="location-pin" size={24} color="red" />
-
-                <View style={{ marginLeft: 10 }}>
-                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                    Saved Places
-                  </Text>
-                  <Text style={{ fontStyle: "italic", fontSize: 12 }}>
-                    Saved your places for easy access
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  backgroundColor: "#FEF3F7",
-                  padding: 7,
-                  borderRadius: 100,
-                }}
-              >
-                <AntDesign name="arrowright" size={24} color="black" />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                padding: 15,
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-              onPress={() => navigation.navigate("LiveTransaction")}
             >
               <View
                 style={{
