@@ -113,14 +113,8 @@ const PahatodCustomerView = ({
       <ConfirmDelivery
         text={"Would you like to proceed?"}
         handleConfirm={() => {
-          if (serviceType == "Pahatod") {
-            navigation.navigate("ConfirmTransaction", { serviceType });
-            // handleAddTransaction();
-            setConfirmDelivery(false);
-          } else {
-            setTransactionRemarksModal(true);
-            setConfirmDelivery(false);
-          }
+          navigation.navigate("ConfirmTransaction", { serviceType });
+          setConfirmDelivery(false);
         }}
         open={confirmDelivery}
         handleClose={() => setConfirmDelivery(false)}

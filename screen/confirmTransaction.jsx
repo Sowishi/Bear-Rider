@@ -97,8 +97,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
         />
         <Marker
           coordinate={destination}
-          title="Destination"
-          description="End here"
+          title={serviceType == "Pahatod" ? "Destination" : "Shop to"}
           pinColor="#003082"
         />
         <MapViewDirections
@@ -112,35 +111,59 @@ const ConfirmTransaction = ({ route, navigation }) => {
       {/* Service Type */}
 
       <View style={{ padding: 15 }}>
-        <View style={{ marginBottom: 14 }}>
-          <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+        <View
+          style={{
+            marginBottom: 14,
+            justifyContent: "center",
+            alignItems: "center",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowOpacity: 0.2,
+            shadowRadius: 1.41,
+
+            elevation: 2,
+            backgroundColor: "white",
+            borderRadius: 10,
+          }}
+        >
+          <Image
+            source={
+              serviceType == "Pahatod"
+                ? require("../assets/transpo.png")
+                : require("../assets/delivery.png")
+            }
+          />
+          <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
             {serviceType == "Pahatod"
               ? "Transportation Service"
               : "Delivery Service"}
           </Text>
-        </View>
 
-        <View style={styles.addressContainer}>
-          <View style={styles.addressRow}>
-            <Entypo name="location-pin" size={20} color="#B80B00" />
-            <View style={{ marginLeft: 5 }}>
-              <Text style={{ fontWeight: "bold", fontSize: 13 }}>
-                {serviceType == "Pahatod"
-                  ? "Pick Up Address"
-                  : "Deliver to Address"}
-              </Text>
-              <Text style={{ fontSize: 11 }}>{bookLocation.address}</Text>
+          <View style={styles.addressContainer}>
+            <View style={styles.addressRow}>
+              <Entypo name="location-pin" size={20} color="#B80B00" />
+              <View style={{ marginLeft: 5 }}>
+                <Text style={{ fontWeight: "bold", fontSize: 13 }}>
+                  {serviceType == "Pahatod"
+                    ? "Pick Up Address"
+                    : "Deliver to Address"}
+                </Text>
+                <Text style={{ fontSize: 11 }}>{bookLocation.address}</Text>
+              </View>
             </View>
-          </View>
-          <View style={styles.addressRow}>
-            <Entypo name="location-pin" size={20} color="#003082" />
-            <View style={{ marginLeft: 5 }}>
-              <Text style={{ fontWeight: "bold", fontSize: 13 }}>
-                {serviceType == "Pahatod"
-                  ? "Drop Off Address"
-                  : "Shop to Address"}
-              </Text>
-              <Text style={{ fontSize: 11 }}>{destination.address}</Text>
+            <View style={styles.addressRow}>
+              <Entypo name="location-pin" size={20} color="#003082" />
+              <View style={{ marginLeft: 5 }}>
+                <Text style={{ fontWeight: "bold", fontSize: 13 }}>
+                  {serviceType == "Pahatod"
+                    ? "Drop Off Address"
+                    : "Shop to Address"}
+                </Text>
+                <Text style={{ fontSize: 11 }}>{destination.address}</Text>
+              </View>
             </View>
           </View>
         </View>
@@ -173,10 +196,10 @@ const ConfirmTransaction = ({ route, navigation }) => {
           <Text style={{ fontSize: 20, marginBottom: 5, fontWeight: "bold" }}>
             Price Breakdown
           </Text>
-          {serviceType != "Padara" && (
+          {true && (
             <>
               <Text style={{ color: "black", fontSize: 15 }}>
-                Base Fare:
+                Base Fare
                 <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                   {" "}
                   ₱{baseFare}
@@ -188,15 +211,33 @@ const ConfirmTransaction = ({ route, navigation }) => {
               </Text>
 
               <Text style={{ color: "black", fontSize: 15 }}>
-                Fare per Kilometer:
+                Fare per Kilometer
                 <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-                  {parseInt(totalPrice) - baseFare}
+                  {" "}
+                  ₱{parseInt(totalPrice) - baseFare}
                 </Text>
               </Text>
               <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
                 This amount is calculated based on the distance to the
                 destination.
               </Text>
+
+              {serviceType == "Padara" && (
+                <>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    Purchase Cost
+                    <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                      {" "}
+                      ₱ ----
+                    </Text>
+                  </Text>
+                  <Text
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
+                  >
+                    Total Price of your goods
+                  </Text>
+                </>
+              )}
 
               <Text
                 style={{
