@@ -49,6 +49,7 @@ import BearCamera from "./components/BearCamera";
 import BlockedUser from "./screen/blockedUser";
 import BearRiderTransaction from "./screen/BearRiderTransaction";
 import RiderEarning from "./screen/riderEarning";
+import RejectedUser from "./screen/rejectedUser";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -518,6 +519,22 @@ export default function App() {
               }}
               name="RiderEarning"
               component={RiderEarning}
+            />
+            <Stack.Screen
+              options={{
+                title: "Rider Earning",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="RejectedUser"
+              component={RejectedUser}
             />
           </>
         )}

@@ -106,7 +106,7 @@ const BearHome = ({ navigation }) => {
   return (
     <>
       <StatusBar
-        backgroundColor={!currentUser.role ? "#B80B00" : "#003082"}
+        backgroundColor={!currentUser?.role ? "#B80B00" : "#003082"}
         style="light"
       />
 
@@ -167,15 +167,14 @@ const BearHome = ({ navigation }) => {
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
-                    if (currentUser.role == "Rider") {
+                    if (currentUser?.role == "Rider") {
                       if (currentUser.riderStatus == "Pending") {
                         navigation.navigate("RiderPending");
                         return;
-                      }
-                      if (
-                        currentUser.status == "Blocked" ||
-                        currentUser.riderStatus == "Rejected"
-                      ) {
+                      } else if (currentUser.riderStatus == "Rejected") {
+                        navigation.navigate("RejectedUser");
+                        return;
+                      } else if (currentUser.status == "Blocked") {
                         navigation.navigate("BlockedUser");
                         return;
                       } else {
@@ -211,7 +210,7 @@ const BearHome = ({ navigation }) => {
                       marginRight: 5,
                     }}
                   >
-                    {currentUser.role ? "Ride Now" : "Book Now"}
+                    {currentUser?.role ? "Ride Now" : "Book Now"}
                   </Text>
                   <Entypo name="map" size={24} color="#AA2D31" />
                 </TouchableOpacity>
@@ -293,7 +292,7 @@ const BearHome = ({ navigation }) => {
                 <AntDesign name="arrowright" size={24} color="black" />
               </View>
             </TouchableOpacity>
-            {currentUser.role !== "Rider" && (
+            {currentUser?.role !== "Rider" && (
               <TouchableOpacity
                 style={{
                   padding: 15,

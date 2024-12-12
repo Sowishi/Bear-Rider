@@ -134,6 +134,7 @@ const Register = ({ navigation }) => {
         ...forms,
         status: "Active",
         cancelCount: 0,
+        rejectionReason: "",
         profilePic: `https://avatar.iran.liara.run/public?username=${forms.firstName.trim()}`,
       };
       addUser(userData);
