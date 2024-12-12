@@ -34,6 +34,7 @@ import paymentMethods from "../utils/paymentMethods";
 import BottomModal from "../components/bottomModal";
 import QRCode from "react-native-qrcode-svg";
 import logo from "../assets/bear.png";
+import Toast from "react-native-toast-message";
 const LiveTransaction = ({ navigation }) => {
   const {
     setFindingRider,
@@ -46,12 +47,14 @@ const LiveTransaction = ({ navigation }) => {
     deleteTransaction,
     cancelTransaction,
     completeTransaction,
+    addTip,
   } = useCrudTransaction();
   const [transaction, setTransaction] = useState();
   const [cancelModal, setCancelModal] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
   const [modalCash, setModalCash] = useState(false);
   const [qrModal, setQrModal] = useState(false);
+  const [tip, setTip] = useState(0);
 
   useEffect(() => {
     getTransaction(selectedTransaction.id, setTransaction);
@@ -860,6 +863,63 @@ const LiveTransaction = ({ navigation }) => {
                   </View>
                 </View>
               </TouchableOpacity>
+
+              {currentUser.role !== "Rider" && (
+                <View
+                  style={{
+                    width: "100%",
+                    paddingHorizontal: 20,
+                    marginTop: 10,
+                  }}
+                >
+                  <Text style={{ color: "gray", marginBottom: 3 }}>
+                    Tip (Optional)
+                  </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <TextInput
+                      onChangeText={(text) => setTip(parseInt(text))}
+                      keyboardType="numeric"
+                      style={{
+                        borderWidth: 1,
+                        borderRadius: 5,
+                        padding: 5,
+                        flex: 1,
+                        backgroundColor: "#C6C6C6",
+                      }}
+                    />
+                    {parseInt(transaction.tip) < 0 && (
+                      <TouchableOpacity
+                        onPress={() => {
+                          addTip(transaction, tip);
+                          Toast.show({
+                            type: "success",
+                            text1: "Successfully added tip",
+                          });
+                        }}
+                        style={{
+                          marginLeft: 10,
+                          backgroundColor: "#B80B00",
+                          paddingVertical: 3,
+                          paddingHorizontal: 10,
+                          borderRadius: 5,
+                          flexDirection: "row",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Text style={{ color: "white" }}>Add</Text>
+                        <AntDesign name="plus" size={15} color="white" />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
+              )}
 
               {/* Buttons */}
               {transaction.status !== "DropOff" && (

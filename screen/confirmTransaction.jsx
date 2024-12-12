@@ -72,6 +72,8 @@ const ConfirmTransaction = ({ route, navigation }) => {
         paymentMethod,
         deliveryFee: 0,
         distanceCharge,
+        tip: 0,
+        feedback: "",
       };
       setFindingRider(true);
       const output = await addTransaction(transaction);

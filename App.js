@@ -50,6 +50,7 @@ import BlockedUser from "./screen/blockedUser";
 import BearRiderTransaction from "./screen/BearRiderTransaction";
 import RiderEarning from "./screen/riderEarning";
 import RejectedUser from "./screen/rejectedUser";
+import FeedBack from "./screen/feedback";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -522,7 +523,7 @@ export default function App() {
             />
             <Stack.Screen
               options={{
-                title: "Rider Earning",
+                title: "Rejected User",
                 headerShown: true,
                 headerBackTitleStyle: {
                   color: "white",
@@ -535,6 +536,22 @@ export default function App() {
               }}
               name="RejectedUser"
               component={RejectedUser}
+            />
+            <Stack.Screen
+              options={{
+                title: "Feed Back",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="Feedback"
+              component={FeedBack}
             />
           </>
         )}

@@ -22,6 +22,7 @@ const TransactionSummary = ({ data, navigation }) => {
     insured,
     distanceCharge,
     purchaseCost,
+    tip,
   } = data;
 
   const baseFare = fare.baseFareValue;
@@ -143,7 +144,7 @@ const TransactionSummary = ({ data, navigation }) => {
                   <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
                     Tip
                   </Text>
-                  <Text style={{ color: "black", fontSize: 15 }}>₱0</Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>₱{tip}</Text>
                 </View>
                 <View
                   style={{
