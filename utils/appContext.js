@@ -39,6 +39,7 @@ export const MyProvider = ({ children }) => {
   const [findingRider, setFindingRider] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState(null);
+  const [fare, setFare] = useState({});
 
   return (
     <MyContext.Provider
@@ -104,6 +105,8 @@ export const MyProvider = ({ children }) => {
         setSelectedTransaction,
         paymentMethod,
         setPaymentMethod,
+        fare,
+        setFare,
       }}
     >
       {children}

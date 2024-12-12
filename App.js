@@ -161,7 +161,7 @@ export default function App() {
             marginHorizontal: 30,
             borderRadius: 10,
             paddingVertical: 5,
-            backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+            backgroundColor: currentUser?.role == null ? "#B80B00" : "#003082",
           },
         })}
       >

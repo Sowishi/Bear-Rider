@@ -5,7 +5,9 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import moment from "moment";
+import { useSmokeContext } from "../utils/appContext";
 const TransactionSummary = ({ data, navigation }) => {
+  const { fare } = useSmokeContext();
   const {
     id,
     createdAt,
@@ -22,8 +24,7 @@ const TransactionSummary = ({ data, navigation }) => {
     purchaseCost,
   } = data;
 
-  const chargePerKilometer = 10;
-  const baseFare = 30;
+  const baseFare = fare.baseFareValue;
   return (
     <View
       style={{

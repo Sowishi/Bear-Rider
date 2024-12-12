@@ -28,6 +28,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
     setFindingRider,
     setSelectedTransaction,
     paymentMethod,
+    fare,
   } = useSmokeContext();
   const { addTransaction } = useCrudTransaction();
 
@@ -36,8 +37,8 @@ const ConfirmTransaction = ({ route, navigation }) => {
   const [insuranceChecked, setInsuranceChecked] = useState(false);
   const [distance, setDistance] = useState();
   const [loading, setLoading] = useState(false);
-  const chargePerKilometer = 10;
-  const baseFare = 30;
+  const chargePerKilometer = fare.chargePerKmValue;
+  const baseFare = fare.baseFareValue;
   const totalPrice = distance * chargePerKilometer + baseFare;
   const distanceCharge = distance * chargePerKilometer;
   useEffect(() => {

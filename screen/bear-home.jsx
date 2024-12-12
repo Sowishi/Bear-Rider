@@ -22,16 +22,25 @@ import BearHeader from "../components/bearHeader";
 import { StatusBar } from "expo-status-bar";
 import LottieView from "lottie-react-native";
 import useGetUsers from "../hooks/useGetUsers";
+import useCrudFare from "../hooks/useCrudFare";
 const BearHome = ({ navigation }) => {
-  const { setUserLocation, currentUser, userLocation, setCurrentUser } =
-    useSmokeContext();
+  const {
+    setUserLocation,
+    currentUser,
+    userLocation,
+    setCurrentUser,
+    fare,
+    setFare,
+  } = useSmokeContext();
   const { getUser } = useGetUsers();
+  const { getFare } = useCrudFare();
   const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleLocationRequestAndPermission();
     getUser(currentUser.id, setCurrentUser);
+    getFare(setFare);
   }, []);
 
   const handleLocationRequestAndPermission = async () => {

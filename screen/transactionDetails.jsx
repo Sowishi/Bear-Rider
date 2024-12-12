@@ -21,7 +21,8 @@ import haversineDistance from "../utils/calculateDistance";
 
 const TransactionDetails = ({ route, navigation }) => {
   const { serviceType } = route.params || "No Service Type";
-  const { currentUser, userLocation, selectedTransaction } = useSmokeContext();
+  const { currentUser, userLocation, selectedTransaction, fare } =
+    useSmokeContext();
 
   const { getTransaction, deleteTransaction, acceptTransaction } =
     useCrudTransaction();
@@ -42,8 +43,7 @@ const TransactionDetails = ({ route, navigation }) => {
     Toast.show({ type: "success", text1: "Successfully accepeted ride." });
   };
 
-  const chargePerKilometer = 10;
-  const baseFare = 30;
+  const baseFare = fare.baseFareValue;
 
   if (transaction) {
     return (
