@@ -7,7 +7,7 @@ import { StatusBar } from "expo-status-bar";
 import moment from "moment";
 import { useSmokeContext } from "../utils/appContext";
 const TransactionSummary = ({ data, navigation }) => {
-  const { fare } = useSmokeContext();
+  const { fare, currentUser: user } = useSmokeContext();
   const {
     id,
     createdAt,
@@ -39,8 +39,9 @@ const TransactionSummary = ({ data, navigation }) => {
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <TouchableOpacity
           onPress={() => {
-            if (currentUser.role == "Rider") {
+            if (user.role == "Rider") {
               navigation.navigate("main");
+              return;
             } else {
               navigation.navigate("Feedback", { data });
             }
@@ -329,8 +330,9 @@ const TransactionSummary = ({ data, navigation }) => {
 
       <TouchableOpacity
         onPress={() => {
-          if (currentUser.role == "Rider") {
+          if (user.role == "Rider") {
             navigation.navigate("main");
+            return;
           } else {
             navigation.navigate("Feedback", { data });
           }

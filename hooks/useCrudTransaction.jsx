@@ -142,6 +142,13 @@ const useCrudTransaction = () => {
     });
   };
 
+  const addFeedback = async (transaction, feedback) => {
+    const docRef = doc(db, "transaction", transaction.id);
+    await updateDoc(docRef, {
+      feedback,
+    });
+  };
+
   const getRiderTransaction = (id, setTransaction) => {
     const colRef = collection(db, "transaction");
 
@@ -178,6 +185,7 @@ const useCrudTransaction = () => {
     confirmDropOff,
     getRiderTransaction,
     addTip,
+    addFeedback,
   };
 };
 

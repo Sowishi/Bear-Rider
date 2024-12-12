@@ -8,14 +8,20 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
+import useCrudTransaction from "../hooks/useCrudTransaction";
+import Toast from "react-native-toast-message";
 
-const FeedBack = ({ route }) => {
+const FeedBack = ({ route, navigation }) => {
   const [feedback, setFeedback] = useState("");
   const { data } = route?.params || {};
 
+  const { addFeedback } = useCrudTransaction();
+
   const handleSubmit = () => {
     // Handle feedback submission
-    console.log("Feedback submitted:", feedback);
+    addFeedback(data, feedback);
+    Toast.show({ type: "success", text1: "Successfully submitted" });
+    navigation.navigate("main");
     setFeedback(""); // Clear the input after submission
   };
 
@@ -47,9 +53,7 @@ const FeedBack = ({ route }) => {
       >
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(data[type].goTo, {
-              type: data[type].parameter,
-            });
+            navigation.navigate("main");
           }}
           style={{
             width: "40%",
@@ -73,9 +77,7 @@ const FeedBack = ({ route }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(data[type].goTo, {
-              type: data[type].parameter,
-            });
+            handleSubmit();
           }}
           style={{
             width: "40%",
