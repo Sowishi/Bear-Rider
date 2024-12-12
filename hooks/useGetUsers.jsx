@@ -1,4 +1,4 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase";
 
@@ -16,7 +16,19 @@ const useGetUsers = () => {
     });
   }, []);
 
-  return { data };
+  const getUser = (userId, setUser) => {
+    const docRef = doc(db, "users", userId);
+
+    onSnapshot(docRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+        setUser({ ...docSnapshot.data(), id: docSnapshot.id });
+      } else {
+        setUser(null);
+      }
+    });
+  };
+
+  return { data, getUser };
 };
 
 export default useGetUsers;

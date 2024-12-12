@@ -46,6 +46,7 @@ import { Linking } from "react-native";
 import BearScanner from "./components/barcodeScanner";
 import Receipts from "./screen/receipts";
 import BearCamera from "./components/BearCamera";
+import BlockedUser from "./screen/blockedUser";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -222,6 +223,8 @@ export default function App() {
             <Stack.Screen name="searchLocation" component={SearchLocation} />
             <Stack.Screen name="Camera" component={Camera} />
             <Stack.Screen name="RiderPending" component={RiderPending} />
+            <Stack.Screen name="BlockedUser" component={BlockedUser} />
+
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="viewBearAsset" component={ViewBearAsset} />
             <Stack.Screen name="LiveTransaction" component={LiveTransaction} />

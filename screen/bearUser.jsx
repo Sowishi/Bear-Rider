@@ -140,14 +140,16 @@ const BearUser = ({ navigation }) => {
         </TouchableOpacity>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.riderButton}
-            onPress={() => {
-              navigation.navigate("Rider");
-            }}
-          >
-            <Text style={styles.buttonText}>Become a Rider</Text>
-          </TouchableOpacity>
+          {currentUser?.role !== "Rider" && (
+            <TouchableOpacity
+              style={styles.riderButton}
+              onPress={() => {
+                navigation.navigate("Rider");
+              }}
+            >
+              <Text style={styles.buttonText}>Become a Rider</Text>
+            </TouchableOpacity>
+          )}
         </View>
         <Text style={{ textAlign: "center", marginVertical: 5 }}>
           Version: {AppVersion}

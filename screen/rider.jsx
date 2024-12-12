@@ -79,6 +79,7 @@ const Rider = ({ navigation }) => {
       text1: "Uploaded Successfully!",
     });
     await AsyncStorage.removeItem("user");
+    setCurrentUser(null);
     navigation.navigate("login");
     setLoading(false);
   };

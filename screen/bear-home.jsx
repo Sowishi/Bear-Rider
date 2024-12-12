@@ -21,17 +21,17 @@ import Constants from "expo-constants";
 import BearHeader from "../components/bearHeader";
 import { StatusBar } from "expo-status-bar";
 import LottieView from "lottie-react-native";
+import useGetUsers from "../hooks/useGetUsers";
 const BearHome = ({ navigation }) => {
-  const { setUserLocation, currentUser, userLocation } = useSmokeContext();
+  const { setUserLocation, currentUser, userLocation, setCurrentUser } =
+    useSmokeContext();
+  const { getUser } = useGetUsers();
   const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     handleLocationRequestAndPermission();
-
-    if (currentUser.role === "Rider" && currentUser.riderStatus === "Pending") {
-      navigation.navigate("RiderPending");
-    }
+    getUser(currentUser.id, setCurrentUser);
   }, []);
 
   const handleLocationRequestAndPermission = async () => {
@@ -157,7 +157,27 @@ const BearHome = ({ navigation }) => {
                   Transportation in Daet, Camarines Norte!"
                 </Text>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("drawer")}
+                  onPress={() => {
+                    if (currentUser.role == "Rider") {
+                      if (currentUser.riderStatus == "Pending") {
+                        navigation.navigate("RiderPending");
+                        return;
+                      }
+                      if (
+                        currentUser.isBlock ||
+                        currentUser.riderStatus == "Rejected"
+                      ) {
+                        navigation.navigate("BlockedUser");
+                        return;
+                      } else {
+                        navigation.navigate("drawer");
+                        return;
+                      }
+                    } else {
+                      navigation.navigate("drawer");
+                      return;
+                    }
+                  }}
                   style={{
                     backgroundColor: "white",
                     flexDirection: "row",

@@ -5,7 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DevSettings } from "react-native";
 import img from "../assets/O (2) 1.png";
 
-const RiderPending = ({ navigation }) => {
+const BlockedUser = ({ navigation }) => {
   const { currentUser } = useSmokeContext();
   return (
     <View
@@ -33,7 +33,9 @@ const RiderPending = ({ navigation }) => {
           marginHorizontal: 50,
         }}
       >
-        We still processing your documents, please wait until further notice.
+        {currentUser.riderStatus == "Pending"
+          ? " We still processing your documents, please wait until further notice."
+          : "You are rejected or been blocked by the management"}
       </Text>
       <Button
         event={() => {
@@ -47,4 +49,4 @@ const RiderPending = ({ navigation }) => {
   );
 };
 
-export default RiderPending;
+export default BlockedUser;
