@@ -893,7 +893,7 @@ const LiveTransaction = ({ navigation }) => {
                         backgroundColor: "#C6C6C6",
                       }}
                     />
-                    {parseInt(transaction.tip) < 0 && (
+                    {transaction.tip <= 0 && (
                       <TouchableOpacity
                         onPress={() => {
                           addTip(transaction, tip);

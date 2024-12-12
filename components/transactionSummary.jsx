@@ -39,7 +39,11 @@ const TransactionSummary = ({ data, navigation }) => {
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("main");
+            if (currentUser.role == "Rider") {
+              navigation.navigate("main");
+            } else {
+              navigation.navigate("Feedback", { data });
+            }
           }}
         >
           <AntDesign name="close" size={24} color="black" />
@@ -325,7 +329,11 @@ const TransactionSummary = ({ data, navigation }) => {
 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("main");
+          if (currentUser.role == "Rider") {
+            navigation.navigate("main");
+          } else {
+            navigation.navigate("Feedback", { data });
+          }
         }}
         style={{
           width: "100%",
