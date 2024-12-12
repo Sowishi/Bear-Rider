@@ -28,6 +28,8 @@ export default function BearScanner({
   setPahatodModal,
   setTransactionDetailsModal,
   setSelectedTransaction,
+  route,
+  navigation,
 }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -45,6 +47,9 @@ export default function BearScanner({
   } = useSmokeContext();
   const { completeTransaction } = useCrudTransaction();
 
+  const { transaction } = route.params || {};
+  console.log(transaction);
+
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
       const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -59,9 +64,9 @@ export default function BearScanner({
       // Attempt to make payment
       const paymentResult = await handleMakePayment(
         data,
-        totalPrice,
+        transaction.totalPrice,
         currentUser?.id,
-        singleData?.serviceType
+        transaction.serviceType
       );
 
       // Validate if payment succeeded before completing transaction
@@ -72,37 +77,17 @@ export default function BearScanner({
       }
 
       // Proceed with completing the transaction if payment is successful
-      await completeTransaction(singleData);
-
-      // Close the modals and reset state
-      setScan(false);
-      setTransactionRemarksModal(false);
-      setPahatodModal(false);
-      setTransactionDetailsModal(false);
-      setSelectedTransaction(null);
-      setBookLocation(null);
-      setViewRiderState(false);
-      setShowSelectedLocation(false);
-      setSumModal(true);
-      setSumInfo({
-        totalPrice,
-        user,
-      });
+      await completeTransaction(transaction);
 
       Toast.show({
         type: "success",
         text1: "Payment Processed Successfully!",
         text2: "Thank you for choosing Bear Rider Express! 😊",
       });
+
+      navigation.goBack();
     } catch (error) {
-      setScan(false);
-      setTransactionRemarksModal(false);
-      setPahatodModal(false);
-      setTransactionDetailsModal(false);
-      setSelectedTransaction(null);
-      setBookLocation(null);
-      setViewRiderState(false);
-      setShowSelectedLocation(false);
+      navigation.goBack();
 
       // Handle errors such as insufficient balance
       Toast.show({
@@ -203,7 +188,10 @@ export default function BearScanner({
             </View>
 
             <Text style={styles.totalPrice}>
-              Total Price: <Text style={styles.priceText}>{totalPrice}</Text>
+              Total Price:{" "}
+              <Text style={styles.priceText}>
+                ₱{parseInt(transaction.totalPrice)}
+              </Text>
             </Text>
 
             {/* Pay Now Button */}

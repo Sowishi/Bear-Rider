@@ -43,6 +43,7 @@ import SelectPaymentMethod from "./screen/selectPaymentMethod";
 import Paymongo from "./screen/paymongo";
 import { useEffect } from "react";
 import { Linking } from "react-native";
+import BearScanner from "./components/barcodeScanner";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -223,6 +224,7 @@ export default function App() {
             <Stack.Screen name="viewBearAsset" component={ViewBearAsset} />
             <Stack.Screen name="LiveTransaction" component={LiveTransaction} />
             <Stack.Screen name="Paymongo" component={Paymongo} />
+            <Stack.Screen name="Scanner" component={BearScanner} />
 
             <Stack.Screen
               options={{

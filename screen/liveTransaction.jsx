@@ -31,7 +31,9 @@ import TransactionSummary from "../components/transactionSummary";
 import PopupModal from "../components/popupModal";
 import createCheckout from "../utils/paymongo";
 import paymentMethods from "../utils/paymentMethods";
-
+import BottomModal from "../components/bottomModal";
+import QRCode from "react-native-qrcode-svg";
+import logo from "../assets/bear.png";
 const LiveTransaction = ({ navigation }) => {
   const {
     setFindingRider,
@@ -49,6 +51,7 @@ const LiveTransaction = ({ navigation }) => {
   const [cancelModal, setCancelModal] = useState(false);
   const [cancellationReason, setCancellationReason] = useState("");
   const [modalCash, setModalCash] = useState(false);
+  const [qrModal, setQrModal] = useState(false);
 
   useEffect(() => {
     getTransaction(selectedTransaction.id, setTransaction);
@@ -843,6 +846,9 @@ const LiveTransaction = ({ navigation }) => {
                         if (transaction.paymentMethod == "Gcash") {
                           navigation.navigate("Paymongo", { transaction });
                         }
+                        if (transaction.paymentMethod == "Bear Wallet") {
+                          navigation.navigate("Scanner", { transaction });
+                        }
                       }}
                       text="Proceed To Payment"
                       bgColor={"#B80B00"}
@@ -859,6 +865,9 @@ const LiveTransaction = ({ navigation }) => {
                       event={() => {
                         if (transaction.paymentMethod == "Cash") {
                           setModalCash(true);
+                        }
+                        if (transaction.paymentMethod == "Bear Wallet") {
+                          setQrModal(true);
                         }
                       }}
                       text="Received Payment"
@@ -882,6 +891,27 @@ const LiveTransaction = ({ navigation }) => {
             price={transaction.totalPrice}
           />
         </PopupModal>
+
+        <BottomModal
+          modalVisible={qrModal}
+          closeModal={() => setQrModal(false)}
+        >
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1,
+            }}
+          >
+            <Text style={{ fontSize: 20, marginBottom: 20 }}>
+              Account Name:{" "}
+              <Text style={{ fontWeight: "bold" }}>
+                {currentUser.firstName + " " + currentUser.lastName}
+              </Text>
+            </Text>
+            <QRCode logo={logo} size={300} value={currentUser.id} />
+          </View>
+        </BottomModal>
       </View>
     );
   }
