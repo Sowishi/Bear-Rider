@@ -733,7 +733,11 @@ const LiveTransaction = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("TransactionDetails");
+                  navigation.navigate(
+                    currentUser.role == "Rider"
+                      ? "RiderTransactionDetails"
+                      : "TransactionDetails"
+                  );
                 }}
                 style={{
                   flexDirection: "row",
