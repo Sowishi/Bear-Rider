@@ -11,8 +11,7 @@ import Scanner from "../assets/scanner.json";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function BearCamera({ navigation, type, setOpenCamera, route }) {
-  const { isProof, transaction } = route.params || {};
-  console.log(isProof, transaction);
+  const { isProof = false, transaction = null } = route?.params || {};
 
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
