@@ -18,6 +18,8 @@ const TransactionSummary = ({ data, navigation }) => {
     status,
     totalPrice,
     insured,
+    distanceCharge,
+    purchaseCost,
   } = data;
 
   const chargePerKilometer = 10;
@@ -125,10 +127,77 @@ const TransactionSummary = ({ data, navigation }) => {
                   }}
                 >
                   <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
-                    Fare per Kilometer
+                    Distance Charge
                   </Text>
                   <Text style={{ color: "black", fontSize: 15 }}>
-                    ₱ {parseInt(totalPrice) - baseFare}
+                    ₱ {parseInt(distanceCharge)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Tip
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>₱0</Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Total
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    ₱{parseInt(totalPrice)}
+                  </Text>
+                </View>
+              </>
+            )}
+            {serviceType == "Padara" && (
+              <>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Base Fare
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    ₱{baseFare}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Distance Charge
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    ₱ {parseInt(distanceCharge)}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={{ color: "black", fontSize: 15, opacity: 0.5 }}>
+                    Purchase Cost
+                  </Text>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    ₱ {parseInt(purchaseCost)}
                   </Text>
                 </View>
                 <View

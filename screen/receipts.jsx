@@ -5,19 +5,21 @@ import {
   Image,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { useSmokeContext } from "../utils/appContext";
 import useCrudTransaction from "../hooks/useCrudTransaction";
 import { handleUploadImage } from "../utils/handleUploadImage";
+import Toast from "react-native-toast-message";
 
 const Receipts = ({ navigation, route }) => {
   const { transaction } = route.params || {};
   const { confirmOrderDetails } = useCrudTransaction();
   const { proof, setProof, currentUser } = useSmokeContext();
   const [purchaseCost, setPurchaseCost] = useState(0);
-
+  const [loading, setLoading] = useState(false);
   const handleDelete = (id) => {
     const copyProof = [...proof];
     const output = copyProof.filter((item) => {
@@ -29,6 +31,7 @@ const Receipts = ({ navigation, route }) => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     const proofUrls = [];
 
     // Loop through the proof array and upload each image
@@ -43,7 +46,9 @@ const Receipts = ({ navigation, route }) => {
       purchaseCost + parseInt(transaction.totalPrice),
       transaction.totalPrice
     );
-    navigation.navigate("LiveTransaction");
+    setLoading(false);
+    Toast.show({ type: "success", text1: "Successfully submited receipts" });
+    navigation.goBack();
   };
 
   return (
@@ -188,7 +193,11 @@ const Receipts = ({ navigation, route }) => {
                 fontWeight: "bold",
               }}
             >
-              Saved Receipts
+              {loading ? (
+                <ActivityIndicator color={"white"} size={"large"} />
+              ) : (
+                "Save Receipts"
+              )}
             </Text>
           </TouchableOpacity>
         </View>

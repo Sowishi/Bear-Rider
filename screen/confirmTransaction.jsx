@@ -226,8 +226,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
                 </Text>
               </Text>
               <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
-                This is the minimum cost for initiating the transportation
-                service.
+                This is the minimum cost for initiating a service.
               </Text>
 
               <Text style={{ color: "black", fontSize: 15 }}>
@@ -238,8 +237,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
                 </Text>
               </Text>
               <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
-                This amount is calculated based on the distance to the
-                destination.
+                This amount is calculated based on the service distance
               </Text>
 
               {serviceType == "Padara" && (
@@ -254,7 +252,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
                   <Text
                     style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
                   >
-                    Total Price of your goods
+                    Total Price of the goods
                   </Text>
                 </>
               )}
