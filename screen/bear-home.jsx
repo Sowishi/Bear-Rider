@@ -174,8 +174,13 @@ const BearHome = ({ navigation }) => {
                         return;
                       }
                     } else {
-                      navigation.navigate("drawer");
-                      return;
+                      if (currentUser.status == "Blocked") {
+                        navigation.navigate("BlockedUser", { type: "block" });
+                        return;
+                      } else {
+                        navigation.navigate("drawer");
+                        return;
+                      }
                     }
                   }}
                   style={{

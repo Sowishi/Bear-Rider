@@ -5,8 +5,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { DevSettings } from "react-native";
 import img from "../assets/O (2) 1.png";
 
-const BlockedUser = ({ navigation }) => {
+const BlockedUser = ({ navigation, route }) => {
   const { currentUser } = useSmokeContext();
+  const { type = false } = route?.params || {};
   return (
     <View
       style={{
@@ -19,7 +20,9 @@ const BlockedUser = ({ navigation }) => {
       <Image source={img} />
 
       <Text style={{ color: "black", fontSize: 25, fontWeight: "bold" }}>
-        Registration {currentUser.riderStatus}
+        {type == "block"
+          ? "User has been blocked"
+          : `Registration ${currentUser.riderStatus}`}
       </Text>
       <Text style={{ color: "black", fontSize: 18, marginVertical: 10 }}>
         {currentUser.firstName + " " + currentUser.lastName}
