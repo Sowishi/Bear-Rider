@@ -389,7 +389,13 @@ const LiveTracking = ({ navigation, route }) => {
               {isRider && transaction.status == "Accepted" && (
                 <TouchableOpacity
                   onPress={() => {
-                    markTransit(transaction.id);
+                    if (transaction.serviceType == "Padara") {
+                      if (transaction) {
+                        navigation.navigate("Receipts", { transaction });
+                      }
+                    } else {
+                      markTransit(transaction.id);
+                    }
                   }}
                   style={{
                     backgroundColor: "#AA2D31",

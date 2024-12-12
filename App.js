@@ -44,6 +44,8 @@ import Paymongo from "./screen/paymongo";
 import { useEffect } from "react";
 import { Linking } from "react-native";
 import BearScanner from "./components/barcodeScanner";
+import Receipts from "./screen/receipts";
+import BearCamera from "./components/BearCamera";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -456,6 +458,38 @@ export default function App() {
               }}
               name="SelectPaymentMethod"
               component={SelectPaymentMethod}
+            />
+            <Stack.Screen
+              options={{
+                title: "Delivery Receipts",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="Receipts"
+              component={Receipts}
+            />
+            <Stack.Screen
+              options={{
+                title: "Capture",
+                headerShown: false,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="BearCamera"
+              component={BearCamera}
             />
           </>
         )}

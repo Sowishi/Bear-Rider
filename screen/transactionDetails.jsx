@@ -181,51 +181,66 @@ const TransactionDetails = ({ route, navigation }) => {
             <Text style={{ fontSize: 20, marginBottom: 5, fontWeight: "bold" }}>
               Price Breakdown
             </Text>
-            {serviceType != "Padara" && (
-              <>
-                <Text style={{ color: "black", fontSize: 15 }}>
-                  Base Fare:
-                  <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-                    {" "}
-                    ₱{baseFare}
-                  </Text>
+            <>
+              <Text style={{ color: "black", fontSize: 15 }}>
+                Base Fare:
+                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                  {" "}
+                  ₱{baseFare}
                 </Text>
-                <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
-                  This is the minimum cost for initiating the transportation
-                  service.
+              </Text>
+              <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
+                This is the minimum cost for initiating the transportation
+                service.
+              </Text>
+              <Text style={{ color: "black", fontSize: 15 }}>
+                Distance Charge{" "}
+                <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                  ₱{parseInt(transaction.distanceCharge)}
                 </Text>
+              </Text>
 
-                <Text style={{ color: "black", fontSize: 15 }}>
-                  Fare per Kilometer:
-                  <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
-                    {parseInt(transaction.totalPrice) - baseFare}
-                  </Text>
-                </Text>
-                <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
-                  This amount is calculated based on the distance to the
-                  destination.
-                </Text>
+              <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
+                This amount is calculated based on the distance to the
+                destination.
+              </Text>
 
-                <Text
-                  style={{
-                    color: "black",
-                    fontSize: 15,
-                    fontWeight: "bold",
-                    marginTop: 10,
-                  }}
-                >
-                  Total Fare:
-                  <Text style={{ color: "#FFC30E" }}>
-                    {" "}
-                    ₱{parseInt(transaction.totalPrice)}
+              {transaction.serviceType == "Padara" && (
+                <>
+                  <Text style={{ color: "black", fontSize: 15 }}>
+                    Purchase Cost{" "}
+                    <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
+                      {parseInt(transaction.purchaseCost || 0)}
+                    </Text>
                   </Text>
+                  <Text
+                    style={{ color: "gray", fontSize: 12, marginBottom: 5 }}
+                  >
+                    This amount is calculated based on the distance to the
+                    destination.
+                  </Text>
+                </>
+              )}
+
+              <Text
+                style={{
+                  color: "black",
+                  fontSize: 15,
+                  fontWeight: "bold",
+                  marginTop: 10,
+                }}
+              >
+                Total Price:
+                <Text style={{ color: "#FFC30E" }}>
+                  {" "}
+                  ₱{parseInt(transaction.totalPrice)}
                 </Text>
-                <Text style={{ color: "gray", fontSize: 12 }}>
-                  The final amount, including the base fare and the distance
-                  charge.
-                </Text>
-              </>
-            )}
+              </Text>
+              <Text style={{ color: "gray", fontSize: 12 }}>
+                The final amount, including the base fare and the distance
+                charge.
+              </Text>
+            </>
           </View>
           {currentUser.role == "Rider" && !transaction.status && (
             <View

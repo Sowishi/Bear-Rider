@@ -766,6 +766,45 @@ const LiveTransaction = ({ navigation }) => {
                 </View>
                 <AntDesign name="arrowright" size={24} color="black" />
               </TouchableOpacity>
+              {transaction.serviceType == "Padara" && (
+                <TouchableOpacity
+                  onPress={() => {
+                    if (transaction) {
+                      navigation.navigate("Receipts", { transaction });
+                    }
+                  }}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    paddingHorizontal: 13,
+                    marginBottom: 20,
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "flex-start",
+                      }}
+                    >
+                      <MaterialIcons name="receipt" size={20} />
+
+                      <View style={{ marginLeft: 8 }}>
+                        <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                          Delivery Receipts
+                        </Text>
+                        <Text style={{ opacity: 0.5 }}>
+                          View your delivery receipts
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                  <AntDesign name="arrowright" size={24} color="black" />
+                </TouchableOpacity>
+              )}
 
               <TouchableOpacity
                 disabled

@@ -10,12 +10,10 @@ import LottieView from "lottie-react-native";
 import Scanner from "../assets/scanner.json";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
-export default function BearCamera({
-  navigation,
-  type,
-  proofOfPurchase,
-  setOpenCamera,
-}) {
+export default function BearCamera({ navigation, type, setOpenCamera, route }) {
+  const { isProof, transaction } = route.params || {};
+  console.log(isProof, transaction);
+
   const [permission, requestPermission] = useCameraPermissions();
   const [cameraRef, setCameraRef] = useState(null);
   const [facing, setFacing] = useState("back");
@@ -43,14 +41,14 @@ export default function BearCamera({
         <Button
           bgColor={"#003082"}
           event={requestPermission}
-          text="grant permission"
+          text="Grant permission"
         />
       </View>
     );
   }
 
   const getCameraText = () => {
-    if (proofOfPurchase) {
+    if (isProof) {
       return "Please take a clear photo of receipts";
     }
     if (type == "frontLicense") {
@@ -124,7 +122,15 @@ export default function BearCamera({
           flexDirection: "row",
         }}
       >
-        <TouchableOpacity onPress={() => navigation.navigate("Rider")}>
+        <TouchableOpacity
+          onPress={() => {
+            if (isProof) {
+              navigation.goBack();
+            } else {
+              navigation.navigate("Rider");
+            }
+          }}
+        >
           <MaterialCommunityIcons name="cancel" size={30} color="white" />
         </TouchableOpacity>
         <TouchableOpacity
@@ -138,13 +144,13 @@ export default function BearCamera({
                 { compress: 1, format: ImageManipulator.SaveFormat.JPEG }
               );
 
-              if (proofOfPurchase) {
+              if (isProof) {
                 if (proof == null || proof == undefined) {
                   setProof([resizedImage.uri]);
                 } else {
                   setProof([...proof, resizedImage.uri]);
                 }
-                setOpenCamera(false);
+                navigation.goBack();
                 return;
               }
 

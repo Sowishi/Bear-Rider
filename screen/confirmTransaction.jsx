@@ -37,6 +37,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
   const chargePerKilometer = 10;
   const baseFare = 30;
   const totalPrice = distance * chargePerKilometer + baseFare;
+  const distanceCharge = distance * chargePerKilometer;
   useEffect(() => {
     let output = 0;
     if (destination && bookLocation) {
@@ -65,6 +66,8 @@ const ConfirmTransaction = ({ route, navigation }) => {
         remarks: note,
         insured: insuranceChecked,
         paymentMethod,
+        deliveryFee: 0,
+        distanceCharge,
       };
       setFindingRider(true);
       const output = await addTransaction(transaction);
@@ -228,10 +231,10 @@ const ConfirmTransaction = ({ route, navigation }) => {
               </Text>
 
               <Text style={{ color: "black", fontSize: 15 }}>
-                Fare per Kilometer
+                Distance Charge
                 <Text style={{ color: "#FFC30E", fontWeight: "bold" }}>
                   {" "}
-                  ₱{parseInt(totalPrice) - baseFare}
+                  ₱{parseInt(distanceCharge)}
                 </Text>
               </Text>
               <Text style={{ color: "gray", fontSize: 12, marginBottom: 5 }}>
@@ -264,7 +267,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
                   marginTop: 10,
                 }}
               >
-                Total Fare:
+                Total Price:
                 <Text style={{ color: "#FFC30E" }}>
                   {" "}
                   ₱{parseInt(totalPrice)}
