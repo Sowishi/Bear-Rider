@@ -185,6 +185,8 @@ const BearHome = ({ navigation }) => {
                       if (currentUser.status == "Blocked") {
                         navigation.navigate("BlockedUser", { type: "block" });
                         return;
+                      } else if (currentUser.cancelCount >= 3) {
+                        navigation.navigate("MaxCancelUser");
                       } else {
                         navigation.navigate("drawer");
                         return;

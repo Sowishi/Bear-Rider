@@ -51,6 +51,8 @@ import BearRiderTransaction from "./screen/BearRiderTransaction";
 import RiderEarning from "./screen/riderEarning";
 import RejectedUser from "./screen/rejectedUser";
 import FeedBack from "./screen/feedback";
+import MaxCancelUser from "./screen/maxCancelUser";
+import PaymongoPenalty from "./screen/paymongoPenaltty";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -235,6 +237,7 @@ export default function App() {
             <Stack.Screen name="Camera" component={Camera} />
             <Stack.Screen name="RiderPending" component={RiderPending} />
             <Stack.Screen name="BlockedUser" component={BlockedUser} />
+            <Stack.Screen name="MaxCancelUser" component={MaxCancelUser} />
 
             <Stack.Screen name="drawer" component={DrawerScreen} />
             <Stack.Screen name="viewBearAsset" component={ViewBearAsset} />
@@ -263,6 +266,28 @@ export default function App() {
               }}
               name="savedPlaces"
               component={SavedPlaces}
+            />
+            <Stack.Screen
+              options={{
+                headerShown: true,
+                title: "Paymongo Penalty",
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+                animationEnabled: true,
+                transitionSpec: {
+                  open: TransitionSpecs.TransitionIOSSpec,
+                  close: TransitionSpecs.TransitionIOSSpec,
+                },
+                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+              }}
+              name="PaymongoPenalty"
+              component={PaymongoPenalty}
             />
             <Stack.Screen
               options={{

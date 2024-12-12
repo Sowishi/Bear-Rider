@@ -15,10 +15,12 @@ import { db } from "../firebase";
 import { serverTimestamp } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
+import { useSmokeContext } from "../utils/appContext";
 
 const useCrudTransaction = () => {
   const [data, setData] = useState([]);
   const [singleData, setSingleData] = useState();
+  const { currentUser } = useSmokeContext();
   useEffect(() => {
     const colRef = collection(db, "transaction");
     const q = query(colRef, orderBy("createdAt"));
@@ -70,13 +72,42 @@ const useCrudTransaction = () => {
     updateDoc(docRef, { ...transaction, status: "Completed" });
   };
 
-  const cancelTransaction = (transaction, cancellationReason) => {
-    const docRef = doc(db, "transaction", transaction.id);
-    updateDoc(docRef, {
-      ...transaction,
-      status: "Cancelled",
-      cancellationReason,
-    });
+  const cancelTransaction = async (transaction, cancellationReason) => {
+    const transactionDocRef = doc(db, "transaction", transaction.id);
+    const userDocRef = doc(db, "users", currentUser.id);
+
+    try {
+      // Update the transaction document
+      await updateDoc(transactionDocRef, {
+        ...transaction,
+        status: "Cancelled",
+        cancellationReason,
+      });
+
+      // Get the current user's document data
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        const userData = userDocSnap.data();
+
+        // Increment the cancelCount by 1
+        const newCancelCount = (userData.cancelCount || 0) + 1;
+
+        // Update the user's cancelCount
+        await updateDoc(userDocRef, {
+          cancelCount: newCancelCount,
+        });
+
+        console.log("Transaction canceled and user's cancel count updated.");
+      } else {
+        console.log("User document not found.");
+      }
+    } catch (error) {
+      console.error(
+        "Error canceling transaction or updating cancel count:",
+        error
+      );
+    }
   };
 
   const getTransaction = (id, setSelectedTransaction) => {

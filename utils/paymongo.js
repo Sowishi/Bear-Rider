@@ -85,4 +85,47 @@ const getCheckoutSession = (checkoutSessionId) => {
     });
 };
 
-export { createCheckout, getCheckoutSession };
+const createPayMongoCheckoutSession = async (transaction) => {
+  const PAYMONGO_CHECKOUT_URL = "https://api.paymongo.com/v1/checkout_sessions";
+
+  try {
+    // Request payload
+    const payload = {
+      data: {
+        attributes: {
+          amount: transaction.totalPrice * 100, // Amount in centavos (e.g., 100 PHP)
+          currency: "PHP",
+          description: "Sample Checkout Payment",
+          payment_method_types: ["gcash"], // Supported payment methods
+        },
+      },
+    };
+
+    // Make the POST request with fetch
+    const response = await fetch(PAYMONGO_CHECKOUT_URL, {
+      method: "POST",
+      headers: {
+        authorization: "Basic c2tfdGVzdF9vcHhCNGh3S3hKUERqNmJDM1YzTUFkajc6",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    console.log(data);
+
+    // Extract and return the checkout URL
+    const checkoutUrl = data.data.attributes.checkout_url;
+    return checkoutUrl;
+  } catch (error) {
+    console.error("Error creating PayMongo checkout session:", error);
+    throw error; // Re-throw the error for the caller to handle
+  }
+};
+
+export { createCheckout, getCheckoutSession, createPayMongoCheckoutSession };
