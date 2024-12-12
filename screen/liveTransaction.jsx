@@ -965,6 +965,24 @@ const LiveTransaction = ({ navigation }) => {
       </View>
     );
   }
+
+  return (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <LottieView
+        style={{ width: 300, height: 300 }}
+        autoPlay
+        source={require("../assets/detect.json")}
+      />
+      <Text style={{ fontSize: 20 }}>Getting the live transaction...</Text>
+    </View>
+  );
 };
 
 export default LiveTransaction;
