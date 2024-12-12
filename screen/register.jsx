@@ -132,6 +132,8 @@ const Register = ({ navigation }) => {
       console.log(forms);
       const userData = {
         ...forms,
+        status: "Active",
+        cancelCount: 0,
         profilePic: `https://avatar.iran.liara.run/public?username=${forms.firstName.trim()}`,
       };
       addUser(userData);
