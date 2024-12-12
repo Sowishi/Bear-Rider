@@ -112,29 +112,28 @@ const Home = ({ route, navigation }) => {
   const chargePerKilometer = 10;
   const baseFare = 30;
   const IS_RIDER = currentUser?.role;
-
   // Handle Disable Back Button
-  // useEffect(() => {
-  //   setMapLoading(true);
+  useEffect(() => {
+    setMapLoading(true);
 
-  //   setTimeout(() => {
-  //     setMapLoading(false);
-  //   }, 3000);
+    setTimeout(() => {
+      setMapLoading(false);
+    }, 3000);
 
-  //   const backAction = () => {
-  //     // Returning true prevents the default back button behavior
-  //     return true;
-  //   };
+    const backAction = () => {
+      // Returning true prevents the default back button behavior
+      return true;
+    };
 
-  //   // Add the back button event listener
-  //   const backHandler = BackHandler.addEventListener(
-  //     "hardwareBackPress",
-  //     backAction
-  //   );
+    // Add the back button event listener
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
 
-  //   // Clean up the listener on component unmount
-  //   return () => backHandler.remove();
-  // }, []);
+    // Clean up the listener on component unmount
+    return () => backHandler.remove();
+  }, []);
 
   // When app is back in home screen cancel the transaction
   useEffect(() => {

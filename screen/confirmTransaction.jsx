@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import CheckBox from "expo-checkbox"; // For Expo-compatible checkbox
@@ -34,6 +35,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
   const [note, setNote] = useState("");
   const [insuranceChecked, setInsuranceChecked] = useState(false);
   const [distance, setDistance] = useState();
+  const [loading, setLoading] = useState(false);
   const chargePerKilometer = 10;
   const baseFare = 30;
   const totalPrice = distance * chargePerKilometer + baseFare;
@@ -47,6 +49,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
   }, [bookLocation, destination]);
 
   const handleAddTransaction = async () => {
+    setLoading(true);
     if (bookLocation && destination && paymentMethod) {
       const transaction = {
         origin: {
@@ -72,8 +75,11 @@ const ConfirmTransaction = ({ route, navigation }) => {
       setFindingRider(true);
       const output = await addTransaction(transaction);
       setSelectedTransaction(output);
+      setLoading(false);
       navigation.navigate("LiveTransaction");
     } else {
+      setLoading(false);
+
       Toast.show({
         type: "info",
         text1: "Please select payment method",
@@ -355,7 +361,7 @@ const ConfirmTransaction = ({ route, navigation }) => {
               fontSize: 18,
             }}
           >
-            Continue
+            {loading ? <ActivityIndicator color={"white"} /> : "Continue"}
           </Text>
         </TouchableOpacity>
       </View>
