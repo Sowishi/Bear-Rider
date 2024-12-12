@@ -47,6 +47,8 @@ import BearScanner from "./components/barcodeScanner";
 import Receipts from "./screen/receipts";
 import BearCamera from "./components/BearCamera";
 import BlockedUser from "./screen/blockedUser";
+import BearRiderTransaction from "./screen/BearRiderTransaction";
+import RiderEarning from "./screen/riderEarning";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -165,7 +167,14 @@ export default function App() {
           },
         })}
       >
-        <Tab.Screen name="Transaction" component={BearTransaction} />
+        <Tab.Screen
+          name="Transaction"
+          component={
+            currentUser?.role == "Rider"
+              ? BearRiderTransaction
+              : BearTransaction
+          }
+        />
         <Tab.Screen
           name="Home"
           options={{ statusBarStyle: "light" }}
@@ -368,7 +377,7 @@ export default function App() {
             />
             <Stack.Screen
               options={{
-                title: "",
+                title: "Transaction Details",
                 headerShown: true,
                 headerBackTitleStyle: {
                   color: "white",
@@ -493,6 +502,22 @@ export default function App() {
               }}
               name="BearCamera"
               component={BearCamera}
+            />
+            <Stack.Screen
+              options={{
+                title: "Rider Earning",
+                headerShown: true,
+                headerBackTitleStyle: {
+                  color: "white",
+                  backgroundColor: "white",
+                },
+                headerTintColor: "white",
+                headerStyle: {
+                  backgroundColor: !currentUser.role ? "#B80B00" : "#003082",
+                },
+              }}
+              name="RiderEarning"
+              component={RiderEarning}
             />
           </>
         )}

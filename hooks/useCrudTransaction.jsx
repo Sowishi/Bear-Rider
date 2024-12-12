@@ -9,6 +9,7 @@ import {
   orderBy,
   query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "../firebase";
 import { serverTimestamp } from "firebase/firestore";
@@ -133,6 +134,25 @@ const useCrudTransaction = () => {
     });
   };
 
+  const getRiderTransaction = (id, setTransaction) => {
+    const colRef = collection(db, "transaction");
+
+    // Construct query to fetch transactions where `rider.id` matches the provided id
+    const q = query(colRef, where("rider.id", "==", id));
+
+    // Subscribe to real-time updates
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const transactions = snapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id, // Include document ID for reference
+      }));
+      setTransaction(transactions);
+    });
+
+    // Return unsubscribe function to allow cleanup
+    return unsubscribe;
+  };
+
   return {
     addTransaction,
     deleteTransaction,
@@ -148,6 +168,7 @@ const useCrudTransaction = () => {
     cancelTransaction,
     confirmPickup,
     confirmDropOff,
+    getRiderTransaction,
   };
 };
 

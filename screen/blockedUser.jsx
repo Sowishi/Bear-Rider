@@ -20,9 +20,9 @@ const BlockedUser = ({ navigation, route }) => {
       <Image source={img} />
 
       <Text style={{ color: "black", fontSize: 25, fontWeight: "bold" }}>
-        {type == "block"
+        {currentUser.role !== "Rider"
           ? "User has been blocked"
-          : `Registration ${currentUser.riderStatus}`}
+          : "Rider has been blocked"}
       </Text>
       <Text style={{ color: "black", fontSize: 18, marginVertical: 10 }}>
         {currentUser.firstName + " " + currentUser.lastName}
