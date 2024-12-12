@@ -231,8 +231,12 @@ const LiveTransaction = ({ navigation }) => {
       time: "5",
       title: "Confirmed Pickup",
       description: isRider
-        ? "You have pick up the customer"
-        : "You are now with your rider",
+        ? transaction?.serviceType == "Pahatod"
+          ? "You have pick up the customer"
+          : "You delivered the goods"
+        : transaction?.serviceType == "Pahatod"
+        ? "You are now with your rider"
+        : "Your goods is delivered",
       circleColor:
         transaction?.status === "Pickup"
           ? "rgba(184, 11, 0, 1)"
@@ -256,10 +260,17 @@ const LiveTransaction = ({ navigation }) => {
     },
     {
       time: "6",
-      title: "Confirmed Drop Off",
+      title:
+        transaction?.serviceType == "Pahatod"
+          ? "Confirmed Drop Off"
+          : "Confirm Delivery",
       description: isRider
-        ? "You have drop off the customer"
-        : "You are now in your destination",
+        ? transaction?.serviceType == "Pahatod"
+          ? "You have drop off the customer"
+          : "The customer checked the goods"
+        : transaction?.serviceType == "Pahatod"
+        ? "You are now in your destination"
+        : "Successfully confirmed the deliery",
       circleColor:
         transaction?.status === "DropOff"
           ? "rgba(184, 11, 0, 1)"

@@ -169,15 +169,32 @@ const ConfirmTransaction = ({ route, navigation }) => {
         </View>
 
         {/* Note Input */}
-        <Text style={styles.cardTitle}>Add a Note</Text>
-        <TextInput
-          style={styles.noteInput}
-          placeholder="Enter any additional information"
-          placeholderTextColor="#888"
-          value={note}
-          onChangeText={setNote}
-          multiline
-        />
+        <Text style={styles.cardTitle}>
+          {serviceType == "Pahatod" ? "Add a note" : "What is your order?"}
+        </Text>
+        {serviceType == "Pahatod" ? (
+          <TextInput
+            style={styles.noteInput}
+            placeholder="Enter any additional information"
+            placeholderTextColor="#888"
+            value={note}
+            onChangeText={setNote}
+            multiline
+          />
+        ) : (
+          <TextInput
+            style={{ ...styles.noteInput, height: 130 }}
+            placeholder={
+              serviceType == "Pahatod"
+                ? "Add a note to your rider"
+                : "Enter here your order details"
+            }
+            placeholderTextColor="#888"
+            value={note}
+            onChangeText={setNote}
+            multiline
+          />
+        )}
 
         {/* Insurance Checkbox */}
         <View style={styles.checkboxContainer}>

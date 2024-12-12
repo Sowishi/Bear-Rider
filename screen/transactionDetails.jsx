@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import CheckBox from "expo-checkbox"; // For Expo-compatible checkbox
@@ -80,54 +81,91 @@ const TransactionDetails = ({ route, navigation }) => {
         {/* Service Type */}
 
         <View style={{ padding: 15 }}>
-          <View style={{ marginBottom: 14 }}>
-            <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+          <View
+            style={{
+              marginBottom: 14,
+              justifyContent: "center",
+              alignItems: "center",
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 0,
+                height: 1,
+              },
+              shadowOpacity: 0.2,
+              shadowRadius: 1.41,
+
+              elevation: 2,
+              backgroundColor: "white",
+              borderRadius: 10,
+            }}
+          >
+            <Image
+              source={
+                transaction.serviceType == "Pahatod"
+                  ? require("../assets/transpo.png")
+                  : require("../assets/delivery.png")
+              }
+            />
+            <Text
+              style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}
+            >
               {transaction.serviceType == "Pahatod"
                 ? "Transportation Service"
                 : "Delivery Service"}
             </Text>
-          </View>
-
-          <View style={styles.addressContainer}>
-            <View style={styles.addressRow}>
-              <Entypo name="location-pin" size={20} color="#B80B00" />
-              <View style={{ marginLeft: 5 }}>
-                <Text style={{ fontWeight: "bold", fontSize: 13 }}>
-                  {transaction.serviceType == "Pahatod"
-                    ? "Pick Up Address"
-                    : "Deliver to Address"}
-                </Text>
-                <Text style={{ fontSize: 11 }}>
-                  {transaction.origin.address}
-                </Text>
+            <View style={styles.addressContainer}>
+              <View style={styles.addressRow}>
+                <Entypo name="location-pin" size={20} color="#B80B00" />
+                <View style={{ marginLeft: 5 }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 13 }}>
+                    {transaction.serviceType == "Pahatod"
+                      ? "Pick Up Address"
+                      : "Deliver to Address"}
+                  </Text>
+                  <Text style={{ fontSize: 11 }}>
+                    {transaction.origin.address}
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.addressRow}>
-              <Entypo name="location-pin" size={20} color="#003082" />
-              <View style={{ marginLeft: 5 }}>
-                <Text style={{ fontWeight: "bold", fontSize: 13 }}>
-                  {transaction.serviceType == "Pahatod"
-                    ? "Drop Off Address"
-                    : "Shop to Address"}
-                </Text>
-                <Text style={{ fontSize: 11 }}>
-                  {transaction.destination.address}
-                </Text>
+              <View style={styles.addressRow}>
+                <Entypo name="location-pin" size={20} color="#003082" />
+                <View style={{ marginLeft: 5 }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 13 }}>
+                    {transaction.serviceType == "Pahatod"
+                      ? "Drop Off Address"
+                      : "Shop to Address"}
+                  </Text>
+                  <Text style={{ fontSize: 11 }}>
+                    {transaction.destination.address}
+                  </Text>
+                </View>
               </View>
             </View>
           </View>
 
           {/* Note Input */}
           <Text style={styles.cardTitle}>Remarks</Text>
-          <TextInput
-            editable={false}
-            style={styles.noteInput}
-            placeholder="Enter any additional information"
-            placeholderTextColor="#888"
-            value={transaction.remarks}
-            onChangeText={setNote}
-            multiline
-          />
+          {transaction.serviceType == "Pahatod" ? (
+            <TextInput
+              editable={false}
+              style={styles.noteInput}
+              placeholder="Enter any additional information"
+              placeholderTextColor="#888"
+              value={transaction.remarks}
+              onChangeText={setNote}
+              multiline
+            />
+          ) : (
+            <TextInput
+              editable={false}
+              style={{ ...styles.noteInput, height: 130 }}
+              placeholder="Enter any additional information"
+              placeholderTextColor="#888"
+              value={transaction.remarks}
+              onChangeText={setNote}
+              multiline
+            />
+          )}
 
           {/* Insurance Checkbox */}
           <View style={styles.checkboxContainer}>

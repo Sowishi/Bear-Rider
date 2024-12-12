@@ -478,7 +478,9 @@ const LiveTracking = ({ navigation, route }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Confirmed Drop Off
+                    {transaction.serviceType == "Pahatod"
+                      ? "Confirmed Drop Off"
+                      : "Confirmed Delivery"}
                   </Text>
                 </TouchableOpacity>
               )}
